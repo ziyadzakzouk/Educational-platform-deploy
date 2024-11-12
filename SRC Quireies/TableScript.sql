@@ -66,6 +66,12 @@ CREATE TABLE Instructor (
     );
     CREATE TABLE pathreview(
     FOREIGN KEY (Instructor_ID) REFERENCES Instructor(Instructor_ID),
-    FOREIGN KEY (PATH_ID) REFERENCES PATH(Path_ID),
+    FOREIGN KEY (Path_ID) REFERENCES PATH(Path_ID),--wait for learning path
     feedback VARCHAR(255)
     );
+
+    CREATE TABLE EmotionalFeedback_review(
+    FOREIGN KEY (Instructor_ID) REFERENCES Instructor(Instructor_ID),
+    FOREIGN KEY (FeedbackID) REFERENCES Learner(FeedbackID), --wait for emotional feedback
+    feedback VARCHAR(255)
+	);
