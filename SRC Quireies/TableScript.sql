@@ -2,6 +2,7 @@
 
 CREATE TABLE Learner (
     Learner_ID INT PRIMARY KEY,
+
     first_name VARCHAR(20),
     last_name VARCHAR(20),
     birthday DATE,
@@ -36,6 +37,16 @@ FOREIGN KEY (profileID) REFERENCES PersonalProfile(profileID),
 condition VARCHAR(50)
 
 );
+
+    name VARCHAR(50),
+    birthday DATE,
+   
+    gender VARCHAR(10),
+    country VARCHAR(50)
+    
+);
+
+
 CREATE TABLE Course (
     Course_ID INT PRIMARY KEY,
     title VARCHAR(100),
