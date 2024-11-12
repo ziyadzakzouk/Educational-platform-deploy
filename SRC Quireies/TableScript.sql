@@ -21,7 +21,15 @@ prefrences VARCHAR(50)
 
 );
 
+CREATE TABLE PersonalProfile(
 
+FOREIGN KEY (Learner_ID) REFERENCES Learner(Learner_ID),
+profileID INT PRIMARY KEY,
+PreferedContent_type VARCHAR(50),
+emotionalState VARCHAR(50),
+personality_type VARCHAR(50)
+
+);
 CREATE TABLE Course (
     Course_ID INT PRIMARY KEY,
     title VARCHAR(100),
