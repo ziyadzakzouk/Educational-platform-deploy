@@ -2,6 +2,42 @@
 
 CREATE TABLE Learner (
     Learner_ID INT PRIMARY KEY,
+
+    first_name VARCHAR(20),
+    last_name VARCHAR(20),
+    birthday DATE,
+    gender VARCHAR(10) CHECK (gender IN ('Male', 'Female')),
+    country VARCHAR(20),
+    cultural_background VARCHAR(50)   
+);
+CREATE TABLE Skills(
+FOREIGN KEY (Learner_ID) REFERENCES Learner(Learner_ID),
+skill VARCHAR(50)
+
+);
+
+CREATE TABLE LearningPrefrences(
+FOREIGN KEY (Learner_ID) REFERENCES Learner(Learner_ID),
+prefrences VARCHAR(50)
+
+);
+
+CREATE TABLE PersonalProfile(
+
+FOREIGN KEY (Learner_ID) REFERENCES Learner(Learner_ID),
+profileID INT PRIMARY KEY,
+PreferedContent_type VARCHAR(50),
+emotionalState VARCHAR(50),
+personality_type VARCHAR(50)
+
+);
+CREATE TABLE HealthCondition(
+FOREIGN KEY (Learner_ID) REFERENCES Learner(Learner_ID),
+FOREIGN KEY (profileID) REFERENCES PersonalProfile(profileID),
+condition VARCHAR(50)
+
+);
+
     name VARCHAR(50),
     birthday DATE,
    
@@ -9,6 +45,7 @@ CREATE TABLE Learner (
     country VARCHAR(50)
     
 );
+
 
 CREATE TABLE Course (
     Course_ID INT PRIMARY KEY,
