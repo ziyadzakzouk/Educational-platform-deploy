@@ -9,7 +9,11 @@ CREATE TABLE Learner (
     country VARCHAR(20),
     cultural_background VARCHAR(50)   
 );
+CREATE TABLE Skills(
+FOREIGN KEY (Learner_ID) REFERENCES Learner(Learner_ID),
+skill VARCHAR(50)
 
+);
 CREATE TABLE Course (
     Course_ID INT PRIMARY KEY,
     title VARCHAR(100),
