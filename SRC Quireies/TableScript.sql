@@ -55,3 +55,12 @@ enrollment_date DATE,
 completion_date DATE,
 status VARCHAR(50) CHECK (status IN ('Completed', 'In Progress', 'Not Started'))
 );
+
+CREATE TABLE Instructor (
+	Instructor_ID INT PRIMARY KEY,
+	Instructor_name VARCHAR(20),
+	latest_qualification VARCHAR(20),
+    expertise_area VARCHAR(50),
+    email VARCHAR(50)
+
+    );
