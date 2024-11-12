@@ -2,12 +2,12 @@
 
 CREATE TABLE Learner (
     Learner_ID INT PRIMARY KEY,
-    name VARCHAR(50),
+    first_name VARCHAR(20),
+    last_name VARCHAR(20),
     birthday DATE,
-   
-    gender VARCHAR(10),
-    country VARCHAR(50)
-    
+    gender VARCHAR(10) CHECK (gender IN ('Male', 'Female')),
+    country VARCHAR(20),
+    cultural_background VARCHAR(50)   
 );
 
 CREATE TABLE Course (
