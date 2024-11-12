@@ -64,3 +64,8 @@ CREATE TABLE Instructor (
     email VARCHAR(50)
 
     );
+    CREATE TABLE pathreview(
+    FOREIGN KEY (Instructor_ID) REFERENCES Instructor(Instructor_ID),
+    FOREIGN KEY (PATH_ID) REFERENCES PATH(Path_ID),
+    feedback VARCHAR(255)
+    );
