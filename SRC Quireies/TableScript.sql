@@ -45,5 +45,13 @@ CREATE TABLE Course (
    learning_objective VARCHAR(255),
    pre_requisites VARCHAR(255)
    
-  
+);
+
+CREATE TABLE Course_Enrollment(
+Enrollment_ID INT PRIMARY KEY,
+FOREIGN KEY (Learner_ID) REFERENCES Learner(Learner_ID),
+FOREIGN KEY (Course_ID) REFERENCES Course(Course_ID),
+enrollment_date DATE,
+completion_date DATE,
+status VARCHAR(50) CHECK (status IN ('Completed', 'In Progress', 'Not Started'))
 );
