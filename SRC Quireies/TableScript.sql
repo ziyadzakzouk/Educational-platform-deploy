@@ -30,6 +30,12 @@ emotionalState VARCHAR(50),
 personality_type VARCHAR(50)
 
 );
+CREATE TABLE HealthCondition(
+FOREIGN KEY (Learner_ID) REFERENCES Learner(Learner_ID),
+FOREIGN KEY (profileID) REFERENCES PersonalProfile(profileID),
+condition VARCHAR(50)
+
+);
 CREATE TABLE Course (
     Course_ID INT PRIMARY KEY,
     title VARCHAR(100),
