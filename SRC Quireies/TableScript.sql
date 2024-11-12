@@ -75,3 +75,7 @@ CREATE TABLE Instructor (
     FOREIGN KEY (FeedbackID) REFERENCES Learner(FeedbackID), --wait for emotional feedback
     feedback VARCHAR(255)
 	);
+    CREATE TABLE Teaches(
+    FOREIGN KEY (Instructor_ID) REFERENCES Instructor(Instructor_ID),
+    FOREIGN KEY (Course_ID) REFERENCES Course(Course_ID)
+	);
