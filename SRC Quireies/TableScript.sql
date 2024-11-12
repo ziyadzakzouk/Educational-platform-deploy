@@ -42,6 +42,8 @@ CREATE TABLE Course (
     description VARCHAR(255),
     diff_level VARCHAR(8),
     credit_point INT,
-    instructor_ID INT
-    --FOREIGN KEY (instructor_ID) REFERENCES Instructor(ID)
+   learning_objective VARCHAR(255),
+   pre_requisites VARCHAR(255)
+   
+  
 );
