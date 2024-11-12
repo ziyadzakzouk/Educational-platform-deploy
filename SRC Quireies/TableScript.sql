@@ -53,6 +53,40 @@ CREATE TABLE Course (
     description VARCHAR(255),
     diff_level VARCHAR(8),
     credit_point INT,
-    instructor_ID INT
-    --FOREIGN KEY (instructor_ID) REFERENCES Instructor(ID)
+   learning_objective VARCHAR(255),
+   pre_requisites VARCHAR(255)
+   
 );
+
+CREATE TABLE Course_Enrollment(
+Enrollment_ID INT PRIMARY KEY,
+FOREIGN KEY (Learner_ID) REFERENCES Learner(Learner_ID),
+FOREIGN KEY (Course_ID) REFERENCES Course(Course_ID),
+enrollment_date DATE,
+completion_date DATE,
+status VARCHAR(50) CHECK (status IN ('Completed', 'In Progress', 'Not Started'))
+);
+
+CREATE TABLE Instructor (
+	Instructor_ID INT PRIMARY KEY,
+	Instructor_name VARCHAR(20),
+	latest_qualification VARCHAR(20),
+    expertise_area VARCHAR(50),
+    email VARCHAR(50)
+
+    );
+    CREATE TABLE pathreview(
+    FOREIGN KEY (Instructor_ID) REFERENCES Instructor(Instructor_ID),
+    FOREIGN KEY (Path_ID) REFERENCES PATH(Path_ID),--wait for learning path
+    feedback VARCHAR(255)
+    );
+
+    CREATE TABLE EmotionalFeedback_review(
+    FOREIGN KEY (Instructor_ID) REFERENCES Instructor(Instructor_ID),
+    FOREIGN KEY (FeedbackID) REFERENCES Learner(FeedbackID), --wait for emotional feedback
+    feedback VARCHAR(255)
+	);
+    CREATE TABLE Teaches(
+    FOREIGN KEY (Instructor_ID) REFERENCES Instructor(Instructor_ID),
+    FOREIGN KEY (Course_ID) REFERENCES Course(Course_ID)
+	);
