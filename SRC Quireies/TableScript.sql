@@ -54,6 +54,14 @@ CREATE TABLE Module (
     contentURL VARCHAR(255)	
 );
 
+CREATE TABLE TargetTraits(
+FOREIGN KEY (Module_ID) REFERENCES Module(Module_ID),
+FOREIGN KEY (Course_ID) REFERENCES Course(Course_ID),
+trait VARCHAR(50)
+
+
+);
+
 CREATE TABLE ModuleContent(
 FOREIGN KEY (Module_ID) REFERENCES Module(Module_ID),
 FOREIGN KEY (Course_ID) REFERENCES Course(Course_ID),
