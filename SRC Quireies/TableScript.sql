@@ -81,6 +81,19 @@ completion_date DATE,
 status VARCHAR(50) CHECK (status IN ('Completed', 'In Progress', 'Not Started'))
 );
 
+CREATE TABLE Assessment (
+	Assessment_ID INT PRIMARY KEY,
+	FOREIGN KEY (Module_ID) REFERENCES Module(Module_ID),
+	FOREIGN KEY (Course_ID) REFERENCES Course(Course_ID),
+	type VARCHAR(50),
+    totalMarks INT,
+    passingMarks INT,
+    criteria VARCHAR(255),
+    weightage INT,
+    description VARCHAR(255),
+    title VARCHAR(100)
+);
+
 CREATE TABLE Instructor (
 	Instructor_ID INT PRIMARY KEY,
 	Instructor_name VARCHAR(20),
