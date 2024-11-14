@@ -79,3 +79,9 @@ CREATE TABLE Instructor (
     FOREIGN KEY (Instructor_ID) REFERENCES Instructor(Instructor_ID),
     FOREIGN KEY (Course_ID) REFERENCES Course(Course_ID)
 	);
+    CREATE TABLE Notification(
+    Notification_ID INT PRIMARY KEY,
+    time_stamp TIMESTAMP,
+    message VARCHAR(255),
+    urgency VARCHAR(50) CHECK (urgency IN ('High', 'Medium', 'Low'))
+    );
