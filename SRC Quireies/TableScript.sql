@@ -46,6 +46,13 @@ CREATE TABLE Course (
    pre_requisites VARCHAR(255)
    
 );
+CREATE TABLE Module (
+	Module_ID INT PRIMARY KEY,
+	FOREIGN KEY (Course_ID) REFERENCES Course(Course_ID),
+	title VARCHAR(100),
+	difficulty_level VARCHAR(8),
+    contentURL VARCHAR(255)	
+);
 
 CREATE TABLE Course_Enrollment(
 Enrollment_ID INT PRIMARY KEY,
@@ -55,3 +62,37 @@ enrollment_date DATE,
 completion_date DATE,
 status VARCHAR(50) CHECK (status IN ('Completed', 'In Progress', 'Not Started'))
 );
+
+CREATE TABLE Instructor (
+	Instructor_ID INT PRIMARY KEY,
+	Instructor_name VARCHAR(20),
+	latest_qualification VARCHAR(20),
+    expertise_area VARCHAR(50),
+    email VARCHAR(50)
+
+    );
+    CREATE TABLE pathreview(
+    FOREIGN KEY (Instructor_ID) REFERENCES Instructor(Instructor_ID),
+    FOREIGN KEY (Path_ID) REFERENCES PATH(Path_ID),--wait for learning path
+    feedback VARCHAR(255)
+    );
+
+    CREATE TABLE EmotionalFeedback_review(
+    FOREIGN KEY (Instructor_ID) REFERENCES Instructor(Instructor_ID),
+    FOREIGN KEY (FeedbackID) REFERENCES Learner(FeedbackID), --wait for emotional feedback
+    feedback VARCHAR(255)
+	);
+    CREATE TABLE Teaches(
+    FOREIGN KEY (Instructor_ID) REFERENCES Instructor(Instructor_ID),
+    FOREIGN KEY (Course_ID) REFERENCES Course(Course_ID)
+	);
+    CREATE TABLE Notification(
+    Notification_ID INT PRIMARY KEY,
+    time_stamp TIMESTAMP,
+    message VARCHAR(255),
+    urgency VARCHAR(50) CHECK (urgency IN ('High', 'Medium', 'Low'))
+    );
+    Create TABLE RecivedNotfy(
+    FOREIGN KEY (Learner_ID) REFERENCES Learner(Learner_ID),
+    FOREIGN KEY (Notification_ID) REFERENCES Notification(Notification_ID)
+	);
