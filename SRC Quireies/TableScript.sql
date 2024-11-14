@@ -85,3 +85,7 @@ CREATE TABLE Instructor (
     message VARCHAR(255),
     urgency VARCHAR(50) CHECK (urgency IN ('High', 'Medium', 'Low'))
     );
+    Create TABLE RecivedNotfy(
+    FOREIGN KEY (Learner_ID) REFERENCES Learner(Learner_ID),
+    FOREIGN KEY (Notification_ID) REFERENCES Notification(Notification_ID)
+	);
