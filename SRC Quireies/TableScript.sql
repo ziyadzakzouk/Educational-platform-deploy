@@ -1,7 +1,8 @@
-﻿
+
 
 CREATE TABLE Learner (
     Learner_ID INT PRIMARY KEY,
+
     first_name VARCHAR(20),
     last_name VARCHAR(20),
     birthday DATE,
@@ -36,6 +37,16 @@ FOREIGN KEY (profileID) REFERENCES PersonalProfile(profileID),
 condition VARCHAR(50)
 
 );
+
+    name VARCHAR(50),
+    birthday DATE,
+   
+    gender VARCHAR(10),
+    country VARCHAR(50)
+    
+);
+
+
 CREATE TABLE Course (
     Course_ID INT PRIMARY KEY,
     title VARCHAR(100),
@@ -89,6 +100,7 @@ completion_date DATE,
 status VARCHAR(50) CHECK (status IN ('Completed', 'In Progress', 'Not Started'))
 );
 
+
 CREATE TABLE Assessment (
 	Assessment_ID INT PRIMARY KEY,
 	FOREIGN KEY (Module_ID) REFERENCES Module(Module_ID),
@@ -101,6 +113,7 @@ CREATE TABLE Assessment (
     description VARCHAR(255),
     title VARCHAR(100)
 );
+
 
 CREATE TABLE Instructor (
 	Instructor_ID INT PRIMARY KEY,
