@@ -54,6 +54,13 @@ CREATE TABLE Module (
     contentURL VARCHAR(255)	
 );
 
+CREATE TABLE ModuleContent(
+FOREIGN KEY (Module_ID) REFERENCES Module(Module_ID),
+FOREIGN KEY (Course_ID) REFERENCES Course(Course_ID),
+contetntType VARCHAR(50)
+
+);
+
 CREATE TABLE Course_Enrollment(
 Enrollment_ID INT PRIMARY KEY,
 FOREIGN KEY (Learner_ID) REFERENCES Learner(Learner_ID),
