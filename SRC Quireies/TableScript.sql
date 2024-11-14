@@ -61,6 +61,17 @@ contetntType VARCHAR(50)
 
 );
 
+CREATE TABLE ContentLibrary(
+Lib_ID INT PRIMARY KEY,
+FOREIGN KEY (Module_ID) REFERENCES Module(Module_ID),
+FOREIGN KEY (Course_ID) REFERENCES Course(Course_ID),
+title VARCHAR(100),
+description VARCHAR(255),
+metaData VARCHAR(255),
+type VARCHAR(50),
+contentURL VARCHAR(255)
+);
+
 CREATE TABLE Course_Enrollment(
 Enrollment_ID INT PRIMARY KEY,
 FOREIGN KEY (Learner_ID) REFERENCES Learner(Learner_ID),
