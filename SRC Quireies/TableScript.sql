@@ -1,4 +1,4 @@
-﻿
+
 
 CREATE TABLE Learner (
     Learner_ID INT PRIMARY KEY,
@@ -57,6 +57,39 @@ CREATE TABLE Course (
    pre_requisites VARCHAR(255)
    
 );
+CREATE TABLE Module (
+	Module_ID INT PRIMARY KEY,
+	FOREIGN KEY (Course_ID) REFERENCES Course(Course_ID),
+	title VARCHAR(100),
+	difficulty_level VARCHAR(8),
+    contentURL VARCHAR(255)	
+);
+
+CREATE TABLE TargetTraits(
+FOREIGN KEY (Module_ID) REFERENCES Module(Module_ID),
+FOREIGN KEY (Course_ID) REFERENCES Course(Course_ID),
+trait VARCHAR(50)
+
+
+);
+
+CREATE TABLE ModuleContent(
+FOREIGN KEY (Module_ID) REFERENCES Module(Module_ID),
+FOREIGN KEY (Course_ID) REFERENCES Course(Course_ID),
+contetntType VARCHAR(50)
+
+);
+
+CREATE TABLE ContentLibrary(
+Lib_ID INT PRIMARY KEY,
+FOREIGN KEY (Module_ID) REFERENCES Module(Module_ID),
+FOREIGN KEY (Course_ID) REFERENCES Course(Course_ID),
+title VARCHAR(100),
+description VARCHAR(255),
+metaData VARCHAR(255),
+type VARCHAR(50),
+contentURL VARCHAR(255)
+);
 
 CREATE TABLE Course_Enrollment(
 Enrollment_ID INT PRIMARY KEY,
@@ -66,6 +99,21 @@ enrollment_date DATE,
 completion_date DATE,
 status VARCHAR(50) CHECK (status IN ('Completed', 'In Progress', 'Not Started'))
 );
+
+
+CREATE TABLE Assessment (
+	Assessment_ID INT PRIMARY KEY,
+	FOREIGN KEY (Module_ID) REFERENCES Module(Module_ID),
+	FOREIGN KEY (Course_ID) REFERENCES Course(Course_ID),
+	type VARCHAR(50),
+    totalMarks INT,
+    passingMarks INT,
+    criteria VARCHAR(255),
+    weightage INT,
+    description VARCHAR(255),
+    title VARCHAR(100)
+);
+
 
 CREATE TABLE Instructor (
 	Instructor_ID INT PRIMARY KEY,
