@@ -1,8 +1,7 @@
-
+﻿
 
 CREATE TABLE Learner (
     Learner_ID INT PRIMARY KEY,
-
     first_name VARCHAR(20),
     last_name VARCHAR(20),
     birthday DATE,
@@ -37,16 +36,6 @@ FOREIGN KEY (profileID) REFERENCES PersonalProfile(profileID),
 condition VARCHAR(50)
 
 );
-
-    name VARCHAR(50),
-    birthday DATE,
-   
-    gender VARCHAR(10),
-    country VARCHAR(50)
-    
-);
-
-
 CREATE TABLE Course (
     Course_ID INT PRIMARY KEY,
     title VARCHAR(100),
@@ -100,7 +89,6 @@ completion_date DATE,
 status VARCHAR(50) CHECK (status IN ('Completed', 'In Progress', 'Not Started'))
 );
 
-
 CREATE TABLE Assessment (
 	Assessment_ID INT PRIMARY KEY,
 	FOREIGN KEY (Module_ID) REFERENCES Module(Module_ID),
@@ -113,7 +101,6 @@ CREATE TABLE Assessment (
     description VARCHAR(255),
     title VARCHAR(100)
 );
-
 
 CREATE TABLE Instructor (
 	Instructor_ID INT PRIMARY KEY,
@@ -138,6 +125,24 @@ CREATE TABLE Instructor (
     FOREIGN KEY (Instructor_ID) REFERENCES Instructor(Instructor_ID),
     FOREIGN KEY (Course_ID) REFERENCES Course(Course_ID)
 	);
+
+    CREATE TABLE learningActivity(
+    Activity_ID INT PRIMARY KEY,
+    FOREIGN KEY (Course_ID) REFERENCES Module(Course_ID),
+    FOREIGN KEY (Module_ID) REFERENCES Module(Module_ID),
+    activityType VARCHAR(50),
+    instruction_details VARCHAR(255),
+    maxScore INT
+    );
+
+    CREATE TABLE LearningPath(
+    pathID INT PRIMARY KEY,
+    FOREIGN KEY (Learner_ID) REFERENCES PersonalProfile(Learner_ID),
+    FOREIGN KEY (profileID) REFERENCES PersonalProfile(profileID),
+    completion_status VARCHAR(220),
+    customContent VARCHAR(255),
+    adaptiveRules VARCHAR(255)
+    );
     CREATE TABLE Notification(
     Notification_ID INT PRIMARY KEY,
     time_stamp TIMESTAMP,
