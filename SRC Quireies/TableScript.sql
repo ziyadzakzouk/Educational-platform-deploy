@@ -1,4 +1,5 @@
-﻿CREATE DATABASE EduPlatform
+
+CREATE DATABASE EduPlatform
 use EduPlatform
 
 CREATE TABLE Learner (
@@ -193,13 +194,25 @@ CREATE TABLE Interaction_log (
     Timestamp DATETIME ,
     action_type VARCHAR(50),
     FOREIGN KEY (activity_ID) REFERENCES learningActivity(Activity_ID) ON DELETE CASCADE ON UPDATE CASCADE
+    )
 
-    CREATE table Quest(
+ CREATE table Quest(
 QuestID INT PRIMARY KEY,
 difficulty_level int,
 criteria VARCHAR(50),
 description VARCHAR(200),
 title VARCHAR(60)
+);
+
+
+CREATE TABLE QuestReward(
+	QuestID INT,
+	RewardID INT,
+    LearnerID INT,
+    PRIMARY KEY (QuestID, RewardID,LearnerID),
+    timeEarned TIMESTAMP,
+	FOREIGN KEY (QuestID) REFERENCES Quest(QuestID) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (RewardID) REFERENCES Reward(RewardID) ON DELETE CASCADE ON UPDATE CASCADE
 );
 CREATE TABLE Skill_Mastery (
     QuestID INT PRIMARY KEY,
