@@ -160,6 +160,17 @@ criteria VARCHAR(50),
 description VARCHAR(200),
 title VARCHAR(60)
 );
+CREATE TABLE Skill_Mastery (
+    QuestID INT PRIMARY KEY,
+    Skill VARCHAR(255) NOT NULL,
+    FOREIGN KEY (QuestID) REFERENCES Quest(QuestID) ON DELETE CASCADE ON UPDATE CASCADE
+);
+CREATE TABLE Collaborative (
+    QuestID INT PRIMARY KEY,
+    Deadline DATE NOT NULL,
+    Max_Num_Participants INT NOT NULL,
+    FOREIGN KEY (QuestID) REFERENCES Quest(QuestID) ON DELETE CASCADE ON UPDATE CASCADE
+);
 
 	Create TABLE Discussion_forum (
 	forumID int primary key,
