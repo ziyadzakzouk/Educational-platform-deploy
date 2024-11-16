@@ -1,4 +1,5 @@
-﻿
+﻿CREATE DATABASE EduPlatform
+use EduPlatform
 
 CREATE TABLE Learner (
     Learner_ID INT PRIMARY KEY,
@@ -112,7 +113,7 @@ CREATE TABLE Instructor (
     );
     CREATE TABLE pathreview(
     FOREIGN KEY (Instructor_ID) REFERENCES Instructor(Instructor_ID) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (Path_ID) REFERENCES LearningPath(Path_ID) ON DELETE CASCADE ON UPDATE CASCADE,--wait for learning path
+    FOREIGN KEY (Path_ID) REFERENCES LearningPath(Path_ID) ON DELETE CASCADE ON UPDATE CASCADE,
     feedback VARCHAR(255)
     );
 CREATE TABLE Emotionalfeedback_review (
@@ -137,8 +138,8 @@ CREATE TABLE Emotionalfeedback_review (
     maxScore INT
     );
 
-    CREATE TABLE LearningPath(
-    pathID INT PRIMARY KEY,
+    CREATE TABLE LearningPath(        
+    Path_ID INT PRIMARY KEY,
     FOREIGN KEY (Learner_ID) REFERENCES Learner(Learner_ID) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (profileID) REFERENCES PersonalProfile(profileID) ON DELETE CASCADE ON UPDATE CASCADE,
     completion_status VARCHAR(220),
