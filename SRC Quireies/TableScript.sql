@@ -153,6 +153,24 @@ CREATE TABLE Instructor (
     FOREIGN KEY (Learner_ID) REFERENCES Learner(Learner_ID) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (Notification_ID) REFERENCES Notification(Notification_ID) ON DELETE CASCADE ON UPDATE CASCADE
 	);
+    CREATE table Quest(
+QuestID INT PRIMARY KEY,
+difficulty_level int,
+criteria VARCHAR(50),
+description VARCHAR(200),
+title VARCHAR(60)
+);
+CREATE TABLE Skill_Mastery (
+    QuestID INT PRIMARY KEY,
+    Skill VARCHAR(255),
+    FOREIGN KEY (QuestID) REFERENCES Quest(QuestID) ON DELETE CASCADE ON UPDATE CASCADE
+);
+CREATE TABLE Collaborative (
+    QuestID INT PRIMARY KEY,
+    Deadline DATE,
+    Max_Num_Participants INT,
+    FOREIGN KEY (QuestID) REFERENCES Quest(QuestID) ON DELETE CASCADE ON UPDATE CASCADE
+);
 
 	Create TABLE Discussion_forum (
 	forumID int primary key,
