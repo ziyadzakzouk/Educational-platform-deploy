@@ -213,6 +213,14 @@ CREATE TABLE Collaborative (
 
 );
 
+    CREATE TABLE Badge (
+    BadgeID int PRIMARY KEY,
+    title VARCHAR(50),
+    description VARCHAR(200),
+    criteria VARCHAR(50),
+    points int
+);
+
 	Create TABLE Discussion_forum (
 	forumID int primary key,
 	Course_ID int,
