@@ -1,4 +1,5 @@
-﻿CREATE DATABASE EduPlatform
+
+CREATE DATABASE EduPlatform
 use EduPlatform
 
 CREATE TABLE Learner (
@@ -245,3 +246,4 @@ CREATE TABLE Collaborative (
 	 timestamp date,
 	 description varchar(255)
 	);
+
