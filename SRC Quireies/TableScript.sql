@@ -153,3 +153,15 @@ CREATE TABLE Instructor (
     FOREIGN KEY (Learner_ID) REFERENCES Learner(Learner_ID),
     FOREIGN KEY (Notification_ID) REFERENCES Notification(Notification_ID)
 	);
+
+	Create TABLE Discussion_forum (
+	forumID int primary key,
+	Course_ID int,
+	Module_ID int,
+	 FOREIGN KEY (Module_ID) REFERENCES Module(Module_ID),
+	 FOREIGN KEY (Course_ID) REFERENCES Course(Course_ID),
+	 title varchar(50),
+	 last_active Date,
+	 timestamp date,
+	 description varchar(255)
+	);
