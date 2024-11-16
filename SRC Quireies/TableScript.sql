@@ -153,6 +153,12 @@ CREATE TABLE Instructor (
     FOREIGN KEY (Learner_ID) REFERENCES Learner(Learner_ID) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (Notification_ID) REFERENCES Notification(Notification_ID) ON DELETE CASCADE ON UPDATE CASCADE
 	);
+    CREATE TABLE Reward(
+    RewardID INT PRIMARY KEY,
+    value INT,
+    description VARCHAR(200),
+    type VARCHAR(50)
+);
 
 	Create TABLE Discussion_forum (
 	forumID int primary key,
