@@ -115,12 +115,14 @@ CREATE TABLE Instructor (
     FOREIGN KEY (Path_ID) REFERENCES LearningPath(Path_ID) ON DELETE CASCADE ON UPDATE CASCADE,--wait for learning path
     feedback VARCHAR(255)
     );
-
-    CREATE TABLE EmotionalFeedback_review(
-    FOREIGN KEY (Instructor_ID) REFERENCES Instructor(Instructor_ID) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (FeedbackID) REFERENCES Learner(FeedbackID) ON DELETE CASCADE ON UPDATE CASCADE, --wait for emotional feedback
-    feedback VARCHAR(255)
-	);
+CREATE TABLE Emotionalfeedback_review (
+    FeedbackID INT,
+    InstructorID INT,
+    feedback VARCHAR(500),
+    PRIMARY KEY (FeedbackID, InstructorID),
+    FOREIGN KEY (FeedbackID) REFERENCES Emotional_feedback(FeedbackID) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (InstructorID) REFERENCES Instructor(Instructor_ID) ON DELETE CASCADE ON UPDATE CASCADE
+);
     CREATE TABLE Teaches(
     FOREIGN KEY (Instructor_ID) REFERENCES Instructor(Instructor_ID) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (Course_ID) REFERENCES Course(Course_ID) ON DELETE CASCADE ON UPDATE CASCADE
@@ -153,6 +155,38 @@ CREATE TABLE Instructor (
     FOREIGN KEY (Learner_ID) REFERENCES Learner(Learner_ID) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (Notification_ID) REFERENCES Notification(Notification_ID) ON DELETE CASCADE ON UPDATE CASCADE
 	);
+
+    CREATE TABLE Emotional_feedback(
+    FeedbackID INT PRIMARY KEY,
+    LearnerID INT ,
+    timestamp DATETIME,
+    emotional_state VARCHAR(20) CHECK (emotional_state in (
+            'Admiration', 'Adoration', 'Aesthetic Appreciation', 'Amusement', 
+            'Anger', 'Anxiety', 'Awe', 'Awkwardness', 'Boredom', 'Calmness', 
+            'Confusion', 'Craving', 'Disgust', 'Empathetic Pain', 'Entrancement', 
+            'Excitement', 'Fear', 'Horror', 'Interest', 'Joy', 
+            'Nostalgia', 'Relief', 'Romance', 'Sadness', 'Satisfaction', 
+            'Surprise'
+        ))
+        FOREIGN KEY(LearnerID) REFERENCES Learner(Learner_ID) ON DELETE CASCADE ON UPDATE CASCADE,
+);
+ CREATE TABLE Emotionalfeedback_review (
+    FeedbackID INT,
+    InstructorID INT,
+    feedback VARCHAR(500),
+    PRIMARY KEY (FeedbackID, InstructorID),
+    FOREIGN KEY (FeedbackID) REFERENCES Emotional_feedback(FeedbackID),
+    FOREIGN KEY (InstructorID) REFERENCES Instructor(InstructorID)
+);
+CREATE TABLE Interaction_log (
+    LogID INT PRIMARY KEY,
+    activity_ID INT,
+    LearnerID INT,
+    Duration TIME,
+    Timestamp DATETIME ,
+    action_type VARCHAR(50),
+    FOREIGN KEY (activity_ID) REFERENCES learningActivity(Activity_ID) ON DELETE CASCADE ON UPDATE CASCADE
+
     CREATE table Quest(
 QuestID INT PRIMARY KEY,
 difficulty_level int,
@@ -170,6 +204,7 @@ CREATE TABLE Collaborative (
     Deadline DATE,
     Max_Num_Participants INT,
     FOREIGN KEY (QuestID) REFERENCES Quest(QuestID) ON DELETE CASCADE ON UPDATE CASCADE
+
 );
 
 	Create TABLE Discussion_forum (
