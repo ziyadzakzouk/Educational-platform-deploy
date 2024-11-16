@@ -177,6 +177,15 @@ CREATE TABLE Emotionalfeedback_review (
     FOREIGN KEY (FeedbackID) REFERENCES Emotional_feedback(FeedbackID),
     FOREIGN KEY (InstructorID) REFERENCES Instructor(InstructorID)
 );
+CREATE TABLE Interaction_log (
+    LogID INT PRIMARY KEY,
+    activity_ID INT,
+    LearnerID INT,
+    Duration TIME,
+    Timestamp DATETIME ,
+    action_type VARCHAR(50),
+    FOREIGN KEY (activity_ID) REFERENCES learningActivity(Activity_ID) ON DELETE CASCADE ON UPDATE CASCADE
+);
 
 	Create TABLE Discussion_forum (
 	forumID int primary key,
