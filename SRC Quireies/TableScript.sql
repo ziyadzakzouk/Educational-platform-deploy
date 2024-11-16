@@ -162,13 +162,13 @@ title VARCHAR(60)
 );
 CREATE TABLE Skill_Mastery (
     QuestID INT PRIMARY KEY,
-    Skill VARCHAR(255) NOT NULL,
+    Skill VARCHAR(255),
     FOREIGN KEY (QuestID) REFERENCES Quest(QuestID) ON DELETE CASCADE ON UPDATE CASCADE
 );
 CREATE TABLE Collaborative (
     QuestID INT PRIMARY KEY,
-    Deadline DATE NOT NULL,
-    Max_Num_Participants INT NOT NULL,
+    Deadline DATE,
+    Max_Num_Participants INT,
     FOREIGN KEY (QuestID) REFERENCES Quest(QuestID) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
