@@ -121,7 +121,7 @@ CREATE TABLE Emotionalfeedback_review (
     feedback VARCHAR(500),
     PRIMARY KEY (FeedbackID, InstructorID),
     FOREIGN KEY (FeedbackID) REFERENCES Emotional_feedback(FeedbackID) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (InstructorID) REFERENCES Instructor(InstructorID) ON DELETE CASCADE ON UPDATE CASCADE
+    FOREIGN KEY (InstructorID) REFERENCES Instructor(Instructor_ID) ON DELETE CASCADE ON UPDATE CASCADE
 );
     CREATE TABLE Teaches(
     FOREIGN KEY (Instructor_ID) REFERENCES Instructor(Instructor_ID) ON DELETE CASCADE ON UPDATE CASCADE,
