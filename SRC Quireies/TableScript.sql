@@ -247,3 +247,23 @@ CREATE TABLE Collaborative (
 	 description varchar(255)
 	);
 
+	CREATE TABLE Survey (
+    ID INT PRIMARY KEY,         
+    Title VARCHAR(255) NOT NULL  
+);
+
+CREATE TABLE SurveyQuestions (
+    SurveyID INT,                  
+    Question VARCHAR(255) NOT NULL,   
+    PRIMARY KEY (SurveyID, Question), 
+    FOREIGN KEY (SurveyID) REFERENCES Survey(ID) 
+);
+CREATE TABLE FilledSurvey (
+    SurveyID INT,
+    Question VARCHAR(255) NOT NULL,
+    LearnerID INT,
+    Answer TEXT NOT NULL,
+    PRIMARY KEY (SurveyID, Question, LearnerID),
+    FOREIGN KEY (SurveyID, Question) REFERENCES SurveyQuestions(SurveyID, Question),
+    FOREIGN KEY (LearnerID) REFERENCES Learner(Learner_ID)
+);
