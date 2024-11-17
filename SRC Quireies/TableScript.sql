@@ -248,9 +248,15 @@ CREATE TABLE Collaborative (
 	 description varchar(255)
 	);
 
+
 CREATE TABLE Survey (
     ID INT PRIMARY KEY,         
     Title VARCHAR(255) NOT NULL  
+
+	CREATE TABLE Survey (
+    ID INT PRIMARY KEY,         
+    Title VARCHAR(255) NOT NULL  
+
 );
 
 CREATE TABLE SurveyQuestions (
@@ -259,6 +265,7 @@ CREATE TABLE SurveyQuestions (
     PRIMARY KEY (SurveyID, Question), 
     FOREIGN KEY (SurveyID) REFERENCES Survey(ID) 
 );
+
 CREATE TABLE FilledSurvey (
     SurveyID INT,
     Question VARCHAR(255) NOT NULL,
@@ -267,6 +274,17 @@ CREATE TABLE FilledSurvey (
     PRIMARY KEY (SurveyID, Question, LearnerID),
     FOREIGN KEY (SurveyID, Question) REFERENCES SurveyQuestions(SurveyID, Question),
     FOREIGN KEY (LearnerID) REFERENCES Learner(Learner_ID)
+);
+
+CREATE TABLE FilledSurvey (
+    SurveyID INT,
+    Question VARCHAR(255) NOT NULL,
+    LearnerID INT,
+    Answer TEXT NOT NULL,
+    PRIMARY KEY (SurveyID, Question, LearnerID),
+    FOREIGN KEY (SurveyID, Question) REFERENCES SurveyQuestions(SurveyID, Question),
+    FOREIGN KEY (LearnerID) REFERENCES Learner(Learner_ID)
+
 );
 
 CREATE TABLE Achievement (
@@ -292,6 +310,7 @@ CREATE TABLE SkillProgression (
 CREATE TABLE Leaderboard (
     BoardID INT PRIMARY KEY,      
     season VARCHAR(20) NOT NULL
+
 );
 CREATE TABLE Ranking (
     BoardID INT,                    
@@ -317,3 +336,7 @@ CREATE TABLE LearnersGoals (
     FOREIGN KEY (GoalID) REFERENCES Learning_goal(ID) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (LearnerID) REFERENCES Learner(Learner_ID) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+
+
+
