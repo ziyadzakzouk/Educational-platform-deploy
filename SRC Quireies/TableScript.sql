@@ -247,3 +247,9 @@ CREATE TABLE Collaborative (
 	 description varchar(255)
 	);
 
+	CREATE TABLE Survey (
+    ID INT PRIMARY KEY,         
+    Title VARCHAR(255) NOT NULL  
+);
+
+
