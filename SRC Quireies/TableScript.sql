@@ -193,8 +193,9 @@ CREATE TABLE Interaction_log (
     Duration TIME,
     Timestamp DATETIME ,
     action_type VARCHAR(50),
-    FOREIGN KEY (activity_ID) REFERENCES learningActivity(Activity_ID) ON DELETE CASCADE ON UPDATE CASCADE
-    )
+    FOREIGN KEY (activity_ID) REFERENCES learningActivity(Activity_ID) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (LearnerID) REFERENCES Learner( Learner_ID)
+    );
 
  CREATE table Quest(
 QuestID INT PRIMARY KEY,
@@ -302,4 +303,17 @@ CREATE TABLE Ranking (
     FOREIGN KEY (BoardID) REFERENCES Leaderboard(BoardID),
     FOREIGN KEY (LearnerID) REFERENCES Learner(Learner_ID),
     FOREIGN KEY (CourseID) REFERENCES Course(Course_ID)
+);
+CREATE TABLE Learning_goal (
+    ID INT PRIMARY KEY,             
+    status VARCHAR(20) NOT NULL,    
+    deadline DATE NOT NULL,        
+    description TEXT NOT NULL       
+);
+CREATE TABLE LearnersGoals (
+    GoalID INT,                    
+    LearnerID INT,                
+    PRIMARY KEY (GoalID, LearnerID) ,
+    FOREIGN KEY (GoalID) REFERENCES Learning_goal(ID) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (LearnerID) REFERENCES Learner(Learner_ID) ON DELETE CASCADE ON UPDATE CASCADE
 );
