@@ -252,4 +252,9 @@ CREATE TABLE Collaborative (
     Title VARCHAR(255) NOT NULL  
 );
 
-
+CREATE TABLE SurveyQuestions (
+    SurveyID INT,                  
+    Question VARCHAR(255) NOT NULL,   
+    PRIMARY KEY (SurveyID, Question), 
+    FOREIGN KEY (SurveyID) REFERENCES Survey(ID) 
+);
