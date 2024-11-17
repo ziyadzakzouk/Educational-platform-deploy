@@ -253,10 +253,6 @@ CREATE TABLE Survey (
     ID INT PRIMARY KEY,         
     Title VARCHAR(255) NOT NULL  
 
-	CREATE TABLE Survey (
-    ID INT PRIMARY KEY,         
-    Title VARCHAR(255) NOT NULL  
-
 );
 
 CREATE TABLE SurveyQuestions (
