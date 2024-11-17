@@ -40,3 +40,17 @@ VALUES
 (1, 1, 100),
 (2, 2, 150),
 (3, 3, 200);
+
+
+-- Insert data into Instructor table
+INSERT INTO Instructor (Instructor_ID, Name, Email, Department)
+VALUES 
+(1, 'Dr. Emily Brown', 'emily.brown@example.com', 'Computer Science'),
+(2, 'Prof. Michael Green', 'michael.green@example.com', 'Information Technology'),
+(3, 'Dr. Sarah White', 'sarah.white@example.com', 'Software Engineering');
+-- Insert data into Teaches table
+INSERT INTO Teaches (Instructor_ID, Course_ID)
+VALUES 
+(1, 1),
+(2, 2),
+(3, 3);
