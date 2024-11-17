@@ -278,3 +278,13 @@ CREATE TABLE Achievement (
     FOREIGN KEY (LearnerID) REFERENCES Learner(Learner_ID),
     FOREIGN KEY (BadgeID) REFERENCES Badge(BadgeID)
 );
+
+CREATE TABLE SkillProgression (
+    ID INT PRIMARY KEY,
+    proficiency_level INT NOT NULL,
+    LearnerID INT ,
+    skill_name VARCHAR(50),
+    timestamp TIMESTAMP NOT NULL,
+    FOREIGN KEY (LearnerID, skill_name) REFERENCES Skills(Learner_ID, skill)
+);
+
