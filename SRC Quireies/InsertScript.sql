@@ -29,8 +29,14 @@ VALUES
 
 -- Insert data into Course table
 INSERT INTO Course (Course_ID, CourseName, Description)
-VALUES (1, 'Introduction to SQL', 'Learn the basics of SQL.');
+VALUES 
+(1, 'Introduction to SQL', 'Learn the basics of SQL.'),
+(2, 'Advanced SQL', 'Deep dive into advanced SQL topics.'),
+(3, 'Database Design', 'Learn how to design databases.');
 
 -- Insert data into Assessment table
 INSERT INTO Assessment (Assessment_ID, Course_ID, totalMarks)
-VALUES (1, 1, 100);
+VALUES 
+(1, 1, 100),
+(2, 2, 150),
+(3, 3, 200);
