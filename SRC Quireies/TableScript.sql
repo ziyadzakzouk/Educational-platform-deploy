@@ -266,6 +266,7 @@ CREATE TABLE FilledSurvey (
     PRIMARY KEY (SurveyID, Question, LearnerID),
     FOREIGN KEY (SurveyID, Question) REFERENCES SurveyQuestions(SurveyID, Question),
     FOREIGN KEY (LearnerID) REFERENCES Learner(Learner_ID)
+
 );
 
 CREATE TABLE Achievement (
@@ -291,4 +292,7 @@ CREATE TABLE SkillProgression (
 CREATE TABLE Leaderboard (
     BoardID INT PRIMARY KEY,      
     season VARCHAR(20) NOT NULL
+
+
 );
+
