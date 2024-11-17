@@ -288,3 +288,7 @@ CREATE TABLE SkillProgression (
     FOREIGN KEY (LearnerID, skill_name) REFERENCES Skills(Learner_ID, skill)
 );
 
+CREATE TABLE Leaderboard (
+    BoardID INT PRIMARY KEY,      
+    season VARCHAR(20) NOT NULL
+);
