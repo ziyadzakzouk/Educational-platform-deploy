@@ -63,8 +63,3 @@ AS
 if @ReadStatus = 1 
 delete from Notification where @NotificationID = Notification_ID
 
-GoCREATE PROC EmotionalTrendAnalysis -- needs to be reviewed -------------------------------------------------------
-@CourseID int, @ModuleID int, @TimePeriod varchar(50)
-AS
-if @ReadStatus = 1 
-delete from Notification where @NotificationID = Notification_ID
