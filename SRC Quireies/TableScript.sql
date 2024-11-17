@@ -247,7 +247,7 @@ CREATE TABLE Collaborative (
 	 description varchar(255)
 	);
 
-	CREATE TABLE Survey (
+CREATE TABLE Survey (
     ID INT PRIMARY KEY,         
     Title VARCHAR(255) NOT NULL  
 );
@@ -266,4 +266,40 @@ CREATE TABLE FilledSurvey (
     PRIMARY KEY (SurveyID, Question, LearnerID),
     FOREIGN KEY (SurveyID, Question) REFERENCES SurveyQuestions(SurveyID, Question),
     FOREIGN KEY (LearnerID) REFERENCES Learner(Learner_ID)
+);
+
+CREATE TABLE Achievement (
+    AchievementID INT PRIMARY KEY,
+    LearnerID INT,
+    BadgeID INT,
+    Description TEXT,
+    DateEarned DATE NOT NULL,
+    Type VARCHAR(50) NOT NULL,
+    FOREIGN KEY (LearnerID) REFERENCES Learner(Learner_ID),
+    FOREIGN KEY (BadgeID) REFERENCES Badge(BadgeID)
+);
+
+CREATE TABLE SkillProgression (
+    ID INT PRIMARY KEY,
+    proficiency_level INT NOT NULL,
+    LearnerID INT ,
+    skill_name VARCHAR(50),
+    timestamp TIMESTAMP NOT NULL,
+    FOREIGN KEY (LearnerID, skill_name) REFERENCES Skills(Learner_ID, skill)
+);
+
+CREATE TABLE Leaderboard (
+    BoardID INT PRIMARY KEY,      
+    season VARCHAR(20) NOT NULL
+);
+CREATE TABLE Ranking (
+    BoardID INT,                    
+    LearnerID INT,                    
+    CourseID INT,                     
+    rank INT NOT NULL,                
+    total_points INT NOT NULL,         
+    PRIMARY KEY (BoardID, LearnerID, CourseID),
+    FOREIGN KEY (BoardID) REFERENCES Leaderboard(BoardID),
+    FOREIGN KEY (LearnerID) REFERENCES Learner(Learner_ID),
+    FOREIGN KEY (CourseID) REFERENCES Course(Course_ID)
 );
