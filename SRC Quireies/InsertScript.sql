@@ -68,3 +68,26 @@ INSERT INTO Assessment (Assessment_ID, Module_ID, Course_ID, type, totalMarks, p
 VALUES 
 (601, 301, 201, 'Quiz', 100, 50, 'Basic understanding', 20, 'Introductory quiz', 'Algorithm Basics Quiz'),
 (602, 302, 202, 'Project', 200, 120, 'Full implementation', 40, 'Advanced project', 'Data Structures Project');
+
+
+INSERT INTO Instructor (Instructor_ID, Instructor_name, latest_qualification, expertise_area, email) 
+VALUES 
+(701, 'Dr. Brown', 'PhD', 'Computer Science', 'brown@example.com'),
+(702, 'Prof. Green', 'MSc', 'Data Structures', 'green@example.com');
+
+-- Insert data into Teaches table
+INSERT INTO Teaches (Instructor_ID, Course_ID) 
+VALUES 
+(701, 201),
+(702, 202);
+
+INSERT INTO pathreview (Instructor_ID, Path_ID, feedback) 
+VALUES 
+(701, 901, 'Excellent progress with clear adaptive learning'),
+(702, 902, 'Completed well with peer assessments');
+
+-- Insert data into Emotionalfeedback_review table
+INSERT INTO Emotionalfeedback_review (FeedbackID, InstructorID, feedback) 
+VALUES 
+(1201, 701, 'Positive emotional response observed'),
+(1202, 702, 'Learner expressed signs of anxiety');
