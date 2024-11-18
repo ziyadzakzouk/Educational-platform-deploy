@@ -140,3 +140,13 @@ VALUES
 (1301, 1101, 1, '2024-03-02 11:00:00'),
 (1302, 1102, 2, '2024-03-16 17:00:00');
 
+-- Insert into Skill_Mastery
+INSERT INTO Skill_Mastery (QuestID, Skill) VALUES 
+(1, 'Java Programming'),
+(2, 'Data Analysis'),
+(3, 'Machine Learning');
+
+-- Insert into Collaborative
+INSERT INTO Collaborative (QuestID, Deadline, Max_Num_Participants) VALUES 
+(1, '2024-12-01', 5),
+(2, '2024-12-15', 10);
