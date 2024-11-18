@@ -91,3 +91,22 @@ INSERT INTO Emotionalfeedback_review (FeedbackID, InstructorID, feedback)
 VALUES 
 (1201, 701, 'Positive emotional response observed'),
 (1202, 702, 'Learner expressed signs of anxiety');
+
+-- Insert data into learningActivity table
+INSERT INTO learningActivity (Activity_ID, Course_ID, Module_ID, activityType, instruction_details, maxScore) 
+VALUES 
+(801, 201, 301, 'Assignment', 'Solve basic algorithm questions', 50),
+(802, 202, 302, 'Project', 'Implement tree traversal', 100);
+
+-- Insert data into LearningPath table
+INSERT INTO LearningPath (Path_ID, Learner_ID, profileID, completion_status, customContent, adaptiveRules) 
+VALUES 
+(901, 1, 101, 'Active', 'Customized video content', 'Adaptive quizzes'),
+(902, 2, 102, 'Completed', 'Interactive assignments', 'Peer assessments');
+
+-- Insert data into Notification table
+INSERT INTO Notification (Notification_ID, time_stamp, message, urgency) 
+VALUES 
+(1001, '2024-03-01 10:00:00', 'Upcoming quiz on algorithms', 'High'),
+(1002, '2024-03-15 15:00:00', 'Project submission deadline', 'Medium');
+
