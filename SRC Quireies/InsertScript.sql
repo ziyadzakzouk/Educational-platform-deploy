@@ -150,3 +150,39 @@ INSERT INTO Skill_Mastery (QuestID, Skill) VALUES
 INSERT INTO Collaborative (QuestID, Deadline, Max_Num_Participants) VALUES 
 (1, '2024-12-01', 5),
 (2, '2024-12-15', 10);
+
+INSERT INTO SkillProgression (ID, proficiency_level, LearnerID, skill_name, timestamp) VALUES
+(1, 3, 1, 'Java Programming', '2024-11-16 10:00:00'),
+(2, 4, 2, 'Data Analysis', '2024-11-16 11:00:00');
+
+INSERT INTO Learning_goal (ID, status, deadline, description) VALUES
+(101, 'Active', '2024-12-10', 'Complete the Beginner Quest'),
+(102, 'Pending', '2024-12-20', 'Achieve proficiency in Algorithm Design');
+
+INSERT INTO LearnersGoals (GoalID, LearnerID) VALUES
+(101, 1),
+(102, 2);
+
+INSERT INTO Achievement (AchievementID, LearnerID, BadgeID, Description, DateEarned, Type) VALUES 
+(1, 1, 1, 'Completed Beginner Quest', '2024-11-17', 'Quest Completion'),
+(2, 2, 2, 'Completed Advanced Quest', '2024-11-18', 'Quest Completion');
+
+INSERT INTO Leaderboard (BoardID, season) VALUES 
+(1, 'Fall 2024');
+
+INSERT INTO Ranking (BoardID, LearnerID, CourseID, rank, total_points) VALUES
+(1, 1, 1, 2, 120),
+(1, 2, 1, 1, 150);
+
+
+INSERT INTO Leaderboard (BoardID, season) VALUES 
+(1, 'Fall 2024');
+
+INSERT INTO Ranking (BoardID, LearnerID, CourseID, rank, total_points) VALUES
+(1, 1, 1, 2, 120),
+(1, 2, 1, 1, 150);
+
+
+INSERT INTO Interaction_log (LogID, activity_ID, LearnerID, Duration, Timestamp, action_type) VALUES
+(1, 1, 1, '00:30:00', '2024-11-17 09:30:00', 'Completed'),
+(2, 2, 2, '01:00:00', '2024-11-17 10:00:00', 'Participated');
