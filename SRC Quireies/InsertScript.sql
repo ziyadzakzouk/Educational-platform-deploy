@@ -110,3 +110,33 @@ VALUES
 (1001, '2024-03-01 10:00:00', 'Upcoming quiz on algorithms', 'High'),
 (1002, '2024-03-15 15:00:00', 'Project submission deadline', 'Medium');
 
+-- Insert data into RecivedNotfy table
+INSERT INTO RecivedNotfy (Learner_ID, Notification_ID) 
+VALUES 
+(1, 1001),
+(2, 1002);
+
+
+-- Insert data into Reward table
+INSERT INTO Reward (RewardID, value, description, type) 
+VALUES 
+(1101, 10, 'Participation in quiz', 'Points'),
+(1102, 20, 'Completion of project', 'Badge');
+
+-- Insert data into Emotional_feedback table
+INSERT INTO Emotional_feedback (FeedbackID, LearnerID, timestamp, emotional_state) 
+VALUES 
+(1201, 1, '2024-03-01 12:00:00', 'Amusement'),
+(1202, 2, '2024-03-15 16:00:00', 'Anxiety');
+
+INSERT INTO Quest (QuestID, difficulty_level, criteria, description, title) 
+VALUES 
+(1301, 2, 'Basic knowledge', 'Complete introductory tasks', 'Beginner Quest'),
+(1302, 5, 'Advanced skills', 'Implement complex algorithms', 'Advanced Quest');
+
+-- Insert data into QuestReward table
+INSERT INTO QuestReward (QuestID, RewardID, LearnerID, timeEarned) 
+VALUES 
+(1301, 1101, 1, '2024-03-02 11:00:00'),
+(1302, 1102, 2, '2024-03-16 17:00:00');
+
