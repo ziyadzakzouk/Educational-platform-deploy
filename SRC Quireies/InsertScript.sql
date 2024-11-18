@@ -62,3 +62,9 @@ INSERT INTO Course_Enrollment (Enrollment_ID, Learner_ID, Course_ID, enrollment_
 VALUES 
 (501, 1, 201, '2024-01-10', NULL, 'In Progress'),
 (502, 2, 202, '2024-02-01', NULL, 'Not Started');
+
+-- Insert data into Assessment table
+INSERT INTO Assessment (Assessment_ID, Module_ID, Course_ID, type, totalMarks, passingMarks, criteria, weightage, description, title) 
+VALUES 
+(601, 301, 201, 'Quiz', 100, 50, 'Basic understanding', 20, 'Introductory quiz', 'Algorithm Basics Quiz'),
+(602, 302, 202, 'Project', 200, 120, 'Full implementation', 40, 'Advanced project', 'Data Structures Project');
