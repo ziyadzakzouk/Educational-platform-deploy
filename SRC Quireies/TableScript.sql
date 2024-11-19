@@ -3,7 +3,7 @@ CREATE DATABASE EduPlatform
 use EduPlatform
 
 CREATE TABLE Learner (
-    Learner_ID INT PRIMARY KEY,
+    Learner_ID INT PRIMARY KEY IDENTITY,
     first_name VARCHAR(20),
     last_name VARCHAR(20),
     birthday DATE,
@@ -26,7 +26,7 @@ prefrences VARCHAR(50)
 );
 
 CREATE TABLE PersonalProfile(
-Learner_ID INT,
+Learner_ID INT  IDENTITY,
 FOREIGN KEY (Learner_ID) REFERENCES Learner(Learner_ID) ON DELETE CASCADE ON UPDATE CASCADE,
 profileID INT PRIMARY KEY,
 PreferedContent_type VARCHAR(50),
@@ -36,14 +36,14 @@ personality_type VARCHAR(50)
 );
 CREATE TABLE HealthCondition(
 Learner_ID INT,
-profileID INT,
+profileID INT ,
 FOREIGN KEY (Learner_ID) REFERENCES Learner(Learner_ID) ON DELETE CASCADE ON UPDATE CASCADE,
 FOREIGN KEY (profileID) REFERENCES PersonalProfile(profileID) ON DELETE CASCADE ON UPDATE CASCADE,
 condition VARCHAR(50)
 
 );
 CREATE TABLE Course (
-    Course_ID INT PRIMARY KEY,
+    Course_ID INT PRIMARY KEY IDENTITY,
     title VARCHAR(100),
     description VARCHAR(255),
     diff_level VARCHAR(8),
@@ -53,7 +53,7 @@ CREATE TABLE Course (
    
 );
 CREATE TABLE Module (
-	Module_ID INT PRIMARY KEY,
+	Module_ID INT PRIMARY KEY IDENTITY,
     Course_ID INT,
 	FOREIGN KEY (Course_ID) REFERENCES Course(Course_ID) ON DELETE CASCADE ON UPDATE CASCADE,
 	title VARCHAR(100),
@@ -81,7 +81,7 @@ contetntType VARCHAR(50)
 );
 
 CREATE TABLE ContentLibrary(
-Lib_ID INT PRIMARY KEY,
+Lib_ID INT PRIMARY KEY IDENTITY,
 Module_ID INT,
 Course_ID INT,
 FOREIGN KEY (Module_ID) REFERENCES Module(Module_ID) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -94,7 +94,7 @@ contentURL VARCHAR(255)
 );
 
 CREATE TABLE Course_Enrollment(
-Enrollment_ID INT PRIMARY KEY,
+Enrollment_ID INT PRIMARY KEY IDENTITY,
 Learner_ID INT,
 Course_ID INT,
 FOREIGN KEY (Learner_ID) REFERENCES Learner(Learner_ID) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -105,7 +105,7 @@ status VARCHAR(50) CHECK (status IN ('Completed', 'In Progress', 'Not Started'))
 );
 
 CREATE TABLE Assessment (
-	Assessment_ID INT PRIMARY KEY,
+	Assessment_ID INT PRIMARY KEY IDENTITY,
     Module_ID INT,
     Course_ID INT,
 	FOREIGN KEY (Module_ID) REFERENCES Module(Module_ID) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -120,7 +120,7 @@ CREATE TABLE Assessment (
 );
 
 CREATE TABLE Instructor (
-	Instructor_ID INT PRIMARY KEY,
+	Instructor_ID INT PRIMARY KEY IDENTITY,
 	Instructor_name VARCHAR(20),
 	latest_qualification VARCHAR(20),
     expertise_area VARCHAR(50),
@@ -135,7 +135,7 @@ CREATE TABLE Instructor (
     feedback VARCHAR(255)
     );
 CREATE TABLE Emotionalfeedback_review (
-    FeedbackID INT,
+    FeedbackID INT IDENTITY,
     InstructorID INT,
     feedback VARCHAR(500),
     PRIMARY KEY (FeedbackID, InstructorID),
@@ -150,7 +150,7 @@ CREATE TABLE Emotionalfeedback_review (
 	);
 
     CREATE TABLE learningActivity(
-    Activity_ID INT PRIMARY KEY,
+    Activity_ID INT PRIMARY KEY IDENTITY,
     Course_ID INT,
     Module_ID INT,
     FOREIGN KEY (Course_ID) REFERENCES Course(Course_ID) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -161,7 +161,7 @@ CREATE TABLE Emotionalfeedback_review (
     );
 
     CREATE TABLE LearningPath(        
-    Path_ID INT PRIMARY KEY,
+    Path_ID INT PRIMARY KEY IDENTITY,
     Learner_ID INT,
     profileID INT,
     FOREIGN KEY (Learner_ID) REFERENCES Learner(Learner_ID) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -171,7 +171,7 @@ CREATE TABLE Emotionalfeedback_review (
     adaptiveRules VARCHAR(255)
     );
     CREATE TABLE Notification(
-    Notification_ID INT PRIMARY KEY,
+    Notification_ID INT PRIMARY KEY IDENTITY,
     time_stamp TIMESTAMP,
     message VARCHAR(255),
     urgency VARCHAR(50) CHECK (urgency IN ('High', 'Medium', 'Low'))
@@ -183,14 +183,14 @@ CREATE TABLE Emotionalfeedback_review (
     FOREIGN KEY (Notification_ID) REFERENCES Notification(Notification_ID) ON DELETE CASCADE ON UPDATE CASCADE
 	);
     CREATE TABLE Reward(
-    RewardID INT PRIMARY KEY,
+    RewardID INT PRIMARY KEY IDENTITY,
     value INT,
     description VARCHAR(200),
     type VARCHAR(50)
 );
 
     CREATE TABLE Emotional_feedback(
-    FeedbackID INT PRIMARY KEY,
+    FeedbackID INT PRIMARY KEY IDENTITY,
     LearnerID INT ,
     timestamp DATETIME,
     emotional_state VARCHAR(20) CHECK (emotional_state in (
@@ -207,12 +207,12 @@ CREATE TABLE Emotionalfeedback_review (
     FeedbackID INT,
     InstructorID INT,
     feedback VARCHAR(500),
-    PRIMARY KEY (FeedbackID, InstructorID),
+    PRIMARY KEY (FeedbackID, InstructorID) ,
     FOREIGN KEY (FeedbackID) REFERENCES Emotional_feedback(FeedbackID),
     FOREIGN KEY (InstructorID) REFERENCES Instructor(InstructorID)
 );
 CREATE TABLE Interaction_log (
-    LogID INT PRIMARY KEY,
+    LogID INT PRIMARY KEY IDENTITY,
     activity_ID INT,
     LearnerID INT,
     Duration TIME,
@@ -223,7 +223,7 @@ CREATE TABLE Interaction_log (
     );
 
  CREATE table Quest(
-QuestID INT PRIMARY KEY,
+QuestID INT PRIMARY KEY IDENTITY,
 difficulty_level int,
 criteria VARCHAR(50),
 description VARCHAR(200),
@@ -241,7 +241,7 @@ CREATE TABLE QuestReward(
 	FOREIGN KEY (RewardID) REFERENCES Reward(RewardID) ON DELETE CASCADE ON UPDATE CASCADE
 );
 CREATE TABLE Skill_Mastery (
-    QuestID INT PRIMARY KEY,
+    QuestID INT PRIMARY KEY ,
     Skill VARCHAR(255),
     FOREIGN KEY (QuestID) REFERENCES Quest(QuestID) ON DELETE CASCADE ON UPDATE CASCADE
 );
@@ -254,7 +254,7 @@ CREATE TABLE Collaborative (
 );
 
     CREATE TABLE Badge (
-    BadgeID int PRIMARY KEY,
+    BadgeID int PRIMARY KEY IDENTITY,
     title VARCHAR(50),
     description VARCHAR(200),
     criteria VARCHAR(50),
@@ -262,7 +262,7 @@ CREATE TABLE Collaborative (
 );
 
 	Create TABLE Discussion_forum (
-	forumID int primary key,
+	forumID int primary key IDENTITY,
 	Course_ID int,
 	Module_ID int,
 	 FOREIGN KEY (Module_ID) REFERENCES Module(Module_ID) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -275,7 +275,7 @@ CREATE TABLE Collaborative (
 
 
 CREATE TABLE Survey (
-    ID INT PRIMARY KEY,         
+    ID INT PRIMARY KEY IDENTITY,         
     Title VARCHAR(255) NOT NULL  
 
 );
@@ -309,7 +309,7 @@ CREATE TABLE FilledSurvey (
 );
 
 CREATE TABLE Achievement (
-    AchievementID INT PRIMARY KEY,
+    AchievementID INT PRIMARY KEY IDENTITY,
     LearnerID INT,
     BadgeID INT,
     Description TEXT,
@@ -320,7 +320,7 @@ CREATE TABLE Achievement (
 );
 
 CREATE TABLE SkillProgression (
-    ID INT PRIMARY KEY,
+    ID INT PRIMARY KEY IDENTITY,
     proficiency_level INT NOT NULL,
     LearnerID INT ,
     skill_name VARCHAR(50),
@@ -329,7 +329,7 @@ CREATE TABLE SkillProgression (
 );
 
 CREATE TABLE Leaderboard (
-    BoardID INT PRIMARY KEY,      
+    BoardID INT PRIMARY KEY IDENTITY,      
     season VARCHAR(20) NOT NULL
 
 );
@@ -345,7 +345,7 @@ CREATE TABLE Ranking (
     FOREIGN KEY (CourseID) REFERENCES Course(Course_ID)
 );
 CREATE TABLE Learning_goal (
-    ID INT PRIMARY KEY,             
+    ID INT PRIMARY KEY IDENTITY,             
     status VARCHAR(20) NOT NULL,    
     deadline DATE NOT NULL,        
     description TEXT NOT NULL       

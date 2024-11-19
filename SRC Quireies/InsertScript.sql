@@ -1,4 +1,6 @@
-﻿-- Insert data into Learner table
+﻿use EduPlatform
+
+-- Insert data into Learner table
 INSERT INTO Learner (Learner_ID, first_name, last_name, birthday, gender, country, cultural_background) 
 VALUES 
 (1, 'John', 'Doe', '2000-05-15', 'Male', 'USA', 'Western'),
