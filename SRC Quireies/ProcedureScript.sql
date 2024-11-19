@@ -58,7 +58,7 @@ Go
 CREATE PROC ViewNot 
 @LearnerID int
 AS
-select n.* from Notification n inner join RecivedNotfy r
+select n.* from Notification n inner join RecivedNotfy r on n.Notification_ID = r.Notification_ID
 where @LearnerID = r.Learner_ID
 
 Go

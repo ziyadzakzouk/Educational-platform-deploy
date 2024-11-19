@@ -12,19 +12,21 @@ CREATE TABLE Learner (
     cultural_background VARCHAR(50)   
 );
 CREATE TABLE Skills(
+Learner_ID INT ,
 FOREIGN KEY (Learner_ID) REFERENCES Learner(Learner_ID)ON DELETE CASCADE ON UPDATE CASCADE,
 skill VARCHAR(50)
 
 );
 
 CREATE TABLE LearningPrefrences(
+Learner_ID INT,
 FOREIGN KEY (Learner_ID) REFERENCES Learner(Learner_ID) ON DELETE CASCADE ON UPDATE CASCADE,
 prefrences VARCHAR(50)
 
 );
 
 CREATE TABLE PersonalProfile(
-
+Learner_ID INT,
 FOREIGN KEY (Learner_ID) REFERENCES Learner(Learner_ID) ON DELETE CASCADE ON UPDATE CASCADE,
 profileID INT PRIMARY KEY,
 PreferedContent_type VARCHAR(50),
@@ -33,6 +35,8 @@ personality_type VARCHAR(50)
 
 );
 CREATE TABLE HealthCondition(
+Learner_ID INT,
+profileID INT,
 FOREIGN KEY (Learner_ID) REFERENCES Learner(Learner_ID) ON DELETE CASCADE ON UPDATE CASCADE,
 FOREIGN KEY (profileID) REFERENCES PersonalProfile(profileID) ON DELETE CASCADE ON UPDATE CASCADE,
 condition VARCHAR(50)
@@ -50,6 +54,7 @@ CREATE TABLE Course (
 );
 CREATE TABLE Module (
 	Module_ID INT PRIMARY KEY,
+    Course_ID INT,
 	FOREIGN KEY (Course_ID) REFERENCES Course(Course_ID) ON DELETE CASCADE ON UPDATE CASCADE,
 	title VARCHAR(100),
 	difficulty_level VARCHAR(8),
@@ -57,6 +62,8 @@ CREATE TABLE Module (
 );
 
 CREATE TABLE TargetTraits(
+Module_ID INT,
+Course_ID INT,
 FOREIGN KEY (Module_ID) REFERENCES Module(Module_ID) ON DELETE CASCADE ON UPDATE CASCADE,
 FOREIGN KEY (Course_ID) REFERENCES Course(Course_ID) ON DELETE CASCADE ON UPDATE CASCADE,
 trait VARCHAR(50)
@@ -65,6 +72,8 @@ trait VARCHAR(50)
 );
 
 CREATE TABLE ModuleContent(
+Module_ID INT,
+Course_ID INT,
 FOREIGN KEY (Module_ID) REFERENCES Module(Module_ID) ON DELETE CASCADE ON UPDATE CASCADE,
 FOREIGN KEY (Course_ID) REFERENCES Course(Course_ID) ON DELETE CASCADE ON UPDATE CASCADE,
 contetntType VARCHAR(50)
@@ -73,6 +82,8 @@ contetntType VARCHAR(50)
 
 CREATE TABLE ContentLibrary(
 Lib_ID INT PRIMARY KEY,
+Module_ID INT,
+Course_ID INT,
 FOREIGN KEY (Module_ID) REFERENCES Module(Module_ID) ON DELETE CASCADE ON UPDATE CASCADE,
 FOREIGN KEY (Course_ID) REFERENCES Course(Course_ID) ON DELETE CASCADE ON UPDATE CASCADE,
 title VARCHAR(100),
@@ -84,6 +95,8 @@ contentURL VARCHAR(255)
 
 CREATE TABLE Course_Enrollment(
 Enrollment_ID INT PRIMARY KEY,
+Learner_ID INT,
+Course_ID INT,
 FOREIGN KEY (Learner_ID) REFERENCES Learner(Learner_ID) ON DELETE CASCADE ON UPDATE CASCADE,
 FOREIGN KEY (Course_ID) REFERENCES Course(Course_ID) ON DELETE CASCADE ON UPDATE CASCADE,
 enrollment_date DATE,
@@ -93,6 +106,8 @@ status VARCHAR(50) CHECK (status IN ('Completed', 'In Progress', 'Not Started'))
 
 CREATE TABLE Assessment (
 	Assessment_ID INT PRIMARY KEY,
+    Module_ID INT,
+    Course_ID INT,
 	FOREIGN KEY (Module_ID) REFERENCES Module(Module_ID) ON DELETE CASCADE ON UPDATE CASCADE,
 	FOREIGN KEY (Course_ID) REFERENCES Course(Course_ID) ON DELETE CASCADE ON UPDATE CASCADE,
 	type VARCHAR(50),
@@ -113,6 +128,8 @@ CREATE TABLE Instructor (
 
     );
     CREATE TABLE pathreview(
+    Instructor_ID INT,
+    Path_ID INT,
     FOREIGN KEY (Instructor_ID) REFERENCES Instructor(Instructor_ID) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (Path_ID) REFERENCES LearningPath(Path_ID) ON DELETE CASCADE ON UPDATE CASCADE,
     feedback VARCHAR(255)
@@ -126,12 +143,16 @@ CREATE TABLE Emotionalfeedback_review (
     FOREIGN KEY (InstructorID) REFERENCES Instructor(Instructor_ID) ON DELETE CASCADE ON UPDATE CASCADE
 );
     CREATE TABLE Teaches(
+    Instructor_ID INT,
+    Course_ID INT,
     FOREIGN KEY (Instructor_ID) REFERENCES Instructor(Instructor_ID) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (Course_ID) REFERENCES Course(Course_ID) ON DELETE CASCADE ON UPDATE CASCADE
 	);
 
     CREATE TABLE learningActivity(
     Activity_ID INT PRIMARY KEY,
+    Course_ID INT,
+    Module_ID INT,
     FOREIGN KEY (Course_ID) REFERENCES Course(Course_ID) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (Module_ID) REFERENCES Module(Module_ID) ON DELETE CASCADE ON UPDATE CASCADE,
     activityType VARCHAR(50),
@@ -141,6 +162,8 @@ CREATE TABLE Emotionalfeedback_review (
 
     CREATE TABLE LearningPath(        
     Path_ID INT PRIMARY KEY,
+    Learner_ID INT,
+    profileID INT,
     FOREIGN KEY (Learner_ID) REFERENCES Learner(Learner_ID) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (profileID) REFERENCES PersonalProfile(profileID) ON DELETE CASCADE ON UPDATE CASCADE,
     completion_status VARCHAR(220),
@@ -154,6 +177,8 @@ CREATE TABLE Emotionalfeedback_review (
     urgency VARCHAR(50) CHECK (urgency IN ('High', 'Medium', 'Low'))
     );
     Create TABLE RecivedNotfy(
+    Learner_ID INT,
+    Notification_ID INT,
     FOREIGN KEY (Learner_ID) REFERENCES Learner(Learner_ID) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (Notification_ID) REFERENCES Notification(Notification_ID) ON DELETE CASCADE ON UPDATE CASCADE
 	);
