@@ -1,4 +1,4 @@
- #1 Project Overview
+ # Project Overview
  In this project, we design and implement a database schema for a gamified and personalized educational platform. 
  The goal is to support a dynamic and adaptable learning environment that personalizes
  content delivery and interactions based on learners’ unique characteristics, such as personality, emotional state,
