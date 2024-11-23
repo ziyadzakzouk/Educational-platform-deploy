@@ -216,7 +216,7 @@ END;
 
 
 GO
-CREATE PROCEDURE AssessmentsList
+CREATE PROC AssessmentsList
     @CourseID INT,
     @ModuleID INT
 AS
@@ -235,6 +235,21 @@ BEGIN
         AND a.Module_ID = @ModuleID;
 END;
 
+--Courseregister
+
+GO
+CREATE PROCEDURE Post
+    @LearnerID INT,
+    @DiscussionID INT,
+    @Post VARCHAR(MAX)
+AS
+BEGIN
+    -- Insert the post into the discussion forum
+    INSERT INTO DiscussionPosts (DiscussionID, LearnerID, PostContent, Timestamp)
+    VALUES (@DiscussionID, @LearnerID, @Post, GETDATE());
+    
+    PRINT 'Post added successfully.';
+END;
 
 
 
