@@ -256,7 +256,15 @@ BEGIN
     WHERE forumID = @DiscussionID;
 END;
 
-
+Go
+CREATE PROCEDURE AddGoal
+    @LearnerID INT,
+    @GoalID INT
+AS
+BEGIN
+    INSERT INTO LearnersGoals (GoalID, LearnerID)
+    VALUES (@GoalID, @LearnerID);
+END;
 
 
 
