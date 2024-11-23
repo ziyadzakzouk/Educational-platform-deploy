@@ -91,7 +91,7 @@ delete from Notification where @NotificationID = Notification_ID
 
 
  
-Go
+Go --1
 CREATE PROC ProfileUpdate
     @LearnerID INT, @ProfileID INT, @PreferedContentType VARCHAR(50),@emotional_state VARCHAR(50), @PersonalityType VARCHAR(50)
     AS
@@ -103,7 +103,7 @@ CREATE PROC ProfileUpdate
      WHERE Learner_ID = @LearnerID AND profileID = @ProfileID;
 GO
 
-CREATE PROC TotalPoints
+CREATE PROC TotalPoints --2
     @LearnerID INT,
     @RewardType VARCHAR(50)
 AS
@@ -114,7 +114,7 @@ AS
 GO
 
 GO
-CREATE PROC EnrolledCourses
+CREATE PROC EnrolledCourses  --3
     @LearnerID INT
 AS
     SELECT c.CourseID, c.CourseName, c.Description, c.CreditHours
@@ -125,7 +125,7 @@ AS
 
     -- check to be reviewed 
 GO
-CREATE PROC Prerequisites
+CREATE PROC Prerequisites --4
     @LearnerID INT,
     @CourseID INT
 AS
@@ -154,7 +154,7 @@ END
 
 
 GO
-CREATE PROC Moduletraits
+CREATE PROC Moduletraits--5
     @TargetTrait VARCHAR(50), 
     @CourseID INT
 AS
@@ -168,7 +168,7 @@ BEGIN
 END;
 
 GO
-CREATE PROC LeaderboardRank
+CREATE PROC LeaderboardRank  --6
     @LeaderboardID INT
     AS  
     SELECT r.LearnerID, r.CourseID, r.rank, r.total_points
@@ -178,7 +178,7 @@ CREATE PROC LeaderboardRank
 
 
 GO
-CREATE PROC ViewMyDeviceCharge
+CREATE PROC ViewMyDeviceCharge  --7
     @ActivityID INT,
     @LearnerID INT,
     @timestamp DATETIME,
@@ -189,15 +189,59 @@ BEGIN
     VALUES (@LearnerID, @timestamp, @emotionalstate);
 END;
 
---JoinQuest
+GO
+CREATE PROC JoinQuest
+    @LearnerID INT,
+    @QuestID INT
+AS
+BEGIN
+    DECLARE @CurrentParticipants INT;
+    DECLARE @MaxParticipants INT;
+    DECLARE @AlreadyJoined BIT;
+
+    
+    SELECT 
+        @CurrentParticipants = COUNT(*),
+        @MaxParticipants = MaxCapacity
+    FROM QuestParticipants qp
+    JOIN Quest q ON qp.QuestID = q.QuestID
+    WHERE q.QuestID = @QuestID;
+
+
+    SELECT 
+        @AlreadyJoined = CASE WHEN COUNT(*) > 0 THEN 1 ELSE 0 END
+    FROM QuestParticipants
+    WHERE QuestID = @QuestID AND LearnerID = @LearnerID;
+
+   
+    IF @AlreadyJoined = 1
+    BEGIN
+        PRINT 'Rejection: Learner has already joined this quest.';
+        RETURN;
+    END
+
+    IF @CurrentParticipants >= @MaxParticipants
+    BEGIN
+        PRINT 'Rejection: Quest is already at full capacity.';
+        RETURN;
+    END
+
+    
+    INSERT INTO QuestParticipants (QuestID, LearnerID)
+    VALUES (@QuestID, @LearnerID);
+
+    PRINT 'Approval: Learner successfully joined the quest.';
+END;
+GO
 
 
 
---SkillsProfeciency
+
+--SkillsProfeciency  --9
 
 
 GO
-CREATE PROC Viewscore
+CREATE PROC Viewscore --10
     @LearnerID INT,
     @AssessmentID INT,
     @score INT OUTPUT
@@ -216,7 +260,7 @@ END;
 
 
 GO
-CREATE PROC AssessmentsList
+CREATE PROC AssessmentsList --11
     @CourseID INT,
     @ModuleID INT
 AS
@@ -236,11 +280,11 @@ BEGIN
 END;
 
 
---Courseregister
+--Courseregister --12
 
 
 GO
-CREATE PROCEDURE Post
+CREATE PROCEDURE Post --13
     @LearnerID INT,
     @DiscussionID INT,
     @Post VARCHAR(MAX)
@@ -255,7 +299,7 @@ BEGIN
 END;
 
 Go
-CREATE PROCEDURE AddGoal
+CREATE PROCEDURE AddGoal  --14
     @LearnerID INT,
     @GoalID INT
 AS
@@ -265,7 +309,7 @@ BEGIN
 END;
 
 GO
-CREATE PROCEDURE CurrentPath
+CREATE PROCEDURE CurrentPath --15
     @LearnerID INT
 AS
     SELECT 
