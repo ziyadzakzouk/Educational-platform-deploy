@@ -154,7 +154,7 @@ END
 
 
 GO
-CREATE PROCEDURE Moduletraits
+CREATE PROC Moduletraits
     @TargetTrait VARCHAR(50), 
     @CourseID INT
 AS
@@ -168,7 +168,7 @@ BEGIN
 END;
 
 GO
-CREATE PROCEDURE LeaderboardRank
+CREATE PROC LeaderboardRank
     @LeaderboardID INT
     AS  
     SELECT r.LearnerID, r.CourseID, r.rank, r.total_points
@@ -178,7 +178,7 @@ CREATE PROCEDURE LeaderboardRank
 
 
 GO
-CREATE PROCEDURE ViewMyDeviceCharge
+CREATE PROC ViewMyDeviceCharge
     @ActivityID INT,
     @LearnerID INT,
     @timestamp DATETIME,
@@ -189,9 +189,30 @@ BEGIN
     VALUES (@LearnerID, @timestamp, @emotionalstate);
 END;
 
+--JoinQuest
 
 
 
+--SkillsProfeciency
+
+
+GO
+CREATE PROC Viewscore
+    @LearnerID INT,
+    @AssessmentID INT,
+    @score INT OUTPUT
+AS
+BEGIN
+    SELECT @score = s.score
+    FROM Scores s
+    WHERE s.LearnerID = @LearnerID AND s.AssessmentID = @AssessmentID;
+
+    -- If no score found, set the score to NULL
+    IF @score IS NULL
+    BEGIN
+        SET @score = 0;  -- or you can set it to NULL based on your requirement
+    END
+END;
 
 
 
