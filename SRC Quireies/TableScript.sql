@@ -26,7 +26,7 @@ prefrences VARCHAR(50)
 );
 
 CREATE TABLE PersonalProfile(
-Learner_ID INT  IDENTITY,
+Learner_ID INT ,
 FOREIGN KEY (Learner_ID) REFERENCES Learner(Learner_ID) ON DELETE CASCADE ON UPDATE CASCADE,
 profileID INT PRIMARY KEY,
 PreferedContent_type VARCHAR(50),
