@@ -121,8 +121,10 @@ AS
     FROM Course c
     INNER JOIN Enrollments e ON c.CourseID = e.CourseID
     WHERE e.LearnerID = @LearnerID;
-GO
 
+
+    -- check to be reviewed 
+GO
 CREATE PROC Prerequisites
     @LearnerID INT,
     @CourseID INT
@@ -164,6 +166,18 @@ BEGIN
     WHERE tt.trait = @TargetTrait 
     AND m.Course_ID = @CourseID;
 END;
+
+GO
+CREATE PROCEDURE LeaderboardRank
+    @LeaderboardID INT
+AS
+BEGIN
+  
+    SELECT r.LearnerID, r.CourseID, r.rank, r.total_points
+    FROM Ranking r
+    WHERE r.BoardID = @LeaderboardID
+    ORDER BY r.rank; 
+
 
 
 
