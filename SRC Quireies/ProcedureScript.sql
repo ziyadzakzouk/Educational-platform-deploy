@@ -87,3 +87,22 @@ if @ReadStatus = 1
 delete from Notification where @NotificationID = Notification_ID
 
 ---------here is the start of the learner procedures
+
+
+
+ 
+Go
+CREATE PROC ProfileUpdate
+    @LearnerID INT, @ProfileID INT, @PreferedContentType VARCHAR(50),@emotional_state VARCHAR(50), @PersonalityType VARCHAR(50)
+    AS
+    UPDATE PersonalProfile
+    SET 
+        PreferedContent_type = @PreferedContentType,
+        emotionalState = @EmotionalState,
+        personality_type = @PersonalityType
+     WHERE Learner_ID = @LearnerID AND profileID = @ProfileID;
+GO
+
+
+
+
