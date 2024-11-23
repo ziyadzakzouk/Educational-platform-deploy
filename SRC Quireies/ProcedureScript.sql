@@ -235,7 +235,9 @@ BEGIN
         AND a.Module_ID = @ModuleID;
 END;
 
+
 --Courseregister
+
 
 GO
 CREATE PROCEDURE Post
@@ -244,12 +246,16 @@ CREATE PROCEDURE Post
     @Post VARCHAR(MAX)
 AS
 BEGIN
-    -- Insert the post into the discussion forum
-    INSERT INTO DiscussionPosts (DiscussionID, LearnerID, PostContent, Timestamp)
-    VALUES (@DiscussionID, @LearnerID, @Post, GETDATE());
-    
-    PRINT 'Post added successfully.';
+    -- Insert the post into the Posts table
+    INSERT INTO Posts (LearnerID, DiscussionID, PostContent, Timestamp)
+    VALUES (@LearnerID, @DiscussionID, @Post, GETDATE());
+
+    -- Update the last active timestamp of the discussion forum
+    UPDATE Discussion_forum
+    SET last_active = GETDATE()
+    WHERE forumID = @DiscussionID;
 END;
+
 
 
 
