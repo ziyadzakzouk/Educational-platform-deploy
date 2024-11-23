@@ -103,7 +103,6 @@ CREATE PROC ProfileUpdate
      WHERE Learner_ID = @LearnerID AND profileID = @ProfileID;
 GO
 
-
 CREATE PROC TotalPoints
     @LearnerID INT,
     @RewardType VARCHAR(50)
@@ -123,6 +122,36 @@ AS
     INNER JOIN Enrollments e ON c.CourseID = e.CourseID
     WHERE e.LearnerID = @LearnerID;
 GO
+
+CREATE PROC Prerequisites
+    @LearnerID INT,
+    @CourseID INT
+AS
+BEGIN
+    -- Check if the learner has completed all prerequisites for the given course
+    DECLARE @PrerequisitesCompleted INT;
+
+    -- Count the prerequisites for the course
+    SELECT @PrerequisitesCompleted = COUNT(*)
+    FROM Prerequisites p
+    INNER JOIN Enrollments e ON p.PrerequisiteCourseID = e.CourseID
+    WHERE e.LearnerID = @LearnerID
+    AND e.CompletionStatus = 'Completed'  -- Assuming 'Completed' is a value in the CompletionStatus column
+    AND p.CourseID = @CourseID;
+
+    -- If all prerequisites are completed, return a message
+    IF @PrerequisitesCompleted = (SELECT COUNT(*) FROM Prerequisites WHERE CourseID = @CourseID)
+    BEGIN
+        SELECT 'All prerequisites completed.' AS Message;
+    END
+    ELSE
+    BEGIN
+        SELECT 'Prerequisites not completed.' AS Message;
+    END
+END
+GO
+
+
 
 
 
