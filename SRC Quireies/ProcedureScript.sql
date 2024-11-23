@@ -149,7 +149,23 @@ BEGIN
         SELECT 'Prerequisites not completed.' AS Message;
     END
 END
+
+
 GO
+CREATE PROCEDURE Moduletraits
+    @TargetTrait VARCHAR(50), 
+    @CourseID INT
+AS
+BEGIN
+   
+    SELECT m.Module_ID, m.title, m.difficulty_level
+    FROM Module m
+    INNER JOIN TargetTraits tt ON m.Module_ID = tt.Module_ID
+    WHERE tt.trait = @TargetTrait 
+    AND m.Course_ID = @CourseID;
+END;
+
+
 
 
 
