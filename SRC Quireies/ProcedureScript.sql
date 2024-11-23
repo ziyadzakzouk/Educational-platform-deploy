@@ -199,18 +199,19 @@ BEGIN
     DECLARE @MaxParticipants INT;
     DECLARE @AlreadyJoined BIT;
 
+   
     
     SELECT 
         @CurrentParticipants = COUNT(*),
-        @MaxParticipants = MaxCapacity
-    FROM QuestParticipants qp
+        @MaxParticipants = Max_Num_Participants
+    FROM  Collaborative qp
     JOIN Quest q ON qp.QuestID = q.QuestID
     WHERE q.QuestID = @QuestID;
 
 
     SELECT 
         @AlreadyJoined = CASE WHEN COUNT(*) > 0 THEN 1 ELSE 0 END
-    FROM QuestParticipants
+    FROM Collaborative
     WHERE QuestID = @QuestID AND LearnerID = @LearnerID;
 
    
@@ -236,8 +237,32 @@ GO
 
 
 
+GO
 
---SkillsProfeciency  --9
+CREATE PROCEDURE SkillsProficiency
+    @LearnerID INT
+AS
+BEGIN
+   
+    IF NOT EXISTS (SELECT 1 FROM Learner WHERE Learner_ID = @LearnerID)
+    BEGIN
+        PRINT 'Rejection: Learner ID does not exist.';
+        RETURN;
+    END
+
+   
+    SELECT 
+        s.skill AS Skill,
+        sp.ProficiencyLevel AS ProficiencyLevel
+    FROM 
+        Skills s,SkillProgression
+    LEFT JOIN 
+        SkillProficiency sp ON s.Learner_ID = sp.Learner_ID AND s.skill = sp.skill
+    WHERE 
+        s.Learner_ID = @LearnerID;
+END;
+GO
+
 
 
 GO
