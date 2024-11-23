@@ -104,5 +104,22 @@ CREATE PROC ProfileUpdate
 GO
 
 
+CREATE PROC TotalPoints
+    @LearnerID INT,
+    @RewardType VARCHAR(50)
+AS
+    SELECT SUM(Points) AS TotalPoints
+    FROM Rewards
+    WHERE LearnerID = @LearnerID
+    AND RewardType = @RewardType;
+GO
+
+
+
+
+
+
+
+
 
 
