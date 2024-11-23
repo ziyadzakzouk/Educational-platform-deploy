@@ -215,6 +215,27 @@ BEGIN
 END;
 
 
+GO
+CREATE PROCEDURE AssessmentsList
+    @CourseID INT,
+    @ModuleID INT
+AS
+BEGIN
+
+    SELECT 
+        a.Assessment_ID,
+        a.title AS AssessmentTitle,
+        s.score AS Grade
+    FROM 
+        Assessment a
+    LEFT JOIN 
+        Scores s ON a.Assessment_ID = s.Assessment_ID
+    WHERE 
+        a.Course_ID = @CourseID 
+        AND a.Module_ID = @ModuleID;
+END;
+
+
 
 
 
