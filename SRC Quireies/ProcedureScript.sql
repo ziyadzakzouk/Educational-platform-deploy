@@ -249,8 +249,6 @@ BEGIN
     -- Insert the post into the Posts table
     INSERT INTO Posts (LearnerID, DiscussionID, PostContent, Timestamp)
     VALUES (@LearnerID, @DiscussionID, @Post, GETDATE());
-
-    -- Update the last active timestamp of the discussion forum
     UPDATE Discussion_forum
     SET last_active = GETDATE()
     WHERE forumID = @DiscussionID;
@@ -266,6 +264,17 @@ BEGIN
     VALUES (@GoalID, @LearnerID);
 END;
 
+GO
+CREATE PROCEDURE CurrentPath
+    @LearnerID INT
+AS
+    SELECT 
+        Path_ID AS LearningPathID,
+        completion_status AS Status
+    FROM 
+        LearningPath
+    WHERE 
+        Learner_ID = @LearnerID;
 
 
 
