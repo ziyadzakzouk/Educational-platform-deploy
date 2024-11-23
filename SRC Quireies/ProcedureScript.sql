@@ -125,7 +125,7 @@ AS
 
     -- check to be reviewed 
 GO
-CREATE PROC Prerequisites --4
+CREATE PROC Prerequisites --4 ----xxxxxxxxx
     @LearnerID INT,
     @CourseID INT
 AS
@@ -279,7 +279,7 @@ BEGIN
     -- If no score found, set the score to NULL
     IF @score IS NULL
     BEGIN
-        SET @score = 0;  -- or you can set it to NULL based on your requirement
+        SET @score = -1; 
     END
 END;
 
@@ -304,12 +304,40 @@ BEGIN
         AND a.Module_ID = @ModuleID;
 END;
 
+GO
+CREATE PROC Courseregister --12 
+@LearnerID INT,
+@CourseID INT
+AS
+DECLARE @CourseExists BIT;
+DECLARE @AlreadyEnrolled BIT;
+BEGIN
+SELECT @CourseExists = CASE WHEN COUNT(*) > 0 THEN 1 ELSE 0 END
+FROM Course
+WHERE CourseID = @CourseID;
+SELECT @AlreadyEnrolled = CASE WHEN COUNT(*) > 0 THEN 1 ELSE 0 END
+FROM Enrollments
+WHERE LearnerID = @LearnerID AND CourseID = @CourseID;
 
---Courseregister --12
+IF CourseExists = 0
+BEGIN
+PRINT 'Rejection: Course does not exist.';
+IF CourseExists = 1
+BEGIN
+IF AlreadyEnrolled = 0
+PRINT 'Approval: Course successfully registered.';
+ELSE
+PRINT 'Rejection: Learner is already enrolled in this course.';
+END
 
+END
+
+	INSERT INTO Enrollments (LearnerID, CourseID, CompletionStatus)
+	VALUES (@LearnerID, @CourseID, 'Registered');
+END;
 
 GO
-CREATE PROCEDURE Post --13
+CREATE PROC Post --13
     @LearnerID INT,
     @DiscussionID INT,
     @Post VARCHAR(MAX)
@@ -324,7 +352,7 @@ BEGIN
 END;
 
 Go
-CREATE PROCEDURE AddGoal  --14
+CREATE PROC AddGoal  --14
     @LearnerID INT,
     @GoalID INT
 AS
@@ -334,7 +362,7 @@ BEGIN
 END;
 
 GO
-CREATE PROCEDURE CurrentPath --15
+CREATE PROC CurrentPath --15
     @LearnerID INT
 AS
     SELECT 
