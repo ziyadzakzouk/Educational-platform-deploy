@@ -108,11 +108,22 @@ CREATE PROC TotalPoints
     @LearnerID INT,
     @RewardType VARCHAR(50)
 AS
-    SELECT SUM(Points) AS TotalPoints
+    SELECT SUM(value) AS TotalPoints
     FROM Rewards
     WHERE LearnerID = @LearnerID
     AND RewardType = @RewardType;
 GO
+
+GO
+CREATE PROC EnrolledCourses
+    @LearnerID INT
+AS
+    SELECT c.CourseID, c.CourseName, c.Description, c.CreditHours
+    FROM Course c
+    INNER JOIN Enrollments e ON c.CourseID = e.CourseID
+    WHERE e.LearnerID = @LearnerID;
+GO
+
 
 
 
