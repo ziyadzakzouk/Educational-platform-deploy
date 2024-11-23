@@ -170,16 +170,24 @@ END;
 GO
 CREATE PROCEDURE LeaderboardRank
     @LeaderboardID INT
-AS
-BEGIN
-  
+    AS  
     SELECT r.LearnerID, r.CourseID, r.rank, r.total_points
     FROM Ranking r
     WHERE r.BoardID = @LeaderboardID
     ORDER BY r.rank; 
 
 
-
+GO
+CREATE PROCEDURE ViewMyDeviceCharge
+    @ActivityID INT,
+    @LearnerID INT,
+    @timestamp DATETIME,
+    @emotionalstate VARCHAR(50)
+AS
+BEGIN
+    INSERT INTO Emotional_feedback (LearnerID, timestamp, emotional_state)
+    VALUES (@LearnerID, @timestamp, @emotionalstate);
+END;
 
 
 
