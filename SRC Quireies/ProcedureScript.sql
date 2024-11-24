@@ -372,8 +372,20 @@ AS
         LearningPath
     WHERE 
         Learner_ID = @LearnerID;
+GO
+CREATE PROC QuestMembers --16
+	@LearnerId int
+    AS
+    BEGIN
+    DECLARE @QuestID INT
+    DECLARE @DEADLINE DATE
+    SELECT LearnerID= @LearnerId FROM Learner
+    SELECT QuestID, Deadline FROM Collaborative
+	WHERE QuestID = @QuestID AND Deadline > @DEADLINE
+	
+	END;
 
-
+    GO
 
 
 
