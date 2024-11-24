@@ -182,3 +182,11 @@ IF @@ROWCOUNT > 0
     END
 END;
 
+GO
+CREATE PROC AssessmentNot @NotificationID INT, @timestamp TIMESTAMP, @message VARCHAR(MAX), @urgencylevel VARCHAR(50), @LearnerID INT
+AS
+BEGIN
+    INSERT INTO Notifications (NotificationID, Timestamp, Message, UrgencyLevel, LearnerID) VALUES (@NotificationID, @timestamp, @message, @urgencylevel, @LearnerID);
+    PRINT 'Notification sent successfully.';
+END;
+
