@@ -196,3 +196,13 @@ AS BEGIN
     INSERT INTO Learning_goal (ID, status, deadline, description) VALUES (@GoalID, @status, @deadline, @description);
 END;
 
+Go
+CREATE PROCEDURE LearnersCourses @CourseID INT, @InstructorID INT
+AS
+BEGIN
+    SELECT C.title, L.LearnerName, L.LearnerEmail
+    FROM Enrollments E
+    INNER JOIN Course C ON E.Course_ID = C.Course_ID INNER JOIN Instructor I ON C.Instructor_ID = I.Instructor_ID INNER JOIN Learners L ON E.LearnerID = L.LearnerID
+    WHERE C.Course_ID = @CourseID AND I.Instructor_ID = @InstructorID;
+END;
+
