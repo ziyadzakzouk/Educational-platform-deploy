@@ -426,3 +426,13 @@ CREATE PROC QuestMembers --16
 END;
 GO
 
+CREATE PROC GoalReminder --18
+	@LearnerID INT,
+    @GoalID INT
+    AS
+    BEGIN
+    DECLARE @Deadline DATE;
+    SELECT Deadline = @Deadline FROM Learning_goal
+	WHERE GoalID = @GoalID AND Deadline > @Deadline
+	END;
+
