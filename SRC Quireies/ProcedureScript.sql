@@ -1,7 +1,7 @@
 ﻿use EduPlatform
 
 Go
-CREATE PROC ViewInfo
+CREATE PROC ViewInfo   --handle the edge cases from the input till the validation
 @LearnerID int
 AS
 select * from Learner 
@@ -91,7 +91,7 @@ delete from Notification where @NotificationID = Notification_ID
 
 
  
-Go --1
+Go --1  --check the input (Edge cases)
 CREATE PROC ProfileUpdate
     @LearnerID INT, @ProfileID INT, @PreferedContentType VARCHAR(50),@emotional_state VARCHAR(50), @PersonalityType VARCHAR(50)
     AS
@@ -103,7 +103,7 @@ CREATE PROC ProfileUpdate
      WHERE Learner_ID = @LearnerID AND profileID = @ProfileID;
 GO
 
-CREATE PROC TotalPoints --2
+CREATE PROC TotalPoints --2 --check the input (Edge cases)
     @LearnerID INT,
     @RewardType VARCHAR(50)
 AS
@@ -114,7 +114,7 @@ AS
 GO
 
 GO
-CREATE PROC EnrolledCourses  --3
+CREATE PROC EnrolledCourses  --3 --check the input (Edge cases)
     @LearnerID INT
 AS
     SELECT c.CourseID, c.CourseName, c.Description, c.CreditHours
@@ -154,7 +154,7 @@ END
 
 
 GO
-CREATE PROC Moduletraits--5
+CREATE PROC Moduletraits--5  --check the input (Edge cases)if it exists
     @TargetTrait VARCHAR(50), 
     @CourseID INT
 AS
@@ -168,7 +168,7 @@ BEGIN
 END;
 
 GO
-CREATE PROC LeaderboardRank  --6
+CREATE PROC LeaderboardRank  --6  --check the input (Edge cases)
     @LeaderboardID INT
     AS  
     SELECT r.LearnerID, r.CourseID, r.rank, r.total_points
@@ -239,7 +239,7 @@ GO
 
 GO
 
-CREATE PROCEDURE SkillsProficiency
+CREATE PROCEDURE SkillsProficiency   --8  handle the skill as an edge case
     @LearnerID INT
 AS
 BEGIN
@@ -266,7 +266,7 @@ GO
 
 
 GO
-CREATE PROC Viewscore --10
+CREATE PROC Viewscore --10  --check the input (Edge cases)
     @LearnerID INT,
     @AssessmentID INT,
     @score INT OUTPUT
@@ -305,7 +305,7 @@ BEGIN
 END;
 
 GO
-CREATE PROC Courseregister --12 
+CREATE PROC Courseregister --12  EDge case could be handled almost completly
 @LearnerID INT,
 @CourseID INT
 AS
@@ -352,7 +352,7 @@ BEGIN
 END;
 
 Go
-CREATE PROC AddGoal  --14
+CREATE PROC AddGoal  --14 --check the input (Edge cases)
     @LearnerID INT,
     @GoalID INT
 AS
@@ -362,7 +362,7 @@ BEGIN
 END;
 
 GO
-CREATE PROC CurrentPath --15
+CREATE PROC CurrentPath --15 --check the input (Edge cases)
     @LearnerID INT
 AS
     SELECT 
@@ -373,7 +373,7 @@ AS
     WHERE 
         Learner_ID = @LearnerID;
 GO
-CREATE PROC QuestMembers --16
+CREATE PROC QuestMembers --16 --check the input (Edge cases)
 	@LearnerId int
     AS
     BEGIN
@@ -426,7 +426,7 @@ CREATE PROC QuestMembers --16
 END;
 GO
 
-CREATE PROC GoalReminder --18
+CREATE PROC GoalReminder --18 --check the input (Edge cases)
 	@LearnerID INT,
     @GoalID INT
     AS
@@ -445,5 +445,56 @@ CREATE PROC SkillProgressHistory --19
     SELECT  LearnerID = @LearnerId ,Skill = @Skill, ProficiencyLevel, Timestamp
     FROM SkillProgression
 	END;
+
    GO
+   CREATE PROC AssessmentAnalysis --20
+	@AssessmentID INT,
+    @LearnerID INT
+	AS
+	BEGIN
+	 -- Validate Learner ID
+    IF NOT EXISTS (SELECT 1 FROM Learner WHERE Learner_ID = @LearnerID)
+    BEGIN
+        PRINT 'Rejection: Learner ID does not exist.';
+        RETURN;
+    END
+
+    -- Validate Assessment ID
+    IF NOT EXISTS (SELECT 1 FROM Assessments WHERE AssessmentID = @AssessmentID)
+    BEGIN
+        PRINT 'Rejection: Assessment ID does not exist.';
+        RETURN;
+    END
+
+    -- Fetch Assessment Overview
+    SELECT 
+        a.AssessmentID,
+        a.AssessmentName,
+        la.TotalScore,
+        a.TotalMarks
+    FROM 
+        Assessments a
+    LEFT JOIN 
+        LearnerAssessments la ON a.AssessmentID = la.AssessmentID
+    WHERE 
+        a.AssessmentID = @AssessmentID AND la.LearnerID = @LearnerID;
+
+    -- Fetch Section-wise Breakdown
+    SELECT 
+        s.SectionName,
+        ss.Score AS LearnerScore,
+        s.Weightage AS TotalWeightage,
+        CAST((CAST(ss.Score AS FLOAT) / s.Weightage) * 100 AS DECIMAL(5, 2)) AS Percentage
+    FROM 
+        AssessmentSections s
+    LEFT JOIN 
+        SectionScores ss ON s.SectionID = ss.SectionID AND s.AssessmentID = ss.AssessmentID
+    WHERE 
+        ss.LearnerID = @LearnerID AND s.AssessmentID = @AssessmentID;
+
+    -- Optional: Add Analysis (Strengths/Weaknesses)
+    -- Consider adding thresholds to categorize performance, such as:
+    PRINT 'Analysis: Focus on sections with less than 50% scores to improve performance.';
+END;
+GO
 
