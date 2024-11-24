@@ -86,4 +86,23 @@ AS
 if @ReadStatus = 1 
 delete from Notification where @NotificationID = Notification_ID
 
----------here is the start of the instructor procedures
+Go 
+CREATE PROC SkillLearners 
+ @Skillname VARCHAR(50)
+ AS 
+ BEGIN
+  SELECT  s.SkillName, l.LearnerName
+    FROM 
+        Skills s
+        INNER JOIN  LearnersSkills ls ON s.SkillID = ls.SkillID INNER JOIN  Learners l ON ls.LearnerID = l.LearnerID
+    WHERE 
+        s.SkillName = @Skillname;
+        END;
+
+GO
+CREATE PROC NewActivity  @CourseID int, @ModuleID int, @activitytype varchar(50), @instructiondetails varchar(max),
+@maxpoints int
+AS
+BEGIN
+INSERT INTO learningActivity(CourseID,ModuleID,activitytype, instructiondetails,maxpoints) values (@CourseID,@ModuleID,@activitytype, @instructiondetails,@maxpoints)
+END;
