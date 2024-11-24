@@ -1,4 +1,4 @@
-﻿use EduPlatform
+﻿use EduPlatform  --please put bit variable and inseart if stats to handle ege case
 
 Go
 CREATE PROC ViewInfo
@@ -332,3 +332,17 @@ BEGIN
     GROUP BY LearnerID
     ORDER BY COUNT(BadgeID) ASC;
 END;
+
+
+GO
+CREATE PROC PreferedType --19
+@type VARCHAR(50) OUTPUT
+AS
+BEGIN
+	
+	SELECT  @type = prefrences
+	FROM LearningPrefrences
+	GROUP BY prefrences
+	ORDER BY COUNT(prefrences) DESC;
+END;
+GO
