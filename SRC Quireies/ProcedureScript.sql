@@ -217,8 +217,8 @@ GO
 CREATE PROC CommonEmotionalState @state VARCHAR(50) OUTPUT
 AS
 BEGIN
-    SELECT TOP 1 @state = emotional_state
-    FROM Learner
-    GROUP BY emotional_state
-    ORDER BY COUNT(emotional_state) DESC;
+    SELECT TOP 1 @state = emotionalState
+    FROM PersonalProfile
+    GROUP BY emotionalState
+    ORDER BY COUNT(emotionalState) DESC;
 END;
