@@ -165,3 +165,20 @@ BEGIN
     WHERE QuestID = @QuestID;
 END;
 
+GO 
+CREATE PROC GradeUpdate @LearnerID int, @AssessmentID int, @Newgrade int 
+AS BEGIN
+UPDATE Assessment 
+SET totalMarks = @Newgrade 
+WHERE LearnerID = @LearnerID AND AssessmentID = @AssessmentID;
+
+IF @@ROWCOUNT > 0
+    BEGIN
+        PRINT 'Grade updated successfully.';
+    END
+    ELSE
+    BEGIN
+        PRINT 'No record found to update.';
+    END
+END;
+
