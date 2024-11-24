@@ -146,3 +146,12 @@ c.title
     WHERE 
         lc.LearnerID = @LearnerID;
 END;
+
+Go
+CREATE PROC CollaborativeQuest  @difficulty_level varchar(50), @criteria varchar(50), @description varchar(50), @title varchar(50), @Maxnumparticipants int, @deadline datetime
+AS
+BEGIN
+    
+    INSERT INTO Quest (difficulty_level, criteria, description, title) VALUES (@difficulty_level, @criteria, @description, @title); 
+    INSERT INTO Collaborative (QuestID, Deadline, Max_Num_Participants) VALUES (@QuestID, @deadline, @Maxnumparticipants);
+    END;
