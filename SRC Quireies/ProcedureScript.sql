@@ -498,3 +498,32 @@ CREATE PROC SkillProgressHistory --19
 END;
 GO
 
+CREATE PROC LeaderboardFilter
+    @LearnerID INT
+AS
+BEGIN
+    -- Validate Learner ID
+    IF NOT EXISTS (SELECT 1 FROM Learners WHERE Learner_ID = @LearnerID)
+    BEGIN
+        PRINT 'Rejection: Learner ID does not exist.';
+        RETURN;
+    END
+
+    -- Fetch and filter the leaderboard by learner rank in descending order
+    SELECT 
+        l.LearnerID,
+        l.Name AS LearnerName,
+        lb.Rank,
+        lb.Score
+    FROM 
+        Leaderboard lb
+    INNER JOIN 
+        Learners l ON lb.LearnerID = l.LearnerID
+    WHERE 
+        lb.Rank >= (SELECT Rank FROM Leaderboard WHERE LearnerID = @LearnerID)
+    ORDER BY 
+        lb.Rank DESC;
+END;
+GO
+
+
