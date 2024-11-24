@@ -127,3 +127,10 @@ SELECT l.LearnerID,l.LearnerName, b.BadgeName
     WHERE 
         b.BadgeID = @BadgeID;
 END;
+
+GO
+create proc NewPath  @LearnerID int, @ProfileID int, @completion_status varchar(50), @custom_content varchar(max), @adaptiverules varchar(max)
+AS 
+BEGIN 
+INSERT INTO LearningPaths (LearnerID, ProfileID, CompletionStatus, CustomContent, Adapt) VALUES (@LearnerID, @ProfileID, @Completion_Status, @Custom_Content, @Adapt);
+END;
