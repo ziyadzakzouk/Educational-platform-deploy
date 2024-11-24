@@ -222,3 +222,20 @@ BEGIN
     GROUP BY emotionalState
     ORDER BY COUNT(emotionalState) DESC;
 END;
+
+GO
+CREATE PROCEDURE ModuleDifficulty
+    @courseID INT
+AS
+BEGIN
+    SELECT M.Module_ID, M.title, M.difficulty_level, M.contentURL
+    FROM Module M
+    WHERE M.Course_ID = @courseID
+    ORDER BY 
+        CASE 
+            WHEN M.difficulty_level = 'Easy' THEN 1
+            WHEN M.difficulty_level = 'Medium' THEN 2
+            WHEN M.difficulty_level = 'Hard' THEN 3
+            ELSE 4 
+        END;
+END;
