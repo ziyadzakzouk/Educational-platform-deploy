@@ -311,4 +311,14 @@ ORDER BY proficiency_level DESC
 
 END;
 GO
-
+CREATE PROC  ProfeciencyUpdate --17
+@Skill varchar(50),
+@LearnerID INT,
+@Level  VARCHAR(50)
+AS
+BEGIN
+UPDATE SkillProgression
+SET proficiency_level=@Level
+WHERE LearnerID=@LearnerID AND Skill=@Skill
+END;
+GO
