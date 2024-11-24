@@ -113,3 +113,17 @@ AS
 BEGIN
 INSERT INTO Achievement(LearnerID, BadgeID , description, date_earned, type) VALUES (@LearnerID, @BadgeID , @description, @date_earned, @type)
 END;
+
+GO
+CREATE PROC LearnerBadge @BadgeID int
+
+AS
+BEGIN
+
+SELECT l.LearnerID,l.LearnerName, b.BadgeName
+    FROM 
+        Learners l
+    INNER JOIN LearnersBadges lb ON l.LearnerID = lb.LearnerIDINNER JOIN Badges b ON lb.BadgeID = b.BadgeID
+    WHERE 
+        b.BadgeID = @BadgeID;
+END;
