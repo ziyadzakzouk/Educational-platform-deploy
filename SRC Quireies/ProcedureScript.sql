@@ -197,12 +197,19 @@ AS BEGIN
 END;
 
 Go
-CREATE PROCEDURE LearnersCourses @CourseID INT, @InstructorID INT
+CREATE PROC LearnersCourses @CourseID INT, @InstructorID INT
+AS BEGIN
+    SELECT C.title, L.LearnerName, L.LearnerEmail
+    FROM Course_Enrollment CE
+    INNER JOIN Course C ON CE.Course_ID = C.Course_ID INNER JOIN Instructor I ON C.Instructor_ID = I.Instructor_ID INNER JOIN Learner L ON CE.Learner_ID = L.Learner_ID
+    WHERE C.Course_ID = @CourseID AND I.Instructor_ID = @InstructorID;
+END;
+
+Go
+CREATE PROC LastActive @ForumID INT,@lastactive DATETIME OUTPUT
 AS
 BEGIN
-    SELECT C.title, L.LearnerName, L.LearnerEmail
-    FROM Enrollments E
-    INNER JOIN Course C ON E.Course_ID = C.Course_ID INNER JOIN Instructor I ON C.Instructor_ID = I.Instructor_ID INNER JOIN Learners L ON E.LearnerID = L.LearnerID
-    WHERE C.Course_ID = @CourseID AND I.Instructor_ID = @InstructorID;
+    SELECT @lastactive = last_active
+    FROM Discussion_forum WHERE forumID = @ForumID;
 END;
 
