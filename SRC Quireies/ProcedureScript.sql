@@ -134,3 +134,15 @@ AS
 BEGIN 
 INSERT INTO LearningPaths (LearnerID, ProfileID, CompletionStatus, CustomContent, Adapt) VALUES (@LearnerID, @ProfileID, @Completion_Status, @Custom_Content, @Adapt);
 END;
+
+GO
+CREATE PROC TakenCourses @LearnerID Int 
+AS BEGIN 
+SELECT
+c.Course_ID,
+c.title
+ FROM  Course c
+    INNER JOIN LearnersCourses lc ON c.Course_ID = lc.Course_ID
+    WHERE 
+        lc.LearnerID = @LearnerID;
+END;
