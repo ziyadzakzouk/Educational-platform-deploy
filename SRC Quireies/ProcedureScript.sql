@@ -388,5 +388,41 @@ CREATE PROC QuestMembers --16
     GO
 
 
+    CREATE PROC QuestProgress --17
+    @LearnerID INT,
+    @QuestID INT
+    AS
+    BEGIN
+     -- Validate if the learner exists
+    IF NOT EXISTS (SELECT 1 FROM Learner WHERE Learner_ID = @LearnerID)
+    BEGIN
+        PRINT 'Rejection: Learner ID does not exist.';
+        RETURN;
+    END
 
+    -- Fetch quest progress
+    SELECT 
+        q.QuestID AS QuestID,
+        q.QuestName AS QuestName,
+        qp.CompletionStatus AS CompletionStatus
+    FROM 
+       QuestReward qp
+    INNER JOIN 
+        Quest q ON qp.QuestID = q.QuestID
+    WHERE 
+        qp.LearnerID = @LearnerID AND qp.QuestID = @QuestID;
+
+    -- Fetch badges earned by the learner
+    SELECT 
+        b.BadgeID AS BadgeID,
+        b.BadgeName AS BadgeName,
+        lb.DateEarned AS DateEarned
+    FROM 
+       Achievement lb
+    INNER JOIN 
+        Badges b ON lb.BadgeID = b.BadgeID
+    WHERE 
+        lb.LearnerID = @LearnerID;
+END;
+GO
 
