@@ -58,7 +58,7 @@ Go
 CREATE PROC ViewNot 
 @LearnerID int
 AS
-select n.* from Notification n inner join RecivedNotfy r
+select n.* from Notification n inner join RecivedNotfy r on n.Notification_ID = r.Notification_ID
 where @LearnerID = r.Learner_ID
 
 Go
@@ -86,8 +86,12 @@ AS
 if @ReadStatus = 1 
 delete from Notification where @NotificationID = Notification_ID
 
+
+
+
+---- instructor procedures
 Go 
-CREATE PROC SkillLearners 
+CREATE PROC SkillLearners  --1  --handle the edge cases in the input or output
  @Skillname VARCHAR(50)
  AS 
  BEGIN
@@ -100,44 +104,66 @@ CREATE PROC SkillLearners
         END;
 
 GO
-CREATE PROC NewActivity @CourseID int, @ModuleID int, @activitytype varchar(50), @instructiondetails varchar(max),
+CREATE PROC NewActivity --2
+@CourseID int,
+@ModuleID int,
+@activitytype varchar(50),
+@instructiondetails varchar(max),
 @maxpoints int
 AS
 BEGIN
-INSERT INTO learningActivity(CourseID,ModuleID,activitytype, instructiondetails,maxpoints) values (@CourseID,@ModuleID,@activitytype, @instructiondetails,@maxpoints)
+INSERT INTO learningActivity(CourseID,ModuleID,activitytype, instructiondetails,maxpoints) values 
+(@CourseID,@ModuleID,@activitytype, @instructiondetails,@maxpoints)
 END;
 
 GO
-CREATE PROC NewAchievement @LearnerID int, @BadgeID int, @description varchar(max), @date_earned date, @type varchar(50)
+CREATE PROC NewAchievement --3 
+@LearnerID int, 
+@BadgeID int,
+@description varchar(max), 
+@date_earned date, 
+@type varchar(50)
 AS
 BEGIN
-INSERT INTO Achievement(LearnerID, BadgeID , description, date_earned, type) VALUES (@LearnerID, @BadgeID , @description, @date_earned, @type)
+INSERT INTO Achievement(LearnerID, BadgeID , description, date_earned, type) VALUES 
+(@LearnerID, @BadgeID , @description, @date_earned, @type)
 END;
 
 GO
-CREATE PROC LearnerBadge @BadgeID int
+CREATE PROC LearnerBadge --4
+@BadgeID int
 
 AS
 BEGIN
 
-SELECT l.LearnerID,l.LearnerName, b.BadgeName
+SELECT l.LearnerID,
+l.LearnerName,
+b.BadgeName
     FROM 
-        Learners l
+       Learners l
     INNER JOIN LearnersBadges lb ON l.LearnerID = lb.LearnerIDINNER JOIN Badges b ON lb.BadgeID = b.BadgeID
     WHERE 
         b.BadgeID = @BadgeID;
 END;
 
 GO
-create proc NewPath  @LearnerID int, @ProfileID int, @completion_status varchar(50), @custom_content varchar(max), @adaptiverules varchar(max)
+create proc NewPath --5 
+@LearnerID int, 
+@ProfileID int,
+@completion_status varchar(50),
+@custom_content varchar(max),
+@adaptiverules varchar(max)
 AS 
 BEGIN 
-INSERT INTO LearningPaths (LearnerID, ProfileID, CompletionStatus, CustomContent, Adapt) VALUES (@LearnerID, @ProfileID, @Completion_Status, @Custom_Content, @Adapt);
+INSERT INTO LearningPaths (LearnerID, ProfileID, CompletionStatus, CustomContent, Adapt) VALUES 
+(@LearnerID, @ProfileID, @Completion_Status, @Custom_Content, @Adapt);
 END;
 
 GO
-CREATE PROC TakenCourses @LearnerID Int 
-AS BEGIN 
+CREATE PROC TakenCourses --6 
+@LearnerID Int 
+AS 
+BEGIN 
 SELECT
 c.Course_ID,
 c.title
@@ -148,16 +174,26 @@ c.title
 END;
 
 Go
-CREATE PROC CollaborativeQuest  @difficulty_level varchar(50), @criteria varchar(50), @description varchar(50), @title varchar(50), @Maxnumparticipants int, @deadline datetime
+CREATE PROC CollaborativeQuest  --7
+@difficulty_level varchar(50),
+@criteria varchar(50),
+@description varchar(50), 
+@title varchar(50), 
+@Maxnumparticipants int, 
+@deadline datetime
 AS
 BEGIN
     
-    INSERT INTO Quest (difficulty_level, criteria, description, title) VALUES (@difficulty_level, @criteria, @description, @title); 
-    INSERT INTO Collaborative (QuestID, Deadline, Max_Num_Participants) VALUES (@QuestID, @deadline, @Maxnumparticipants);
+    INSERT INTO Quest (difficulty_level, criteria, description, title) VALUES 
+    (@difficulty_level, @criteria, @description, @title); 
+    INSERT INTO Collaborative (QuestID, Deadline, Max_Num_Participants) VALUES 
+    (@QuestID, @deadline, @Maxnumparticipants);
     END;
 
 GO
-CREATE PROCEDURE DeadlineUpdate @QuestID INT, @deadline DATETIME
+CREATE PROCEDURE DeadlineUpdate  --8 
+@QuestID INT, 
+@deadline DATETIME
 AS
 BEGIN
     UPDATE Collaborative
@@ -166,8 +202,12 @@ BEGIN
 END;
 
 GO 
-CREATE PROC GradeUpdate @LearnerID int, @AssessmentID int, @Newgrade int 
-AS BEGIN
+CREATE PROC GradeUpdate  --9 
+@LearnerID int, 
+@AssessmentID int,
+@Newgrade int 
+AS
+BEGIN
 UPDATE Assessment 
 SET totalMarks = @Newgrade 
 WHERE LearnerID = @LearnerID AND AssessmentID = @AssessmentID;
@@ -183,22 +223,37 @@ IF @@ROWCOUNT > 0
 END;
 
 GO
-CREATE PROC AssessmentNot @NotificationID INT, @timestamp TIMESTAMP, @message VARCHAR(MAX), @urgencylevel VARCHAR(50), @LearnerID INT
+CREATE PROC AssessmentNot  --10
+@NotificationID INT, 
+@timestamp TIMESTAMP,
+@message VARCHAR(MAX), 
+@urgencylevel VARCHAR(50), 
+@LearnerID INT
 AS
 BEGIN
-    INSERT INTO Notifications (NotificationID, Timestamp, Message, UrgencyLevel, LearnerID) VALUES (@NotificationID, @timestamp, @message, @urgencylevel, @LearnerID);
+    INSERT INTO Notifications (NotificationID, Timestamp, Message, UrgencyLevel, LearnerID) VALUES 
+    (@NotificationID, @timestamp, @message, @urgencylevel, @LearnerID);
     PRINT 'Notification sent successfully.';
 END;
 
 GO
-CREATE PROCEDURE NewGoal @GoalID INT, @status VARCHAR(MAX), @deadline DATETIME, @description VARCHAR(MAX)
-AS BEGIN
-    INSERT INTO Learning_goal (ID, status, deadline, description) VALUES (@GoalID, @status, @deadline, @description);
+CREATE PROC NewGoal --11
+@GoalID INT, 
+@status VARCHAR(MAX), 
+@deadline DATETIME,
+@description VARCHAR(MAX)
+AS 
+BEGIN
+    INSERT INTO Learning_goal (ID, status, deadline, description) VALUES
+    (@GoalID, @status, @deadline, @description);
 END;
 
 Go
-CREATE PROC LearnersCourses @CourseID INT, @InstructorID INT
-AS BEGIN
+CREATE PROC LearnersCourses --12
+@CourseID INT,
+@InstructorID INT
+AS 
+BEGIN
     SELECT C.title, L.LearnerName, L.LearnerEmail
     FROM Course_Enrollment CE
     INNER JOIN Course C ON CE.Course_ID = C.Course_ID INNER JOIN Instructor I ON C.Instructor_ID = I.Instructor_ID INNER JOIN Learner L ON CE.Learner_ID = L.Learner_ID
@@ -206,7 +261,9 @@ AS BEGIN
 END;
 
 Go
-CREATE PROC LastActive @ForumID INT,@lastactive DATETIME OUTPUT
+CREATE PROC LastActive --13
+@ForumID INT,
+@lastactive DATETIME OUTPUT
 AS
 BEGIN
     SELECT @lastactive = last_active
@@ -214,7 +271,8 @@ BEGIN
 END;
 
 GO 
-CREATE PROC CommonEmotionalState @state VARCHAR(50) OUTPUT
+CREATE PROC CommonEmotionalState --14
+@state VARCHAR(50) OUTPUT
 AS
 BEGIN
     SELECT TOP 1 @state = emotionalState
@@ -224,7 +282,7 @@ BEGIN
 END;
 
 GO
-CREATE PROCEDURE ModuleDifficulty
+CREATE PROCEDURE ModuleDifficulty --15
     @courseID INT
 AS
 BEGIN
