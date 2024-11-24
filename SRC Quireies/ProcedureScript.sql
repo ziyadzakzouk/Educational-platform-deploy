@@ -155,3 +155,13 @@ BEGIN
     INSERT INTO Quest (difficulty_level, criteria, description, title) VALUES (@difficulty_level, @criteria, @description, @title); 
     INSERT INTO Collaborative (QuestID, Deadline, Max_Num_Participants) VALUES (@QuestID, @deadline, @Maxnumparticipants);
     END;
+
+GO
+CREATE PROCEDURE DeadlineUpdate @QuestID INT, @deadline DATETIME
+AS
+BEGIN
+    UPDATE Collaborative
+    SET Deadline = @deadline
+    WHERE QuestID = @QuestID;
+END;
+
