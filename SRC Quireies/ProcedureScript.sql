@@ -346,3 +346,48 @@ BEGIN
 	ORDER BY COUNT(prefrences) DESC;
 END;
 GO
+
+CREATE PROCEDURE AssessmentAnalytics
+    @CourseID INT,
+    @ModuleID INT
+AS
+BEGIN
+    -- Validate Course ID
+    IF NOT EXISTS (SELECT 1 FROM Courses WHERE CourseID = @CourseID)
+    BEGIN
+        PRINT 'Rejection: Course ID does not exist.';
+        RETURN;
+    END
+
+    -- Validate Module ID
+    IF NOT EXISTS (SELECT 1 FROM Modules WHERE ModuleID = @ModuleID AND CourseID = @CourseID)
+    BEGIN
+        PRINT 'Rejection: Module ID does not exist for the specified Course.';
+        RETURN;
+    END
+
+    -- Fetch analytics for assessments in the specified module and course
+    SELECT 
+        a.AssessmentID,
+        a.ModuleID,
+        m.ModuleName,
+        c.CourseName,
+        COUNT(la.LearnerID) AS NumberOfLearners,
+        AVG(CAST(la.Score AS FLOAT)) AS AverageScore,
+        a.TotalMarks
+    FROM 
+        Assessments a
+    INNER JOIN 
+        Modules m ON a.ModuleID = m.ModuleID
+    INNER JOIN 
+        Courses c ON m.CourseID = c.CourseID
+    LEFT JOIN 
+        LearnerAssessments la ON a.AssessmentID = la.AssessmentID
+    WHERE 
+        m.ModuleID = @ModuleID AND c.CourseID = @CourseID
+    GROUP BY 
+        a.AssessmentID, a.ModuleID, m.ModuleName, c.CourseName, a.TotalMarks
+    ORDER BY 
+        a.AssessmentID;
+END;
+GO
