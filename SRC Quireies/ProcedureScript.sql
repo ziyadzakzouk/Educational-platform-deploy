@@ -297,3 +297,18 @@ BEGIN
             ELSE 4 
         END;
 END;
+
+GO
+CREATE PROC  Profeciencylevel --16 --handle the cases in my procedure 
+@LearnerID INT,
+@Skill varchar(50)
+AS
+BEGIN
+SELECT Skill=@Skill 
+FROM SkillProgression
+WHERE LearnerID=@LearnerID 
+ORDER BY proficiency_level DESC
+
+END;
+GO
+
