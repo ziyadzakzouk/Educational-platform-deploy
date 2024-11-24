@@ -100,9 +100,16 @@ CREATE PROC SkillLearners
         END;
 
 GO
-CREATE PROC NewActivity  @CourseID int, @ModuleID int, @activitytype varchar(50), @instructiondetails varchar(max),
+CREATE PROC NewActivity @CourseID int, @ModuleID int, @activitytype varchar(50), @instructiondetails varchar(max),
 @maxpoints int
 AS
 BEGIN
 INSERT INTO learningActivity(CourseID,ModuleID,activitytype, instructiondetails,maxpoints) values (@CourseID,@ModuleID,@activitytype, @instructiondetails,@maxpoints)
+END;
+
+GO
+CREATE PROC NewAchievement @LearnerID int, @BadgeID int, @description varchar(max), @date_earned date, @type varchar(50)
+AS
+BEGIN
+INSERT INTO Achievement(LearnerID, BadgeID , description, date_earned, type) VALUES (@LearnerID, @BadgeID , @description, @date_earned, @type)
 END;
