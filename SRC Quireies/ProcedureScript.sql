@@ -190,3 +190,9 @@ BEGIN
     PRINT 'Notification sent successfully.';
 END;
 
+GO
+CREATE PROCEDURE NewGoal @GoalID INT, @status VARCHAR(MAX), @deadline DATETIME, @description VARCHAR(MAX)
+AS BEGIN
+    INSERT INTO Learning_goal (ID, status, deadline, description) VALUES (@GoalID, @status, @deadline, @description);
+END;
+
