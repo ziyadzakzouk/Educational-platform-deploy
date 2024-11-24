@@ -322,3 +322,13 @@ SET proficiency_level=@Level
 WHERE LearnerID=@LearnerID AND Skill=@Skill
 END;
 GO
+CREATE PROC  LeastBadge --18
+@LearnerID INT OUTPUT
+AS
+BEGIN
+    -- Find the learner with the least number of badges earned
+    SELECT TOP 1 @LearnerID = LearnerID
+    FROM LearnerBadges
+    GROUP BY LearnerID
+    ORDER BY COUNT(BadgeID) ASC;
+END;
