@@ -436,3 +436,14 @@ CREATE PROC GoalReminder --18
 	WHERE GoalID = @GoalID AND Deadline > @Deadline
 	END;
 
+    GO
+CREATE PROC SkillProgressHistory --19
+    @LearnerId INT,
+    @Skill VARCHAR(50)
+    AS
+    BEGIN
+    SELECT  LearnerID = @LearnerId ,Skill = @Skill, ProficiencyLevel, Timestamp
+    FROM SkillProgression
+	END;
+   GO
+
