@@ -983,9 +983,15 @@ IF NOT EXISTS (SELECT 1 FROM Learner WHERE Learner_ID = @LearnerID)
 END;
 
 GO
-CREATE PROC CurrentPath --15 --check the input (Edge cases)
+CREATE PROC CurrentPath --15 
     @LearnerID INT
 AS
+BEGIN
+	IF NOT EXISTS (SELECT 1 FROM Learner WHERE Learner_ID = @LearnerID)
+    BEGIN
+    PRINT 'Rejection: Learner ID does not exist.';
+		RETURN;
+	END
     SELECT 
         Path_ID AS LearningPathID,
         completion_status AS Status
@@ -993,6 +999,7 @@ AS
         LearningPath
     WHERE 
         Learner_ID = @LearnerID;
+        END;
 GO
 CREATE PROC QuestMembers --16 --check the input (Edge cases)
 	@LearnerId int
