@@ -489,17 +489,35 @@ END;
 
 GO
 CREATE PROC PreferedType --19
-@type VARCHAR(50) OUTPUT
+ @type VARCHAR(50) OUTPUT
 AS
 BEGIN
-	
-	SELECT  @type = prefrences
-	FROM LearningPrefrences
-	GROUP BY prefrences
-	ORDER BY COUNT(prefrences) DESC;
-END;
-GO
+    SET NOCOUNT ON;
+  
+    IF NOT EXISTS (SELECT 1 FROM LearningPrefrences)
+    BEGIN
+        PRINT 'Error: The LearningPrefrences table is empty.';
+        SET @type = NULL; 
+        RETURN;
+    END
+    
+    IF @type IS NULL
+    BEGIN
+        PRINT 'Error: No valid preferences found in the LearningPrefrences table.';
+        RETURN;
+    END
+    
+    SELECT TOP 1 @type = prefrences
+    FROM LearningPrefrences
+    WHERE prefrences IS NOT NULL AND LEN(prefrences) > 0
+    GROUP BY prefrences
+    ORDER BY COUNT(prefrences) DESC, prefrences ASC;
 
+    
+END;
+
+
+GO
 CREATE PROC AssessmentAnalytics --20  --check the from tables 
     @CourseID INT,
     @ModuleID INT
