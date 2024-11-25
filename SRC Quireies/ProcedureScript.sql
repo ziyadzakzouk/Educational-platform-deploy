@@ -633,10 +633,43 @@ CREATE PROC LearnersCourses --12
 @InstructorID INT
 AS 
 BEGIN
-    SELECT C.title, L.LearnerName, L.LearnerEmail
+
+    
+    IF NOT EXISTS (SELECT 1 FROM Course WHERE Course_ID = @CourseID)
+    BEGIN
+        PRINT 'Error: Course not found.';
+        RETURN;
+    END
+
+   
+    IF NOT EXISTS (SELECT 1 FROM Instructor WHERE Instructor_ID = @InstructorID)
+    BEGIN
+        PRINT 'Error: Instructor not found.';
+        RETURN;
+    END
+
+   
+    IF NOT EXISTS (SELECT 1 FROM Course WHERE Course_ID = @CourseID AND Instructor_ID = @InstructorID)
+    BEGIN
+        PRINT 'Error: The instructor is not associated with this course.';
+        RETURN;
+    END
+
+    
+    IF NOT EXISTS (SELECT 1 FROM Course_Enrollment WHERE Course_ID = @CourseID)
+    BEGIN
+        PRINT 'Error: No learners are enrolled in this course.';
+        RETURN;
+    END
+
+    -- Return the learners enrolled in the course taught by the provided instructor
+    SELECT C.title, L.first_name + ' ' + L.last_name AS LearnerName, L.email AS LearnerEmail
     FROM Course_Enrollment CE
-    INNER JOIN Course C ON CE.Course_ID = C.Course_ID INNER JOIN Instructor I ON C.Instructor_ID = I.Instructor_ID INNER JOIN Learner L ON CE.Learner_ID = L.Learner_ID
+    INNER JOIN Course C ON CE.Course_ID = C.Course_ID
+    INNER JOIN Instructor I ON C.Instructor_ID = I.Instructor_ID
+    INNER JOIN Learner L ON CE.Learner_ID = L.Learner_ID
     WHERE C.Course_ID = @CourseID AND I.Instructor_ID = @InstructorID;
+
 END;
 
 Go
