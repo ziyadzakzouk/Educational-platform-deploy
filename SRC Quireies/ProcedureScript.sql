@@ -562,27 +562,27 @@ BEGIN
 END;
 GO
 
-CREATE PROCEDURE EmotionalTrendAnalysis  --check the from tables bec iam tired
+CREATE PROCEDURE EmotionalTrendAnalysis  
     @CourseID INT,
     @ModuleID INT,
     @TimePeriod VARCHAR(50)
 AS
 BEGIN
-    -- Validate Course ID
-    IF NOT EXISTS (SELECT 1 FROM Courses WHERE CourseID = @CourseID)
+   
+    IF NOT EXISTS (SELECT 1 FROM Course WHERE CourseID = @CourseID)
     BEGIN
         PRINT 'Rejection: Course ID does not exist.';
         RETURN;
     END
 
-    -- Validate Module ID
-    IF NOT EXISTS (SELECT 1 FROM Modules WHERE ModuleID = @ModuleID AND CourseID = @CourseID)
+    
+    IF NOT EXISTS (SELECT 1 FROM Module WHERE ModuleID = @ModuleID AND CourseID = @CourseID)
     BEGIN
         PRINT 'Rejection: Module ID does not exist for the specified Course.';
         RETURN;
     END
 
-    -- Determine time filter based on @TimePeriod
+   
     DECLARE @StartDate DATETIME;
     IF @TimePeriod = 'LAST_MONTH'
         SET @StartDate = DATEADD(MONTH, -1, GETDATE());
@@ -591,25 +591,25 @@ BEGIN
     ELSE IF @TimePeriod = 'ALL_TIME'
         SET @StartDate = NULL;
 
-    -- Fetch emotional feedback trends
+   
     SELECT 
-        ef.Timestamp,
-        ef.Emotion,
+        ef.timestamp,
+        ef.emotional_state,
         COUNT(ef.FeedbackID) AS FeedbackCount
     FROM 
         EmotionalFeedback ef
     INNER JOIN 
-        Modules m ON ef.ModuleID = m.ModuleID
+        Module m ON ef.ModuleID = m.ModuleID
     INNER JOIN 
-        Courses c ON ef.CourseID = c.CourseID
+        Course c ON ef.CourseID = c.CourseID
     WHERE 
         ef.CourseID = @CourseID
         AND ef.ModuleID = @ModuleID
-        AND (@StartDate IS NULL OR ef.Timestamp >= @StartDate)
+        AND (@StartDate IS NULL OR ef.timestamp >= @StartDate)
     GROUP BY 
-        ef.Timestamp, ef.Emotion
+        ef.timestamp, ef.emotional_state
     ORDER BY 
-        ef.Timestamp;
+        ef.timestamp;
 END;
 GO
 
