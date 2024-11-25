@@ -331,11 +331,43 @@ create proc NewPath --5
 @completion_status varchar(50),
 @custom_content varchar(max),
 @adaptiverules varchar(max)
-AS 
-BEGIN 
-INSERT INTO LearningPaths (LearnerID, ProfileID, CompletionStatus, CustomContent, Adapt) VALUES 
-(@LearnerID, @ProfileID, @Completion_Status, @Custom_Content, @Adapt);
-END;
+AS  
+BEGIN  
+     
+    IF @LearnerID IS NULL OR @LearnerID <= 0  
+    BEGIN  
+        PRINT 'Error: LearnerID must be a positive integer.';  
+        RETURN;  
+    END  
+
+    IF @ProfileID IS NULL OR @ProfileID <= 0  
+    BEGIN  
+        PRINT 'Error: ProfileID must be a positive integer.';  
+        RETURN;  
+    END  
+
+    IF @completion_status IS NULL OR @completion_status = ''  
+    BEGIN  
+        PRINT 'Error: CompletionStatus cannot be NULL or empty.';  
+        RETURN;  
+    END  
+  
+    IF @custom_content IS NULL OR @custom_content = ''  
+    BEGIN  
+        PRINT 'Error: CustomContent cannot be NULL or empty.';  
+        RETURN;  
+    END  
+
+    IF @adaptiverules IS NULL OR @adaptiverules = ''  
+    BEGIN  
+        PRINT 'Error: AdaptiveRules cannot be NULL or empty.';  
+        RETURN;  
+    END  
+
+    INSERT INTO LearningPath (Learner_ID, profileID, completion_status, customContent, adaptiveRules)  VALUES (@LearnerID, @ProfileID, @completion_status, @custom_content, @adaptiverules);  
+
+    PRINT 'New learning path created successfully.';  
+END;  
 
 GO
 CREATE PROC TakenCourses --6 
