@@ -97,19 +97,23 @@ end
 Go
 CREATE PROC Highestgrade 
 AS
+begin
 select MAX(totalMarks) from Assessment
 group by Course_ID
+end
 
 Go
 CREATE PROC InstructorCount 
 AS
+begin
 select c.* from Course c inner join Teaches t on c.Course_ID = t.Course_ID
 where count(t.Instructor_ID)>1
-
+end
 Go
 CREATE PROC ViewNot 
 @LearnerID int
 AS
+BEGIN
 if(not exists(select 1 from Learner where Learner_ID = @LearnerID))
 begin 
 print 'the learner does not exist'
@@ -119,13 +123,15 @@ begin
 select n.* from Notification n inner join RecivedNotfy r on n.Notification_ID = r.Notification_ID
 where @LearnerID = r.Learner_ID
 end
+end
 
 Go
 CREATE PROC CreateDiscussion --some discussion attributes need to be null and the forumid need to be identity
 @ModuleID int, @courseID int, @title varchar(50), @description varchar(50)
 AS
+begin
 insert into Discussion_forum(Module_ID,Course_ID,title,description) values (@ModuleID, @courseID, @title, @description)
-
+end
 Go
 CREATE PROC RemoveBadge
 @BadgeID int
@@ -138,6 +144,7 @@ else
 begin
 delete from Badge where BadgeID = @BadgeID
 end
+
 
 Go
 CREATE PROC CriteriaDelete
@@ -1008,32 +1015,65 @@ Go --1  --check the input (Edge cases)
 CREATE PROC ProfileUpdate
     @LearnerID INT, @ProfileID INT, @PreferedContentType VARCHAR(50),@emotional_state VARCHAR(50), @PersonalityType VARCHAR(50)
     AS
+	if(not exists(select 1 from Learner where Learner_ID = @LearnerID))
+	begin 
+	print 'the learner does not exist'
+	RETURN;
+	end
+	else
+	begin
     UPDATE PersonalProfile
     SET 
+		profileID = @ProfileID,
         PreferedContent_type = @PreferedContentType,
-        emotionalState = @EmotionalState,
+        emotionalState = @emotional_state,
         personality_type = @PersonalityType
-     WHERE Learner_ID = @LearnerID AND profileID = @ProfileID;
+     WHERE Learner_ID = @LearnerID;
+	 end
 GO
 
 CREATE PROC TotalPoints --2 --check the input (Edge cases)
     @LearnerID INT,
     @RewardType VARCHAR(50)
 AS
-    SELECT SUM(value) AS TotalPoints
-    FROM Rewards
+if(not exists(select 1 from Learner where Learner_ID = @LearnerID))
+begin 
+print 'the learner does not exist'
+RETURN;
+end
+
+else
+if(not exists(select 1 from Reward where type = @RewardType))
+begin 
+print 'the reward type does not exist'
+RETURN;
+end
+else
+begin
+    SELECT SUM(r.value) AS TotalPoints
+    FROM Reward r inner join QuestReward q on r.RewardID = q.QuestID inner join
+	Learner l on q.LearnerID = l.Learner_ID
     WHERE LearnerID = @LearnerID
-    AND RewardType = @RewardType;
+    AND type = @RewardType;
+end
 GO
 
 GO
 CREATE PROC EnrolledCourses  --3 --check the input (Edge cases)
     @LearnerID INT
 AS
-    SELECT c.CourseID, c.CourseName, c.Description, c.CreditHours
+if(not exists(select 1 from Learner where Learner_ID = @LearnerID))
+begin 
+print 'the learner does not exist'
+RETURN;
+end
+else
+begin 
+    SELECT c.*
     FROM Course c
-    INNER JOIN Enrollments e ON c.CourseID = e.CourseID
-    WHERE e.LearnerID = @LearnerID;
+    INNER JOIN Course_Enrollment e ON c.Course_ID = e.Course_ID
+    WHERE e.Learner_ID = @LearnerID;
+	end
 
 
     -- check to be reviewed 
@@ -1071,9 +1111,19 @@ CREATE PROC Moduletraits--5  --check the input (Edge cases)if it exists
     @TargetTrait VARCHAR(50), 
     @CourseID INT
 AS
-BEGIN
-   
-    SELECT m.Module_ID, m.title, m.difficulty_level
+	if(not exists(select 1 from TargetTraits where trait = @TargetTrait))
+	begin 
+	print 'the trait does not exist'
+	end
+	else
+	if(not exists(select 1 from Module where Course_ID = @CourseID))
+	begin 
+	print 'the course does not exist in the module'
+	RETURN;
+	end
+	else
+	begin 
+    SELECT m.*
     FROM Module m
     INNER JOIN TargetTraits tt ON m.Module_ID = tt.Module_ID
     WHERE tt.trait = @TargetTrait 
@@ -1083,24 +1133,40 @@ END;
 GO
 CREATE PROC LeaderboardRank  --6  --check the input (Edge cases)
     @LeaderboardID INT
-    AS  
-    SELECT r.LearnerID, r.CourseID, r.rank, r.total_points
-    FROM Ranking r
+    AS 
+	if(not exists(select 1 from Ranking where BoardID = @LeaderboardID))
+	begin 
+	print 'the board does not exist'
+	RETURN;
+	end
+	else
+	begin
+    SELECT l.*,r.rank
+    FROM learner l inner join Ranking r on l.Learner_ID = r.LearnerID
     WHERE r.BoardID = @LeaderboardID
     ORDER BY r.rank; 
-
-
+	end
 GO
-CREATE PROC ViewMyDeviceCharge  --7
+CREATE PROC ViewMyDeviceCharge  --7 --------needs to be reviewed
     @ActivityID INT,
     @LearnerID INT,
     @timestamp DATETIME,
     @emotionalstate VARCHAR(50)
 AS
 BEGIN
-    INSERT INTO Emotional_feedback (LearnerID, timestamp, emotional_state)
-    VALUES (@LearnerID, @timestamp, @emotionalstate);
+    IF NOT EXISTS (SELECT 1 FROM learningActivity WHERE Activity_ID = @ActivityID)
+    BEGIN 
+        PRINT 'The activity does not exist';
+        RETURN;
+    END
+    ELSE
+    BEGIN
+        INSERT INTO Emotional_feedback(LearnerID, timestamp, emotional_state)
+        VALUES (@LearnerID, @timestamp, @emotionalstate);
+    END
 END;
+    
+
 
 GO
 CREATE PROC JoinQuest
@@ -1133,13 +1199,13 @@ BEGIN
         PRINT 'Rejection: Learner has already joined this quest.';
         RETURN;
     END
-
+	else
     IF @CurrentParticipants >= @MaxParticipants
     BEGIN
         PRINT 'Rejection: Quest is already at full capacity.';
         RETURN;
     END
-
+	else
     
     INSERT INTO QuestParticipants (QuestID, LearnerID)
     VALUES (@QuestID, @LearnerID);
@@ -1148,11 +1214,7 @@ BEGIN
 END;
 GO
 
-
-
-GO
-
-CREATE PROCEDURE SkillsProficiency   --8  handle the skill as an edge case
+CREATE PROCEDURE SkillsProficiency   --9  handle the skill as an edge case
     @LearnerID INT
 AS
 BEGIN
@@ -1162,21 +1224,12 @@ BEGIN
         PRINT 'Rejection: Learner ID does not exist.';
         RETURN;
     END
-
-   
-    SELECT 
-        s.skill AS Skill,
-        sp.ProficiencyLevel AS ProficiencyLevel
-    FROM 
-        Skills s,SkillProgression
-    LEFT JOIN 
-        SkillProficiency sp ON s.Learner_ID = sp.Learner_ID AND s.skill = sp.skill
-    WHERE 
-        s.Learner_ID = @LearnerID;
+	else
+   begin
+    SELECT proficiency_level from SkillProgression
+	where LearnerID = @LearnerID
+    END  
 END;
-GO
-
-
 
 GO
 CREATE PROC Viewscore --10  --check the input (Edge cases)
@@ -1185,40 +1238,64 @@ CREATE PROC Viewscore --10  --check the input (Edge cases)
     @score INT OUTPUT
 AS
 BEGIN
-    SELECT @score = s.score
-    FROM Scores s
-    WHERE s.LearnerID = @LearnerID AND s.AssessmentID = @AssessmentID;
-
-    -- If no score found, set the score to NULL
-    IF @score IS NULL
+IF NOT EXISTS (SELECT 1 FROM Learner WHERE Learner_ID = @LearnerID)
     BEGIN
-        SET @score = -1; 
+        PRINT 'Rejection: Learner ID does not exist.';
+        RETURN;
     END
+	IF NOT EXISTS (SELECT 1 FROM Assessment WHERE Assessment_ID = @AssessmentID)
+    BEGIN
+        PRINT 'Rejection: assesment ID does not exist.';
+        RETURN;
+    END
+
+	else
+   begin
+    SELECT @score = s.scoredPoint
+    FROM Takenassessment where
+	AssessmentID = @AssessmentID
+	and LearnerID = @LearnerID
+    
 END;
-
-
+END;
 GO
 CREATE PROC AssessmentsList --11
     @CourseID INT,
-    @ModuleID INT
+    @ModuleID INT,
+    @LearnerID INT
 AS
 BEGIN
+    SET NOCOUNT ON;
 
+   
+    IF NOT EXISTS (SELECT 1 FROM Assessment WHERE Course_ID = @CourseID AND Module_ID = @ModuleID)
+    BEGIN
+        PRINT 'Error: No assessments found for the given CourseID and ModuleID.';
+        RETURN;
+    END
+
+  
     SELECT 
         a.Assessment_ID,
         a.title AS AssessmentTitle,
-        s.score AS Grade
+       CASE
+            WHEN s.score IS NULL THEN 'Not Graded'
+            ELSE CAST(s.score AS VARCHAR(50))
+        END AS Grade  
+
     FROM 
         Assessment a
     LEFT JOIN 
-        Scores s ON a.Assessment_ID = s.Assessment_ID
+        Scores s ON a.Assessment_ID = s.Assessment_ID AND s.LearnerID = @LearnerID 
     WHERE 
         a.Course_ID = @CourseID 
-        AND a.Module_ID = @ModuleID;
-END;
+        AND a.Module_ID = @ModuleID
+    ORDER BY 
+        a.Assessment_ID;  
+        END
 
 GO
-CREATE PROC Courseregister --12  EDge case could be handled almost completly
+CREATE PROC Courseregister --12 
 @LearnerID INT,
 @CourseID INT
 AS
@@ -1256,7 +1333,17 @@ CREATE PROC Post --13
     @Post VARCHAR(MAX)
 AS
 BEGIN
-    -- Insert the post into the Posts table
+    IF NOT EXISTS (SELECT 1 FROM Learner WHERE Learner_ID = @LearnerID )
+    BEGIN
+		PRINT 'Rejection: Learner ID does not exist.';
+		RETURN;
+	END
+    IF NOT EXISTS (SELECT 1 FROM Discussion_forum WHERE forumID = @DiscussionID)
+    BEGIN
+    PRINT 'Rejection: Discussion ID does not exist.';
+    RETURN;
+	END
+
     INSERT INTO Posts (LearnerID, DiscussionID, PostContent, Timestamp)
     VALUES (@LearnerID, @DiscussionID, @Post, GETDATE());
     UPDATE Discussion_forum
@@ -1265,19 +1352,30 @@ BEGIN
 END;
 
 Go
-CREATE PROC AddGoal  --14 --check the input (Edge cases)
+CREATE PROC AddGoal  --14
     @LearnerID INT,
     @GoalID INT
 AS
 BEGIN
+IF NOT EXISTS (SELECT 1 FROM Learner WHERE Learner_ID = @LearnerID)
+	BEGIN
+		PRINT 'Rejection: Learner ID does not exist.';
+		RETURN;
+	END
     INSERT INTO LearnersGoals (GoalID, LearnerID)
     VALUES (@GoalID, @LearnerID);
 END;
 
 GO
-CREATE PROC CurrentPath --15 --check the input (Edge cases)
+CREATE PROC CurrentPath --15 
     @LearnerID INT
 AS
+BEGIN
+	IF NOT EXISTS (SELECT 1 FROM Learner WHERE Learner_ID = @LearnerID)
+    BEGIN
+    PRINT 'Rejection: Learner ID does not exist.';
+		RETURN;
+	END
     SELECT 
         Path_ID AS LearningPathID,
         completion_status AS Status
@@ -1285,11 +1383,17 @@ AS
         LearningPath
     WHERE 
         Learner_ID = @LearnerID;
+        END;
 GO
 CREATE PROC QuestMembers --16 --check the input (Edge cases)
 	@LearnerId int
     AS
     BEGIN
+    IF NOT EXISTS (SELECT 1 FROM Learner WHERE Learner_ID = @LearnerId)
+    BEGIN
+		PRINT 'Rejection: Learner ID does not exist.';
+		RETURN;
+	END
     DECLARE @QuestID INT
     DECLARE @DEADLINE DATE
     SELECT LearnerID= @LearnerId FROM Learner
@@ -1306,14 +1410,19 @@ CREATE PROC QuestMembers --16 --check the input (Edge cases)
     @QuestID INT
     AS
     BEGIN
-     -- Validate if the learner exists
+   
     IF NOT EXISTS (SELECT 1 FROM Learner WHERE Learner_ID = @LearnerID)
     BEGIN
         PRINT 'Rejection: Learner ID does not exist.';
         RETURN;
     END
 
-    -- Fetch quest progress
+    IF NOT EXISTS (SELECT 1 FROM Quest WHERE QuestID = @QuestID)
+    BEGIN
+		PRINT 'Rejection: Quest ID does not exist.';
+		RETURN;
+	END
+
     SELECT 
         q.QuestID AS QuestID,
         q.QuestName AS QuestName,
@@ -1325,7 +1434,7 @@ CREATE PROC QuestMembers --16 --check the input (Edge cases)
     WHERE 
         qp.LearnerID = @LearnerID AND qp.QuestID = @QuestID;
 
-    -- Fetch badges earned by the learner
+   
     SELECT 
         b.BadgeID AS BadgeID,
         b.BadgeName AS BadgeName,
@@ -1339,47 +1448,137 @@ CREATE PROC QuestMembers --16 --check the input (Edge cases)
 END;
 GO
 
-CREATE PROC GoalReminder --18 --check the input (Edge cases)
-	@LearnerID INT,
-    @GoalID INT
-    AS
+CREATE PROC GoalReminder --18 ## critical
+    @LearnerID INT
+AS
+BEGIN
+    DECLARE @CurrentDate DATETIME;
+    SET @CurrentDate = GETDATE();
+
+    -- Select goals that are past their deadline and not completed
+    SELECT 
+        GoalID,
+        description,
+        deadline
+    INTO #OverdueGoals
+    FROM 
+        Learning_goal
+    WHERE 
+        LearnerID = @LearnerID AND
+        deadline < @CurrentDate AND
+        status != 'Completed';
+
+    -- Check if there are any overdue goals
+    IF EXISTS (SELECT 1 FROM #OverdueGoals)
     BEGIN
-    DECLARE @Deadline DATE;
-    SELECT Deadline = @Deadline FROM Learning_goal
-	WHERE GoalID = @GoalID AND Deadline > @Deadline
-	END;
+        DECLARE @GoalID INT, @Description VARCHAR(MAX), @Deadline DATETIME;
+        DECLARE @Message VARCHAR(MAX);
+
+        -- Loop through each overdue goal and send a notification
+        DECLARE GoalCursor CURSOR FOR
+        SELECT GoalID, description, deadline FROM #OverdueGoals;
+
+        OPEN GoalCursor;
+        FETCH NEXT FROM GoalCursor INTO @GoalID, @Description, @Deadline;
+
+        WHILE @@FETCH_STATUS = 0
+        BEGIN
+            SET @Message = 'Reminder: You are falling behind on your learning goal: ' + @Description + 
+                           '. The deadline was ' + CONVERT(VARCHAR, @Deadline, 101) + '.';
+
+            -- Insert the notification into the Notifications table
+            INSERT INTO Notifications (LearnerID, Timestamp, Message, UrgencyLevel)
+            VALUES (@LearnerID, @CurrentDate, @Message, 'High');
+
+            FETCH NEXT FROM GoalCursor INTO @GoalID, @Description, @Deadline;
+        END;
+
+        CLOSE GoalCursor;
+        DEALLOCATE GoalCursor;
+    END
+    ELSE
+    BEGIN
+        PRINT 'No overdue learning goals found for the learner.';
+    END
+
+    -- Clean up temporary table
+    DROP TABLE #OverdueGoals;
+END;
+
+
 
     GO
 CREATE PROC SkillProgressHistory --19
-    @LearnerId INT,
+   @LearnerID INT, 
     @Skill VARCHAR(50)
-    AS
+AS
+BEGIN
+   
+    IF @LearnerID IS NULL OR @Skill IS NULL OR TRIM(@Skill) = ''
     BEGIN
-    SELECT  LearnerID = @LearnerId ,Skill = @Skill, ProficiencyLevel, Timestamp
-    FROM SkillProgression
-	END;
+        PRINT 'Error: Invalid input. LearnerID and Skill must be provided.';
+        RETURN;
+    END
+    
+   
+    IF NOT EXISTS (
+        SELECT 1
+        FROM SkillProgression sp
+        WHERE sp.LearnerID = @LearnerID
+    )
+    BEGIN
+        PRINT 'Error: LearnerID not found.';
+        RETURN;
+    END
 
-   GO
+    
+    IF NOT EXISTS (
+        SELECT 1
+        FROM SkillProgression sp
+        WHERE sp.LearnerID = @LearnerID
+        AND sp.Skill = @Skill
+    )
+    BEGIN
+        PRINT 'Error: No data found for the specified LearnerID and Skill.';
+        RETURN;
+    END
+
+   
+    SELECT
+        sp.LearnerID,
+        sp.Skill,
+        sp.proficiency_level,
+        sp.DateRecorded
+    FROM 
+        SkillProgression sp
+    WHERE
+        sp.LearnerID = @LearnerID
+        AND sp.Skill = @Skill
+    ORDER BY 
+        sp.DateRecorded;
+END;
+
+GO
    CREATE PROC AssessmentAnalysis --20
 	@AssessmentID INT,
     @LearnerID INT
 	AS
 	BEGIN
-	 -- Validate Learner ID
+	 
     IF NOT EXISTS (SELECT 1 FROM Learner WHERE Learner_ID = @LearnerID)
     BEGIN
         PRINT 'Rejection: Learner ID does not exist.';
         RETURN;
     END
 
-    -- Validate Assessment ID
+    
     IF NOT EXISTS (SELECT 1 FROM Assessments WHERE AssessmentID = @AssessmentID)
     BEGIN
         PRINT 'Rejection: Assessment ID does not exist.';
         RETURN;
     END
 
-    -- Fetch Assessment Overview
+    
     SELECT 
         a.AssessmentID,
         a.AssessmentName,
@@ -1392,7 +1591,7 @@ CREATE PROC SkillProgressHistory --19
     WHERE 
         a.AssessmentID = @AssessmentID AND la.LearnerID = @LearnerID;
 
-    -- Fetch Section-wise Breakdown
+    
     SELECT 
         s.SectionName,
         ss.Score AS LearnerScore,
@@ -1405,9 +1604,8 @@ CREATE PROC SkillProgressHistory --19
     WHERE 
         ss.LearnerID = @LearnerID AND s.AssessmentID = @AssessmentID;
 
-    -- Optional: Add Analysis (Strengths/Weaknesses)
-    -- Consider adding thresholds to categorize performance, such as:
-    PRINT 'Analysis: Focus on sections with less than 50% scores to improve performance.';
+   
+  
 END;
 GO
 
@@ -1415,14 +1613,14 @@ CREATE PROC LeaderboardFilter
     @LearnerID INT
 AS
 BEGIN
-    -- Validate Learner ID
+   
     IF NOT EXISTS (SELECT 1 FROM Learners WHERE Learner_ID = @LearnerID)
     BEGIN
         PRINT 'Rejection: Learner ID does not exist.';
         RETURN;
     END
 
-    -- Fetch and filter the leaderboard by learner rank in descending order
+    
     SELECT 
         l.LearnerID,
         l.Name AS LearnerName,

@@ -272,7 +272,7 @@ CREATE TABLE Collaborative (
 	 FOREIGN KEY (Module_ID) REFERENCES Module(Module_ID) ON DELETE CASCADE ON UPDATE CASCADE,
 	 FOREIGN KEY (Course_ID) REFERENCES Course(Course_ID) ON DELETE CASCADE ON UPDATE CASCADE,
 	 title varchar(50),
-	 last_active Date,
+	 last_active Datetime,
 	 timestamp date,
 	 description varchar(255)
 	);
