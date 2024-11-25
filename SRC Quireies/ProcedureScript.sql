@@ -372,16 +372,35 @@ END;
 GO
 CREATE PROC TakenCourses --6 
 @LearnerID Int 
-AS 
-BEGIN 
-SELECT
-c.Course_ID,
-c.title
- FROM  Course c
-    INNER JOIN LearnersCourses lc ON c.Course_ID = lc.Course_ID
-    WHERE 
-        lc.LearnerID = @LearnerID;
-END;
+AS  
+BEGIN   
+    IF @LearnerID IS NULL OR @LearnerID <= 0  
+    BEGIN  
+        PRINT 'Error: LearnerID must be a positive integer.';  
+        RETURN;  
+    END  
+
+    IF NOT EXISTS (SELECT 1 FROM Learner WHERE Learner_ID = @LearnerID)  
+    BEGIN  
+        PRINT 'Error: LearnerID does not exist.';  
+        RETURN;  
+    END  
+
+   
+    SELECT  
+        c.Course_ID,  
+        c.title  
+    FROM  
+        Course c  
+        INNER JOIN Course_Enrollment ce ON c.Course_ID = ce.Course_ID  
+    WHERE  
+        ce.Learner_ID = @LearnerID;  
+ 
+    IF @@ROWCOUNT = 0  
+    BEGIN  
+        PRINT 'No courses found for the specified LearnerID.';  
+    END  
+END;  
 
 Go
 CREATE PROC CollaborativeQuest  --7
