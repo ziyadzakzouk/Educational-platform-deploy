@@ -553,8 +553,41 @@ CREATE PROC AssessmentNot  --10
 @LearnerID INT
 AS
 BEGIN
-    INSERT INTO Notifications (NotificationID, Timestamp, Message, UrgencyLevel, LearnerID) VALUES 
-    (@NotificationID, @timestamp, @message, @urgencylevel, @LearnerID);
+    
+    IF @urgencylevel NOT IN ('High', 'Medium', 'Low')
+    BEGIN
+        PRINT 'Error: Invalid urgency level. Valid values are "High", "Medium", or "Low".';
+        RETURN;
+    END
+
+    
+    IF NOT EXISTS (SELECT 1 FROM Learner WHERE Learner_ID = @LearnerID)
+    BEGIN
+        PRINT 'Error: Learner not found.';
+        RETURN;
+    END
+
+    
+    IF EXISTS (SELECT 1 FROM Notification WHERE Notification_ID = @NotificationID)
+    BEGIN
+        PRINT 'Error: Notification ID already exists.';
+        RETURN;
+    END
+
+   
+    IF @timestamp IS NULL
+    BEGIN
+        SET @timestamp = CURRENT_TIMESTAMP;
+    END
+
+    
+    INSERT INTO Notification (Notification_ID, time_stamp, message, urgency)
+    VALUES (@NotificationID, @timestamp, @message, @urgencylevel);
+
+    
+    INSERT INTO RecivedNotfy (Learner_ID, Notification_ID)
+    VALUES (@LearnerID, @NotificationID);
+
     PRINT 'Notification sent successfully.';
 END;
 
