@@ -703,10 +703,25 @@ CREATE PROC CommonEmotionalState --14
 @state VARCHAR(50) OUTPUT
 AS
 BEGIN
-    SELECT TOP 1 @state = emotionalState
-    FROM PersonalProfile
-    GROUP BY emotionalState
-    ORDER BY COUNT(emotionalState) DESC;
+    
+    IF NOT EXISTS (SELECT 1 FROM Emotional_feedback)
+    BEGIN
+        PRINT 'Error: No feedback records found.';
+        SET @state = NULL; -- Set the output to NULL as there is no data
+        RETURN;
+    END
+
+    
+    SELECT TOP 1 @state = emotional_state
+    FROM Emotional_feedback
+    GROUP BY emotional_state
+    ORDER BY COUNT(emotional_state) DESC;
+
+    
+    IF @state IS NULL
+    BEGIN
+        PRINT 'Error: Unable to determine the common emotional state.';
+    END
 END;
 
 GO
