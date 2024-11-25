@@ -373,80 +373,177 @@ END;
 
 GO
 CREATE PROC  Profeciencylevel --16 --handle the cases in my procedure 
-@LearnerID INT,
-@Skill varchar(50)
 AS
 BEGIN
-SELECT Skill=@Skill 
-FROM SkillProgression
-WHERE LearnerID=@LearnerID 
-ORDER BY proficiency_level DESC
 
-END;
+    IF @LearnerID IS NULL OR @LearnerID <= 0
+    BEGIN
+        PRINT 'Error: Invalid LearnerID provided.';
+        RETURN;
+    END
+
+   
+    IF @Skill IS NULL 
+    BEGIN
+        PRINT 'Error: Skill cannot be empty or null.';
+        RETURN;
+    END
+
+   
+    IF NOT EXISTS (SELECT 1 FROM SkillProgression WHERE LearnerID = @LearnerID)
+    BEGIN
+        PRINT 'Error: No learner found with the given LearnerID.';
+        RETURN;
+    END
+
+    ELSE
+    BEGIN
+        SELECT
+            Skill = @Skill,
+            ProficiencyLevel
+        FROM
+            SkillProgression
+        WHERE
+            LearnerID = @LearnerID AND Skill = @Skill
+        ORDER BY
+            ProficiencyLevel DESC;
+    END
+END
+
+
+
 GO
 CREATE PROC  ProfeciencyUpdate --17
-@Skill varchar(50),
-@LearnerID INT,
-@Level  VARCHAR(50)
+@Skill VARCHAR(50),
+    @LearnerID INT,
+    @Level VARCHAR(50)
 AS
 BEGIN
-UPDATE SkillProgression
-SET proficiency_level=@Level
-WHERE LearnerID=@LearnerID AND Skill=@Skill
+    SET NOCOUNT ON;
+
+   
+    IF @LearnerID IS NULL OR @LearnerID <= 0
+    BEGIN
+        PRINT 'Error: Invalid LearnerID provided.';
+        RETURN;
+    END
+
+    IF @Skill IS NULL OR LEN(@Skill) = 0
+    BEGIN
+        PRINT 'Error: Skill cannot be empty or null.';
+        RETURN;
+    END
+
+    IF @Level IS NULL OR LEN(@Level) = 0
+    BEGIN
+        PRINT 'Error: Level cannot be empty or null.';
+        RETURN;
+    END
+
+   
+    IF NOT EXISTS (SELECT 1 FROM SkillProgression WHERE LearnerID = @LearnerID AND Skill = @Skill)
+    BEGIN
+        PRINT 'Error: No matching record found for the given LearnerID and Skill.';
+        RETURN;
+    END
+
+    
+    UPDATE SkillProgression
+    SET proficiency_level = @Level
+    WHERE LearnerID = @LearnerID AND Skill = @Skill;
+
+    
 END;
+
+
+
 GO
 CREATE PROC  LeastBadge --18
-@LearnerID INT OUTPUT
+  @LearnerID INT OUTPUT
 AS
 BEGIN
-    -- Find the learner with the least number of badges earned
+    SET NOCOUNT ON;
+  
+    IF NOT EXISTS (SELECT 1 FROM LearnerBadges)
+    BEGIN
+        PRINT 'Error: The LearnerBadges table is empty.';
+        SET @LearnerID = NULL;  
+        RETURN;
+    END
+    
+     IF @LearnerID IS NULL
+    BEGIN
+        PRINT 'Error: No learner found.';
+    END
+    ELSE
+    BEGIN
+		    
     SELECT TOP 1 @LearnerID = LearnerID
     FROM LearnerBadges
     GROUP BY LearnerID
-    ORDER BY COUNT(BadgeID) ASC;
+    ORDER BY COUNT(BadgeID) ASC, LearnerID ASC;
+    END
+   
 END;
 
 
 GO
 CREATE PROC PreferedType --19
-@type VARCHAR(50) OUTPUT
+ @type VARCHAR(50) OUTPUT
 AS
 BEGIN
-	
-	SELECT  @type = prefrences
-	FROM LearningPrefrences
-	GROUP BY prefrences
-	ORDER BY COUNT(prefrences) DESC;
-END;
-GO
+    SET NOCOUNT ON;
+  
+    IF NOT EXISTS (SELECT 1 FROM LearningPrefrences)
+    BEGIN
+        PRINT 'Error: The LearningPrefrences table is empty.';
+        SET @type = NULL; 
+        RETURN;
+    END
+    
+    IF @type IS NULL
+    BEGIN
+        PRINT 'Error: No valid preferences found in the LearningPrefrences table.';
+        RETURN;
+    END
+    
+    SELECT TOP 1 @type = prefrences
+    FROM LearningPrefrences
+    WHERE prefrences IS NOT NULL AND LEN(prefrences) > 0
+    GROUP BY prefrences
+    ORDER BY COUNT(prefrences) DESC, prefrences ASC;
 
-CREATE PROC AssessmentAnalytics --20  --check the from tables bec iam tired
+    
+END;
+
+
+GO
+CREATE PROC AssessmentAnalytics --20  --check the from tables 
     @CourseID INT,
     @ModuleID INT
 AS
 BEGIN
-    -- Validate Course ID
+  
     IF NOT EXISTS (SELECT 1 FROM Courses WHERE CourseID = @CourseID)
     BEGIN
         PRINT 'Rejection: Course ID does not exist.';
         RETURN;
     END
 
-    -- Validate Module ID
+   
     IF NOT EXISTS (SELECT 1 FROM Modules WHERE ModuleID = @ModuleID AND CourseID = @CourseID)
     BEGIN
         PRINT 'Rejection: Module ID does not exist for the specified Course.';
         RETURN;
     END
 
-    -- Fetch analytics for assessments in the specified module and course
+    
     SELECT 
         a.AssessmentID,
-        a.ModuleID,
-        m.ModuleName,
-        c.CourseName,
+        a.ModuleID,        
+        c.CourseID,
         COUNT(la.LearnerID) AS NumberOfLearners,
-        AVG(CAST(la.Score AS FLOAT)) AS AverageScore,
+        AVG(CAST(la.totalMarks AS FLOAT)) AS AverageScore,
         a.TotalMarks
     FROM 
         Assessments a
@@ -455,7 +552,7 @@ BEGIN
     INNER JOIN 
         Courses c ON m.CourseID = c.CourseID
     LEFT JOIN 
-        LearnerAssessments la ON a.AssessmentID = la.AssessmentID
+        LearnerAssessments la ON a.AssessmentID = la.AssessmentID ------xxxxxxxxx review this
     WHERE 
         m.ModuleID = @ModuleID AND c.CourseID = @CourseID
     GROUP BY 
@@ -465,27 +562,27 @@ BEGIN
 END;
 GO
 
-CREATE PROCEDURE EmotionalTrendAnalysis  --check the from tables bec iam tired
+CREATE PROCEDURE EmotionalTrendAnalysis  
     @CourseID INT,
     @ModuleID INT,
     @TimePeriod VARCHAR(50)
 AS
 BEGIN
-    -- Validate Course ID
-    IF NOT EXISTS (SELECT 1 FROM Courses WHERE CourseID = @CourseID)
+   
+    IF NOT EXISTS (SELECT 1 FROM Course WHERE CourseID = @CourseID)
     BEGIN
         PRINT 'Rejection: Course ID does not exist.';
         RETURN;
     END
 
-    -- Validate Module ID
-    IF NOT EXISTS (SELECT 1 FROM Modules WHERE ModuleID = @ModuleID AND CourseID = @CourseID)
+    
+    IF NOT EXISTS (SELECT 1 FROM Module WHERE ModuleID = @ModuleID AND CourseID = @CourseID)
     BEGIN
         PRINT 'Rejection: Module ID does not exist for the specified Course.';
         RETURN;
     END
 
-    -- Determine time filter based on @TimePeriod
+   
     DECLARE @StartDate DATETIME;
     IF @TimePeriod = 'LAST_MONTH'
         SET @StartDate = DATEADD(MONTH, -1, GETDATE());
@@ -494,25 +591,25 @@ BEGIN
     ELSE IF @TimePeriod = 'ALL_TIME'
         SET @StartDate = NULL;
 
-    -- Fetch emotional feedback trends
+   
     SELECT 
-        ef.Timestamp,
-        ef.Emotion,
+        ef.timestamp,
+        ef.emotional_state,
         COUNT(ef.FeedbackID) AS FeedbackCount
     FROM 
         EmotionalFeedback ef
     INNER JOIN 
-        Modules m ON ef.ModuleID = m.ModuleID
+        Module m ON ef.ModuleID = m.ModuleID
     INNER JOIN 
-        Courses c ON ef.CourseID = c.CourseID
+        Course c ON ef.CourseID = c.CourseID
     WHERE 
         ef.CourseID = @CourseID
         AND ef.ModuleID = @ModuleID
-        AND (@StartDate IS NULL OR ef.Timestamp >= @StartDate)
+        AND (@StartDate IS NULL OR ef.timestamp >= @StartDate)
     GROUP BY 
-        ef.Timestamp, ef.Emotion
+        ef.timestamp, ef.emotional_state
     ORDER BY 
-        ef.Timestamp;
+        ef.timestamp;
 END;
 GO
 
