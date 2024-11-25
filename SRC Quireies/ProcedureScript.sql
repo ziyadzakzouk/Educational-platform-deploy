@@ -164,30 +164,78 @@ end
 
 ---- instructor procedures
 Go 
-CREATE PROC SkillLearners  --1  --handle the edge cases in the input or output
- @Skillname VARCHAR(50)
- AS 
- BEGIN
-  SELECT  s.SkillName, l.LearnerName
-    FROM 
-        Skills s
-        INNER JOIN  LearnersSkills ls ON s.SkillID = ls.SkillID INNER JOIN  Learners l ON ls.LearnerID = l.LearnerID
-    WHERE 
-        s.SkillName = @Skillname;
-        END;
+CREATE PROC SkillLearners  --1
+    @Skillname VARCHAR(50)  
+AS  
+BEGIN  
+ IF @Skillname IS NULL  
+    BEGIN  
+        PRINT 'Error: Skill name cannot be NULL';  
+        RETURN;  
+    END  
+
+    SELECT  
+        s.skill AS SkillName,  
+        CONCAT(l.first_name, ' ', l.last_name) AS LearnerName  
+    FROM  
+        Skills s  
+        INNER JOIN Learner l ON s.Learner_ID = l.Learner_ID  
+    WHERE  
+        s.skill = @Skillname;  
+
+    
+    IF @@ROWCOUNT = 0  
+    BEGIN  
+        PRINT 'No learners found for the specified skill.';  
+    END  
+END;
 
 GO
 CREATE PROC NewActivity --2
-@CourseID int,
-@ModuleID int,
-@activitytype varchar(50),
-@instructiondetails varchar(max),
-@maxpoints int
-AS
-BEGIN
-INSERT INTO learningActivity(CourseID,ModuleID,activitytype, instructiondetails,maxpoints) values 
-(@CourseID,@ModuleID,@activitytype, @instructiondetails,@maxpoints)
-END;
+@CourseID INT,  
+    @ModuleID INT, @activitytype VARCHAR(50), @instructiondetails VARCHAR(MAX), @maxpoints INT  
+AS  
+BEGIN  
+      
+    IF @CourseID IS NULL OR @CourseID <= 0  
+    BEGIN  
+        PRINT 'Error: CourseID must be a positive integer.'  
+        RETURN;  
+    END  
+
+    
+    IF @ModuleID IS NULL OR @ModuleID <= 0  
+    BEGIN  
+        PRINT 'Error: ModuleID must be a positive integer.'  
+        RETURN;  
+    END  
+
+      
+    IF @activitytype IS NULL OR @activitytype = ''  
+    BEGIN  
+        PRINT 'Error: activitytype cannot be NULL or empty.'  
+        RETURN;  
+    END  
+ 
+    IF @instructiondetails IS NULL OR @instructiondetails = ''  
+    BEGIN  
+        PRINT 'Error: instructiondetails cannot be NULL or empty.'  
+        RETURN;  
+    END  
+
+     
+    IF @maxpoints IS NULL OR @maxpoints <= 0  
+    BEGIN  
+        PRINT 'Error: maxpoints must be greater than 0.'  
+        RETURN;  
+    END  
+
+    
+    INSERT INTO learningActivity (Course_ID, Module_ID, activityType, instruction_details, maxScore)  
+    VALUES (@CourseID, @ModuleID, @activitytype, @instructiondetails, @maxpoints);  
+
+    PRINT 'New activity added successfully.'  
+END;  
 
 GO
 CREATE PROC NewAchievement --3 
@@ -196,28 +244,85 @@ CREATE PROC NewAchievement --3
 @description varchar(max), 
 @date_earned date, 
 @type varchar(50)
-AS
-BEGIN
-INSERT INTO Achievement(LearnerID, BadgeID , description, date_earned, type) VALUES 
-(@LearnerID, @BadgeID , @description, @date_earned, @type)
+AS  
+BEGIN  
+    
+    IF @LearnerID IS NULL OR @LearnerID <= 0  
+    BEGIN  
+
+      PRINT 'Error: LearnerID must be a positive integer.'  
+        RETURN;  
+    END  
+
+      
+    IF @BadgeID IS NULL OR @BadgeID <= 0  
+    BEGIN  
+        PRINT 'Error: BadgeID must be a positive integer.'  
+       RETURN;  
+    END  
+
+     
+    IF @description IS NULL OR @description = ''  
+    BEGIN  
+
+         PRINT 'Error: Description cannot be NULL or empty.'  
+        RETURN;  
+    END  
+
+     
+    IF @date_earned IS NULL OR @date_earned > GETDATE()  
+    BEGIN  
+        PRINT 'Error: DateEarned must not be NULL or in the future.'  
+        RETURN;  
+    END  
+
+    
+     IF @type IS NULL OR @type = ''  
+    BEGIN  
+        PRINT 'Error: Type cannot be NULL or empty.'  
+        RETURN;  
+
+
+    END  
+
+    
+    INSERT INTO Achievement (LearnerID, BadgeID, Description, DateEarned, Type)  
+    VALUES (@LearnerID, @BadgeID, @description, @date_earned, @type);  
+
+    PRINT 'New achievement added successfully.'  
 END;
 
 GO
 CREATE PROC LearnerBadge --4
 @BadgeID int
 
-AS
-BEGIN
+AS  
+BEGIN  
+   
+    IF @BadgeID IS NULL OR @BadgeID <= 0  
+    BEGIN  
+        PRINT 'Error: BadgeID must be a positive integer.';  
+        RETURN;  
+    END  
 
-SELECT l.LearnerID,
-l.LearnerName,
-b.BadgeName
-    FROM 
-       Learners l
-    INNER JOIN LearnersBadges lb ON l.LearnerID = lb.LearnerIDINNER JOIN Badges b ON lb.BadgeID = b.BadgeID
-    WHERE 
-        b.BadgeID = @BadgeID;
-END;
+    -- Retrieve learners associated with the given BadgeID from Achivment  
+    SELECT  
+        l.Learner_ID,  
+        CONCAT(l.first_name, ' ', l.last_name) AS LearnerName,  
+        b.title AS BadgeName  
+    FROM  
+        Achievement a  
+        INNER JOIN Learner l ON a.LearnerID = l.Learner_ID  
+        INNER JOIN Badge b ON a.BadgeID = b.BadgeID  
+    WHERE  
+        b.BadgeID = @BadgeID;  
+
+     
+    IF @@ROWCOUNT = 0  
+    BEGIN  
+        PRINT 'No learners found for the specified BadgeID.';  
+    END  
+END;  
 
 GO
 create proc NewPath --5 
@@ -226,25 +331,76 @@ create proc NewPath --5
 @completion_status varchar(50),
 @custom_content varchar(max),
 @adaptiverules varchar(max)
-AS 
-BEGIN 
-INSERT INTO LearningPaths (LearnerID, ProfileID, CompletionStatus, CustomContent, Adapt) VALUES 
-(@LearnerID, @ProfileID, @Completion_Status, @Custom_Content, @Adapt);
-END;
+AS  
+BEGIN  
+     
+    IF @LearnerID IS NULL OR @LearnerID <= 0  
+    BEGIN  
+        PRINT 'Error: LearnerID must be a positive integer.';  
+        RETURN;  
+    END  
+
+    IF @ProfileID IS NULL OR @ProfileID <= 0  
+    BEGIN  
+        PRINT 'Error: ProfileID must be a positive integer.';  
+        RETURN;  
+    END  
+
+    IF @completion_status IS NULL OR @completion_status = ''  
+    BEGIN  
+        PRINT 'Error: CompletionStatus cannot be NULL or empty.';  
+        RETURN;  
+    END  
+  
+    IF @custom_content IS NULL OR @custom_content = ''  
+    BEGIN  
+        PRINT 'Error: CustomContent cannot be NULL or empty.';  
+        RETURN;  
+    END  
+
+    IF @adaptiverules IS NULL OR @adaptiverules = ''  
+    BEGIN  
+        PRINT 'Error: AdaptiveRules cannot be NULL or empty.';  
+        RETURN;  
+    END  
+
+    INSERT INTO LearningPath (Learner_ID, profileID, completion_status, customContent, adaptiveRules)  VALUES (@LearnerID, @ProfileID, @completion_status, @custom_content, @adaptiverules);  
+
+    PRINT 'New learning path created successfully.';  
+END;  
 
 GO
 CREATE PROC TakenCourses --6 
 @LearnerID Int 
-AS 
-BEGIN 
-SELECT
-c.Course_ID,
-c.title
- FROM  Course c
-    INNER JOIN LearnersCourses lc ON c.Course_ID = lc.Course_ID
-    WHERE 
-        lc.LearnerID = @LearnerID;
-END;
+AS  
+BEGIN   
+    IF @LearnerID IS NULL OR @LearnerID <= 0  
+    BEGIN  
+        PRINT 'Error: LearnerID must be a positive integer.';  
+        RETURN;  
+    END  
+
+    IF NOT EXISTS (SELECT 1 FROM Learner WHERE Learner_ID = @LearnerID)  
+    BEGIN  
+        PRINT 'Error: LearnerID does not exist.';  
+        RETURN;  
+    END  
+
+   
+    SELECT  
+        c.Course_ID,  
+        c.title  
+    FROM  
+        Course c  
+        INNER JOIN Course_Enrollment ce ON c.Course_ID = ce.Course_ID  
+    WHERE  
+        ce.Learner_ID = @LearnerID;  
+ 
+    IF @@ROWCOUNT = 0  
+    BEGIN  
+        PRINT 'No courses found for the specified LearnerID.';  
+    END  
+END;  
 
 Go
 CREATE PROC CollaborativeQuest  --7
@@ -254,24 +410,88 @@ CREATE PROC CollaborativeQuest  --7
 @title varchar(50), 
 @Maxnumparticipants int, 
 @deadline datetime
-AS
-BEGIN
+AS  
+BEGIN  
     
-    INSERT INTO Quest (difficulty_level, criteria, description, title) VALUES 
-    (@difficulty_level, @criteria, @description, @title); 
-    INSERT INTO Collaborative (QuestID, Deadline, Max_Num_Participants) VALUES 
-    (@QuestID, @deadline, @Maxnumparticipants);
-    END;
+    IF @difficulty_level IS NULL OR @difficulty_level <= 0  
+    BEGIN  
+        PRINT 'Error: Difficulty level must be a positive integer.';  
+        RETURN;  
+    END  
+
+    IF @criteria IS NULL OR LEN(@criteria) = 0  
+    BEGIN  
+        PRINT 'Error: Criteria cannot be NULL or empty.';  
+        RETURN;  
+    END  
+
+    IF @description IS NULL OR LEN(@description) = 0  
+    BEGIN  
+        PRINT 'Error: Description cannot be NULL or empty.';  
+        RETURN;  
+    END  
+
+    IF @title IS NULL OR LEN(@title) = 0  
+    BEGIN  
+        PRINT 'Error: Title cannot be NULL or empty.';  
+        RETURN;  
+    END  
+
+    IF @Maxnumparticipants IS NULL OR @Maxnumparticipants <= 0  
+    BEGIN  
+        PRINT 'Error: Max number of participants must be a positive integer.';  
+        RETURN;  
+    END  
+
+    IF @deadline IS NULL OR @deadline < GETDATE()  
+    BEGIN  
+        PRINT 'Error: Deadline must be a future date.';  
+        RETURN;  
+    END  
+
+    
+    INSERT INTO Quest (difficulty_level, criteria, description, title)  
+    VALUES (@difficulty_level, @criteria, @description, @title);  
+
+    -- Get the newly generated QuestID  
+    DECLARE @QuestID INT = SCOPE_IDENTITY();  
+
+    INSERT INTO Collaborative (QuestID, Deadline, Max_Num_Participants)  
+    VALUES (@QuestID, @deadline, @Maxnumparticipants);  
+
+    PRINT 'Collaborative quest created successfully.';  
+END;
 
 GO
 CREATE PROCEDURE DeadlineUpdate  --8 
 @QuestID INT, 
 @deadline DATETIME
-AS
-BEGIN
-    UPDATE Collaborative
-    SET Deadline = @deadline
-    WHERE QuestID = @QuestID;
+AS  
+BEGIN  
+    IF @QuestID IS NULL OR @QuestID <= 0  
+    BEGIN  
+        PRINT 'Error: QuestID must be a positive integer.';  
+        RETURN;  
+    END  
+ 
+    IF @deadline IS NULL OR @deadline < GETDATE()  
+    BEGIN  
+        PRINT 'Error: Deadline must be a future date.';  
+        RETURN;  
+    END  
+
+  
+    IF NOT EXISTS (SELECT 1 FROM Collaborative WHERE QuestID = @QuestID)  
+    BEGIN  
+        PRINT 'Error: QuestID does not exist in the Collaborative table.';  
+        RETURN;  
+    END  
+
+    UPDATE Collaborative  
+    SET Deadline = @deadline  
+    WHERE QuestID = @QuestID;  
+
+    PRINT 'Deadline updated successfully.';  
 END;
 
 GO 
@@ -281,11 +501,40 @@ CREATE PROC GradeUpdate  --9
 @Newgrade int 
 AS
 BEGIN
-UPDATE Assessment 
-SET totalMarks = @Newgrade 
-WHERE LearnerID = @LearnerID AND AssessmentID = @AssessmentID;
 
-IF @@ROWCOUNT > 0
+   IF NOT EXISTS (SELECT 1 FROM Learner WHERE Learner_ID = @LearnerID)
+    BEGIN
+        PRINT 'Error: Learner not found.';
+        RETURN;
+    END
+
+    
+    IF NOT EXISTS (SELECT 1 FROM Assessment WHERE Assessment_ID = @AssessmentID)
+    BEGIN
+        PRINT 'Error: Assessment not found.';
+        RETURN;
+    END
+
+    
+    IF NOT EXISTS (SELECT 1 FROM Assessment WHERE Course_ID IN (SELECT Course_ID FROM Course WHERE Learner_ID = @LearnerID) AND Assessment_ID = @AssessmentID)
+    BEGIN
+        PRINT 'Error: Assessment is not linked to this Learner.';
+        RETURN;
+    END
+
+    
+    IF @Newgrade < 0 OR @Newgrade > (SELECT totalMarks FROM Assessment WHERE Assessment_ID = @AssessmentID)
+    BEGIN
+        PRINT 'Error: Invalid grade value.';
+        RETURN;
+    END
+
+   
+    UPDATE Assessment 
+    SET totalMarks = @Newgrade 
+    WHERE Learner_ID = @LearnerID AND Assessment_ID = @AssessmentID;
+
+    IF @@ROWCOUNT > 0
     BEGIN
         PRINT 'Grade updated successfully.';
     END
@@ -304,8 +553,41 @@ CREATE PROC AssessmentNot  --10
 @LearnerID INT
 AS
 BEGIN
-    INSERT INTO Notifications (NotificationID, Timestamp, Message, UrgencyLevel, LearnerID) VALUES 
-    (@NotificationID, @timestamp, @message, @urgencylevel, @LearnerID);
+    
+    IF @urgencylevel NOT IN ('High', 'Medium', 'Low')
+    BEGIN
+        PRINT 'Error: Invalid urgency level. Valid values are "High", "Medium", or "Low".';
+        RETURN;
+    END
+
+    
+    IF NOT EXISTS (SELECT 1 FROM Learner WHERE Learner_ID = @LearnerID)
+    BEGIN
+        PRINT 'Error: Learner not found.';
+        RETURN;
+    END
+
+    
+    IF EXISTS (SELECT 1 FROM Notification WHERE Notification_ID = @NotificationID)
+    BEGIN
+        PRINT 'Error: Notification ID already exists.';
+        RETURN;
+    END
+
+   
+    IF @timestamp IS NULL
+    BEGIN
+        SET @timestamp = CURRENT_TIMESTAMP;
+    END
+
+    
+    INSERT INTO Notification (Notification_ID, time_stamp, message, urgency)
+    VALUES (@NotificationID, @timestamp, @message, @urgencylevel);
+
+    
+    INSERT INTO RecivedNotfy (Learner_ID, Notification_ID)
+    VALUES (@LearnerID, @NotificationID);
+
     PRINT 'Notification sent successfully.';
 END;
 
@@ -317,8 +599,32 @@ CREATE PROC NewGoal --11
 @description VARCHAR(MAX)
 AS 
 BEGIN
-    INSERT INTO Learning_goal (ID, status, deadline, description) VALUES
-    (@GoalID, @status, @deadline, @description);
+    
+    IF @status IS NULL OR TRIM(@status) = ''
+    BEGIN
+        PRINT 'Error: Status cannot be empty.';
+        RETURN;
+    END
+
+    
+    IF @deadline <= GETDATE()
+    BEGIN
+        PRINT 'Error: Deadline must be a future date.';
+        RETURN;
+    END
+
+    
+    IF EXISTS (SELECT 1 FROM Learning_goal WHERE ID = @GoalID)
+    BEGIN
+        PRINT 'Error: GoalID already exists.';
+        RETURN;
+    END
+
+    
+    INSERT INTO Learning_goal (ID, status, deadline, description)
+    VALUES (@GoalID, @status, @deadline, @description);
+
+    PRINT 'Goal created successfully.';
 END;
 
 Go
@@ -327,20 +633,69 @@ CREATE PROC LearnersCourses --12
 @InstructorID INT
 AS 
 BEGIN
-    SELECT C.title, L.LearnerName, L.LearnerEmail
+
+    
+    IF NOT EXISTS (SELECT 1 FROM Course WHERE Course_ID = @CourseID)
+    BEGIN
+        PRINT 'Error: Course not found.';
+        RETURN;
+    END
+
+   
+    IF NOT EXISTS (SELECT 1 FROM Instructor WHERE Instructor_ID = @InstructorID)
+    BEGIN
+        PRINT 'Error: Instructor not found.';
+        RETURN;
+    END
+
+   
+    IF NOT EXISTS (SELECT 1 FROM Course WHERE Course_ID = @CourseID AND Instructor_ID = @InstructorID)
+    BEGIN
+        PRINT 'Error: The instructor is not associated with this course.';
+        RETURN;
+    END
+
+    
+    IF NOT EXISTS (SELECT 1 FROM Course_Enrollment WHERE Course_ID = @CourseID)
+    BEGIN
+        PRINT 'Error: No learners are enrolled in this course.';
+        RETURN;
+    END
+
+    -- Return the learners enrolled in the course taught by the provided instructor
+    SELECT C.title, L.first_name + ' ' + L.last_name AS LearnerName, L.email AS LearnerEmail
     FROM Course_Enrollment CE
-    INNER JOIN Course C ON CE.Course_ID = C.Course_ID INNER JOIN Instructor I ON C.Instructor_ID = I.Instructor_ID INNER JOIN Learner L ON CE.Learner_ID = L.Learner_ID
+    INNER JOIN Course C ON CE.Course_ID = C.Course_ID
+    INNER JOIN Instructor I ON C.Instructor_ID = I.Instructor_ID
+    INNER JOIN Learner L ON CE.Learner_ID = L.Learner_ID
     WHERE C.Course_ID = @CourseID AND I.Instructor_ID = @InstructorID;
+
 END;
 
 Go
 CREATE PROC LastActive --13
 @ForumID INT,
 @lastactive DATETIME OUTPUT
-AS
+AS 
 BEGIN
+    
+    IF NOT EXISTS (SELECT 1 FROM Discussion_forum WHERE forumID = @ForumID)
+    BEGIN
+        PRINT 'Error: Forum not found.';
+        SET @lastactive = NULL; -- Set output to NULL if forum doesn't exist
+        RETURN;
+    END
+
+    
     SELECT @lastactive = last_active
-    FROM Discussion_forum WHERE forumID = @ForumID;
+    FROM Discussion_forum 
+    WHERE forumID = @ForumID;
+
+    
+    IF @lastactive IS NULL
+    BEGIN
+        PRINT 'Error: Last active date is NULL for this forum.';
+    END
 END;
 
 GO 
@@ -348,10 +703,25 @@ CREATE PROC CommonEmotionalState --14
 @state VARCHAR(50) OUTPUT
 AS
 BEGIN
-    SELECT TOP 1 @state = emotionalState
-    FROM PersonalProfile
-    GROUP BY emotionalState
-    ORDER BY COUNT(emotionalState) DESC;
+    
+    IF NOT EXISTS (SELECT 1 FROM Emotional_feedback)
+    BEGIN
+        PRINT 'Error: No feedback records found.';
+        SET @state = NULL; -- Set the output to NULL as there is no data
+        RETURN;
+    END
+
+    
+    SELECT TOP 1 @state = emotional_state
+    FROM Emotional_feedback
+    GROUP BY emotional_state
+    ORDER BY COUNT(emotional_state) DESC;
+
+    
+    IF @state IS NULL
+    BEGIN
+        PRINT 'Error: Unable to determine the common emotional state.';
+    END
 END;
 
 GO
@@ -359,6 +729,20 @@ CREATE PROCEDURE ModuleDifficulty --15
     @courseID INT
 AS
 BEGIN
+
+  IF NOT EXISTS (SELECT 1 FROM Course WHERE Course_ID = @courseID)
+    BEGIN
+        PRINT 'Error: Course not found.';
+        RETURN;
+    END
+
+    
+    IF NOT EXISTS (SELECT 1 FROM Module WHERE Course_ID = @courseID)
+    BEGIN
+        PRINT 'Error: No modules found for this course.';
+        RETURN;
+    END
+
     SELECT M.Module_ID, M.title, M.difficulty_level, M.contentURL
     FROM Module M
     WHERE M.Course_ID = @courseID
