@@ -466,11 +466,32 @@ GO
 CREATE PROCEDURE DeadlineUpdate  --8 
 @QuestID INT, 
 @deadline DATETIME
-AS
-BEGIN
-    UPDATE Collaborative
-    SET Deadline = @deadline
-    WHERE QuestID = @QuestID;
+AS  
+BEGIN  
+    IF @QuestID IS NULL OR @QuestID <= 0  
+    BEGIN  
+        PRINT 'Error: QuestID must be a positive integer.';  
+        RETURN;  
+    END  
+ 
+    IF @deadline IS NULL OR @deadline < GETDATE()  
+    BEGIN  
+        PRINT 'Error: Deadline must be a future date.';  
+        RETURN;  
+    END  
+
+  
+    IF NOT EXISTS (SELECT 1 FROM Collaborative WHERE QuestID = @QuestID)  
+    BEGIN  
+        PRINT 'Error: QuestID does not exist in the Collaborative table.';  
+        RETURN;  
+    END  
+
+    UPDATE Collaborative  
+    SET Deadline = @deadline  
+    WHERE QuestID = @QuestID;  
+
+    PRINT 'Deadline updated successfully.';  
 END;
 
 GO 
