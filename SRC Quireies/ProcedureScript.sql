@@ -729,6 +729,20 @@ CREATE PROCEDURE ModuleDifficulty --15
     @courseID INT
 AS
 BEGIN
+
+  IF NOT EXISTS (SELECT 1 FROM Course WHERE Course_ID = @courseID)
+    BEGIN
+        PRINT 'Error: Course not found.';
+        RETURN;
+    END
+
+    
+    IF NOT EXISTS (SELECT 1 FROM Module WHERE Course_ID = @courseID)
+    BEGIN
+        PRINT 'Error: No modules found for this course.';
+        RETURN;
+    END
+
     SELECT M.Module_ID, M.title, M.difficulty_level, M.contentURL
     FROM Module M
     WHERE M.Course_ID = @courseID
