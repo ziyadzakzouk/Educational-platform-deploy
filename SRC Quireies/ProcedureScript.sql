@@ -1129,14 +1129,14 @@ CREATE PROC SkillProgressHistory --19
     @Skill VARCHAR(50)
 AS
 BEGIN
-    -- Check if the input parameters are valid (non-null)
+   
     IF @LearnerID IS NULL OR @Skill IS NULL OR TRIM(@Skill) = ''
     BEGIN
         PRINT 'Error: Invalid input. LearnerID and Skill must be provided.';
         RETURN;
     END
     
-    -- Check if the learner exists in the SkillProgression table
+   
     IF NOT EXISTS (
         SELECT 1
         FROM SkillProgression sp
@@ -1147,7 +1147,7 @@ BEGIN
         RETURN;
     END
 
-    -- Check if the specified skill exists for the learner
+    
     IF NOT EXISTS (
         SELECT 1
         FROM SkillProgression sp
@@ -1159,7 +1159,7 @@ BEGIN
         RETURN;
     END
 
-    -- Fetch the skill progression history
+   
     SELECT
         sp.LearnerID,
         sp.Skill,
@@ -1180,21 +1180,21 @@ GO
     @LearnerID INT
 	AS
 	BEGIN
-	 -- Validate Learner ID
+	 
     IF NOT EXISTS (SELECT 1 FROM Learner WHERE Learner_ID = @LearnerID)
     BEGIN
         PRINT 'Rejection: Learner ID does not exist.';
         RETURN;
     END
 
-    -- Validate Assessment ID
+    
     IF NOT EXISTS (SELECT 1 FROM Assessments WHERE AssessmentID = @AssessmentID)
     BEGIN
         PRINT 'Rejection: Assessment ID does not exist.';
         RETURN;
     END
 
-    -- Fetch Assessment Overview
+    
     SELECT 
         a.AssessmentID,
         a.AssessmentName,
@@ -1207,7 +1207,7 @@ GO
     WHERE 
         a.AssessmentID = @AssessmentID AND la.LearnerID = @LearnerID;
 
-    -- Fetch Section-wise Breakdown
+    
     SELECT 
         s.SectionName,
         ss.Score AS LearnerScore,
@@ -1220,9 +1220,8 @@ GO
     WHERE 
         ss.LearnerID = @LearnerID AND s.AssessmentID = @AssessmentID;
 
-    -- Optional: Add Analysis (Strengths/Weaknesses)
-    -- Consider adding thresholds to categorize performance, such as:
-    PRINT 'Analysis: Focus on sections with less than 50% scores to improve performance.';
+   
+  
 END;
 GO
 
@@ -1230,14 +1229,14 @@ CREATE PROC LeaderboardFilter
     @LearnerID INT
 AS
 BEGIN
-    -- Validate Learner ID
+   
     IF NOT EXISTS (SELECT 1 FROM Learners WHERE Learner_ID = @LearnerID)
     BEGIN
         PRINT 'Rejection: Learner ID does not exist.';
         RETURN;
     END
 
-    -- Fetch and filter the leaderboard by learner rank in descending order
+    
     SELECT 
         l.LearnerID,
         l.Name AS LearnerName,
