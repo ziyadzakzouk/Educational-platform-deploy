@@ -16,7 +16,8 @@ node_modules/
 *.class
 
 # Ignored Identifyer
-*.Identifier
+*.Zone.Identifier
+
 /.vs
 /.vs/Educational-platform/FileContentIndex
 /.gitignore
