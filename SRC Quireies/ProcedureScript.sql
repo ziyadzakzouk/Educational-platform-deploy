@@ -97,19 +97,23 @@ end
 Go
 CREATE PROC Highestgrade 
 AS
+begin
 select MAX(totalMarks) from Assessment
 group by Course_ID
+end
 
 Go
 CREATE PROC InstructorCount 
 AS
+begin
 select c.* from Course c inner join Teaches t on c.Course_ID = t.Course_ID
 where count(t.Instructor_ID)>1
-
+end
 Go
 CREATE PROC ViewNot 
 @LearnerID int
 AS
+BEGIN
 if(not exists(select 1 from Learner where Learner_ID = @LearnerID))
 begin 
 print 'the learner does not exist'
@@ -119,13 +123,15 @@ begin
 select n.* from Notification n inner join RecivedNotfy r on n.Notification_ID = r.Notification_ID
 where @LearnerID = r.Learner_ID
 end
+end
 
 Go
 CREATE PROC CreateDiscussion --some discussion attributes need to be null and the forumid need to be identity
 @ModuleID int, @courseID int, @title varchar(50), @description varchar(50)
 AS
+begin
 insert into Discussion_forum(Module_ID,Course_ID,title,description) values (@ModuleID, @courseID, @title, @description)
-
+end
 Go
 CREATE PROC RemoveBadge
 @BadgeID int
@@ -138,6 +144,7 @@ else
 begin
 delete from Badge where BadgeID = @BadgeID
 end
+
 
 Go
 CREATE PROC CriteriaDelete
@@ -755,8 +762,6 @@ CREATE PROC LeaderboardRank  --6  --check the input (Edge cases)
     WHERE r.BoardID = @LeaderboardID
     ORDER BY r.rank; 
 	end
-
-
 GO
 CREATE PROC ViewMyDeviceCharge  --7 --------needs to be reviewed
     @ActivityID INT,
@@ -765,16 +770,19 @@ CREATE PROC ViewMyDeviceCharge  --7 --------needs to be reviewed
     @emotionalstate VARCHAR(50)
 AS
 BEGIN
-if(not exists(select 1 from learningActivity where Activity_ID = @ActivityID))
-	begin 
-	print 'the activity does not exist'
-	RETURN;
-	end
-	else
-	begin
-    INSERT INTO Emotional_feedback(LearnerID, timestamp, emotional_state)
-    VALUES (@LearnerID, @timestamp, @emotionalstate) where Activity_ID = @ActivityID ;
+    IF NOT EXISTS (SELECT 1 FROM learningActivity WHERE Activity_ID = @ActivityID)
+    BEGIN 
+        PRINT 'The activity does not exist';
+        RETURN;
+    END
+    ELSE
+    BEGIN
+        INSERT INTO Emotional_feedback(LearnerID, timestamp, emotional_state)
+        VALUES (@LearnerID, @timestamp, @emotionalstate);
+    END
 END;
+    
+
 
 GO
 CREATE PROC JoinQuest
@@ -822,10 +830,6 @@ BEGIN
 END;
 GO
 
-
-
-GO
-
 CREATE PROCEDURE SkillsProficiency   --9  handle the skill as an edge case
     @LearnerID INT
 AS
@@ -840,11 +844,8 @@ BEGIN
    begin
     SELECT proficiency_level from SkillProgression
 	where LearnerID = @LearnerID
-      
+    END  
 END;
-GO
-
-
 
 GO
 CREATE PROC Viewscore --10  --check the input (Edge cases)
@@ -872,8 +873,7 @@ IF NOT EXISTS (SELECT 1 FROM Learner WHERE Learner_ID = @LearnerID)
 	and LearnerID = @LearnerID
     
 END;
-
-
+END;
 GO
 CREATE PROC AssessmentsList --11
     @CourseID INT,
