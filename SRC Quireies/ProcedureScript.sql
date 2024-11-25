@@ -911,7 +911,7 @@ BEGIN
         END
 
 GO
-CREATE PROC Courseregister --12  EDge case could be handled almost completly
+CREATE PROC Courseregister --12 
 @LearnerID INT,
 @CourseID INT
 AS
@@ -949,7 +949,17 @@ CREATE PROC Post --13
     @Post VARCHAR(MAX)
 AS
 BEGIN
-    -- Insert the post into the Posts table
+    IF NOT EXISTS (SELECT 1 FROM Learner WHERE Learner_ID = @LearnerID )
+    BEGIN
+		PRINT 'Rejection: Learner ID does not exist.';
+		RETURN;
+	END
+    IF NOT EXISTS (SELECT 1 FROM Discussion_forum WHERE forumID = @DiscussionID)
+    BEGIN
+    PRINT 'Rejection: Discussion ID does not exist.';
+    RETURN;
+	END
+
     INSERT INTO Posts (LearnerID, DiscussionID, PostContent, Timestamp)
     VALUES (@LearnerID, @DiscussionID, @Post, GETDATE());
     UPDATE Discussion_forum
@@ -958,11 +968,16 @@ BEGIN
 END;
 
 Go
-CREATE PROC AddGoal  --14 --check the input (Edge cases)
+CREATE PROC AddGoal  --14
     @LearnerID INT,
     @GoalID INT
 AS
 BEGIN
+IF NOT EXISTS (SELECT 1 FROM Learner WHERE Learner_ID = @LearnerID)
+	BEGIN
+		PRINT 'Rejection: Learner ID does not exist.';
+		RETURN;
+	END
     INSERT INTO LearnersGoals (GoalID, LearnerID)
     VALUES (@GoalID, @LearnerID);
 END;
