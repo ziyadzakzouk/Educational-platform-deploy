@@ -1064,15 +1064,64 @@ CREATE PROC QuestMembers --16 --check the input (Edge cases)
 END;
 GO
 
-CREATE PROC GoalReminder --18 --check the input (Edge cases)
-	@LearnerID INT,
-    @GoalID INT
-    AS
+CREATE PROC GoalReminder --18 ## critical
+    @LearnerID INT
+AS
+BEGIN
+    DECLARE @CurrentDate DATETIME;
+    SET @CurrentDate = GETDATE();
+
+    -- Select goals that are past their deadline and not completed
+    SELECT 
+        GoalID,
+        description,
+        deadline
+    INTO #OverdueGoals
+    FROM 
+        Learning_goal
+    WHERE 
+        LearnerID = @LearnerID AND
+        deadline < @CurrentDate AND
+        status != 'Completed';
+
+    -- Check if there are any overdue goals
+    IF EXISTS (SELECT 1 FROM #OverdueGoals)
     BEGIN
-    DECLARE @Deadline DATE;
-    SELECT Deadline = @Deadline FROM Learning_goal
-	WHERE GoalID = @GoalID AND Deadline > @Deadline
-	END;
+        DECLARE @GoalID INT, @Description VARCHAR(MAX), @Deadline DATETIME;
+        DECLARE @Message VARCHAR(MAX);
+
+        -- Loop through each overdue goal and send a notification
+        DECLARE GoalCursor CURSOR FOR
+        SELECT GoalID, description, deadline FROM #OverdueGoals;
+
+        OPEN GoalCursor;
+        FETCH NEXT FROM GoalCursor INTO @GoalID, @Description, @Deadline;
+
+        WHILE @@FETCH_STATUS = 0
+        BEGIN
+            SET @Message = 'Reminder: You are falling behind on your learning goal: ' + @Description + 
+                           '. The deadline was ' + CONVERT(VARCHAR, @Deadline, 101) + '.';
+
+            -- Insert the notification into the Notifications table
+            INSERT INTO Notifications (LearnerID, Timestamp, Message, UrgencyLevel)
+            VALUES (@LearnerID, @CurrentDate, @Message, 'High');
+
+            FETCH NEXT FROM GoalCursor INTO @GoalID, @Description, @Deadline;
+        END;
+
+        CLOSE GoalCursor;
+        DEALLOCATE GoalCursor;
+    END
+    ELSE
+    BEGIN
+        PRINT 'No overdue learning goals found for the learner.';
+    END
+
+    -- Clean up temporary table
+    DROP TABLE #OverdueGoals;
+END;
+
+
 
     GO
 CREATE PROC SkillProgressHistory --19
