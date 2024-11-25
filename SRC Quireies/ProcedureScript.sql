@@ -500,33 +500,32 @@ BEGIN
 END;
 GO
 
-CREATE PROC AssessmentAnalytics --20  --check the from tables bec iam tired
+CREATE PROC AssessmentAnalytics --20  --check the from tables 
     @CourseID INT,
     @ModuleID INT
 AS
 BEGIN
-    -- Validate Course ID
+  
     IF NOT EXISTS (SELECT 1 FROM Courses WHERE CourseID = @CourseID)
     BEGIN
         PRINT 'Rejection: Course ID does not exist.';
         RETURN;
     END
 
-    -- Validate Module ID
+   
     IF NOT EXISTS (SELECT 1 FROM Modules WHERE ModuleID = @ModuleID AND CourseID = @CourseID)
     BEGIN
         PRINT 'Rejection: Module ID does not exist for the specified Course.';
         RETURN;
     END
 
-    -- Fetch analytics for assessments in the specified module and course
+    
     SELECT 
         a.AssessmentID,
-        a.ModuleID,
-        m.ModuleName,
-        c.CourseName,
+        a.ModuleID,        
+        c.CourseID,
         COUNT(la.LearnerID) AS NumberOfLearners,
-        AVG(CAST(la.Score AS FLOAT)) AS AverageScore,
+        AVG(CAST(la.totalMarks AS FLOAT)) AS AverageScore,
         a.TotalMarks
     FROM 
         Assessments a
@@ -535,7 +534,7 @@ BEGIN
     INNER JOIN 
         Courses c ON m.CourseID = c.CourseID
     LEFT JOIN 
-        LearnerAssessments la ON a.AssessmentID = la.AssessmentID
+        LearnerAssessments la ON a.AssessmentID = la.AssessmentID ------xxxxxxxxx review this
     WHERE 
         m.ModuleID = @ModuleID AND c.CourseID = @CourseID
     GROUP BY 
