@@ -676,10 +676,26 @@ Go
 CREATE PROC LastActive --13
 @ForumID INT,
 @lastactive DATETIME OUTPUT
-AS
+AS 
 BEGIN
+    
+    IF NOT EXISTS (SELECT 1 FROM Discussion_forum WHERE forumID = @ForumID)
+    BEGIN
+        PRINT 'Error: Forum not found.';
+        SET @lastactive = NULL; -- Set output to NULL if forum doesn't exist
+        RETURN;
+    END
+
+    
     SELECT @lastactive = last_active
-    FROM Discussion_forum WHERE forumID = @ForumID;
+    FROM Discussion_forum 
+    WHERE forumID = @ForumID;
+
+    
+    IF @lastactive IS NULL
+    BEGIN
+        PRINT 'Error: Last active date is NULL for this forum.';
+    END
 END;
 
 GO 
