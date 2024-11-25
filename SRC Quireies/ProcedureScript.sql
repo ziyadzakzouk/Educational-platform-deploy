@@ -414,15 +414,49 @@ END
 
 GO
 CREATE PROC  ProfeciencyUpdate --17
-@Skill varchar(50),
-@LearnerID INT,
-@Level  VARCHAR(50)
+@Skill VARCHAR(50),
+    @LearnerID INT,
+    @Level VARCHAR(50)
 AS
 BEGIN
-UPDATE SkillProgression
-SET proficiency_level=@Level
-WHERE LearnerID=@LearnerID AND Skill=@Skill
+    SET NOCOUNT ON;
+
+   
+    IF @LearnerID IS NULL OR @LearnerID <= 0
+    BEGIN
+        PRINT 'Error: Invalid LearnerID provided.';
+        RETURN;
+    END
+
+    IF @Skill IS NULL OR LEN(@Skill) = 0
+    BEGIN
+        PRINT 'Error: Skill cannot be empty or null.';
+        RETURN;
+    END
+
+    IF @Level IS NULL OR LEN(@Level) = 0
+    BEGIN
+        PRINT 'Error: Level cannot be empty or null.';
+        RETURN;
+    END
+
+   
+    IF NOT EXISTS (SELECT 1 FROM SkillProgression WHERE LearnerID = @LearnerID AND Skill = @Skill)
+    BEGIN
+        PRINT 'Error: No matching record found for the given LearnerID and Skill.';
+        RETURN;
+    END
+
+    
+    UPDATE SkillProgression
+    SET proficiency_level = @Level
+    WHERE LearnerID = @LearnerID AND Skill = @Skill;
+
+    
 END;
+
+
+
 GO
 CREATE PROC  LeastBadge --18
 @LearnerID INT OUTPUT
