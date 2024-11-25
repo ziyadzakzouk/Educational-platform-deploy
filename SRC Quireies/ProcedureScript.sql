@@ -1125,15 +1125,56 @@ END;
 
     GO
 CREATE PROC SkillProgressHistory --19
-    @LearnerId INT,
+   @LearnerID INT, 
     @Skill VARCHAR(50)
-    AS
+AS
+BEGIN
+    -- Check if the input parameters are valid (non-null)
+    IF @LearnerID IS NULL OR @Skill IS NULL OR TRIM(@Skill) = ''
     BEGIN
-    SELECT  LearnerID = @LearnerId ,Skill = @Skill, ProficiencyLevel, Timestamp
-    FROM SkillProgression
-	END;
+        PRINT 'Error: Invalid input. LearnerID and Skill must be provided.';
+        RETURN;
+    END
+    
+    -- Check if the learner exists in the SkillProgression table
+    IF NOT EXISTS (
+        SELECT 1
+        FROM SkillProgression sp
+        WHERE sp.LearnerID = @LearnerID
+    )
+    BEGIN
+        PRINT 'Error: LearnerID not found.';
+        RETURN;
+    END
 
-   GO
+    -- Check if the specified skill exists for the learner
+    IF NOT EXISTS (
+        SELECT 1
+        FROM SkillProgression sp
+        WHERE sp.LearnerID = @LearnerID
+        AND sp.Skill = @Skill
+    )
+    BEGIN
+        PRINT 'Error: No data found for the specified LearnerID and Skill.';
+        RETURN;
+    END
+
+    -- Fetch the skill progression history
+    SELECT
+        sp.LearnerID,
+        sp.Skill,
+        sp.proficiency_level,
+        sp.DateRecorded
+    FROM 
+        SkillProgression sp
+    WHERE
+        sp.LearnerID = @LearnerID
+        AND sp.Skill = @Skill
+    ORDER BY 
+        sp.DateRecorded;
+END;
+
+GO
    CREATE PROC AssessmentAnalysis --20
 	@AssessmentID INT,
     @LearnerID INT
