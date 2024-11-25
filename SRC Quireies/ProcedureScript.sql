@@ -624,32 +624,65 @@ Go --1  --check the input (Edge cases)
 CREATE PROC ProfileUpdate
     @LearnerID INT, @ProfileID INT, @PreferedContentType VARCHAR(50),@emotional_state VARCHAR(50), @PersonalityType VARCHAR(50)
     AS
+	if(not exists(select 1 from Learner where Learner_ID = @LearnerID))
+	begin 
+	print 'the learner does not exist'
+	RETURN;
+	end
+	else
+	begin
     UPDATE PersonalProfile
     SET 
+		profileID = @ProfileID,
         PreferedContent_type = @PreferedContentType,
-        emotionalState = @EmotionalState,
+        emotionalState = @emotional_state,
         personality_type = @PersonalityType
-     WHERE Learner_ID = @LearnerID AND profileID = @ProfileID;
+     WHERE Learner_ID = @LearnerID;
+	 end
 GO
 
 CREATE PROC TotalPoints --2 --check the input (Edge cases)
     @LearnerID INT,
     @RewardType VARCHAR(50)
 AS
-    SELECT SUM(value) AS TotalPoints
-    FROM Rewards
+if(not exists(select 1 from Learner where Learner_ID = @LearnerID))
+begin 
+print 'the learner does not exist'
+RETURN;
+end
+
+else
+if(not exists(select 1 from Reward where type = @RewardType))
+begin 
+print 'the reward type does not exist'
+RETURN;
+end
+else
+begin
+    SELECT SUM(r.value) AS TotalPoints
+    FROM Reward r inner join QuestReward q on r.RewardID = q.QuestID inner join
+	Learner l on q.LearnerID = l.Learner_ID
     WHERE LearnerID = @LearnerID
-    AND RewardType = @RewardType;
+    AND type = @RewardType;
+end
 GO
 
 GO
 CREATE PROC EnrolledCourses  --3 --check the input (Edge cases)
     @LearnerID INT
 AS
-    SELECT c.CourseID, c.CourseName, c.Description, c.CreditHours
+if(not exists(select 1 from Learner where Learner_ID = @LearnerID))
+begin 
+print 'the learner does not exist'
+RETURN;
+end
+else
+begin 
+    SELECT c.*
     FROM Course c
-    INNER JOIN Enrollments e ON c.CourseID = e.CourseID
-    WHERE e.LearnerID = @LearnerID;
+    INNER JOIN Course_Enrollment e ON c.Course_ID = e.Course_ID
+    WHERE e.Learner_ID = @LearnerID;
+	end
 
 
     -- check to be reviewed 
@@ -687,9 +720,19 @@ CREATE PROC Moduletraits--5  --check the input (Edge cases)if it exists
     @TargetTrait VARCHAR(50), 
     @CourseID INT
 AS
-BEGIN
-   
-    SELECT m.Module_ID, m.title, m.difficulty_level
+	if(not exists(select 1 from TargetTraits where trait = @TargetTrait))
+	begin 
+	print 'the trait does not exist'
+	end
+	else
+	if(not exists(select 1 from Module where Course_ID = @CourseID))
+	begin 
+	print 'the course does not exist in the module'
+	RETURN;
+	end
+	else
+	begin 
+    SELECT m.*
     FROM Module m
     INNER JOIN TargetTraits tt ON m.Module_ID = tt.Module_ID
     WHERE tt.trait = @TargetTrait 
@@ -699,23 +742,38 @@ END;
 GO
 CREATE PROC LeaderboardRank  --6  --check the input (Edge cases)
     @LeaderboardID INT
-    AS  
-    SELECT r.LearnerID, r.CourseID, r.rank, r.total_points
-    FROM Ranking r
+    AS 
+	if(not exists(select 1 from Ranking where BoardID = @LeaderboardID))
+	begin 
+	print 'the board does not exist'
+	RETURN;
+	end
+	else
+	begin
+    SELECT l.*,r.rank
+    FROM learner l inner join Ranking r on l.Learner_ID = r.LearnerID
     WHERE r.BoardID = @LeaderboardID
     ORDER BY r.rank; 
+	end
 
 
 GO
-CREATE PROC ViewMyDeviceCharge  --7
+CREATE PROC ViewMyDeviceCharge  --7 --------needs to be reviewed
     @ActivityID INT,
     @LearnerID INT,
     @timestamp DATETIME,
     @emotionalstate VARCHAR(50)
 AS
 BEGIN
-    INSERT INTO Emotional_feedback (LearnerID, timestamp, emotional_state)
-    VALUES (@LearnerID, @timestamp, @emotionalstate);
+if(not exists(select 1 from learningActivity where Activity_ID = @ActivityID))
+	begin 
+	print 'the activity does not exist'
+	RETURN;
+	end
+	else
+	begin
+    INSERT INTO Emotional_feedback(LearnerID, timestamp, emotional_state)
+    VALUES (@LearnerID, @timestamp, @emotionalstate) where Activity_ID = @ActivityID ;
 END;
 
 GO
@@ -749,13 +807,13 @@ BEGIN
         PRINT 'Rejection: Learner has already joined this quest.';
         RETURN;
     END
-
+	else
     IF @CurrentParticipants >= @MaxParticipants
     BEGIN
         PRINT 'Rejection: Quest is already at full capacity.';
         RETURN;
     END
-
+	else
     
     INSERT INTO QuestParticipants (QuestID, LearnerID)
     VALUES (@QuestID, @LearnerID);
@@ -768,7 +826,7 @@ GO
 
 GO
 
-CREATE PROCEDURE SkillsProficiency   --8  handle the skill as an edge case
+CREATE PROCEDURE SkillsProficiency   --9  handle the skill as an edge case
     @LearnerID INT
 AS
 BEGIN
@@ -778,17 +836,11 @@ BEGIN
         PRINT 'Rejection: Learner ID does not exist.';
         RETURN;
     END
-
-   
-    SELECT 
-        s.skill AS Skill,
-        sp.ProficiencyLevel AS ProficiencyLevel
-    FROM 
-        Skills s,SkillProgression
-    LEFT JOIN 
-        SkillProficiency sp ON s.Learner_ID = sp.Learner_ID AND s.skill = sp.skill
-    WHERE 
-        s.Learner_ID = @LearnerID;
+	else
+   begin
+    SELECT proficiency_level from SkillProgression
+	where LearnerID = @LearnerID
+      
 END;
 GO
 
@@ -801,15 +853,24 @@ CREATE PROC Viewscore --10  --check the input (Edge cases)
     @score INT OUTPUT
 AS
 BEGIN
-    SELECT @score = s.score
-    FROM Scores s
-    WHERE s.LearnerID = @LearnerID AND s.AssessmentID = @AssessmentID;
-
-    -- If no score found, set the score to NULL
-    IF @score IS NULL
+IF NOT EXISTS (SELECT 1 FROM Learner WHERE Learner_ID = @LearnerID)
     BEGIN
-        SET @score = -1; 
+        PRINT 'Rejection: Learner ID does not exist.';
+        RETURN;
     END
+	IF NOT EXISTS (SELECT 1 FROM Assessment WHERE Assessment_ID = @AssessmentID)
+    BEGIN
+        PRINT 'Rejection: assesment ID does not exist.';
+        RETURN;
+    END
+
+	else
+   begin
+    SELECT @score = s.scoredPoint
+    FROM Takenassessment where
+	AssessmentID = @AssessmentID
+	and LearnerID = @LearnerID
+    
 END;
 
 
