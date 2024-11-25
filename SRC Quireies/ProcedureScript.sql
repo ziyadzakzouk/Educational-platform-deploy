@@ -1026,14 +1026,19 @@ CREATE PROC QuestMembers --16 --check the input (Edge cases)
     @QuestID INT
     AS
     BEGIN
-     -- Validate if the learner exists
+   
     IF NOT EXISTS (SELECT 1 FROM Learner WHERE Learner_ID = @LearnerID)
     BEGIN
         PRINT 'Rejection: Learner ID does not exist.';
         RETURN;
     END
 
-    -- Fetch quest progress
+    IF NOT EXISTS (SELECT 1 FROM Quest WHERE QuestID = @QuestID)
+    BEGIN
+		PRINT 'Rejection: Quest ID does not exist.';
+		RETURN;
+	END
+
     SELECT 
         q.QuestID AS QuestID,
         q.QuestName AS QuestName,
@@ -1045,7 +1050,7 @@ CREATE PROC QuestMembers --16 --check the input (Edge cases)
     WHERE 
         qp.LearnerID = @LearnerID AND qp.QuestID = @QuestID;
 
-    -- Fetch badges earned by the learner
+   
     SELECT 
         b.BadgeID AS BadgeID,
         b.BadgeName AS BadgeName,
