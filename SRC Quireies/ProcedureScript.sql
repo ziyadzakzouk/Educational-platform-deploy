@@ -296,18 +296,33 @@ GO
 CREATE PROC LearnerBadge --4
 @BadgeID int
 
-AS
-BEGIN
+AS  
+BEGIN  
+   
+    IF @BadgeID IS NULL OR @BadgeID <= 0  
+    BEGIN  
+        PRINT 'Error: BadgeID must be a positive integer.';  
+        RETURN;  
+    END  
 
-SELECT l.LearnerID,
-l.LearnerName,
-b.BadgeName
-    FROM 
-       Learners l
-    INNER JOIN LearnersBadges lb ON l.LearnerID = lb.LearnerIDINNER JOIN Badges b ON lb.BadgeID = b.BadgeID
-    WHERE 
-        b.BadgeID = @BadgeID;
-END;
+    -- Retrieve learners associated with the given BadgeID from Achivment  
+    SELECT  
+        l.Learner_ID,  
+        CONCAT(l.first_name, ' ', l.last_name) AS LearnerName,  
+        b.title AS BadgeName  
+    FROM  
+        Achievement a  
+        INNER JOIN Learner l ON a.LearnerID = l.Learner_ID  
+        INNER JOIN Badge b ON a.BadgeID = b.BadgeID  
+    WHERE  
+        b.BadgeID = @BadgeID;  
+
+     
+    IF @@ROWCOUNT = 0  
+    BEGIN  
+        PRINT 'No learners found for the specified BadgeID.';  
+    END  
+END;  
 
 GO
 create proc NewPath --5 
