@@ -164,30 +164,78 @@ end
 
 ---- instructor procedures
 Go 
-CREATE PROC SkillLearners  --1  --handle the edge cases in the input or output
- @Skillname VARCHAR(50)
- AS 
- BEGIN
-  SELECT  s.SkillName, l.LearnerName
-    FROM 
-        Skills s
-        INNER JOIN  LearnersSkills ls ON s.SkillID = ls.SkillID INNER JOIN  Learners l ON ls.LearnerID = l.LearnerID
-    WHERE 
-        s.SkillName = @Skillname;
-        END;
+CREATE PROC SkillLearners  --1
+    @Skillname VARCHAR(50)  
+AS  
+BEGIN  
+ IF @Skillname IS NULL  
+    BEGIN  
+        PRINT 'Error: Skill name cannot be NULL';  
+        RETURN;  
+    END  
+
+    SELECT  
+        s.skill AS SkillName,  
+        CONCAT(l.first_name, ' ', l.last_name) AS LearnerName  
+    FROM  
+        Skills s  
+        INNER JOIN Learner l ON s.Learner_ID = l.Learner_ID  
+    WHERE  
+        s.skill = @Skillname;  
+
+    
+    IF @@ROWCOUNT = 0  
+    BEGIN  
+        PRINT 'No learners found for the specified skill.';  
+    END  
+END;
 
 GO
 CREATE PROC NewActivity --2
-@CourseID int,
-@ModuleID int,
-@activitytype varchar(50),
-@instructiondetails varchar(max),
-@maxpoints int
-AS
-BEGIN
-INSERT INTO learningActivity(CourseID,ModuleID,activitytype, instructiondetails,maxpoints) values 
-(@CourseID,@ModuleID,@activitytype, @instructiondetails,@maxpoints)
-END;
+@CourseID INT,  
+    @ModuleID INT, @activitytype VARCHAR(50), @instructiondetails VARCHAR(MAX), @maxpoints INT  
+AS  
+BEGIN  
+      
+    IF @CourseID IS NULL OR @CourseID <= 0  
+    BEGIN  
+        PRINT 'Error: CourseID must be a positive integer.'  
+        RETURN;  
+    END  
+
+    
+    IF @ModuleID IS NULL OR @ModuleID <= 0  
+    BEGIN  
+        PRINT 'Error: ModuleID must be a positive integer.'  
+        RETURN;  
+    END  
+
+      
+    IF @activitytype IS NULL OR @activitytype = ''  
+    BEGIN  
+        PRINT 'Error: activitytype cannot be NULL or empty.'  
+        RETURN;  
+    END  
+ 
+    IF @instructiondetails IS NULL OR @instructiondetails = ''  
+    BEGIN  
+        PRINT 'Error: instructiondetails cannot be NULL or empty.'  
+        RETURN;  
+    END  
+
+     
+    IF @maxpoints IS NULL OR @maxpoints <= 0  
+    BEGIN  
+        PRINT 'Error: maxpoints must be greater than 0.'  
+        RETURN;  
+    END  
+
+    
+    INSERT INTO learningActivity (Course_ID, Module_ID, activityType, instruction_details, maxScore)  
+    VALUES (@CourseID, @ModuleID, @activitytype, @instructiondetails, @maxpoints);  
+
+    PRINT 'New activity added successfully.'  
+END;  
 
 GO
 CREATE PROC NewAchievement --3 
@@ -196,10 +244,52 @@ CREATE PROC NewAchievement --3
 @description varchar(max), 
 @date_earned date, 
 @type varchar(50)
-AS
-BEGIN
-INSERT INTO Achievement(LearnerID, BadgeID , description, date_earned, type) VALUES 
-(@LearnerID, @BadgeID , @description, @date_earned, @type)
+AS  
+BEGIN  
+    
+    IF @LearnerID IS NULL OR @LearnerID <= 0  
+    BEGIN  
+
+      PRINT 'Error: LearnerID must be a positive integer.'  
+        RETURN;  
+    END  
+
+      
+    IF @BadgeID IS NULL OR @BadgeID <= 0  
+    BEGIN  
+        PRINT 'Error: BadgeID must be a positive integer.'  
+       RETURN;  
+    END  
+
+     
+    IF @description IS NULL OR @description = ''  
+    BEGIN  
+
+         PRINT 'Error: Description cannot be NULL or empty.'  
+        RETURN;  
+    END  
+
+     
+    IF @date_earned IS NULL OR @date_earned > GETDATE()  
+    BEGIN  
+        PRINT 'Error: DateEarned must not be NULL or in the future.'  
+        RETURN;  
+    END  
+
+    
+     IF @type IS NULL OR @type = ''  
+    BEGIN  
+        PRINT 'Error: Type cannot be NULL or empty.'  
+        RETURN;  
+
+
+    END  
+
+    
+    INSERT INTO Achievement (LearnerID, BadgeID, Description, DateEarned, Type)  
+    VALUES (@LearnerID, @BadgeID, @description, @date_earned, @type);  
+
+    PRINT 'New achievement added successfully.'  
 END;
 
 GO
