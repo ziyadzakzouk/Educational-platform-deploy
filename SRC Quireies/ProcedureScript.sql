@@ -459,14 +459,31 @@ END;
 
 GO
 CREATE PROC  LeastBadge --18
-@LearnerID INT OUTPUT
+  @LearnerID INT OUTPUT
 AS
 BEGIN
-    -- Find the learner with the least number of badges earned
+    SET NOCOUNT ON;
+  
+    IF NOT EXISTS (SELECT 1 FROM LearnerBadges)
+    BEGIN
+        PRINT 'Error: The LearnerBadges table is empty.';
+        SET @LearnerID = NULL;  
+        RETURN;
+    END
+    
+     IF @LearnerID IS NULL
+    BEGIN
+        PRINT 'Error: No learner found.';
+    END
+    ELSE
+    BEGIN
+		    
     SELECT TOP 1 @LearnerID = LearnerID
     FROM LearnerBadges
     GROUP BY LearnerID
-    ORDER BY COUNT(BadgeID) ASC;
+    ORDER BY COUNT(BadgeID) ASC, LearnerID ASC;
+    END
+   
 END;
 
 
