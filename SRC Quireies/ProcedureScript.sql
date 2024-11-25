@@ -1005,6 +1005,11 @@ CREATE PROC QuestMembers --16 --check the input (Edge cases)
 	@LearnerId int
     AS
     BEGIN
+    IF NOT EXISTS (SELECT 1 FROM Learner WHERE Learner_ID = @LearnerId)
+    BEGIN
+		PRINT 'Rejection: Learner ID does not exist.';
+		RETURN;
+	END
     DECLARE @QuestID INT
     DECLARE @DEADLINE DATE
     SELECT LearnerID= @LearnerId FROM Learner
