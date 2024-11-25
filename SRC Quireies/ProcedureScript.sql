@@ -599,8 +599,32 @@ CREATE PROC NewGoal --11
 @description VARCHAR(MAX)
 AS 
 BEGIN
-    INSERT INTO Learning_goal (ID, status, deadline, description) VALUES
-    (@GoalID, @status, @deadline, @description);
+    
+    IF @status IS NULL OR TRIM(@status) = ''
+    BEGIN
+        PRINT 'Error: Status cannot be empty.';
+        RETURN;
+    END
+
+    
+    IF @deadline <= GETDATE()
+    BEGIN
+        PRINT 'Error: Deadline must be a future date.';
+        RETURN;
+    END
+
+    
+    IF EXISTS (SELECT 1 FROM Learning_goal WHERE ID = @GoalID)
+    BEGIN
+        PRINT 'Error: GoalID already exists.';
+        RETURN;
+    END
+
+    
+    INSERT INTO Learning_goal (ID, status, deadline, description)
+    VALUES (@GoalID, @status, @deadline, @description);
+
+    PRINT 'Goal created successfully.';
 END;
 
 Go
