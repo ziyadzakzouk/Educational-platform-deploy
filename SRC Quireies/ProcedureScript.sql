@@ -501,11 +501,40 @@ CREATE PROC GradeUpdate  --9
 @Newgrade int 
 AS
 BEGIN
-UPDATE Assessment 
-SET totalMarks = @Newgrade 
-WHERE LearnerID = @LearnerID AND AssessmentID = @AssessmentID;
 
-IF @@ROWCOUNT > 0
+   IF NOT EXISTS (SELECT 1 FROM Learner WHERE Learner_ID = @LearnerID)
+    BEGIN
+        PRINT 'Error: Learner not found.';
+        RETURN;
+    END
+
+    
+    IF NOT EXISTS (SELECT 1 FROM Assessment WHERE Assessment_ID = @AssessmentID)
+    BEGIN
+        PRINT 'Error: Assessment not found.';
+        RETURN;
+    END
+
+    
+    IF NOT EXISTS (SELECT 1 FROM Assessment WHERE Course_ID IN (SELECT Course_ID FROM Course WHERE Learner_ID = @LearnerID) AND Assessment_ID = @AssessmentID)
+    BEGIN
+        PRINT 'Error: Assessment is not linked to this Learner.';
+        RETURN;
+    END
+
+    
+    IF @Newgrade < 0 OR @Newgrade > (SELECT totalMarks FROM Assessment WHERE Assessment_ID = @AssessmentID)
+    BEGIN
+        PRINT 'Error: Invalid grade value.';
+        RETURN;
+    END
+
+   
+    UPDATE Assessment 
+    SET totalMarks = @Newgrade 
+    WHERE Learner_ID = @LearnerID AND Assessment_ID = @AssessmentID;
+
+    IF @@ROWCOUNT > 0
     BEGIN
         PRINT 'Grade updated successfully.';
     END
