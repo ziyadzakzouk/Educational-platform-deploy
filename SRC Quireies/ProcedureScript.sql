@@ -373,16 +373,45 @@ END;
 
 GO
 CREATE PROC  Profeciencylevel --16 --handle the cases in my procedure 
-@LearnerID INT,
-@Skill varchar(50)
 AS
 BEGIN
-SELECT Skill=@Skill 
-FROM SkillProgression
-WHERE LearnerID=@LearnerID 
-ORDER BY proficiency_level DESC
 
-END;
+    IF @LearnerID IS NULL OR @LearnerID <= 0
+    BEGIN
+        PRINT 'Error: Invalid LearnerID provided.';
+        RETURN;
+    END
+
+   
+    IF @Skill IS NULL 
+    BEGIN
+        PRINT 'Error: Skill cannot be empty or null.';
+        RETURN;
+    END
+
+   
+    IF NOT EXISTS (SELECT 1 FROM SkillProgression WHERE LearnerID = @LearnerID)
+    BEGIN
+        PRINT 'Error: No learner found with the given LearnerID.';
+        RETURN;
+    END
+
+    ELSE
+    BEGIN
+        SELECT
+            Skill = @Skill,
+            ProficiencyLevel
+        FROM
+            SkillProgression
+        WHERE
+            LearnerID = @LearnerID AND Skill = @Skill
+        ORDER BY
+            ProficiencyLevel DESC;
+    END
+END
+
+
+
 GO
 CREATE PROC  ProfeciencyUpdate --17
 @Skill varchar(50),
