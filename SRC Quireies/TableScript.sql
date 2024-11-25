@@ -192,6 +192,7 @@ CREATE TABLE Emotionalfeedback_review (
     CREATE TABLE Emotional_feedback(
     FeedbackID INT PRIMARY KEY IDENTITY,
     LearnerID INT ,
+	Activity_ID int,
     timestamp DATETIME,
     emotional_state VARCHAR(20) CHECK (emotional_state in (
             'Admiration', 'Adoration', 'Aesthetic Appreciation', 'Amusement', 
@@ -202,6 +203,7 @@ CREATE TABLE Emotionalfeedback_review (
             'Surprise'
         ))
         FOREIGN KEY(LearnerID) REFERENCES Learner(Learner_ID) ON DELETE CASCADE ON UPDATE CASCADE,
+		FOREIGN KEY(Activity_ID) REFERENCES learningActivity(Activity_ID) ON DELETE CASCADE ON UPDATE CASCADE
 );
  CREATE TABLE Emotionalfeedback_review (
     FeedbackID INT,
