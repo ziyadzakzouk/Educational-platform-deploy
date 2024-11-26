@@ -49,8 +49,16 @@ CREATE TABLE Course (
     diff_level VARCHAR(8),
     credit_point INT,
    learning_objective VARCHAR(255),
-   pre_requisites VARCHAR(255)
+  
    
+);
+
+
+CREATE TABLE CoursePrerequisites(
+Course_ID INT,
+FOREIGN KEY (Course_ID) REFERENCES Course(Course_ID) ON DELETE CASCADE ON UPDATE CASCADE,
+prerequisite VARCHAR(250)
+primary key (Course_ID,prerequisite)
 );
 CREATE TABLE Module (
 	Module_ID INT PRIMARY KEY IDENTITY,
@@ -117,6 +125,15 @@ CREATE TABLE Assessment (
     weightage INT,
     description VARCHAR(255),
     title VARCHAR(100)
+);
+
+CREATE TABLE TakenAssessment(
+Assessment_ID INT,
+Learner_ID INT,
+FOREIGN KEY (Assessment_ID) REFERENCES Assessment(Assessment_ID) ON DELETE CASCADE ON UPDATE CASCADE,
+FOREIGN KEY (Learner_ID) REFERENCES Learner(Learner_ID) ON DELETE CASCADE ON UPDATE CASCADE,
+ScoredPoint INT
+PRIMARY KEY (Assessment_ID, Learner_ID)
 );
 
 CREATE TABLE Instructor (
@@ -256,6 +273,21 @@ CREATE TABLE Collaborative (
     FOREIGN KEY (QuestID) REFERENCES Quest(QuestID) ON DELETE CASCADE ON UPDATE CASCADE
 
 );
+CREATE TABLE LearnerCollaboration(
+LearnerId INT,
+QuestID INT,
+FOREIGN KEY (LearnerId) REFERENCES Learner(Learner_ID) ON DELETE CASCADE ON UPDATE CASCADE,
+FOREIGN KEY (QuestID) REFERENCES Collaborative(QuestID) ON DELETE CASCADE ON UPDATE CASCADE,
+completion_status VARCHAR(50) CHECK (completion_status IN ('Completed', 'In Progress', 'Not Started'))
+);
+
+CREATE TABLE LearnerMastery(
+LearnerID INT,
+QuestID INT,
+FOREIGN KEY (LearnerID) REFERENCES Learner(Learner_ID) ON DELETE CASCADE ON UPDATE CASCADE,
+FOREIGN KEY (QuestID) REFERENCES Skill_Mastery(QuestID) ON DELETE CASCADE ON UPDATE CASCADE,
+completion_status VARCHAR(50) CHECK (completion_status IN ('Completed', 'In Progress', 'Not Started'))
+);
 
     CREATE TABLE Badge (
     BadgeID int PRIMARY KEY IDENTITY,
@@ -291,14 +323,13 @@ CREATE TABLE SurveyQuestions (
     FOREIGN KEY (SurveyID) REFERENCES Survey(ID) 
 );
 
-CREATE TABLE FilledSurvey (
-    SurveyID INT,
-    Question VARCHAR(255) NOT NULL,
-    LearnerID INT,
-    Answer TEXT NOT NULL,
-    PRIMARY KEY (SurveyID, Question, LearnerID),
-    FOREIGN KEY (SurveyID, Question) REFERENCES SurveyQuestions(SurveyID, Question),
-    FOREIGN KEY (LearnerID) REFERENCES Learner(Learner_ID)
+CREATE TABLE LearnerDiscussion(
+ForumID INT,
+LearnerID INT,
+FOREIGN KEY (ForumID) REFERENCES Discussion_forum(forumID) ON DELETE CASCADE ON UPDATE CASCADE,
+FOREIGN KEY (LearnerID) REFERENCES Learner(Learner_ID) ON DELETE CASCADE ON UPDATE CASCADE,
+post VARCHAR(255),
+timestamp TIMESTAMP
 );
 
 CREATE TABLE FilledSurvey (
@@ -309,8 +340,8 @@ CREATE TABLE FilledSurvey (
     PRIMARY KEY (SurveyID, Question, LearnerID),
     FOREIGN KEY (SurveyID, Question) REFERENCES SurveyQuestions(SurveyID, Question),
     FOREIGN KEY (LearnerID) REFERENCES Learner(Learner_ID)
-
 );
+
 
 CREATE TABLE Achievement (
     AchievementID INT PRIMARY KEY IDENTITY,
