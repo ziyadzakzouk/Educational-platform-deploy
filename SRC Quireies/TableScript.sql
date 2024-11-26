@@ -281,6 +281,13 @@ FOREIGN KEY (QuestID) REFERENCES Collaborative(QuestID) ON DELETE CASCADE ON UPD
 completion_status VARCHAR(50) CHECK (completion_status IN ('Completed', 'In Progress', 'Not Started'))
 );
 
+CREATE TABLE LearnerMastery(
+LearnerID INT,
+QuestID INT,
+FOREIGN KEY (LearnerID) REFERENCES Learner(Learner_ID) ON DELETE CASCADE ON UPDATE CASCADE,
+FOREIGN KEY (QuestID) REFERENCES Skill_Mastery(QuestID) ON DELETE CASCADE ON UPDATE CASCADE,
+completion_status VARCHAR(50) CHECK (completion_status IN ('Completed', 'In Progress', 'Not Started'))
+);
 
     CREATE TABLE Badge (
     BadgeID int PRIMARY KEY IDENTITY,
