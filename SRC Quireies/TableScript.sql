@@ -49,7 +49,7 @@ CREATE TABLE Course (
     diff_level VARCHAR(8),
     credit_point INT,
    learning_objective VARCHAR(255),
-   pre_requisites VARCHAR(255)
+  
    
 );
 
@@ -57,7 +57,7 @@ CREATE TABLE Course (
 CREATE TABLE CoursePrerequisites(
 Course_ID INT,
 FOREIGN KEY (Course_ID) REFERENCES Course(Course_ID) ON DELETE CASCADE ON UPDATE CASCADE,
-prerequisite VARCHAR(50)
+prerequisite VARCHAR(250)
 primary key (Course_ID,prerequisite)
 );
 CREATE TABLE Module (
@@ -125,6 +125,15 @@ CREATE TABLE Assessment (
     weightage INT,
     description VARCHAR(255),
     title VARCHAR(100)
+);
+
+CREATE TABLE TakenAssessment(
+Assessment_ID INT,
+Learner_ID INT,
+FOREIGN KEY (Assessment_ID) REFERENCES Assessment(Assessment_ID) ON DELETE CASCADE ON UPDATE CASCADE,
+FOREIGN KEY (Learner_ID) REFERENCES Learner(Learner_ID) ON DELETE CASCADE ON UPDATE CASCADE,
+ScoredPoint INT
+PRIMARY KEY (Assessment_ID, Learner_ID)
 );
 
 CREATE TABLE Instructor (
