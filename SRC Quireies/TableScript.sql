@@ -52,6 +52,14 @@ CREATE TABLE Course (
    pre_requisites VARCHAR(255)
    
 );
+
+
+CREATE TABLE CoursePrerequisites(
+Course_ID INT,
+FOREIGN KEY (Course_ID) REFERENCES Course(Course_ID) ON DELETE CASCADE ON UPDATE CASCADE,
+prerequisite VARCHAR(50)
+primary key (Course_ID,prerequisite)
+);
 CREATE TABLE Module (
 	Module_ID INT PRIMARY KEY IDENTITY,
     Course_ID INT,
