@@ -308,14 +308,13 @@ CREATE TABLE SurveyQuestions (
     FOREIGN KEY (SurveyID) REFERENCES Survey(ID) 
 );
 
-CREATE TABLE FilledSurvey (
-    SurveyID INT,
-    Question VARCHAR(255) NOT NULL,
-    LearnerID INT,
-    Answer TEXT NOT NULL,
-    PRIMARY KEY (SurveyID, Question, LearnerID),
-    FOREIGN KEY (SurveyID, Question) REFERENCES SurveyQuestions(SurveyID, Question),
-    FOREIGN KEY (LearnerID) REFERENCES Learner(Learner_ID)
+CREATE TABLE LearnerDiscussion(
+ForumID INT,
+LearnerID INT,
+FOREIGN KEY (ForumID) REFERENCES Discussion_forum(forumID) ON DELETE CASCADE ON UPDATE CASCADE,
+FOREIGN KEY (LearnerID) REFERENCES Learner(Learner_ID) ON DELETE CASCADE ON UPDATE CASCADE,
+post VARCHAR(255),
+timestamp TIMESTAMP
 );
 
 CREATE TABLE FilledSurvey (
@@ -326,8 +325,8 @@ CREATE TABLE FilledSurvey (
     PRIMARY KEY (SurveyID, Question, LearnerID),
     FOREIGN KEY (SurveyID, Question) REFERENCES SurveyQuestions(SurveyID, Question),
     FOREIGN KEY (LearnerID) REFERENCES Learner(Learner_ID)
-
 );
+
 
 CREATE TABLE Achievement (
     AchievementID INT PRIMARY KEY IDENTITY,
