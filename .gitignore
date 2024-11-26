@@ -1,3 +1,11 @@
+
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/Educational-platform/FileContentIndex
+/.vs/slnx.sqlite
+
 # Ignore all .log files
 *.log
 
