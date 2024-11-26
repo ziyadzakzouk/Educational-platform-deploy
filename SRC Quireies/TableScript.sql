@@ -273,6 +273,14 @@ CREATE TABLE Collaborative (
     FOREIGN KEY (QuestID) REFERENCES Quest(QuestID) ON DELETE CASCADE ON UPDATE CASCADE
 
 );
+CREATE TABLE LearnerCollaboration(
+LearnerId INT,
+QuestID INT,
+FOREIGN KEY (LearnerId) REFERENCES Learner(Learner_ID) ON DELETE CASCADE ON UPDATE CASCADE,
+FOREIGN KEY (QuestID) REFERENCES Collaborative(QuestID) ON DELETE CASCADE ON UPDATE CASCADE,
+completion_status VARCHAR(50) CHECK (completion_status IN ('Completed', 'In Progress', 'Not Started'))
+);
+
 
     CREATE TABLE Badge (
     BadgeID int PRIMARY KEY IDENTITY,
