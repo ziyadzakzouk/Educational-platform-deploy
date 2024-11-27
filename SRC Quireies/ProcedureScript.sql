@@ -1135,26 +1135,22 @@ CREATE PROC Prerequisites --4 ----xxxxxxxxx
     @CourseID INT
 AS
 BEGIN
-    -- Check if the learner has completed all prerequisites for the given course
-    DECLARE @PrerequisitesCompleted INT;
-
-    -- Count the prerequisites for the course
-    SELECT @PrerequisitesCompleted = COUNT(*)
-    FROM Prerequisites p
-    INNER JOIN Enrollments e ON p.PrerequisiteCourseID = e.CourseID
-    WHERE e.LearnerID = @LearnerID
-    AND e.CompletionStatus = 'Completed'  -- Assuming 'Completed' is a value in the CompletionStatus column
-    AND p.CourseID = @CourseID;
-
-    -- If all prerequisites are completed, return a message
-    IF @PrerequisitesCompleted = (SELECT COUNT(*) FROM Prerequisites WHERE CourseID = @CourseID)
-    BEGIN
-        SELECT 'All prerequisites completed.' AS Message;
-    END
-    ELSE
-    BEGIN
-        SELECT 'Prerequisites not completed.' AS Message;
-    END
+       if(not exists(select 1 from CoursePrerequisites where Course_ID = @CourseID))
+begin 
+print 'the course does not exist'
+RETURN;
+end
+else
+if(exists(select p.* from CoursePrerequisites p inner join Course_Enrollment ce on p.Course_ID = ce.Course_ID where 
+ ce.Learner_ID = @LearnerID and p.Course_ID = @CourseID and p.prerequisite = (select prerequisite from CoursePrerequisites)))
+begin 
+print 'All prerequisites are completed.'
+RETURN;
+end
+else 
+begin 
+PRINT 'Not all prerequisites are completed.'
+END
 END
 
 
