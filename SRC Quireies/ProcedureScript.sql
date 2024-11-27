@@ -1,15 +1,13 @@
-use EduPlatform  --please put bit variable and inseart if stats to handle ege case
+use zeyad  --please put bit variable and inseart if stats to handle ege case
 
 Go
-CREATE PROC ViewInfo   --handle the edge cases from the input till the validation
+CREATE PROC ViewInfo --1  --handle the edge cases from the input till the validation
 @LearnerID int
 AS
-
 if(not exists(select 1 from Learner where Learner_ID = @LearnerID))
 begin 
 print 'the learner does not exist'
 end
-
 else
 begin
 select * from Learner 
@@ -18,7 +16,7 @@ end
 
 
 Go
-CREATE PROC LearnerInfo
+CREATE PROC LearnerInfo--2
 @LearnerID int
 AS
 if(not exists(select 1 from Learner where Learner_ID = @LearnerID))
@@ -33,44 +31,44 @@ end
 
 
 Go
-CREATE PROC EmotionalState
+CREATE PROC EmotionalState--3
 @LearnerID int,
  @emotional_state varchar(50) output
 AS
 
-if(not exists(select 1 from Learner where Learner_ID = @LearnerID))
+if(not exists(select 1 from Emotional_feedback where LearnerID = @LearnerID))
 begin 
 print 'the learner does not exist'
 end
 else 
 begin
 select @emotional_state = emotional_state from Emotional_feedback 
-where Learner_ID = @LearnerID
+where LearnerID = @LearnerID
 end
-
+go
 
 Go
-CREATE PROC LogDetails
+CREATE PROC LogDetails--4
 @LearnerID int
 AS
 
-if(not exists(select 1 from Learner where Learner_ID = @LearnerID))
+if(not exists(select 1 from Interaction_log where LearnerID = @LearnerID))
 begin 
 print 'the learner does not exist'
 end
 else
 begin
 select * from Interaction_log 
-where Learner_ID = @LearnerID
+where LearnerID = @LearnerID
 end
-
+go
 
 Go
-CREATE PROC InstructorReview
+CREATE PROC InstructorReview--5
 @InstructorID int
 AS
 
-if(not exists(select 1 from Instructor where InstructorID = @InstructorID))
+if(not exists(select 1 from Instructor where Instructor_ID = @InstructorID))
 begin 
 print 'the instructor does not exist'
 end
@@ -79,10 +77,10 @@ begin
 select e.* from Emotional_feedback e inner join Emotionalfeedback_review er
 on er.FeedbackID = e.FeedbackID where @InstructorID = er.InstructorID
 end
-
+go
 
 Go
-CREATE PROC CourseRemove
+CREATE PROC CourseRemove--6
 @courseID int 
 AS
 if(not exists(select 1 from Course where Course_ID = @courseID))
@@ -93,24 +91,23 @@ else
 begin
 delete from Course where @courseID = Course_ID
 end
-
+go
 Go
-CREATE PROC Highestgrade 
+CREATE PROC Highestgrade --7
 AS
 begin
 select MAX(totalMarks) from Assessment
 group by Course_ID
 end
-
+go
 Go
-CREATE PROC InstructorCount 
+CREATE view InstructorCount --8
 AS
-begin
 select c.* from Course c inner join Teaches t on c.Course_ID = t.Course_ID
 where count(t.Instructor_ID)>1
-end
 Go
-CREATE PROC ViewNot 
+
+CREATE PROC ViewNot --9
 @LearnerID int
 AS
 BEGIN
@@ -124,49 +121,87 @@ select n.* from Notification n inner join RecivedNotfy r on n.Notification_ID = 
 where @LearnerID = r.Learner_ID
 end
 end
+go
 
 Go
-CREATE PROC CreateDiscussion --some discussion attributes need to be null and the forumid need to be identity
+CREATE PROC CreateDiscussion --10 --some discussion attributes need to be null and the forumid need to be identity
 @ModuleID int, @courseID int, @title varchar(50), @description varchar(50)
 AS
 begin
-insert into Discussion_forum(Module_ID,Course_ID,title,description) values (@ModuleID, @courseID, @title, @description)
+if(exists(select * from Discussion_forum where Module_ID = @ModuleID and Course_ID=@courseID and title = @title and description = @description))
+begin 
+print('discussion forum already exist')
 end
+else
+begin
+insert into Discussion_forum(Module_ID,Course_ID,title,description) values (@ModuleID, @courseID, @title, @description)
+print('the module has been inserted')
+end
+end
+go
+
 Go
-CREATE PROC RemoveBadge
+CREATE PROC RemoveBadge -- 11
 @BadgeID int
 AS
 if(not exists(select 1 from Badge where BadgeID = @BadgeID))
 begin 
-print 'the learner does not exist'
+print 'the badge does not exist'
 end
 else
 begin
 delete from Badge where BadgeID = @BadgeID
+print('the badge has been removed')
 end
-
+go
 
 Go
-CREATE PROC CriteriaDelete
+CREATE PROC CriteriaDelete--12
 @criteria varchar(50) 
 AS
 if(not exists(select 1 from Quest where criteria = @criteria))
 begin 
-print 'the learner does not exist'
+print 'the criteria does not exist'
 end
 else
 begin
 delete from Quest where criteria = @criteria
 end
+go
 
 Go
-CREATE PROC NotificationUpdate -- needs to be reviewed -------------------------------------------------------
+CREATE PROC NotificationUpdate --13 
 @LearnerID int, @NotificationID int, @ReadStatus bit
 AS
-if @ReadStatus = 1 
+if(exists(select 1 from Notification where Notification_ID = @NotificationID and readstatus = @ReadStatus and @ReadStatus =1)) 
 begin
 delete from Notification where @NotificationID = Notification_ID
 end
+else 
+begin 
+update Notification
+set readstatus = 1
+where Notification_ID = @NotificationID and @ReadStatus = 0
+end
+go
+
+go 
+create proc EmotionalTrendAnalysis --14
+@CourseID int, @ModuleID int, @TimePeriod datetime
+as
+if(not exists(select 1 from learningActivity where Course_ID = @CourseID)) 
+begin
+print('the course does not exist')
+end
+if(not exists(select 1 from learningActivity where Module_ID = @ModuleID)) 
+begin
+print('the module does not exist')
+end
+else 
+begin 
+select emotional_state from Emotional_feedback e inner join learningActivity l
+on l.Activity_ID = e.Activity_ID where l.Course_ID = @CourseID and l.Module_ID=@ModuleID
+
 
 
 ---- instructor procedures
