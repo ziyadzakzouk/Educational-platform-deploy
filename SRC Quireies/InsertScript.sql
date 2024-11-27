@@ -224,3 +224,9 @@ VALUES
 INSERT INTO Achievement(LearnerID,BadgeID,Description,DateEarned,Type)
 VALUES
 (1,1,'hONEST','2001-1-2','EASY')
+
+-- Insert data into SkillProgression (assuming Skills table exists)
+INSERT INTO SkillProgression (proficiency_level, LearnerID, skill_name, timestamp) VALUES 
+(1, 1, 'Programming', '2024-11-26 10:00:00'),
+(2, 2, 'Mathematics', '2024-11-26 11:00:00'),
+(3, 3, 'Physics', '2024-11-26 12:00:00');
