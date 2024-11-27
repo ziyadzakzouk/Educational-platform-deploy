@@ -230,3 +230,8 @@ INSERT INTO SkillProgression (proficiency_level, LearnerID, skill_name, timestam
 (1, 1, 'Programming', '2024-11-26 10:00:00'),
 (2, 2, 'Mathematics', '2024-11-26 11:00:00'),
 (3, 3, 'Physics', '2024-11-26 12:00:00');
+
+-- Insert data into LearnersGoals
+INSERT INTO LearnersGoals (GoalID, LearnerID) VALUES 
+(1, 1),
+(2, 2);
