@@ -39,6 +39,12 @@ VALUES
 ('Intro to AI', 'Basics of Artificial Intelligence', 'Beginner', 3, 'Understand AI principles'),
 ('Advanced AI', 'In-depth AI techniques', 'Advanced', 4, 'Apply AI models');
 
+--insert data into course prerqueist
+INSERT INTO CoursePrerequisites(Course_ID,prerequisite)
+VALUES
+(1,'Python is wonderful'),
+(2,'CPP is GOAT')
+
 -- Insert data into CoursePrerequisites table
 INSERT INTO CoursePrerequisites (Course_ID, prerequisite) 
 VALUES 
