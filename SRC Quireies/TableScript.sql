@@ -1,6 +1,6 @@
 
-CREATE DATABASE zeyad
-use zeyad
+CREATE DATABASE nope
+use nope
 
 CREATE TABLE Learner (
     Learner_ID INT PRIMARY KEY IDENTITY,

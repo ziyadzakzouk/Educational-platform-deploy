@@ -1,4 +1,4 @@
-﻿use EduPlatform
+﻿use nope
 
 -- Insert data into Learner table
 INSERT INTO Learner (first_name, last_name, birthday, gender, country, cultural_background) 

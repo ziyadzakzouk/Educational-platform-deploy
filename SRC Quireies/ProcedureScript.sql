@@ -1563,49 +1563,62 @@ GO
 	@AssessmentID INT,
     @LearnerID INT
 	AS
-	BEGIN
-	 
-    IF NOT EXISTS (SELECT 1 FROM Learner WHERE Learner_ID = @LearnerID)
+BEGIN
+   
+    IF NOT EXISTS (SELECT 1 FROM Learners WHERE Learner_ID = @LearnerID)
     BEGIN
         PRINT 'Rejection: Learner ID does not exist.';
         RETURN;
-    END
+    END;
 
     
     IF NOT EXISTS (SELECT 1 FROM Assessments WHERE AssessmentID = @AssessmentID)
     BEGIN
         PRINT 'Rejection: Assessment ID does not exist.';
         RETURN;
-    END
+    END;
 
-    
+   
+    IF NOT EXISTS (SELECT 1 FROM TakenAssessment WHERE AssessmentID = @AssessmentID AND LearnerID = @LearnerID)  --i made it from taken assessment table 
+    BEGIN
+        PRINT 'Rejection: Learner has not taken this assessment.';
+        RETURN;
+    END;
+
+    -- Overall assessment details
     SELECT 
-        a.AssessmentID,
+        ta.AssessmentID,
         a.AssessmentName,
-        la.TotalScore,
-        a.TotalMarks
+        ta.Score AS LearnerScore,
+        a.TotalMarks AS MaxMarks,
+        CAST((CAST(ta.Score AS FLOAT) / a.TotalMarks) * 100 AS DECIMAL(5, 2)) AS Percentage,
+        CASE                                                                                         ---handle opinion case is an option
+            WHEN ta.Score >= (0.9 * a.TotalMarks) THEN 'Excellent'
+            WHEN ta.Score >= (0.75 * a.TotalMarks) THEN 'Good'
+            WHEN ta.Score >= (0.5 * a.TotalMarks) THEN 'Average'
+            ELSE 'Needs Improvement'
+        END AS Performance,
+        ta.AttemptDate
     FROM 
-        Assessments a
-    LEFT JOIN 
-        LearnerAssessments la ON a.AssessmentID = la.AssessmentID
+        TakenAssessment ta
+    INNER JOIN 
+        Assessments a ON ta.AssessmentID = a.AssessmentID
     WHERE 
-        a.AssessmentID = @AssessmentID AND la.LearnerID = @LearnerID;
+        ta.AssessmentID = @AssessmentID AND ta.LearnerID = @LearnerID;
 
     
     SELECT 
         s.SectionName,
-        ss.Score AS LearnerScore,
+        ts.Score AS LearnerScore,
         s.Weightage AS TotalWeightage,
-        CAST((CAST(ss.Score AS FLOAT) / s.Weightage) * 100 AS DECIMAL(5, 2)) AS Percentage
+        CAST((CAST(ts.Score AS FLOAT) / s.Weightage) * 100 AS DECIMAL(5, 2)) AS Percentage   ---get overall score
     FROM 
         AssessmentSections s
-    LEFT JOIN 
-        SectionScores ss ON s.SectionID = ss.SectionID AND s.AssessmentID = ss.AssessmentID
+    INNER JOIN 
+        TakenSection ts ON s.SectionID = ts.SectionID AND s.AssessmentID = ts.AssessmentID
     WHERE 
-        ss.LearnerID = @LearnerID AND s.AssessmentID = @AssessmentID;
+        ts.LearnerID = @LearnerID AND s.AssessmentID = @AssessmentID;
 
-   
-  
 END;
 GO
 
