@@ -235,3 +235,20 @@ INSERT INTO SkillProgression (proficiency_level, LearnerID, skill_name, timestam
 INSERT INTO LearnersGoals (GoalID, LearnerID) VALUES 
 (1, 1),
 (2, 2);
+-- Insert additional rankings into the Ranking table
+INSERT INTO Ranking (BoardID, LearnerID, CourseID, rank, total_points) VALUES 
+(1, 3, 103, 3, 900),    -- Charlie ranks 3rd on the Spring 2024 board for Computer Science
+(2, 1, 101, 2, 1300),   -- Alice ranks 2nd on the Summer 2024 board for Mathematics
+(2, 2, 102, 1, 1500),   -- Bob ranks 1st on the Summer 2024 board for Physics
+(3, 3, 101, 1, 1700);   -- Charlie ranks 1st on the Fall 2024 board for Mathematics
+
+
+-- Insert data into Learning_goal
+INSERT INTO Learning_goal (status, deadline, description) VALUES 
+('In Progress', '2024-12-31', 'Complete the mathematics course.'),
+('Completed', '2024-11-15', 'Learn basic programming skills.');
+
+-- Insert data into LearnersGoals
+INSERT INTO LearnersGoals (GoalID, LearnerID) VALUES 
+(1, 1),
+(2, 2);
