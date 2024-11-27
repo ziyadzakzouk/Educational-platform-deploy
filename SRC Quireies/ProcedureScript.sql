@@ -409,65 +409,81 @@ BEGIN
     END  
 END;  
 
-Go
-CREATE PROC CollaborativeQuest  --7
-@difficulty_level varchar(50),
-@criteria varchar(50),
-@description varchar(50), 
-@title varchar(50), 
-@Maxnumparticipants int, 
-@deadline datetime
-AS  
+GO
+GO
+CREATE PROC CollaborativeQuest
+    @difficulty_level VARCHAR(50),
+    @criteria VARCHAR(50),
+    @description VARCHAR(50), 
+    @title VARCHAR(50), 
+    @Maxnumparticipants INT, 
+    @deadline DATETIME
+AS
 BEGIN  
-    
-    IF @difficulty_level IS NULL OR @difficulty_level <= 0  
+   
+    IF @difficulty_level IS NULL OR LEN(@difficulty_level) = 0  
     BEGIN  
-        PRINT 'Error: Difficulty level must be a positive integer.';  
+        PRINT 'Error: Difficulty level cannot be NULL or empty.';  
         RETURN;  
     END  
 
+   
     IF @criteria IS NULL OR LEN(@criteria) = 0  
     BEGIN  
         PRINT 'Error: Criteria cannot be NULL or empty.';  
         RETURN;  
     END  
 
+   
     IF @description IS NULL OR LEN(@description) = 0  
     BEGIN  
         PRINT 'Error: Description cannot be NULL or empty.';  
         RETURN;  
     END  
 
+    
     IF @title IS NULL OR LEN(@title) = 0  
     BEGIN  
         PRINT 'Error: Title cannot be NULL or empty.';  
         RETURN;  
     END  
 
+    
     IF @Maxnumparticipants IS NULL OR @Maxnumparticipants <= 0  
     BEGIN  
         PRINT 'Error: Max number of participants must be a positive integer.';  
         RETURN;  
     END  
 
+    
     IF @deadline IS NULL OR @deadline < GETDATE()  
     BEGIN  
         PRINT 'Error: Deadline must be a future date.';  
         RETURN;  
     END  
 
-    
+   
+    IF EXISTS (SELECT 1 FROM Quest WHERE Title = @title)
+    BEGIN
+        PRINT 'Error: A quest with the same title already exists.';
+        RETURN;
+    END
+
+ 
     INSERT INTO Quest (difficulty_level, criteria, description, title)  
     VALUES (@difficulty_level, @criteria, @description, @title);  
 
-    -- Get the newly generated QuestID  
+   
     DECLARE @QuestID INT = SCOPE_IDENTITY();  
 
+    
     INSERT INTO Collaborative (QuestID, Deadline, Max_Num_Participants)  
     VALUES (@QuestID, @deadline, @Maxnumparticipants);  
 
-    PRINT 'Collaborative quest created successfully.';  
+   
 END;
+GO
+
 
 GO
 CREATE PROCEDURE DeadlineUpdate  --8 
