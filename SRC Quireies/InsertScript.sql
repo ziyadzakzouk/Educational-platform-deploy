@@ -45,11 +45,6 @@ VALUES
 (1,'Python is wonderful'),
 (2,'CPP is GOAT')
 
--- Insert data into CoursePrerequisites table
-INSERT INTO CoursePrerequisites (Course_ID, prerequisite) 
-VALUES 
-(2, 'Intro to AI');
-
 -- Insert data into Module table
 INSERT INTO Module (Course_ID, title, difficulty_level, contentURL) 
 VALUES 
@@ -363,6 +358,12 @@ INSERT INTO Reward (value, description, type)
 VALUES 
 (10, 'Participation in quiz', 'Points'),
 (20, 'Completion of project', 'Badge');
+
+--insert data as interaction log
+INSERT INTO Interaction_log(activity_ID,LearnerID,Duration,Timestamp,action_type)
+VALUES
+(1,1,2,'2002-2-2','comedy'),
+(2,2,4,'2009-8-3','tragidyy')
 
 -- Insert data into Quest table
 INSERT INTO Quest (difficulty_level, criteria, description, title) 
