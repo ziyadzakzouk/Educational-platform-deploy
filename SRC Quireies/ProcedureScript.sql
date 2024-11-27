@@ -1,4 +1,4 @@
-use zeyad  --please put bit variable and inseart if stats to handle ege case
+use nope  --please put bit variable and inseart if stats to handle ege case
 
 Go
 CREATE PROC ViewInfo --1  --handle the edge cases from the input till the validation
@@ -105,6 +105,7 @@ CREATE view InstructorCount --8
 AS
 select c.* from Course c inner join Teaches t on c.Course_ID = t.Course_ID
 where count(t.Instructor_ID)>1
+
 Go
 
 CREATE PROC ViewNot --9
@@ -202,7 +203,7 @@ begin
 select emotional_state from Emotional_feedback e inner join learningActivity l
 on l.Activity_ID = e.Activity_ID where l.Course_ID = @CourseID and l.Module_ID=@ModuleID
 
-
+END
 
 ---- instructor procedures
 Go 
@@ -574,7 +575,7 @@ BEGIN
     END
 
     
-    IF NOT EXISTS (SELECT 1 FROM Assessment WHERE Course_ID IN (SELECT Course_ID FROM Course WHERE Learner_ID = @LearnerID) AND Assessment_ID = @AssessmentID)
+    IF NOT EXISTS (SELECT 1 FROM Assessment WHERE Course_ID IN (SELECT Course_ID FROM Course WHERE LearnerID = @LearnerID) AND Assessment_ID = @AssessmentID)
     BEGIN
         PRINT 'Error: Assessment is not linked to this Learner.';
         RETURN;
@@ -590,7 +591,7 @@ BEGIN
    
     UPDATE Assessment 
     SET totalMarks = @Newgrade 
-    WHERE Learner_ID = @LearnerID AND Assessment_ID = @AssessmentID;
+    WHERE LearnerID = @LearnerID AND Assessment_ID = @AssessmentID;
 
     IF @@ROWCOUNT > 0
     BEGIN
