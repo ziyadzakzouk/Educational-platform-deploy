@@ -1433,7 +1433,7 @@ BEGIN
         Learner_ID = @LearnerID;
         END;
 GO
-CREATE PROC QuestMembers --16 --check the input (Edge cases)
+CREATE PROC QuestMembers --16 
 	@LearnerId int
     AS
     BEGIN
@@ -1444,9 +1444,9 @@ CREATE PROC QuestMembers --16 --check the input (Edge cases)
 	END
     DECLARE @QuestID INT
     DECLARE @DEADLINE DATE
-    SELECT LearnerID= @LearnerId FROM Learner
-    SELECT QuestID, Deadline FROM Collaborative
-	WHERE QuestID = @QuestID AND Deadline > @DEADLINE
+    SELECT LearnerID= @LearnerId FROM LearnerCollaboration l INNER JOIN Collaborative c ON  l.QuestID=c.QuestID
+
+ 	WHERE Deadline > @DEADLINE
 	
 	END;
 
@@ -1510,9 +1510,9 @@ BEGIN
         deadline
     INTO #OverdueGoals
     FROM 
-        Learning_goal
+        LearnersGoals
     WHERE 
-        LearnerID = @LearnerID AND
+        Learner_ID = @LearnerID AND
         deadline < @CurrentDate AND
         status != 'Completed';
 
@@ -1535,7 +1535,7 @@ BEGIN
                            '. The deadline was ' + CONVERT(VARCHAR, @Deadline, 101) + '.';
 
             -- Insert the notification into the Notifications table
-            INSERT INTO Notifications (LearnerID, Timestamp, Message, UrgencyLevel)
+            INSERT INTO Notification (LearnerID, Timestamp, Message, UrgencyLevel)
             VALUES (@LearnerID, @CurrentDate, @Message, 'High');
 
             FETCH NEXT FROM GoalCursor INTO @GoalID, @Description, @Deadline;
@@ -1697,7 +1697,6 @@ BEGIN
         lb.Rank DESC;
 END;
 GO
-
 
 
 
