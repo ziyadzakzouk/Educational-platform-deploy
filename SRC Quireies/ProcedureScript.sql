@@ -1280,7 +1280,7 @@ BEGIN
 END;
 
 GO
-CREATE PROC Viewscore --10  --check the input (Edge cases)
+CREATE PROC Viewscore --10  
     @LearnerID INT,
     @AssessmentID INT,
     @score INT OUTPUT
@@ -1299,10 +1299,10 @@ IF NOT EXISTS (SELECT 1 FROM Learner WHERE Learner_ID = @LearnerID)
 
 	else
    begin
-    SELECT @score = s.scoredPoint
+    SELECT @score = ScoredPoint
     FROM Takenassessment where
-	AssessmentID = @AssessmentID
-	and LearnerID = @LearnerID
+	Assessment_ID = @AssessmentID
+	and Learner_ID = @LearnerID
     
 END;
 END;
@@ -1453,7 +1453,7 @@ CREATE PROC QuestMembers --16
     GO
 
 
-    CREATE PROC QuestProgress --17
+    CREATE PROC QuestProgress --17 ----------XXXXXXXXXXXXXX review please (Issue)
     @LearnerID INT,
     @QuestID INT
     AS
@@ -1473,8 +1473,8 @@ CREATE PROC QuestMembers --16
 
     SELECT 
         q.QuestID AS QuestID,
-        q.QuestName AS QuestName,
-        qp.CompletionStatus AS CompletionStatus
+       
+         AS CompletionStatus
     FROM 
        QuestReward qp
     INNER JOIN 
