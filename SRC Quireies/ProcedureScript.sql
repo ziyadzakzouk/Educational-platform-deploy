@@ -1437,7 +1437,7 @@ CREATE PROC QuestMembers --16
 	END;
 
 GO
-   CREATE PROC QuestProgress  --17  XXXXXXXXXXXXXXXXXXXXXX (issue)
+   CREATE PROC QuestProgress  --17  XXXXXXXXXXXXXXXXXXXXXX (issue fix)
     @LearnerID INT
 AS
 BEGIN
