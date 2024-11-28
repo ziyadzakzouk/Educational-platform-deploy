@@ -961,20 +961,20 @@ END;
 
 
 GO
-CREATE PROC AssessmentAnalytics --20  --check the from tables 
+CREATE PROC AssessmentAnalytics --20
     @CourseID INT,
     @ModuleID INT
 AS
 BEGIN
   
-    IF NOT EXISTS (SELECT 1 FROM Courses WHERE CourseID = @CourseID)
+    IF NOT EXISTS (SELECT 1 FROM Course WHERE Course_ID = @CourseID)
     BEGIN
         PRINT 'Rejection: Course ID does not exist.';
         RETURN;
     END
 
    
-    IF NOT EXISTS (SELECT 1 FROM Modules WHERE ModuleID = @ModuleID AND CourseID = @CourseID)
+    IF NOT EXISTS (SELECT 1 FROM Module WHERE Module_ID = @ModuleID AND Course_ID = @CourseID)
     BEGIN
         PRINT 'Rejection: Module ID does not exist for the specified Course.';
         RETURN;
@@ -982,26 +982,26 @@ BEGIN
 
     
     SELECT 
-        a.AssessmentID,
-        a.ModuleID,        
-        c.CourseID,
-        COUNT(la.LearnerID) AS NumberOfLearners,
-        AVG(CAST(la.totalMarks AS FLOAT)) AS AverageScore,
+        a.Assessment_ID,
+        a.Module_ID,        
+        c.Course_ID,
+        COUNT(la.Learner_ID) AS NumberOfLearners,
+        AVG(CAST(la.ScoredPoint AS FLOAT)) AS AverageScore,
         a.TotalMarks
     FROM 
-        Assessments a
+        Assessment a
     INNER JOIN 
-        Modules m ON a.ModuleID = m.ModuleID
+        Module m ON a.Module_ID = m.Module_ID
     INNER JOIN 
-        Courses c ON m.CourseID = c.CourseID
+        Course c ON m.Course_ID = c.Course_ID
     LEFT JOIN 
-        LearnerAssessments la ON a.AssessmentID = la.AssessmentID ------xxxxxxxxx review this
+        TakenAssessment la ON a.Assessment_ID = la.Assessment_ID ------xxxxxxxxx review this
     WHERE 
-        m.ModuleID = @ModuleID AND c.CourseID = @CourseID
+        m.Module_ID = @ModuleID AND c.Course_ID = @CourseID
     GROUP BY 
-        a.AssessmentID, a.ModuleID, m.ModuleName, c.CourseName, a.TotalMarks
+        a.Assessment_ID, a.Module_ID, m.title, c.title, a.TotalMarks
     ORDER BY 
-        a.AssessmentID;
+        a.Assessment_ID;
 END;
 GO
 
@@ -1378,7 +1378,7 @@ BEGIN
     RETURN;
 	END
 
-    INSERT INTO Posts (LearnerID, DiscussionID, PostContent, Timestamp)
+    INSERT INTO Posts(LearnerID, DiscussionID, PostContent, Timestamp)
     VALUES (@LearnerID, @DiscussionID, @Post, GETDATE());
     UPDATE Discussion_forum
     SET last_active = GETDATE()
@@ -1570,7 +1570,7 @@ BEGIN
         SELECT 1
         FROM SkillProgression sp
         WHERE sp.LearnerID = @LearnerID
-        AND sp.Skill = @Skill
+        AND sp.skill_name = @Skill
     )
     BEGIN
         PRINT 'Error: No data found for the specified LearnerID and Skill.';
