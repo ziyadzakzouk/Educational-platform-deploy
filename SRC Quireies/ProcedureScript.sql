@@ -1478,62 +1478,39 @@ END;
 GO
 
 
-CREATE PROC GoalReminder --18 ## critical
+GO
+CREATE PROCEDURE GoalReminder
     @LearnerID INT
 AS
 BEGIN
-    DECLARE @CurrentDate DATETIME;
-    SET @CurrentDate = GETDATE();
-
-    -- Select goals that are past their deadline and not completed
+   
+    DECLARE @ReminderMessage VARCHAR(MAX);
+    DECLARE @UrgencyLevel VARCHAR(50);
+  
+    IF NOT EXISTS (SELECT 1 FROM LearnersGoals WHERE LearnerID = @LearnerID)
+    BEGIN
+        PRINT 'No goals found for the given learner.';
+        RETURN;
+    END
+    
+    INSERT INTO Notification (message, urgency, readstatus)
     SELECT 
-        GoalID,
-        description,
-        deadline
-    INTO #OverdueGoals
-    FROM 
-        LearnersGoals
-    WHERE 
-        Learner_ID = @LearnerID AND
-        deadline < @CurrentDate AND
-        status != 'Completed';
+        CONCAT(
+            'Reminder: Goal "', lg.description, 
+            '" is past its deadline of ',  
+            '. Please update your progress!'
+        ) AS message,
+        CASE 
+            WHEN DATEDIFF(DAY, lg.deadline, GETDATE()) <= 7 THEN 'Medium'
+            ELSE 'High'
+        END AS urgency,
+        0 AS readstatus    FROM Learning_goal lg
+    INNER JOIN LearnersGoals lgmap ON lg.ID = lgmap.GoalID
+    WHERE lgmap.LearnerID = @LearnerID
+      AND lg.status != 'Completed' 
+      AND lg.deadline < GETDATE(); 
 
-    -- Check if there are any overdue goals
-    IF EXISTS (SELECT 1 FROM #OverdueGoals)
-    BEGIN
-        DECLARE @GoalID INT, @Description VARCHAR(MAX), @Deadline DATETIME;
-        DECLARE @Message VARCHAR(MAX);
-
-        -- Loop through each overdue goal and send a notification
-        DECLARE GoalCursor CURSOR FOR
-        SELECT GoalID, description, deadline FROM #OverdueGoals;
-
-        OPEN GoalCursor;
-        FETCH NEXT FROM GoalCursor INTO @GoalID, @Description, @Deadline;
-
-        WHILE @@FETCH_STATUS = 0
-        BEGIN
-            SET @Message = 'Reminder: You are falling behind on your learning goal: ' + @Description + 
-                           '. The deadline was ' + CONVERT(VARCHAR, @Deadline, 101) + '.';
-
-            -- Insert the notification into the Notifications table
-            INSERT INTO Notification (LearnerID, Timestamp, Message, UrgencyLevel)
-            VALUES (@LearnerID, @CurrentDate, @Message, 'High');
-
-            FETCH NEXT FROM GoalCursor INTO @GoalID, @Description, @Deadline;
-        END;
-
-        CLOSE GoalCursor;
-        DEALLOCATE GoalCursor;
-    END
-    ELSE
-    BEGIN
-        PRINT 'No overdue learning goals found for the learner.';
-    END
-
-    -- Clean up temporary table
-    DROP TABLE #OverdueGoals;
-END;
+  END;
 
 
 
