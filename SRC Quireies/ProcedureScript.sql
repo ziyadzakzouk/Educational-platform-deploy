@@ -1019,7 +1019,7 @@ BEGIN
     END
 
     
-    IF NOT EXISTS (SELECT 1 FROM Module WHERE ModuleID = @ModuleID AND CourseID = @CourseID)
+    IF NOT EXISTS (SELECT 1 FROM Module WHERE Module_ID = @ModuleID AND Course_ID = @CourseID)
     BEGIN
         PRINT 'Rejection: Module ID does not exist for the specified Course.';
         RETURN;
@@ -1195,14 +1195,14 @@ CREATE PROC LeaderboardRank  --6  --check the input (Edge cases)
     ORDER BY r.rank; 
 	end
 GO
-CREATE PROC ViewMyDeviceCharge  --7 --------needs to be reviewed
+CREATE PROC ActivityEmotionalFeedback  --7
     @ActivityID INT,
     @LearnerID INT,
     @timestamp DATETIME,
     @emotionalstate VARCHAR(50)
 AS
 BEGIN
-    IF NOT EXISTS (SELECT 1 FROM learningActivity WHERE Activity_ID = @ActivityID)
+    IF NOT EXISTS (SELECT 1 FROM learningActivity WHERE Activity_ID = @ActivityID) --check the certain activity
     BEGIN 
         PRINT 'The activity does not exist';
         RETURN;
@@ -1210,7 +1210,7 @@ BEGIN
     ELSE
     BEGIN
         INSERT INTO Emotional_feedback(LearnerID, timestamp, emotional_state)
-        VALUES (@LearnerID, @timestamp, @emotionalstate);
+        VALUES (@LearnerID, @timestamp, @emotionalstate); --void submisstion without return 
     END
 END;
     
