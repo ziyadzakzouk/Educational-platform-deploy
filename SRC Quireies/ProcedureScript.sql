@@ -1338,17 +1338,17 @@ DECLARE @AlreadyEnrolled BIT;
 BEGIN
 SELECT @CourseExists = CASE WHEN COUNT(*) > 0 THEN 1 ELSE 0 END
 FROM Course
-WHERE CourseID = @CourseID;
+WHERE Course_ID = @CourseID;
 SELECT @AlreadyEnrolled = CASE WHEN COUNT(*) > 0 THEN 1 ELSE 0 END
-FROM Enrollments
-WHERE LearnerID = @LearnerID AND CourseID = @CourseID;
+FROM Course_Enrollment
+WHERE Learner_ID = @LearnerID AND Course_ID = @CourseID;
 
-IF CourseExists = 0
+IF @CourseExists = 0
 BEGIN
 PRINT 'Rejection: Course does not exist.';
-IF CourseExists = 1
+IF @CourseExists = 1
 BEGIN
-IF AlreadyEnrolled = 0
+IF @AlreadyEnrolled = 0
 PRINT 'Approval: Course successfully registered.';
 ELSE
 PRINT 'Rejection: Learner is already enrolled in this course.';
@@ -1356,7 +1356,7 @@ END
 
 END
 
-	INSERT INTO Enrollments (LearnerID, CourseID, CompletionStatus)
+	INSERT INTO Course_Enrollment (Learner_ID, Course_ID, status)
 	VALUES (@LearnerID, @CourseID, 'Registered');
 END;
 
