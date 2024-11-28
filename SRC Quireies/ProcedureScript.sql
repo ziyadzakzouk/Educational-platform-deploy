@@ -1313,8 +1313,6 @@ CREATE PROC AssessmentsList --11
     @LearnerID INT
 AS
 BEGIN
-    SET NOCOUNT ON;
-
    
     IF NOT EXISTS (SELECT 1 FROM Assessment WHERE Course_ID = @CourseID AND Module_ID = @ModuleID)
     BEGIN
@@ -1322,24 +1320,12 @@ BEGIN
         RETURN;
     END
 
-  
-    SELECT 
-        a.Assessment_ID,
-        a.title AS AssessmentTitle,
-       CASE
-            WHEN s.score IS NULL THEN 'Not Graded'
-            ELSE CAST(s.score AS VARCHAR(50))
-        END AS Grade  
+SELECT ScoredPoint,ta.Assessment_ID from TakenAssessment ta Inner join Assessment a ON ta.Assessment_ID=a.Assessment_ID
 
-    FROM 
-        Assessment a
-    LEFT JOIN 
-        Scores s ON a.Assessment_ID = s.Assessment_ID AND s.LearnerID = @LearnerID 
-    WHERE 
-        a.Course_ID = @CourseID 
-        AND a.Module_ID = @ModuleID
-    ORDER BY 
-        a.Assessment_ID;  
+WHERE a.Module_ID=@ModuleID AND a.Course_ID=@CourseID And ta.Learner_ID=@LearnerID
+ 
+
+   
         END
 
 GO
