@@ -1436,44 +1436,47 @@ CREATE PROC QuestMembers --16
 	
 	END;
 
-    GO
-    CREATE PROC QuestProgress --17 ----------XXXXXXXXXXXXXX review please (Issue)
+GO
+   CREATE PROC QuestProgress  --17  XXXXXXXXXXXXXXXXXXXXXX (issue)
     @LearnerID INT
-    AS
-    BEGIN
-   
+AS
+BEGIN
+    -- Validate that the Learner ID exists
     IF NOT EXISTS (SELECT 1 FROM Learner WHERE Learner_ID = @LearnerID)
     BEGIN
         PRINT 'Rejection: Learner ID does not exist.';
         RETURN;
-    END
+    END;
 
-  
-
+    -- Retrieve quest progress for the learner
     SELECT 
         q.QuestID AS QuestID,
-       
-         AS CompletionStatus
+        q.title AS QuestTitle,
+        CASE 
+            WHEN qr.QuestID IS NOT NULL THEN 'Completed'
+            ELSE 'In Progress'
+        END AS CompletionStatus
     FROM 
-       QuestReward qp
-    INNER JOIN 
-        Quest q ON qp.QuestID = q.QuestID
-    WHERE 
-        qp.LearnerID = @LearnerID AND qp.QuestID = @QuestID;
+        Quest q
+    LEFT JOIN 
+        QuestReward qr ON q.QuestID = qr.QuestID AND qr.LearnerID = @LearnerID;
 
-   
+    -- Retrieve badge progress for the learner
     SELECT 
         b.BadgeID AS BadgeID,
-        b.BadgeName AS BadgeName,
-        lb.DateEarned AS DateEarned
+        b.title AS BadgeTitle,
+        a.Type AS BadgeType,
+        CASE 
+            WHEN a.BadgeID IS NOT NULL THEN 'Earned'
+            ELSE 'Not Earned'
+        END AS BadgeStatus
     FROM 
-       Achievement lb
-    INNER JOIN 
-        Badges b ON lb.BadgeID = b.BadgeID
-    WHERE 
-        lb.LearnerID = @LearnerID;
+        Badge b
+    LEFT JOIN 
+        Achievement a ON b.BadgeID = a.BadgeID AND a.LearnerID = @LearnerID;
 END;
 GO
+
 
 CREATE PROC GoalReminder --18 ## critical
     @LearnerID INT
