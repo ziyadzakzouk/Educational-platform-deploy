@@ -81,17 +81,24 @@ go
 
 Go
 CREATE PROC CourseRemove--6
-@courseID int 
+@courseID INT 
 AS
-if(not exists(select 1 from Course where Course_ID = @courseID))
-begin 
-print 'the course does not exist'
-end
-else 
-begin
-delete from Course where @courseID = Course_ID
-end
-go
+BEGIN
+    -- Check if the course exists
+    IF NOT EXISTS (SELECT 1 FROM Course WHERE Course_ID = @courseID)
+    BEGIN 
+        PRINT 'The course does not exist';
+        RETURN;
+    END
+
+    -- Delete dependent rows from the Ranking table
+    DELETE FROM Ranking WHERE CourseID = @courseID;
+
+    -- Delete the course
+    DELETE FROM Course WHERE Course_ID = @courseID;
+
+   
+END;
 Go
 CREATE PROC Highestgrade --7
 AS
@@ -1605,4 +1612,4 @@ GO
 EXEC Courseregister 1, 9999; -- Course does not exist
 EXEC Courseregister 1, 1; -- Learner already enrolled
 EXEC Courseregister 2, 2; -- Valid case
-	
+	EXEC CourseRemove 100

@@ -1,5 +1,5 @@
 
-Create database tst6
+Create database tst8
 
 
 CREATE TABLE Learner (
@@ -330,7 +330,7 @@ CREATE TABLE SurveyQuestions (
     SurveyID INT,                  
     Question VARCHAR(255) NOT NULL,   
     PRIMARY KEY (SurveyID, Question), 
-    FOREIGN KEY (SurveyID) REFERENCES Survey(ID) 
+    FOREIGN KEY (SurveyID) REFERENCES Survey(ID)  ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE LearnerDiscussion(
@@ -349,8 +349,8 @@ CREATE TABLE FilledSurvey (
     LearnerID INT,
     Answer TEXT NOT NULL,
     PRIMARY KEY (SurveyID, Question, LearnerID),
-    FOREIGN KEY (SurveyID, Question) REFERENCES SurveyQuestions(SurveyID, Question),
-    FOREIGN KEY (LearnerID) REFERENCES Learner(Learner_ID)
+    FOREIGN KEY (SurveyID, Question) REFERENCES SurveyQuestions(SurveyID, Question) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (LearnerID) REFERENCES Learner(Learner_ID) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 
@@ -361,8 +361,8 @@ CREATE TABLE Achievement (
     Description TEXT,
     DateEarned DATE NOT NULL,
     Type VARCHAR(50) NOT NULL,
-    FOREIGN KEY (LearnerID) REFERENCES Learner(Learner_ID),
-    FOREIGN KEY (BadgeID) REFERENCES Badge(BadgeID)
+    FOREIGN KEY (LearnerID) REFERENCES Learner(Learner_ID) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (BadgeID) REFERENCES Badge(BadgeID) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE SkillProgression (
@@ -371,7 +371,7 @@ CREATE TABLE SkillProgression (
     LearnerID INT ,
     skill_name VARCHAR(50),
     timestamp datetime NOT NULL,
-    FOREIGN KEY (LearnerID, skill_name) REFERENCES Skills(Learner_ID, skill)
+    FOREIGN KEY (LearnerID, skill_name) REFERENCES Skills(Learner_ID, skill) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE Leaderboard (
@@ -386,9 +386,9 @@ CREATE TABLE Ranking (
     rank INT NOT NULL,                
     total_points INT NOT NULL,         
     PRIMARY KEY (BoardID, LearnerID),
-    FOREIGN KEY (BoardID) REFERENCES Leaderboard(BoardID),
-    FOREIGN KEY (LearnerID) REFERENCES Learner(Learner_ID),
-    FOREIGN KEY (CourseID) REFERENCES Course(Course_ID)
+    FOREIGN KEY (BoardID) REFERENCES Leaderboard(BoardID) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (LearnerID) REFERENCES Learner(Learner_ID) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (CourseID) REFERENCES Course(Course_ID) ON DELETE CASCADE ON UPDATE CASCADE
 );
 CREATE TABLE Learning_goal (
     ID INT PRIMARY KEY IDENTITY,             
