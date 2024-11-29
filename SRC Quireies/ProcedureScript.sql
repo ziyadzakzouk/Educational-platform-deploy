@@ -630,6 +630,10 @@ BEGIN
         RETURN;
     END
 
+	 IF @timestamp IS NULL
+    BEGIN
+        SET @timestamp = CURRENT_TIMESTAMP;
+    END
     
     IF EXISTS (SELECT 1 FROM Notification WHERE Notification_ID = @NotificationID)
     BEGIN
@@ -643,11 +647,11 @@ BEGIN
         SET @timestamp = CURRENT_TIMESTAMP;
     END
 
-    
+   SET IDENTITY_INSERT Notification ON;
     INSERT INTO Notification (Notification_ID, time_stamp, message, urgency)
     VALUES (@NotificationID, @timestamp, @message, @urgencylevel);
-
-    
+		
+ 
     INSERT INTO RecivedNotfy (Learner_ID, Notification_ID)
     VALUES (@LearnerID, @NotificationID);
 
@@ -683,10 +687,10 @@ BEGIN
         RETURN;
     END
 
-    
+  SET IDENTITY_INSERT  Learning_goal ON;
     INSERT INTO Learning_goal (ID, status, deadline, description)
     VALUES (@GoalID, @status, @deadline, @description);
-
+	
     PRINT 'Goal created successfully.';
 END;
 
@@ -1177,7 +1181,7 @@ CREATE PROC ActivityEmotionalFeedback  --7
     @emotionalstate VARCHAR(50)
 AS
 BEGIN
-    IF NOT EXISTS (SELECT 1 FROM learningActivity WHERE Activity_ID = @ActivityID) --check the certain activity
+    IF (NOT EXISTS (SELECT 1 FROM learningActivity WHERE Activity_ID = @ActivityID) --check the certain activity
     BEGIN 
         PRINT 'The activity does not exist';
         RETURN;
@@ -1343,38 +1347,38 @@ END;
 
 
 Go
-CREATE PROC AddGoal  --14
+CREATE PROC AddGoal
     @LearnerID INT,
     @GoalID INT
 AS
 BEGIN
-IF NOT EXISTS (SELECT 1 FROM Learner WHERE Learner_ID = @LearnerID)
-	BEGIN
-		PRINT 'Rejection: Learner ID does not exist.';
-		RETURN;
-	END
+    -- Validate LearnerID
+    IF NOT EXISTS (SELECT 1 FROM Learner WHERE Learner_ID = @LearnerID)
+    BEGIN
+        PRINT 'Rejection: Learner ID does not exist.';
+        RETURN;
+    END;
+
+    -- Validate GoalID
+    IF NOT EXISTS (SELECT 1 FROM Learning_goal WHERE ID = @GoalID)
+    BEGIN
+        PRINT 'Rejection: Goal ID does not exist.';
+        RETURN;
+    END;
+
+    -- Check for Duplicate Entry
+    IF EXISTS (SELECT 1 FROM LearnersGoals WHERE GoalID = @GoalID AND LearnerID = @LearnerID)
+    BEGIN
+        PRINT 'Rejection: This goal is already assigned to the learner.';
+        RETURN;
+    END;
+
+    -- Insert into LearnersGoals
     INSERT INTO LearnersGoals (GoalID, LearnerID)
     VALUES (@GoalID, @LearnerID);
-END;
 
-GO
-CREATE PROC CurrentPath --15 
-    @LearnerID INT
-AS
-BEGIN
-	IF NOT EXISTS (SELECT 1 FROM Learner WHERE Learner_ID = @LearnerID)
-    BEGIN
-    PRINT 'Rejection: Learner ID does not exist.';
-		RETURN;
-	END
-    SELECT 
-        Path_ID AS LearningPathID,
-        completion_status AS Status
-    FROM 
-        LearningPath
-    WHERE 
-        Learner_ID = @LearnerID;
-        END;
+    
+END;
 GO
 CREATE PROC QuestMembers --16 
 	@LearnerId int
@@ -1593,51 +1597,81 @@ GO
 
 ------------------------------Learner proc exe
 
+EXEC LearnersCourses 
+    @CourseID = 1, 
+    @InstructorID = 1;
 
-EXEC SkillLearners @Skillname = 'Python';
-EXEC SkillLearners @Skillname = 'Machine Learner';
+
+	DECLARE @lastactive DATETIME;
+EXEC LastActive 
+    @ForumID = 1, 
+    @lastactive = @lastactive OUTPUT;
+PRINT @lastactive;
 
 
-EXEC NewActivity 
+
+DECLARE @state VARCHAR(50);
+EXEC CommonEmotionalState 
+    @state = @state OUTPUT;
+PRINT @state;
+
+
+EXEC ModuleDifficulty 
+    @courseID = 1;
+
+
+	DECLARE @Skill VARCHAR(50);
+EXEC Profeciencylevel 
+    @LearnerID = 2, 
+    @Skill = 'stragetic' ;
+PRINT @Skill;
+
+EXEC ProfeciencyUpdate 
+    @Skill = 'CPP Programming', 
+    @LearnerID = 1, 
+    @Level = 3;
+
+
+	DECLARE @LearnerID INT;
+EXEC LeastBadge 
+    @LearnerID = @LearnerID OUTPUT;
+PRINT @LearnerID;
+
+
+DECLARE @type VARCHAR(50);
+EXEC PreferedType 
+    @type = @type OUTPUT;- ---- -- - -
+PRINT @type;
+
+EXEC AssessmentAnalytics 
+    @CourseID = 1, 
+    @ModuleID = 1;
+
+
+	EXEC EmotionalTrendAnalysisIns 
     @CourseID = 1, 
     @ModuleID = 1, 
-    @activitytype = 'Quiz', 
-    @instructiondetails = 'Complete the questions within 30 minutes.', 
-    @maxpoints = 100;
+    @TimePeriod = '2024-11-28 12:00:00';
+
+	EXEC AssessmentNot 
+    @NotificationID = 7, 
+    @timestamp = '2024-11-29 10:00:00', 
+    @message = 'Assessment deadline extended.', 
+    @urgencylevel = 'High', 
+    @LearnerID = 1;
 
 
-	EXEC NewAchievement 
-    @LearnerID = 1, 
-    @BadgeID = 1, 
-    @description = 'Completed Advanced Java Course', 
-    @date_earned = '2024-11-01', 
-    @type = 'Course Completion';
+	EXEC NewGoal 
+    @GoalID = 101, 
+    @status = 'Not Started', 
+    @deadline = '2024-12-31', 
+    @description = 'Complete Data Structures course.';
 
-	EXEC LearnerBadge @BadgeID = 1;
 
-	EXEC NewPath 
-    @LearnerID = 1, 
-    @ProfileID = 1, 
-    @completion_status = 'In Progress', 
-    @custom_content = 'Advanced AI Topics', 
-    @adaptiverules = 'Based on performance in AI module';
+	--EXEC ActivityEmotionalFeedback 1,1,'2005-12-2','Calma'
+	--EXEC
 
-	EXEC TakenCourses @LearnerID = 1;
+	--EXEC ActivityEmotionalFeedback 9999, 1, GETDATE(), 'Happy'; -- Activity ID does not exist
+    --EXEC ActivityEmotionalFeedback 1, 1, GETDATE(), 'sad'; -- NULL emotional state
 
-	EXEC CollaborativeQuest 
-    @difficulty_level = 'Medium', 
-    @criteria = 'Group Effort', 
-    @description = 'Solve 10 complex math problems', 
-    @title = 'Math Genius Quest', 
-    @Maxnumparticipants = 5, 
-    @deadline = '2024-12-01';
-
-	EXEC DeadlineUpdate 
-    @QuestID = 1, 
-    @deadline = '2024-12-15';
-
-	EXEC GradeUpdate 
-    @LearnerID = 1, 
-    @AssessmentID = 1, 
-    @Newgrade = 85;
-
+	EXEC AddGoal 1,2
