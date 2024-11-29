@@ -1,5 +1,5 @@
 
-Create database tst4
+Create database tst6
 
 
 CREATE TABLE Learner (

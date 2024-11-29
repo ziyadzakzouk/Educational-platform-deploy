@@ -1591,8 +1591,53 @@ BEGIN
 END;
 GO
 
+------------------------------Learner proc exe
 
 
+EXEC SkillLearners @Skillname = 'Python';
+EXEC SkillLearners @Skillname = 'Machine Learner';
 
 
+EXEC NewActivity 
+    @CourseID = 1, 
+    @ModuleID = 1, 
+    @activitytype = 'Quiz', 
+    @instructiondetails = 'Complete the questions within 30 minutes.', 
+    @maxpoints = 100;
+
+
+	EXEC NewAchievement 
+    @LearnerID = 1, 
+    @BadgeID = 1, 
+    @description = 'Completed Advanced Java Course', 
+    @date_earned = '2024-11-01', 
+    @type = 'Course Completion';
+
+	EXEC LearnerBadge @BadgeID = 1;
+
+	EXEC NewPath 
+    @LearnerID = 1, 
+    @ProfileID = 1, 
+    @completion_status = 'In Progress', 
+    @custom_content = 'Advanced AI Topics', 
+    @adaptiverules = 'Based on performance in AI module';
+
+	EXEC TakenCourses @LearnerID = 1;
+
+	EXEC CollaborativeQuest 
+    @difficulty_level = 'Medium', 
+    @criteria = 'Group Effort', 
+    @description = 'Solve 10 complex math problems', 
+    @title = 'Math Genius Quest', 
+    @Maxnumparticipants = 5, 
+    @deadline = '2024-12-01';
+
+	EXEC DeadlineUpdate 
+    @QuestID = 1, 
+    @deadline = '2024-12-15';
+
+	EXEC GradeUpdate 
+    @LearnerID = 1, 
+    @AssessmentID = 1, 
+    @Newgrade = 85;
 

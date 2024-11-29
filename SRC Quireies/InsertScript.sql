@@ -1,5 +1,5 @@
-﻿
-use tst3
+﻿--use
+
 -- Insert data into Learner table
 INSERT INTO Learner (first_name, last_name, birthday, gender, country, cultural_background) 
 VALUES   
