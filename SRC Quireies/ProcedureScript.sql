@@ -1181,17 +1181,20 @@ CREATE PROC ActivityEmotionalFeedback  --7
     @emotionalstate VARCHAR(50)
 AS
 BEGIN
-    IF (NOT EXISTS (SELECT 1 FROM learningActivity WHERE Activity_ID = @ActivityID) --check the certain activity
+    -- Check if the activity exists
+    IF NOT EXISTS (SELECT 1 FROM learningActivity WHERE Activity_ID = @ActivityID)
     BEGIN 
         PRINT 'The activity does not exist';
         RETURN;
     END
-    ELSE
-    BEGIN
-        INSERT INTO Emotional_feedback(LearnerID, timestamp, emotional_state)
-        VALUES (@LearnerID, @timestamp, @emotionalstate); --void submisstion without return 
-    END
+
+    -- Insert emotional feedback
+    INSERT INTO Emotional_feedback (Activity_ID, LearnerID, timestamp, emotional_state)
+    VALUES (@ActivityID, @LearnerID, @timestamp, @emotionalstate);
+
+    PRINT 'Emotional feedback submitted successfully.';
 END;
+
     
 
 GO
@@ -1306,8 +1309,9 @@ END
 
 END
 
-	INSERT INTO Course_Enrollment (Learner_ID, Course_ID, status)
-	VALUES (@LearnerID, @CourseID, 'Registered');
+	INSERT INTO Course_Enrollment (Learner_ID, Course_ID)
+	VALUES (@LearnerID, @CourseID);
+	print('Registed')
 END;
 
 GO
@@ -1597,81 +1601,8 @@ GO
 
 ------------------------------Learner proc exe
 
-EXEC LearnersCourses 
-    @CourseID = 1, 
-    @InstructorID = 1;
 
-
-	DECLARE @lastactive DATETIME;
-EXEC LastActive 
-    @ForumID = 1, 
-    @lastactive = @lastactive OUTPUT;
-PRINT @lastactive;
-
-
-
-DECLARE @state VARCHAR(50);
-EXEC CommonEmotionalState 
-    @state = @state OUTPUT;
-PRINT @state;
-
-
-EXEC ModuleDifficulty 
-    @courseID = 1;
-
-
-	DECLARE @Skill VARCHAR(50);
-EXEC Profeciencylevel 
-    @LearnerID = 2, 
-    @Skill = 'stragetic' ;
-PRINT @Skill;
-
-EXEC ProfeciencyUpdate 
-    @Skill = 'CPP Programming', 
-    @LearnerID = 1, 
-    @Level = 3;
-
-
-	DECLARE @LearnerID INT;
-EXEC LeastBadge 
-    @LearnerID = @LearnerID OUTPUT;
-PRINT @LearnerID;
-
-
-DECLARE @type VARCHAR(50);
-EXEC PreferedType 
-    @type = @type OUTPUT;- ---- -- - -
-PRINT @type;
-
-EXEC AssessmentAnalytics 
-    @CourseID = 1, 
-    @ModuleID = 1;
-
-
-	EXEC EmotionalTrendAnalysisIns 
-    @CourseID = 1, 
-    @ModuleID = 1, 
-    @TimePeriod = '2024-11-28 12:00:00';
-
-	EXEC AssessmentNot 
-    @NotificationID = 7, 
-    @timestamp = '2024-11-29 10:00:00', 
-    @message = 'Assessment deadline extended.', 
-    @urgencylevel = 'High', 
-    @LearnerID = 1;
-
-
-	EXEC NewGoal 
-    @GoalID = 101, 
-    @status = 'Not Started', 
-    @deadline = '2024-12-31', 
-    @description = 'Complete Data Structures course.';
-
-
-	--EXEC ActivityEmotionalFeedback 1,1,'2005-12-2','Calma'
-	--EXEC
-
-	--EXEC ActivityEmotionalFeedback 9999, 1, GETDATE(), 'Happy'; -- Activity ID does not exist
-    --EXEC ActivityEmotionalFeedback 1, 1, GETDATE(), 'sad'; -- NULL emotional state
-
-	EXEC AddGoal 1,2
+EXEC Courseregister 1, 9999; -- Course does not exist
+EXEC Courseregister 1, 1; -- Learner already enrolled
+EXEC Courseregister 2, 2; -- Valid case
+	
