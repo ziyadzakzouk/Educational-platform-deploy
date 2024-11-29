@@ -1024,37 +1024,12 @@ BEGIN
         PRINT 'Rejection: Module ID does not exist for the specified Course.';
         RETURN;
     END
-
-   
-    DECLARE @StartDate DATETIME;
-    IF @TimePeriod = 'LAST_MONTH'
-        SET @StartDate = DATEADD(MONTH, -1, GETDATE());
-    ELSE IF @TimePeriod = 'LAST_WEEK'
-        SET @StartDate = DATEADD(WEEK, -1, GETDATE());
-    ELSE IF @TimePeriod = 'ALL_TIME'
-        SET @StartDate = NULL;
-
-   
-    SELECT 
-        ef.timestamp,
-        ef.emotional_state,
-        COUNT(ef.FeedbackID) AS FeedbackCount
-    FROM 
-        EmotionalFeedback ef
-    INNER JOIN 
-        Module m ON ef.ModuleID = m.Module_ID
-    INNER JOIN 
-        Course c ON ef.CourseID = c.Course_ID
-    WHERE 
-        ef.CourseID = @CourseID
-        AND ef.ModuleID = @ModuleID
-        AND (@StartDate IS NULL OR ef.timestamp >= @StartDate)
-    GROUP BY 
-        ef.timestamp, ef.emotional_state
-    ORDER BY 
-        ef.timestamp;
+	else 
+	begin
+	select e.LearnerID ,e.emotional_state from Emotional_feedback e inner join learningActivity l on e.Activity_ID = l.Activity_ID
+	inner join Teaches t on l.Course_ID = t.Course_ID where l.Module_ID = @ModuleID and t.Course_ID = @CourseID and e.timestamp = @TimePeriod
+	end
 END;
-GO
 
 
 
@@ -1215,56 +1190,21 @@ BEGIN
 END;
     
 
-
 GO
 CREATE PROC JoinQuest
     @LearnerID INT,
     @QuestID INT
 AS
 BEGIN
-    DECLARE @CurrentParticipants INT;
-    DECLARE @MaxParticipants INT;
-    DECLARE @AlreadyJoined BIT;
-
-   
-    
-   SELECT 
-    @CurrentParticipants = COUNT(*),
-    @MaxParticipants = Max_Num_Participants
-FROM 
-    Collaborative qp
-JOIN 
-    Quest q ON qp.QuestID = q.QuestID
-WHERE 
-    q.QuestID = @QuestID
-GROUP BY 
-    Max_Num_Participants;
-	
-
-
-    SELECT 
-        @AlreadyJoined = CASE WHEN COUNT(*) > 0 THEN 1 ELSE 0 END
-    FROM LearnerCollaboration
-    WHERE  QuestID= @QuestID AND  LearnerId= @LearnerID;
-
-   
-    IF @AlreadyJoined = 1
-    BEGIN
-        PRINT 'Rejection: Learner has already joined this quest.';
-        RETURN;
-    END
-	else
-    IF @CurrentParticipants >= @MaxParticipants
-    BEGIN
-        PRINT 'Rejection: Quest is already at full capacity.';
-        RETURN;
-    END
-	else
-    
-    INSERT INTO QuestParticipants (QuestID, LearnerID)
-    VALUES (@QuestID, @LearnerID);
-
-    PRINT 'Approval: Learner successfully joined the quest.';
+  if(not exists(select count(QuestID) from Collaborative having count(QuestID) < Max_Num_Participants))
+  begin
+  print('there is no space for another quest')
+  end
+  else
+  begin
+  insert into LearnerCollaboration(LearnerId,QuestID,completion_status)values(@LearnerID , @QuestID,'Not Started')
+  print('you joined the collboration succesfully')
+  end
 END;
 GO
 
@@ -1637,27 +1577,17 @@ CREATE PROC LeaderboardFilter
     @LearnerID INT
 AS
 BEGIN
+   if(not exists(select 1 from Ranking where LearnerID = @LearnerID))
+   begin
+   print('cannot find the learner')
+   end
+   else
+   begin
+   select r.rank,l.BoardID from Leaderboard l inner join Ranking r on r.BoardID = l.BoardID
+   where r.LearnerID = @LearnerID
+   order by r.rank desc 
    
-    IF NOT EXISTS (SELECT 1 FROM Learners WHERE Learner_ID = @LearnerID)
-    BEGIN
-        PRINT 'Rejection: Learner ID does not exist.';
-        RETURN;
-    END
-
-    
-    SELECT 
-        l.LearnerID,
-        l.Name AS LearnerName,
-        lb.Rank,
-        lb.Score
-    FROM 
-        Leaderboard lb
-    INNER JOIN 
-        Learners l ON lb.LearnerID = l.LearnerID
-    WHERE 
-        lb.Rank >= (SELECT Rank FROM Leaderboard WHERE LearnerID = @LearnerID)
-    ORDER BY 
-        lb.Rank DESC;
+   end
 END;
 GO
 
