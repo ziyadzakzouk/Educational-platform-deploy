@@ -1,4 +1,4 @@
-use tst2 --please put bit variable and inseart if stats to handle ege case
+use tst3 --please put bit variable and inseart if stats to handle ege case
 
 Go
 CREATE PROC ViewInfo --1  --handle the edge cases from the input till the validation
@@ -610,7 +610,7 @@ END;
 GO
 CREATE PROC AssessmentNot  --10
 @NotificationID INT, 
-@timestamp TIMESTAMP,
+@timestamp datetime,
 @message VARCHAR(MAX), 
 @urgencylevel VARCHAR(50), 
 @LearnerID INT
@@ -712,7 +712,7 @@ BEGIN
     END
 
    
-    IF NOT EXISTS (SELECT 1 FROM Course WHERE Course_ID = @CourseID AND Instructor_ID = @InstructorID)
+    IF NOT EXISTS (SELECT 1 FROM Course WHERE Course_ID = @CourseID)
     BEGIN
         PRINT 'Error: The instructor is not associated with this course.';
         RETURN;
@@ -726,12 +726,12 @@ BEGIN
     END
 
     -- Return the learners enrolled in the course taught by the provided instructor
-    SELECT C.title, L.first_name + ' ' + L.last_name AS LearnerName, L.email AS LearnerEmail
+    SELECT C.title,L.Learner_ID, L.first_name + ' ' + L.last_name AS LearnerName
     FROM Course_Enrollment CE
     INNER JOIN Course C ON CE.Course_ID = C.Course_ID
-    INNER JOIN Instructor I ON C.Instructor_ID = I.Instructor_ID
+    INNER JOIN Teaches t ON C.Course_ID = t.Course_ID
     INNER JOIN Learner L ON CE.Learner_ID = L.Learner_ID
-    WHERE C.Course_ID = @CourseID AND I.Instructor_ID = @InstructorID;
+    WHERE C.Course_ID = @CourseID AND t.Instructor_ID = @InstructorID;
 
 END;
 
@@ -820,6 +820,8 @@ END;
 
 GO
 CREATE PROC  Profeciencylevel --16 --handle the cases in my procedure 
+@LearnerID int,
+@skill varchar(50) Output
 AS
 BEGIN
 
@@ -847,13 +849,13 @@ BEGIN
     BEGIN
         SELECT
             Skill = @Skill,
-            ProficiencyLevel
+            proficiency_level
         FROM
             SkillProgression
         WHERE
-            LearnerID = @LearnerID AND Skill = @Skill
+            LearnerID = @LearnerID AND skill_name = @Skill
         ORDER BY
-            ProficiencyLevel DESC;
+            proficiency_level DESC;
     END
 END
 
@@ -861,7 +863,7 @@ END
 
 GO
 CREATE PROC  ProfeciencyUpdate --17
-@Skill VARCHAR(50),
+    @Skill VARCHAR(50),
     @LearnerID INT,
     @Level VARCHAR(50)
 AS
@@ -888,7 +890,7 @@ BEGIN
     END
 
    
-    IF NOT EXISTS (SELECT 1 FROM SkillProgression WHERE LearnerID = @LearnerID AND Skill = @Skill)
+    IF NOT EXISTS (SELECT 1 FROM SkillProgression WHERE LearnerID = @LearnerID AND skill_name = @Skill)
     BEGIN
         PRINT 'Error: No matching record found for the given LearnerID and Skill.';
         RETURN;
@@ -897,7 +899,7 @@ BEGIN
     
     UPDATE SkillProgression
     SET proficiency_level = @Level
-    WHERE LearnerID = @LearnerID AND Skill = @Skill;
+    WHERE LearnerID = @LearnerID AND skill_name = @Skill;
 
     
 END;
@@ -1003,20 +1005,20 @@ BEGIN
     WHERE 
         m.Module_ID = @ModuleID AND c.Course_ID = @CourseID
     GROUP BY 
-        a.Assessment_ID, a.Module_ID, m.title, c.title, a.TotalMarks
+        a.Assessment_ID, a.Module_ID, m.title, c.title, a.TotalMarks,c.Course_ID
     ORDER BY 
         a.Assessment_ID;
 END;
 GO
 
-CREATE PROCEDURE EmotionalTrendAnalysis  
+CREATE PROCEDURE EmotionalTrendAnalysisIns  
     @CourseID INT,
     @ModuleID INT,
-    @TimePeriod VARCHAR(50)
+    @TimePeriod datetime
 AS
 BEGIN
    
-    IF NOT EXISTS (SELECT 1 FROM Course WHERE CourseID = @CourseID)
+    IF NOT EXISTS (SELECT 1 FROM Course WHERE Course_ID = @CourseID)
     BEGIN
         PRINT 'Rejection: Course ID does not exist.';
         RETURN;
@@ -1046,9 +1048,9 @@ BEGIN
     FROM 
         EmotionalFeedback ef
     INNER JOIN 
-        Module m ON ef.ModuleID = m.ModuleID
+        Module m ON ef.ModuleID = m.Module_ID
     INNER JOIN 
-        Course c ON ef.CourseID = c.CourseID
+        Course c ON ef.CourseID = c.Course_ID
     WHERE 
         ef.CourseID = @CourseID
         AND ef.ModuleID = @ModuleID
@@ -1232,18 +1234,24 @@ BEGIN
 
    
     
-    SELECT 
-        @CurrentParticipants = COUNT(*),
-        @MaxParticipants = Max_Num_Participants
-    FROM  Collaborative qp
-    JOIN Quest q ON qp.QuestID = q.QuestID
-    WHERE q.QuestID = @QuestID;
+   SELECT 
+    @CurrentParticipants = COUNT(*),
+    @MaxParticipants = Max_Num_Participants
+FROM 
+    Collaborative qp
+JOIN 
+    Quest q ON qp.QuestID = q.QuestID
+WHERE 
+    q.QuestID = @QuestID
+GROUP BY 
+    Max_Num_Participants;
+	
 
 
     SELECT 
         @AlreadyJoined = CASE WHEN COUNT(*) > 0 THEN 1 ELSE 0 END
-    FROM Collaborative
-    WHERE QuestID = @QuestID AND LearnerID = @LearnerID;
+    FROM LearnerCollaboration
+    WHERE  QuestID= @QuestID AND  LearnerId= @LearnerID;
 
    
     IF @AlreadyJoined = 1
@@ -1557,16 +1565,16 @@ BEGIN
    
     SELECT
         sp.LearnerID,
-        sp.Skill,
+        sp.skill_name,
         sp.proficiency_level,
-        sp.DateRecorded
+        sp.timestamp
     FROM 
         SkillProgression sp
     WHERE
         sp.LearnerID = @LearnerID
-        AND sp.Skill = @Skill
+        AND sp.skill_name = @Skill
     ORDER BY 
-        sp.DateRecorded;
+        sp.timestamp;
 END;
 
 GO
@@ -1576,21 +1584,21 @@ GO
 	AS
 BEGIN
    
-    IF NOT EXISTS (SELECT 1 FROM Learners WHERE Learner_ID = @LearnerID)
+    IF NOT EXISTS (SELECT 1 FROM Learner WHERE Learner_ID = @LearnerID)
     BEGIN
         PRINT 'Rejection: Learner ID does not exist.';
         RETURN;
     END;
 
     
-    IF NOT EXISTS (SELECT 1 FROM Assessments WHERE AssessmentID = @AssessmentID)
+    IF NOT EXISTS (SELECT 1 FROM Assessment WHERE Assessment_ID = @AssessmentID)
     BEGIN
         PRINT 'Rejection: Assessment ID does not exist.';
         RETURN;
     END;
 
    
-    IF NOT EXISTS (SELECT 1 FROM TakenAssessment WHERE AssessmentID = @AssessmentID AND LearnerID = @LearnerID)  --i made it from taken assessment table 
+    IF NOT EXISTS (SELECT 1 FROM TakenAssessment WHERE Assessment_ID = @AssessmentID AND Learner_ID = @LearnerID)  --i made it from taken assessment table 
     BEGIN
         PRINT 'Rejection: Learner has not taken this assessment.';
         RETURN;
@@ -1598,37 +1606,24 @@ BEGIN
 
     -- Overall assessment details
     SELECT 
-        ta.AssessmentID,
-        a.AssessmentName,
-        ta.Score AS LearnerScore,
-        a.TotalMarks AS MaxMarks,
-        CAST((CAST(ta.Score AS FLOAT) / a.TotalMarks) * 100 AS DECIMAL(5, 2)) AS Percentage,
+        ta.Assessment_ID,
+        
+        ta.ScoredPoint AS LearnerScore,
+        a.totalMarks AS MaxMarks,
+        CAST((CAST(ta.ScoredPoint AS FLOAT) / a.TotalMarks) * 100 AS DECIMAL(5, 2)) AS Percentage,
         CASE                                                                                         ---handle opinion case is an option
-            WHEN ta.Score >= (0.9 * a.TotalMarks) THEN 'Excellent'
-            WHEN ta.Score >= (0.75 * a.TotalMarks) THEN 'Good'
-            WHEN ta.Score >= (0.5 * a.TotalMarks) THEN 'Average'
+            WHEN ta.ScoredPoint >= (0.9 * a.TotalMarks) THEN 'Excellent'
+            WHEN ta.ScoredPoint >= (0.75 * a.TotalMarks) THEN 'Good'
+            WHEN ta.ScoredPoint >= (0.5 * a.TotalMarks) THEN 'Average'
             ELSE 'Needs Improvement'
-        END AS Performance,
-        ta.AttemptDate
+        END AS Performance
+        
     FROM 
         TakenAssessment ta
     INNER JOIN 
-        Assessments a ON ta.AssessmentID = a.AssessmentID
+        Assessment a ON ta.Assessment_ID = a.Assessment_ID
     WHERE 
-        ta.AssessmentID = @AssessmentID AND ta.LearnerID = @LearnerID;
-
-    
-    SELECT 
-        s.SectionName,
-        ts.Score AS LearnerScore,
-        s.Weightage AS TotalWeightage,
-        CAST((CAST(ts.Score AS FLOAT) / s.Weightage) * 100 AS DECIMAL(5, 2)) AS Percentage   ---get overall score
-    FROM 
-        AssessmentSections s
-    INNER JOIN 
-        TakenSection ts ON s.SectionID = ts.SectionID AND s.AssessmentID = ts.AssessmentID
-    WHERE 
-        ts.LearnerID = @LearnerID AND s.AssessmentID = @AssessmentID;
+        ta.Assessment_ID = @AssessmentID AND ta.Learner_ID = @LearnerID; 
 
 END;
 GO

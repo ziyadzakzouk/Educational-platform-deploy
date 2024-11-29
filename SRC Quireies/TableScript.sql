@@ -1,6 +1,6 @@
 
-CREATE DATABASE tst2
-use tst2
+Create database tst4
+
 
 CREATE TABLE Learner (
     Learner_ID INT PRIMARY KEY IDENTITY,
