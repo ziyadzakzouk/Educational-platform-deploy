@@ -1,5 +1,5 @@
 ﻿
-use tst2
+use tst3
 -- Insert data into Learner table
 INSERT INTO Learner (first_name, last_name, birthday, gender, country, cultural_background) 
 VALUES   
@@ -228,9 +228,15 @@ VALUES
 
 -- Insert data into SkillProgression (assuming Skills table exists)
 INSERT INTO SkillProgression (proficiency_level, LearnerID, skill_name, timestamp) VALUES 
-(1, 1, 'Programming', '2024-11-26 10:00:00'),
-(2, 2, 'Mathematics', '2024-11-26 11:00:00'),
-(3, 3, 'Physics', '2024-11-26 12:00:00');
+(1, 1, 'CPP Programming', '2024-11-26 10:00:00'),
+(2, 2, 'Machine Learner', '2024-11-26 11:00:00'),
+(3, 1, 'data analysis and science', '2024-11-26 12:00:00');
+
+
+-- Insert data into Learning_goal
+INSERT INTO Learning_goal (status, deadline, description) VALUES 
+('In Progress', '2024-12-31', 'Complete the mathematics course.'),
+('Completed', '2024-11-15', 'Learn basic programming skills.');
 
 -- Insert data into LearnersGoals
 INSERT INTO LearnersGoals (GoalID, LearnerID) VALUES 
@@ -252,9 +258,6 @@ INSERT INTO Ranking (BoardID, LearnerID, CourseID, rank, total_points) VALUES
 
 
 
--- Insert data into Learning_goal
-INSERT INTO Learning_goal (status, deadline, description) VALUES 
-('In Progress', '2024-12-31', 'Complete the mathematics course.'),
-('Completed', '2024-11-15', 'Learn basic programming skills.');
+
 
 
