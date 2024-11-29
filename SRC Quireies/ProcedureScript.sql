@@ -1437,11 +1437,8 @@ CREATE PROC QuestMembers --16
 	END;
 
     GO
-
-
     CREATE PROC QuestProgress --17 ----------XXXXXXXXXXXXXX review please (Issue)
-    @LearnerID INT,
-    @QuestID INT
+    @LearnerID INT
     AS
     BEGIN
    
@@ -1451,11 +1448,7 @@ CREATE PROC QuestMembers --16
         RETURN;
     END
 
-    IF NOT EXISTS (SELECT 1 FROM Quest WHERE QuestID = @QuestID)
-    BEGIN
-		PRINT 'Rejection: Quest ID does not exist.';
-		RETURN;
-	END
+  
 
     SELECT 
         q.QuestID AS QuestID,
