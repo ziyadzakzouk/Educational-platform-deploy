@@ -1,4 +1,4 @@
-use tst3 --please put bit variable and inseart if stats to handle ege case
+ --Use
 
 Go
 CREATE PROC ViewInfo --1  --handle the edge cases from the input till the validation
@@ -1191,23 +1191,21 @@ END;
     
 
 GO
-CREATE PROC JoinQuest
-    @LearnerID INT,
-    @QuestID INT
-AS
-BEGIN
-  if(not exists(select l.QuestID from LearnerCollaboration l inner join Collaborative c on l.QuestID = c.QuestID
-  group by l.QuestID
-  having count(l.LearnerId) < c.Max_Num_Participants))
-  begin
-  print('there is no space for another quest')
-  end
-  else
-  begin
-  insert into LearnerCollaboration(LearnerId,QuestID,completion_status)values(@LearnerID , @QuestID,'Not Started')
-  print('you joined the collboration succesfully')
-  end
-END;
+CREATE PROC JoinQuest @LearnerID INT, @QuestID INT 
+AS 
+BEGIN 
+ IF NOT EXISTS ( SELECT 1 FROM Collaborative c LEFT JOIN 
+( SELECT QuestID, COUNT(LearnerID) AS ParticipantCount FROM LearnerCollaboration GROUP BY QuestID ) 
+l ON c.QuestID = l.QuestID WHERE c.QuestID = @QuestID AND ISNULL(l.ParticipantCount, 0) < c.Max_Num_Participants )
+BEGIN PRINT('There is no space for another quest') 
+END 
+ELSE 
+BEGIN -- Insert the new participant 
+INSERT INTO LearnerCollaboration (LearnerID, QuestID, completion_status) 
+VALUES (@LearnerID, @QuestID, 'Not Started') 
+PRINT('You joined the collaboration successfully')
+END 
+END
 GO
 
 CREATE PROCEDURE SkillsProficiency   --9  handle the skill as an edge case
