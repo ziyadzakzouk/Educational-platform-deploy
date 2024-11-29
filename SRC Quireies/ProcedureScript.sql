@@ -1,4 +1,4 @@
-use nope  --please put bit variable and inseart if stats to handle ege case
+use zak  --please put bit variable and inseart if stats to handle ege case
 
 Go
 CREATE PROC ViewInfo --1  --handle the edge cases from the input till the validation
@@ -104,7 +104,8 @@ Go
 CREATE view InstructorCount --8
 AS
 select c.* from Course c inner join Teaches t on c.Course_ID = t.Course_ID
-where count(t.Instructor_ID)>1
+group by t.Instructor_ID
+having count(t.Instructor_ID)>1
 
 Go
 
@@ -575,13 +576,6 @@ BEGIN
     END
 
     
-    IF NOT EXISTS (SELECT 1 FROM Assessment WHERE Course_ID IN (SELECT Course_ID FROM Course WHERE LearnerID = @LearnerID) AND Assessment_ID = @AssessmentID)
-    BEGIN
-        PRINT 'Error: Assessment is not linked to this Learner.';
-        RETURN;
-    END
-
-    
     IF @Newgrade < 0 OR @Newgrade > (SELECT totalMarks FROM Assessment WHERE Assessment_ID = @AssessmentID)
     BEGIN
         PRINT 'Error: Invalid grade value.';
@@ -589,9 +583,9 @@ BEGIN
     END
 
    
-    UPDATE Assessment 
-    SET totalMarks = @Newgrade 
-    WHERE LearnerID = @LearnerID AND Assessment_ID = @AssessmentID;
+    UPDATE TakenAssessment 
+    SET ScoredPoint = @Newgrade 
+    WHERE Learner_ID = @LearnerID AND Assessment_ID = @AssessmentID;
 
     IF @@ROWCOUNT > 0
     BEGIN

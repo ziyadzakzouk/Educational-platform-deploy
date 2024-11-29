@@ -1,6 +1,6 @@
 
-CREATE DATABASE nope
-use nope
+CREATE DATABASE zak
+use zak
 
 CREATE TABLE Learner (
     Learner_ID INT PRIMARY KEY IDENTITY,
@@ -213,11 +213,13 @@ CREATE TABLE Emotionalfeedback_review (
 
     CREATE TABLE Notification(
     Notification_ID INT PRIMARY KEY IDENTITY,
-    time_stamp TIMESTAMP,
+    time_stamp datetime default getdate(),
     message VARCHAR(255),
     urgency VARCHAR(50) CHECK (urgency IN ('High', 'Medium', 'Low')),
 	readstatus bit
     );
+	
+
     Create TABLE RecivedNotfy(
     Learner_ID INT,
     Notification_ID INT,
@@ -260,7 +262,7 @@ CREATE TABLE QuestReward(
 	RewardID INT,
     LearnerID INT,
     PRIMARY KEY (QuestID, RewardID,LearnerID),
-    timeEarned TIMESTAMP,
+    timeEarned datetime default getdate(),
 	FOREIGN KEY (QuestID) REFERENCES Quest(QuestID) ON DELETE CASCADE ON UPDATE CASCADE,
 	FOREIGN KEY (RewardID) REFERENCES Reward(RewardID) ON DELETE CASCADE ON UPDATE CASCADE,
 	FOREIGN KEY (LearnerID) REFERENCES Learner(Learner_ID) ON DELETE CASCADE ON UPDATE CASCADE
@@ -313,7 +315,7 @@ primary key(LearnerID,QuestID)
 	 FOREIGN KEY (Module_ID,Course_ID) REFERENCES Module(Module_ID,Course_ID) ON DELETE CASCADE ON UPDATE CASCADE,
 	 title varchar(50),
 	 last_active Datetime,
-	 timestamp date,
+	 timestamp datetime,
 	 description varchar(255)
 	);
 
@@ -368,7 +370,7 @@ CREATE TABLE SkillProgression (
     proficiency_level INT NOT NULL,
     LearnerID INT ,
     skill_name VARCHAR(50),
-    timestamp TIMESTAMP NOT NULL,
+    timestamp datetime NOT NULL,
     FOREIGN KEY (LearnerID, skill_name) REFERENCES Skills(Learner_ID, skill)
 );
 
@@ -401,6 +403,9 @@ CREATE TABLE LearnersGoals (
     FOREIGN KEY (GoalID) REFERENCES Learning_goal(ID) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (LearnerID) REFERENCES Learner(Learner_ID) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+
+
 
 
 

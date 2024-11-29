@@ -1,4 +1,5 @@
-﻿use nope
+﻿
+use zak
 -- Insert data into Learner table
 INSERT INTO Learner (first_name, last_name, birthday, gender, country, cultural_background) 
 VALUES   
@@ -11,7 +12,7 @@ INSERT INTO Skills (Learner_ID, skill)
 VALUES 
 (1, 'Python Programming'),
 (2, 'Machine Learning'),
-(1, NULL); -- Edge case: Null skill
+(1, 'data analysis'); -- Edge case: Null skill
 
 -- Insert data into LearningPrefrences table
 INSERT INTO LearningPrefrences (Learner_ID, prefrences) 
@@ -148,8 +149,8 @@ VALUES
 --insert data as interaction log
 INSERT INTO Interaction_log(activity_ID,LearnerID,Duration,Timestamp,action_type)
 VALUES
-(1,1,2,'2002-2-2','comedy'),
-(2,2,4,'2009-8-3','tragidyy')
+(1,1,'14:30:00','2002-2-2','comedy'),
+(2,2,'10:30:00','2009-8-3','tragidyy')
 
 -- Insert data into Quest table
 INSERT INTO Quest (difficulty_level, criteria, description, title) 
@@ -220,7 +221,7 @@ VALUES
 -- Insert data into FilledSurvey table
 INSERT INTO FilledSurvey (SurveyID, Question, LearnerID, Answer) 
 VALUES 
-(1, 'How would you rate the course content?', 1)
+(1, 'How would you rate the course content?', 1 , 'very good')
 INSERT INTO Achievement(LearnerID,BadgeID,Description,DateEarned,Type)
 VALUES
 (1,1,'hONEST','2001-1-2','EASY')
@@ -235,12 +236,20 @@ INSERT INTO SkillProgression (proficiency_level, LearnerID, skill_name, timestam
 INSERT INTO LearnersGoals (GoalID, LearnerID) VALUES 
 (1, 1),
 (2, 2);
+
+insert into Leaderboard(season) values
+('winter'),
+('spring'),
+('autumn'),
+('summer')
+
+
+
 -- Insert additional rankings into the Ranking table
 INSERT INTO Ranking (BoardID, LearnerID, CourseID, rank, total_points) VALUES 
-(1, 3, 103, 3, 900),    -- Charlie ranks 3rd on the Spring 2024 board for Computer Science
-(2, 1, 101, 2, 1300),   -- Alice ranks 2nd on the Summer 2024 board for Mathematics
-(2, 2, 102, 1, 1500),   -- Bob ranks 1st on the Summer 2024 board for Physics
-(3, 3, 101, 1, 1700);   -- Charlie ranks 1st on the Fall 2024 board for Mathematics
+(1, 3, 1, 4, 900),    -- Charlie ranks 3rd on the Spring 2024 board for Computer Science
+(2, 1, 2, 2, 1300)  -- Alice ranks 2nd on the Summer 2024 board for Mathematics
+
 
 
 -- Insert data into Learning_goal
@@ -248,7 +257,4 @@ INSERT INTO Learning_goal (status, deadline, description) VALUES
 ('In Progress', '2024-12-31', 'Complete the mathematics course.'),
 ('Completed', '2024-11-15', 'Learn basic programming skills.');
 
--- Insert data into LearnersGoals
-INSERT INTO LearnersGoals (GoalID, LearnerID) VALUES 
-(1, 1),
-(2, 2);
+
