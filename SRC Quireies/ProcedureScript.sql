@@ -1196,7 +1196,9 @@ CREATE PROC JoinQuest
     @QuestID INT
 AS
 BEGIN
-  if(not exists(select count(QuestID) from Collaborative having count(QuestID) < Max_Num_Participants))
+  if(not exists(select l.QuestID from LearnerCollaboration l inner join Collaborative c on l.QuestID = c.QuestID
+  group by l.QuestID
+  having count(l.LearnerId) < c.Max_Num_Participants))
   begin
   print('there is no space for another quest')
   end
