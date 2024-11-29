@@ -1395,14 +1395,10 @@ BEGIN
     END;
 
     
-    BEGIN TRY
+    BEGIN 
         INSERT INTO LearnerDiscussion (ForumID, LearnerID, post, time)
         VALUES (@DiscussionID, @LearnerID, @Post, GETDATE());
-        PRINT 'Post added successfully.';
-    END TRY
-    BEGIN CATCH
-        PRINT 'Error: Unable to add the post.';
-    END CATCH
+        END
 END;
 
 
