@@ -1184,14 +1184,21 @@ GO
 CREATE PROC ActivityEmotionalFeedback  --7
     @ActivityID INT,
     @LearnerID INT,
-    @timestamp DATETIME,
+    @timestamp Time,
     @emotionalstate VARCHAR(50)
 AS
 BEGIN
     -- Check if the activity exists
     IF NOT EXISTS (SELECT 1 FROM learningActivity WHERE Activity_ID = @ActivityID)
     BEGIN 
-        PRINT 'The activity does not exist';
+        PRINT 'Rejection: The activity does not exist.';
+        RETURN;
+    END
+
+    -- Check if feedback already exists for this ActivityID and LearnerID
+    IF EXISTS (SELECT 1 FROM Emotional_feedback WHERE Activity_ID = @ActivityID AND LearnerID = @LearnerID)
+    BEGIN
+        PRINT 'Rejection: Emotional feedback already submitted for this activity and learner.';
         RETURN;
     END
 
@@ -1199,7 +1206,6 @@ BEGIN
     INSERT INTO Emotional_feedback (Activity_ID, LearnerID, timestamp, emotional_state)
     VALUES (@ActivityID, @LearnerID, @timestamp, @emotionalstate);
 
-    PRINT 'Emotional feedback submitted successfully.';
 END;
 
     
@@ -1613,3 +1619,5 @@ EXEC Courseregister 1, 9999; -- Course does not exist
 EXEC Courseregister 1, 1; -- Learner already enrolled
 EXEC Courseregister 2, 2; -- Valid case
 	EXEC CourseRemove 100
+	Exec RemoveBadge 1
+	Exec ActivityEmotionalFeedback 1,1,'10:00:00','Anixiy'
