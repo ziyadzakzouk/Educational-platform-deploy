@@ -1373,23 +1373,38 @@ CREATE PROC Post --13
     @Post VARCHAR(MAX)
 AS
 BEGIN
-    IF NOT EXISTS (SELECT 1 FROM Learner WHERE Learner_ID = @LearnerID )
+   
+    IF NOT EXISTS (SELECT 1 FROM Learner WHERE Learner_ID = @LearnerID)
     BEGIN
-		PRINT 'Rejection: Learner ID does not exist.';
-		RETURN;
-	END
+        PRINT 'Error: Learner does not exist.';
+        RETURN;
+    END;
+
+    
     IF NOT EXISTS (SELECT 1 FROM Discussion_forum WHERE forumID = @DiscussionID)
     BEGIN
-    PRINT 'Rejection: Discussion ID does not exist.';
-    RETURN;
-	END
+        PRINT 'Error: Discussion forum does not exist.';
+        RETURN;
+    END;
 
-    INSERT INTO Posts(LearnerID, DiscussionID, PostContent, Timestamp)
-    VALUES (@LearnerID, @DiscussionID, @Post, GETDATE());
-    UPDATE Discussion_forum
-    SET last_active = GETDATE()
-    WHERE forumID = @DiscussionID;
+   
+    IF @Post IS NULL OR LTRIM(RTRIM(@Post)) = ''
+    BEGIN
+        PRINT 'Error: Post content cannot be empty.';
+        RETURN;
+    END;
+
+    
+    BEGIN TRY
+        INSERT INTO LearnerDiscussion (ForumID, LearnerID, post, time)
+        VALUES (@DiscussionID, @LearnerID, @Post, GETDATE());
+        PRINT 'Post added successfully.';
+    END TRY
+    BEGIN CATCH
+        PRINT 'Error: Unable to add the post.';
+    END CATCH
 END;
+
 
 Go
 CREATE PROC AddGoal  --14
