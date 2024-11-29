@@ -1,6 +1,6 @@
 
-CREATE DATABASE zak
-use zak
+CREATE DATABASE tst2
+use tst2
 
 CREATE TABLE Learner (
     Learner_ID INT PRIMARY KEY IDENTITY,

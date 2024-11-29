@@ -1,4 +1,4 @@
-use zak  --please put bit variable and inseart if stats to handle ege case
+use tst2 --please put bit variable and inseart if stats to handle ege case
 
 Go
 CREATE PROC ViewInfo --1  --handle the edge cases from the input till the validation
@@ -101,12 +101,22 @@ group by Course_ID
 end
 go
 Go
-CREATE view InstructorCount --8
+CREATE VIEW InstructorCount
 AS
-select c.* from Course c inner join Teaches t on c.Course_ID = t.Course_ID
-group by t.Instructor_ID
-having count(t.Instructor_ID)>1
-
+SELECT 
+    c.Course_ID, 
+    c.title ,    
+	COUNT(t.Instructor_ID) AS InstructorCount
+FROM 
+    Course c
+INNER JOIN 
+    Teaches t 
+ON 
+    c.Course_ID = t.Course_ID
+GROUP BY 
+    c.Course_ID, c.title
+HAVING 
+    COUNT(t.Instructor_ID) > 1;
 Go
 
 CREATE PROC ViewNot --9

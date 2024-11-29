@@ -1,31 +1,31 @@
 ﻿
-use zak
+use tst2
 -- Insert data into Learner table
 INSERT INTO Learner (first_name, last_name, birthday, gender, country, cultural_background) 
 VALUES   
-('Alice', 'Johnson', '1998-06-15', 'Female', 'Canada', 'Western'),
+('Youssef', 'Ashraf', '2005-09-12', 'Male', 'Egypt', 'Eastern'),
 ('Bob', 'Miller', '2001-09-12', 'Male', 'Germany', 'European'),
-('Chris', 'Brown', NULL, 'Male', 'USA', 'Western'); -- Edge case: Missing birthday
+('Chris', 'Brown', NULL, 'Male', 'USA', 'Western');
 
 -- Insert data into Skills table
 INSERT INTO Skills (Learner_ID, skill) 
 VALUES 
-(1, 'Python Programming'),
-(2, 'Machine Learning'),
-(1, 'data analysis'); -- Edge case: Null skill
+(1, 'CPP Programming'),
+(2, 'Machine Learner'),
+(1, 'data analysis and science'); 
 
 -- Insert data into LearningPrefrences table
 INSERT INTO LearningPrefrences (Learner_ID, prefrences) 
 VALUES 
 (1, 'Visual Learning'),
-(2, 'Auditory Learning'),
+(2, 'Auditory  Learning'),
 (3, 'Hands-on Practice');
 
 -- Insert data into PersonalProfile table
 INSERT INTO PersonalProfile (Learner_ID, profileID, PreferedContent_type, emotionalState, personality_type) 
 VALUES 
-(1, 1, 'Video Lectures', 'Calm', 'Introvert'),
-(2, 2, 'Interactive Quizzes', 'Excited', 'Extrovert');
+(1, 1, 'Video Lectures', 'Calma', 'Introvert'),
+(2, 2, 'Interactive Quizzes', 'Eexcited', 'Extrovert');
 
 -- Insert data into HealthCondition table
 INSERT INTO HealthCondition (Learner_ID, profileID, condition) 
