@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Giu  files\\Semester 3\\Semester 3\\data base\\Project\\Edu-website\\Course station\\Course station\\Course station.csproj": {}
+    "E:\\Giu  files\\Semester 3\\Semester 3\\data base\\Project\\Educational-platform\\Course station\\Course station\\Course station.csproj": {}
   },
   "projects": {
-    "E:\\Giu  files\\Semester 3\\Semester 3\\data base\\Project\\Edu-website\\Course station\\Course station\\Course station.csproj": {
+    "E:\\Giu  files\\Semester 3\\Semester 3\\data base\\Project\\Educational-platform\\Course station\\Course station\\Course station.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Giu  files\\Semester 3\\Semester 3\\data base\\Project\\Edu-website\\Course station\\Course station\\Course station.csproj",
+        "projectUniqueName": "E:\\Giu  files\\Semester 3\\Semester 3\\data base\\Project\\Educational-platform\\Course station\\Course station\\Course station.csproj",
         "projectName": "Course station",
-        "projectPath": "E:\\Giu  files\\Semester 3\\Semester 3\\data base\\Project\\Edu-website\\Course station\\Course station\\Course station.csproj",
+        "projectPath": "E:\\Giu  files\\Semester 3\\Semester 3\\data base\\Project\\Educational-platform\\Course station\\Course station\\Course station.csproj",
         "packagesPath": "C:\\Users\\ya168\\.nuget\\packages\\",
-        "outputPath": "E:\\Giu  files\\Semester 3\\Semester 3\\data base\\Project\\Edu-website\\Course station\\Course station\\obj\\",
+        "outputPath": "E:\\Giu  files\\Semester 3\\Semester 3\\data base\\Project\\Educational-platform\\Course station\\Course station\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\ya168\\AppData\\Roaming\\NuGet\\NuGet.Config",

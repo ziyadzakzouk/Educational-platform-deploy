@@ -1,0 +1,31 @@
+E:\Giu  files\Semester 3\Semester 3\data base\Project\Educational-platform\Course station\Course station\bin\Debug\net8.0\appsettings.Development.json
+E:\Giu  files\Semester 3\Semester 3\data base\Project\Educational-platform\Course station\Course station\bin\Debug\net8.0\appsettings.json
+E:\Giu  files\Semester 3\Semester 3\data base\Project\Educational-platform\Course station\Course station\bin\Debug\net8.0\Course station.staticwebassets.runtime.json
+E:\Giu  files\Semester 3\Semester 3\data base\Project\Educational-platform\Course station\Course station\bin\Debug\net8.0\Course station.exe
+E:\Giu  files\Semester 3\Semester 3\data base\Project\Educational-platform\Course station\Course station\bin\Debug\net8.0\Course station.deps.json
+E:\Giu  files\Semester 3\Semester 3\data base\Project\Educational-platform\Course station\Course station\bin\Debug\net8.0\Course station.runtimeconfig.json
+E:\Giu  files\Semester 3\Semester 3\data base\Project\Educational-platform\Course station\Course station\bin\Debug\net8.0\Course station.dll
+E:\Giu  files\Semester 3\Semester 3\data base\Project\Educational-platform\Course station\Course station\bin\Debug\net8.0\Course station.pdb
+E:\Giu  files\Semester 3\Semester 3\data base\Project\Educational-platform\Course station\Course station\obj\Debug\net8.0\Course station.GeneratedMSBuildEditorConfig.editorconfig
+E:\Giu  files\Semester 3\Semester 3\data base\Project\Educational-platform\Course station\Course station\obj\Debug\net8.0\Course station.AssemblyInfoInputs.cache
+E:\Giu  files\Semester 3\Semester 3\data base\Project\Educational-platform\Course station\Course station\obj\Debug\net8.0\Course station.AssemblyInfo.cs
+E:\Giu  files\Semester 3\Semester 3\data base\Project\Educational-platform\Course station\Course station\obj\Debug\net8.0\Course station.csproj.CoreCompileInputs.cache
+E:\Giu  files\Semester 3\Semester 3\data base\Project\Educational-platform\Course station\Course station\obj\Debug\net8.0\Course station.MvcApplicationPartsAssemblyInfo.cache
+E:\Giu  files\Semester 3\Semester 3\data base\Project\Educational-platform\Course station\Course station\obj\Debug\net8.0\Course station.RazorAssemblyInfo.cache
+E:\Giu  files\Semester 3\Semester 3\data base\Project\Educational-platform\Course station\Course station\obj\Debug\net8.0\Course station.RazorAssemblyInfo.cs
+E:\Giu  files\Semester 3\Semester 3\data base\Project\Educational-platform\Course station\Course station\obj\Debug\net8.0\Course station.sourcelink.json
+E:\Giu  files\Semester 3\Semester 3\data base\Project\Educational-platform\Course station\Course station\obj\Debug\net8.0\staticwebassets.build.json
+E:\Giu  files\Semester 3\Semester 3\data base\Project\Educational-platform\Course station\Course station\obj\Debug\net8.0\staticwebassets.development.json
+E:\Giu  files\Semester 3\Semester 3\data base\Project\Educational-platform\Course station\Course station\obj\Debug\net8.0\staticwebassets\msbuild.Course station.Microsoft.AspNetCore.StaticWebAssets.props
+E:\Giu  files\Semester 3\Semester 3\data base\Project\Educational-platform\Course station\Course station\obj\Debug\net8.0\staticwebassets\msbuild.build.Course station.props
+E:\Giu  files\Semester 3\Semester 3\data base\Project\Educational-platform\Course station\Course station\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.Course station.props
+E:\Giu  files\Semester 3\Semester 3\data base\Project\Educational-platform\Course station\Course station\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.Course station.props
+E:\Giu  files\Semester 3\Semester 3\data base\Project\Educational-platform\Course station\Course station\obj\Debug\net8.0\staticwebassets.pack.json
+E:\Giu  files\Semester 3\Semester 3\data base\Project\Educational-platform\Course station\Course station\obj\Debug\net8.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
+E:\Giu  files\Semester 3\Semester 3\data base\Project\Educational-platform\Course station\Course station\obj\Debug\net8.0\scopedcss\bundle\Course station.styles.css
+E:\Giu  files\Semester 3\Semester 3\data base\Project\Educational-platform\Course station\Course station\obj\Debug\net8.0\scopedcss\projectbundle\Course station.bundle.scp.css
+E:\Giu  files\Semester 3\Semester 3\data base\Project\Educational-platform\Course station\Course station\obj\Debug\net8.0\Course station.dll
+E:\Giu  files\Semester 3\Semester 3\data base\Project\Educational-platform\Course station\Course station\obj\Debug\net8.0\refint\Course station.dll
+E:\Giu  files\Semester 3\Semester 3\data base\Project\Educational-platform\Course station\Course station\obj\Debug\net8.0\Course station.pdb
+E:\Giu  files\Semester 3\Semester 3\data base\Project\Educational-platform\Course station\Course station\obj\Debug\net8.0\Course station.genruntimeconfig.cache
+E:\Giu  files\Semester 3\Semester 3\data base\Project\Educational-platform\Course station\Course station\obj\Debug\net8.0\ref\Course station.dll

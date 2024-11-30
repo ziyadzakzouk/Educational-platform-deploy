@@ -5,6 +5,8 @@
 
 /.vs/Educational-platform/FileContentIndex
 /.vs/slnx.sqlite
+.vs/
+
 
 # Ignore all .log files
 *.log
