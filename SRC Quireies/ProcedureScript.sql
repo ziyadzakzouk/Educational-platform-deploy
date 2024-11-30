@@ -1,4 +1,4 @@
- --Use
+
 
 Go
 CREATE PROC ViewInfo --1  --handle the edge cases from the input till the validation
@@ -1612,19 +1612,3 @@ BEGIN
 END;
 GO
 
-------------------------------Learner proc exe
-
-
-EXEC Courseregister 1, 9999; -- Course does not exist
-EXEC Courseregister 1, 1; -- Learner already enrolled
-EXEC Courseregister 2, 2; -- Valid case
-	EXEC CourseRemove 100
-	Exec RemoveBadge 1
-	Exec ActivityEmotionalFeedback 1,1,'10:00:00','Anixiy'
-	DECLARE @lastactive DATETIME;
-
--- Execute the stored procedure
-EXEC LastActive @ForumID = 1, @lastactive = @lastactive OUTPUT;
-
--- Check the output
-PRINT 'Last active date: ' + CONVERT(VARCHAR, @lastactive);

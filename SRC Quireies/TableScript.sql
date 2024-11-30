@@ -1,5 +1,5 @@
 
-Create database tst8
+Create database EduBase
 
 
 CREATE TABLE Learner (

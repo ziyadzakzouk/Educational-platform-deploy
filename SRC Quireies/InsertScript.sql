@@ -4,7 +4,7 @@
 INSERT INTO Learner (first_name, last_name, birthday, gender, country, cultural_background) 
 VALUES   
 ('Youssef', 'Ashraf', '2005-09-12', 'Male', 'Egypt', 'Eastern'),
-('Bob', 'Miller', '2001-09-12', 'Male', 'Germany', 'European'),
+('Ziad', 'Zakzouk', '2005-09-22', 'Male', 'Germany', 'European'),
 ('Chris', 'Brown', NULL, 'Male', 'USA', 'Western');
 
 -- Insert data into Skills table
