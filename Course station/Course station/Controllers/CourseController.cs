@@ -5,7 +5,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Course_station.Controllers
 {
-    public class CourseController : Controller
+    public class CourseController : Controller //CRUD CLASS
+        //Create a course
+        //Read a course
+        //Update a course
+        //Delete a course
+        //More ....
     {
         private readonly ApplicationDbContext _context;
 
@@ -20,8 +25,8 @@ namespace Course_station.Controllers
             return View(courses);
         }
 
-        // GET: Courses/Details/5
-        public async Task<IActionResult> Details(int? id)
+        
+        public async Task<IActionResult> Details(int? id)  ///to get the details of the course
         {
             if (id == null)
             {
@@ -38,8 +43,15 @@ namespace Course_station.Controllers
             return View(course);
         }
 
+        // GET: Courses/Create
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+
         [HttpPost]
-        public async Task<IActionResult> Create(Course course)
+        public async Task<IActionResult> Create(Course course) //create a course
         {
             if (ModelState.IsValid)
             {
