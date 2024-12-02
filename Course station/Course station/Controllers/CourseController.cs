@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Course_station.Models;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace Course_station.Controllers
@@ -13,10 +14,28 @@ namespace Course_station.Controllers
             this._context = context;
         }
 
-        public IActionResult Index()
+        public IActionResult Index() //get the course
         {
             var courses = _context.Courses.ToList();
             return View(courses);
+        }
+
+        // GET: Courses/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var course = await _context.Courses
+                .FirstOrDefaultAsync(m => m.CourseId == id);
+            if (course == null)
+            {
+                return NotFound();
+            }
+
+            return View(course);
         }
 
         [HttpPost]
