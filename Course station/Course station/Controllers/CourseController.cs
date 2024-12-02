@@ -121,5 +121,11 @@ namespace Course_station.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+        /* we can add the procedures instead of the above code as c#
+         *  public async Task<List<CourseSummary>> GetCourseSummariesAsync()
+    {
+        return await CourseSummaries.FromSqlRaw("EXEC GetCourseSummaries").ToListAsync();
+    }
+         */
         }
 }
