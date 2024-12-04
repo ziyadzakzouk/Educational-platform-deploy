@@ -7,7 +7,7 @@ namespace Course_station.Views.Learner
     public class LogInModel : PageModel
     {
         [BindProperty]
-        public LoginViewModel LoginViewModel { get; set; }
+        public Course_station.Models.Learner LoginViewModel { get; set; }
 
         public void OnGet()
         {
@@ -20,9 +20,17 @@ namespace Course_station.Views.Learner
                 return Page();
             }
 
-            // Add your logic to authenticate the user here
+            // Dummy authentication logic for demonstration purposes
+            // Replace this with your actual authentication logic
+            if (LoginViewModel.Email == "test@example.com" && LoginViewModel.Password == "password")
+            {
+                // Redirect to the home page after successful login
+                return RedirectToPage("/Index");
+            }
 
-            return RedirectToPage("Index"); // Redirect to a different page after successful login
+            // If authentication fails, add a model error
+            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+            return Page();
         }
     }
 }
