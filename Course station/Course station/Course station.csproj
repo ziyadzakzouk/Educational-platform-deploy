@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="Views\Learner\SignUp.cshtml" />
+    <Content Remove="Views\Learner\LogIn.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -23,15 +23,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <UpToDateCheckInput Remove="Views\Learner\SignUp.cshtml" />
+    <UpToDateCheckInput Remove="Views\Learner\LogIn.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
-    <_ContentIncludedByDefault Remove="Views\Learner\SignUp.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Learner\LogIn.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Views\Learner\SignUp.cshtml" />
+    <None Include="Views\Learner\LogIn.cshtml" />
   </ItemGroup>
 
 </Project>
