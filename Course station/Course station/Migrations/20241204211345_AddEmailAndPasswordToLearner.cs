@@ -1101,11 +1101,23 @@ namespace Course_station.Migrations
                 name: "IX_Teaches_Course_ID",
                 table: "Teaches",
                 column: "Course_ID");
-        }
+            migrationBuilder.AddColumn<string>(
+               name: "Email",
+               table: "Learners",
+               nullable: false,
+               defaultValue: "");
 
+            migrationBuilder.AddColumn<string>(
+                name: "Password",
+                table: "Learners",
+                nullable: false,
+                defaultValue: "");
+        }
+      
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+
             migrationBuilder.DropTable(
                 name: "Achievement");
 
@@ -1234,6 +1246,13 @@ namespace Course_station.Migrations
 
             migrationBuilder.DropTable(
                 name: "Course");
+            migrationBuilder.DropColumn(
+                name: "Email",
+                table: "Learners");
+
+            migrationBuilder.DropColumn(
+                name: "Password",
+                table: "Learners");
         }
     }
 }

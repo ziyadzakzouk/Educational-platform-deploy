@@ -48,15 +48,15 @@ namespace Course_station.Controllers
         // POST: Learner/LogIn
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> LogIn(string email, string password)
+        public async Task<IActionResult> LogIn(LoginViewModel model)
         {
             if (ModelState.IsValid)
             {
                 var learner = await _context.Learners
-                    .FirstOrDefaultAsync(m => m.Email == email);
+                    .FirstOrDefaultAsync(m => m.Email == model.Email);
                 if (learner != null)
                 {
-                    var result = _passwordHasher.VerifyHashedPassword(learner, learner.Password, password);
+                    var result = _passwordHasher.VerifyHashedPassword(learner, learner.Password, model.Password);
                     if (result == PasswordVerificationResult.Success)
                     {
                         // Assuming you have a method to set the user session
@@ -66,7 +66,7 @@ namespace Course_station.Controllers
                 }
                 ModelState.AddModelError(string.Empty, "Invalid login attempt.");
             }
-            return View();
+            return View(model);
         }
     }
 }
