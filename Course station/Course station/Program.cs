@@ -1,4 +1,12 @@
+using Course_station.Models;
+using Microsoft.AspNetCore.Identity;
+
 var builder = WebApplication.CreateBuilder(args);
+
+
+// Add services to the container.
+builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<IPasswordHasher<Learner>, PasswordHasher<Learner>>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -21,6 +29,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
 
 app.MapControllerRoute(
     name: "default",
