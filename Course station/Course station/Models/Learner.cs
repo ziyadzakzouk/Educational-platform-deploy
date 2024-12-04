@@ -41,6 +41,8 @@ public partial class Learner
     [Unicode(false)]
     public string? CulturalBackground { get; set; }
 
+   
+
     [Column("email")]
     [StringLength(50)]
     [Unicode(false)]

@@ -24,21 +24,21 @@ namespace Course_station.Controllers
             return View();
         }
 
-        // POST: Learner/SignUp
+       //post sign up
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SignUp([Bind("FirstName,LastName,Birthday,Gender,Country,CulturalBackground,Email,Password")] Learner learner)
+        public async Task<IActionResult> SignUp([Bind("FirstName,LastName,Birthday,Gender,Country,CulturalBackground,Password")] Learner learner)
         {
             if (ModelState.IsValid)
             {
                 learner.Password = _passwordHasher.HashPassword(learner, learner.Password);
                 _context.Add(learner);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Home");
+                ViewBag.LearnerID = learner.LearnerId; // Pass the generated ID to the view
+                return View("SignUpSuccess", learner);
             }
             return View(learner);
         }
-
         // GET: Learner/LogIn
         public IActionResult LogIn()
         {
@@ -53,7 +53,7 @@ namespace Course_station.Controllers
             if (ModelState.IsValid)
             {
                 var learner = await _context.Learners
-                    .FirstOrDefaultAsync(m => m.Email == model.Email);
+                    .FirstOrDefaultAsync(m => m.LearnerId == model.Learner_ID);
                 if (learner != null)
                 {
                     var result = _passwordHasher.VerifyHashedPassword(learner, learner.Password, model.Password);

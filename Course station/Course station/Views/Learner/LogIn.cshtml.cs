@@ -7,7 +7,7 @@ namespace Course_station.Views.Learner
     public class LogInModel : PageModel
     {
         [BindProperty]
-        public Course_station.Models.Learner LoginViewModel { get; set; }
+        public LoginViewModel LoginViewModel { get; set; }
 
         public void OnGet()
         {
