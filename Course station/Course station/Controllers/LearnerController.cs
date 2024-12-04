@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,141 +10,63 @@ namespace Course_station.Controllers
     public class LearnerController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IPasswordHasher<Learner> _passwordHasher;
 
-        public LearnerController(ApplicationDbContext context)
+        public LearnerController(ApplicationDbContext context, IPasswordHasher<Learner> passwordHasher)
         {
             _context = context;
+            _passwordHasher = passwordHasher;
         }
 
-        // GET: Learner
-        public async Task<IActionResult> Index()
-        {
-            return View(await _context.Learners.ToListAsync());
-        }
-
-        // GET: Learner/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var learner = await _context.Learners
-                .FirstOrDefaultAsync(m => m.LearnerId == id);
-            if (learner == null)
-            {
-                return NotFound();
-            }
-
-            return View(learner);
-        }
-
-        // GET: Learner/Create
-        public IActionResult Create()
+        // GET: Learner/SignUp
+        public IActionResult SignUp()
         {
             return View();
         }
 
-        // POST: Learner/Create
+       //post sign up
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("LearnerId,FirstName,LastName,Birthday,Gender,Country,CulturalBackground")] Learner learner)
+        public async Task<IActionResult> SignUp([Bind("FirstName,LastName,Birthday,Gender,Country,CulturalBackground,Password")] Learner learner)
         {
             if (ModelState.IsValid)
             {
+                learner.Password = _passwordHasher.HashPassword(learner, learner.Password);
                 _context.Add(learner);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                ViewBag.LearnerID = learner.LearnerId; // Pass the generated ID to the view
+                return View("SignUpSuccess", learner);
             }
             return View(learner);
         }
-
-        // GET: Learner/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        // GET: Learner/LogIn
+        public IActionResult LogIn()
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var learner = await _context.Learners.FindAsync(id);
-            if (learner == null)
-            {
-                return NotFound();
-            }
-            return View(learner);
+            return View();
         }
 
-        // POST: Learner/Edit/5
+        // POST: Learner/LogIn
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("LearnerId,FirstName,LastName,Birthday,Gender,Country,CulturalBackground")] Learner learner)
+        public async Task<IActionResult> LogIn(LoginViewModel model)
         {
-            if (id != learner.LearnerId)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
-                try
+                var learner = await _context.Learners
+                    .FirstOrDefaultAsync(m => m.LearnerId == model.Learner_ID);
+                if (learner != null)
                 {
-                    _context.Update(learner);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!LearnerExists(learner.LearnerId))
+                    var result = _passwordHasher.VerifyHashedPassword(learner, learner.Password, model.Password);
+                    if (result == PasswordVerificationResult.Success)
                     {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
+                        // Assuming you have a method to set the user session
+                        // SetUserSession(learner);
+                        return RedirectToAction("Index", "Home");
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
             }
-            return View(learner);
-        }
-
-        // GET: Learner/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var learner = await _context.Learners
-                .FirstOrDefaultAsync(m => m.LearnerId == id);
-            if (learner == null)
-            {
-                return NotFound();
-            }
-
-            return View(learner);
-        }
-
-        // POST: Learner/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var learner = await _context.Learners.FindAsync(id);
-            _context.Learners.Remove(learner);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool LearnerExists(int id)
-        {
-            return _context.Learners.Any(e => e.LearnerId == id);
+            return View(model);
         }
     }
 }
-
-
-
-

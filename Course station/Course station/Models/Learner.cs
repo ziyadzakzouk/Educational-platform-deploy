@@ -41,6 +41,20 @@ public partial class Learner
     [Unicode(false)]
     public string? CulturalBackground { get; set; }
 
+   
+
+    [Column("email")]
+    [StringLength(50)]
+    [Unicode(false)]
+    [Required]
+    public string Email { get; set; }
+
+    [Column("password")]
+    [StringLength(100)]
+    [Unicode(false)]
+    [Required]
+    public string Password { get; set; }
+
     [InverseProperty("Learner")]
     public virtual ICollection<Achievement> Achievements { get; set; } = new List<Achievement>();
 

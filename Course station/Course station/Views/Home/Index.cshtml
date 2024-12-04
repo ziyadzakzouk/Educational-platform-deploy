@@ -2,69 +2,81 @@
     ViewData["Title"] = "Course Website";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome to Course station</h1>
-    <p>Sign in or sign up to access our courses.</p>
+<div class="jumbotron">
+    <h1 class="display-4">Welcome to Course Station!</h1>
+    <p class="lead">Your one-stop platform for all your learning needs.</p>
+    <hr class="my-4">
+    <p>Explore a variety of courses and enhance your skills.</p>
+    <a class="btn btn-primary btn-lg" href="#" role="button">Get Started</a>
 </div>
 
-<div class="container mt-5">
-    <div class="text-center mb-4">
-        <button id="toggleButton" class="btn btn-secondary" onclick="toggleForms()">Switch to Sign Up</button>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <h2>Featured Courses</h2>
+            <p>Check out our most popular courses and start learning today.</p>
+            <a class="btn btn-secondary" href="#">View Courses &raquo;</a>
+        </div>
+        <div class="col-md-4">
+            <h2>About Us</h2>
+            <p>Learn more about Course Station and our mission to provide quality education.</p>
+            <a class="btn btn-secondary" href="#">Learn More &raquo;</a>
+        </div>
+        <div class="col-md-4">
+            <h2>Contact Us</h2>
+            <p>Have any questions? Get in touch with us and we'll be happy to help.</p>
+            <a class="btn btn-secondary" href="#">Contact &raquo;</a>
+        </div>
+    </div>
+
+    <hr class="my-4">
+
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Our Courses</h2>
+        </div>
     </div>
     <div class="row">
-        <div class="col-md-6 offset-md-3">
-            <div id="signInForm">
-                <h2>Sign In</h2>
-                <form>
-                    <div class="form-group">
-                        <label for="signInEmail">Email address</label>
-                        <input type="email" class="form-control" id="signInEmail" placeholder="Enter email">
-                    </div>
-                    <div class="form-group">
-                        <label for="signInPassword">Password</label>
-                        <input type="password" class="form-control" id="signInPassword" placeholder="Password">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Sign In</button>
-                </form>
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+                <img src="https://via.placeholder.com/150" class="card-img-top" alt="Course Image">
+                <div class="card-body">
+                    <h5 class="card-title">Course Title 1</h5>
+                    <p class="card-text">This is a brief description of the course. Learn more about the course content and what you will achieve.</p>
+                    <a href="#" class="btn btn-primary">View Details</a>
+                </div>
             </div>
-            <div id="signUpForm" style="display: none;">
-                <h2>Sign Up</h2>
-                <form>
-                    <div class="form-group">
-                        <label for="signUpEmail">Email address</label>
-                        <input type="email" class="form-control" id="signUpEmail" placeholder="Enter email">
-                    </div>
-                    <div class="form-group">
-                        <label for="signUpPassword">Password</label>
-                        <input type="password" class="form-control" id="signUpPassword" placeholder="Password">
-                    </div>
-                    <div class="form-group">
-                        <label for="signUpConfirmPassword">Confirm Password</label>
-                        <input type="password" class="form-control" id="signUpConfirmPassword" placeholder="Confirm Password">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Sign Up</button>
-                </form>
+        </div>
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+                <img src="https://via.placeholder.com/150" class="card-img-top" alt="Course Image">
+                <div class="card-body">
+                    <h5 class="card-title">Course Title 2</h5>
+                    <p class="card-text">This is a brief description of the course. Learn more about the course content and what you will achieve.</p>
+                    <a href="#" class="btn btn-primary">View Details</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+                <img src="https://via.placeholder.com/150" class="card-img-top" alt="Course Image">
+                <div class="card-body">
+                    <h5 class="card-title">Course Title 3</h5>
+                    <p class="card-text">This is a brief description of the course. Learn more about the course content and what you will achieve.</p>
+                    <a href="#" class="btn btn-primary">View Details</a>
+                </div>
             </div>
         </div>
     </div>
+
+    <hr class="my-4">
+
+    <div class="row">
+        <div class="col-md-6">
+            <a class="btn btn-success btn-lg btn-block" href="/Learner/SignUp" role="button">Sign Up</a>
+        </div>
+        <div class="col-md-6">
+            <a class="btn btn-info btn-lg btn-block" href="/Learner/LogIn" role="button">Log In</a>
+        </div>
+    </div>
 </div>
-
-@section Scripts {
-    <script>
-        function toggleForms() {
-            var signInForm = document.getElementById('signInForm');
-            var signUpForm = document.getElementById('signUpForm');
-            var toggleButton = document.getElementById('toggleButton');
-
-            if (signInForm.style.display === 'none') {
-                signInForm.style.display = 'block';
-                signUpForm.style.display = 'none';
-                toggleButton.textContent = 'Switch to Sign Up';
-            } else {
-                signInForm.style.display = 'none';
-                signUpForm.style.display = 'block';
-                toggleButton.textContent = 'Switch to Sign In';
-            }
-        }
-    </script>
-}
