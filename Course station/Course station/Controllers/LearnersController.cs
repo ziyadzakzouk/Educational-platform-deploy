@@ -6,17 +6,23 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Course_station.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Course_station.Controllers
 {
     public class LearnersController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<Learner> _userManager;
+        private readonly SignInManager<Learner> _signInManager;
 
-        public LearnersController(ApplicationDbContext context)
+        public LearnersController(ApplicationDbContext context, UserManager<Learner> userManager, SignInManager<Learner> signInManager)
         {
             _context = context;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
+
 
         // GET: Learners
         public async Task<IActionResult> Index()
@@ -63,6 +69,35 @@ namespace Course_station.Controllers
             }
             return View(learner);
         }
+
+
+        // GET: Learners/Login
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        // POST: Learners/Login
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(string userId, string password)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByIdAsync(userId);
+                if (user != null)
+                {
+                    var result = await _signInManager.PasswordSignInAsync(user.Email, password, isPersistent: false, lockoutOnFailure: false);
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction(nameof(Index), "Home");
+                    }
+                }
+                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+            }
+            return View();
+        }
+
 
         // GET: Learners/Edit/5
         public async Task<IActionResult> Edit(int? id)
