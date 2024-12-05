@@ -18,13 +18,12 @@ namespace Course_station.Controllers
             _context = context;
         }
 
-        // GET: Instructor
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Instructors.ToListAsync());
+            var instructors = await _context.Instructors.Include(i => i.Courses).ToListAsync();
+            return View(instructors);
         }
 
-        // GET: Instructor/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,6 +32,7 @@ namespace Course_station.Controllers
             }
 
             var instructor = await _context.Instructors
+                .Include(i => i.Courses)
                 .FirstOrDefaultAsync(m => m.InstructorId == id);
             if (instructor == null)
             {
@@ -42,16 +42,14 @@ namespace Course_station.Controllers
             return View(instructor);
         }
 
-        // GET: Instructor/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Instructor/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("InstructorId,FirstName,LastName,HireDate")] Instructor instructor)
+        public async Task<IActionResult> Create([Bind("InstructorId,InstructorName,HireDate")] Instructor instructor)
         {
             if (ModelState.IsValid)
             {
@@ -61,6 +59,8 @@ namespace Course_station.Controllers
             }
             return View(instructor);
         }
+
+       
 
         // GET: Instructor/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -81,7 +81,7 @@ namespace Course_station.Controllers
         // POST: Instructor/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("InstructorId,FirstName,LastName,HireDate")] Instructor instructor)
+        public async Task<IActionResult> Edit(int id, [Bind("InstructorId,InstructorName,HireDate")] Instructor instructor)
         {
             if (id != instructor.InstructorId)
             {
