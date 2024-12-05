@@ -203,8 +203,98 @@ namespace Course_station.Controllers
                 return View();
             }
 
-            // Additional actions can be implemented similarly
+        // 5. View all modules for a course that train specific traits
+        public async Task<IActionResult> ModuleTraits(string targetTrait, int courseId)
+        {
+            var modules = await _context.Modules
+                .FromSqlRaw("EXEC Moduletraits @TargetTrait = {0}, @CourseID = {1}", targetTrait, courseId)
+                .ToListAsync();
+
+            return View(modules);
         }
+
+        // 6. View all participants in a leaderboard and their ranking
+        public async Task<IActionResult> LeaderboardRank(int leaderboardId)
+        {
+            var rankings = await _context.Leaderboards
+                .FromSqlRaw("EXEC LeaderboardRank @LeaderboardID = {0}", leaderboardId)
+                .ToListAsync();
+
+            return View(rankings);
+        }
+
+        // 7. Submit emotional feedback for an activity
+        [HttpPost]
+        public async Task<IActionResult> SubmitEmotionalFeedback(int activityId, int learnerId, string emotionalState)
+        {
+            await _context.Database.ExecuteSqlRawAsync(
+                "EXEC ActivityEmotionalFeedback @ActivityID = {0}, @LearnerID = {1}, @timestamp = {2}, @emotionalstate = {3}",
+                activityId, learnerId, DateTime.Now, emotionalState
+            );
+
+            TempData["Message"] = "Feedback submitted successfully!";
+            return RedirectToAction("ActivityDetails", new { activityId });
+        }
+
+        // 8. Join a collaborative quest if space is available
+        [HttpPost]
+        public async Task<IActionResult> JoinQuest(int learnerId, int questId)
+        {
+            var result = await _context.Database.ExecuteSqlRawAsync(
+                "EXEC JoinQuest @LearnerID = {0}, @QuestID = {1}",
+                learnerId, questId
+            );
+
+            TempData["Message"] = result > 0 ? "Successfully joined the quest!" : "Quest is full.";
+            return RedirectToAction("QuestDetails", new { questId });
+        }
+
+        // 9. View skill proficiency levels
+        public async Task<IActionResult> SkillsProficiency(int learnerId)
+        {
+            var skills = await _context.Skills
+                .FromSqlRaw("EXEC SkillsProfeciency @LearnerID = {0}", learnerId)
+                .ToListAsync();
+
+            return View(skills);
+        }
+
+        // 10. View assessment score
+        public async Task<IActionResult> ViewScore(int learnerId, int assessmentId)
+        {
+            var score = await _context.Database.ExecuteSqlRawAsync(
+                "EXEC Viewscore @LearnerID = {0}, @AssessmentID = {1}",
+                learnerId, assessmentId
+            );
+
+            ViewBag.Score = score;
+            return View();
+        }
+
+        // 11. View assessments and grades for a module
+        public async Task<IActionResult> AssessmentsList(int courseId, int moduleId, int learnerId)
+        {
+            var assessments = await _context.Assessments
+                .FromSqlRaw("EXEC AssessmentsList @CourseID = {0}, @ModuleID = {1}, @LearnerID = {2}",
+                courseId, moduleId, learnerId)
+                .ToListAsync();
+
+            return View(assessments);
+        }
+
+        // 12. Register for a course
+        [HttpPost]
+        public async Task<IActionResult> RegisterCourse(int learnerId, int courseId)
+        {
+            var result = await _context.Database.ExecuteSqlRawAsync(
+                "EXEC Courseregister @LearnerID = {0}, @CourseID = {1}",
+                learnerId, courseId
+            );
+
+            TempData["Message"] = result > 0 ? "Registered successfully!" : "Could not register. Check prerequisites.";
+            return RedirectToAction("CourseDetails", new { courseId });
+        }
+    }
 
     }
 
