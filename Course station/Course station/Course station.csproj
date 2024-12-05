@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -8,7 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="Views\Learner\LogIn.cshtml" />
+    <Compile Remove="Views\Learner\**" />
+    <Content Remove="Views\Learner\**" />
+    <EmbeddedResource Remove="Views\Learner\**" />
+    <None Remove="Views\Learner\**" />
+	 
   </ItemGroup>
 
   <ItemGroup>
@@ -23,15 +27,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <UpToDateCheckInput Remove="Views\Learner\LogIn.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="Views\Learner\LogIn.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Views\Learner\LogIn.cshtml" />
+    <Folder Include="Models\" />
+    <Folder Include="Controllers\" />
   </ItemGroup>
 
 </Project>
