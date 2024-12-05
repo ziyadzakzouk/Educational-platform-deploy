@@ -152,5 +152,59 @@ namespace Course_station.Controllers
         {
             return _context.Learners.Any(e => e.LearnerId == id);
         }
+        
+
+            // 1. Retrieve Learner Info
+            public async Task<IActionResult> ViewInfo(int learnerId)
+            {
+                var learner = await _context.Learners
+                    .FromSqlRaw("EXEC ViewInfo @LearnerID = {0}", learnerId)
+                    .ToListAsync();
+
+                return View(learner);
+            }
+
+            // 2. Update Profile
+            public IActionResult UpdateProfile()
+            {
+                return View();
+            }
+
+            [HttpPost]
+            public async Task<IActionResult> UpdateProfile(int learnerId, int profileId, string preferredContentType, string emotionalState, string personalityType)
+            {
+                await _context.Database.ExecuteSqlRawAsync(
+                    "EXEC ProfileUpdate @LearnerID = {0}, @ProfileID = {1}, @PreferedContentType = {2}, @emotional_state = {3}, @PersonalityType = {4}",
+                    learnerId, profileId, preferredContentType, emotionalState, personalityType
+                );
+
+                return RedirectToAction("ViewInfo", new { learnerId });
+            }
+
+            // 3. View Enrolled Courses
+            public async Task<IActionResult> EnrolledCourses(int learnerId)
+            {
+                var courses = await _context.Courses
+                    .FromSqlRaw("EXEC EnrolledCourses @LearnerID = {0}", learnerId)
+                    .ToListAsync();
+
+                return View(courses);
+            }
+
+            // 4. Check Prerequisites
+            public async Task<IActionResult> CheckPrerequisites(int learnerId, int courseId)
+            {
+                var result = await _context.Database.ExecuteSqlRawAsync(
+                    "EXEC Prerequisites @LearnerID = {0}, @CourseID = {1}",
+                    learnerId, courseId
+                );
+
+                ViewBag.PrerequisitesResult = result;
+                return View();
+            }
+
+            // Additional actions can be implemented similarly
+        }
+
     }
-}
+
