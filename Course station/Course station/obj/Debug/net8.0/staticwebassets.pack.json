@@ -13,8 +13,16 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "E:\\Giu  files\\Semester 3\\Semester 3\\data base\\Project\\Educational-platform\\Course station\\Course station\\wwwroot\\images\\17_profile.jpg",
+      "PackagePath": "staticwebassets\\images\\17_profile.jpg"
+    },
+    {
       "Id": "E:\\Giu  files\\Semester 3\\Semester 3\\data base\\Project\\Educational-platform\\Course station\\Course station\\wwwroot\\images\\1_profile.jpg",
       "PackagePath": "staticwebassets\\images\\1_profile.jpg"
+    },
+    {
+      "Id": "E:\\Giu  files\\Semester 3\\Semester 3\\data base\\Project\\Educational-platform\\Course station\\Course station\\wwwroot\\images\\2_profile.jpg",
+      "PackagePath": "staticwebassets\\images\\2_profile.jpg"
     },
     {
       "Id": "E:\\Giu  files\\Semester 3\\Semester 3\\data base\\Project\\Educational-platform\\Course station\\Course station\\wwwroot\\js\\site.js",
