@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Course_station.Models;
 using Microsoft.AspNetCore.Identity;
-using Course_station.Service;
 
 namespace Course_station.Controllers
 {
@@ -16,7 +15,6 @@ namespace Course_station.Controllers
        
         private readonly ApplicationDbContext _context;
         private readonly LearnerService _learnerService;
-        
 
         public LearnersController(ApplicationDbContext context, LearnerService learnerService)
         {
@@ -45,21 +43,8 @@ namespace Course_station.Controllers
                 return NotFound();
             }
 
-            var viewModel = new LearnerProfileViewModel
-            {
-                LearnerId = learner.LearnerId,
-                FirstName = learner.FirstName,
-                LastName = learner.LastName,              
-                Gender = learner.Gender,
-                Country = learner.Country,
-                CulturalBackground = learner.CulturalBackground,
-                Email = learner.Email,
-                PhotoPath = learner.PhotoPath
-            };
-
-            return View(viewModel);
+            return View(learner);
         }
-
 
         // GET: Learners/Create
         public IActionResult Create()
@@ -193,42 +178,6 @@ namespace Course_station.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        [HttpPost]
-        public async Task<IActionResult> UploadPhoto(LearnerProfileViewModel model)
-        {
-            if (model.Photo != null && model.Photo.Length > 0)
-            {
-                var filePath = Path.Combine("wwwroot/images", Path.GetFileName(model.Photo.FileName));
-
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await model.Photo.CopyToAsync(stream);
-                }
-
-                var learnerPhoto = await _context.LearnerPhotos
-                    .FirstOrDefaultAsync(p => p.LearnerId == model.LearnerId);
-
-                if (learnerPhoto == null)
-                {
-                    learnerPhoto = new LearnerPhotos
-                    {
-                        LearnerId = model.LearnerId,
-                        PhotoPath = "/images/" + Path.GetFileName(model.Photo.FileName)
-                    };
-                    _context.LearnerPhotos.Add(learnerPhoto);
-                }
-                else
-                {
-                    learnerPhoto.PhotoPath = "/images/" + Path.GetFileName(model.Photo.FileName);
-                    _context.LearnerPhotos.Update(learnerPhoto);
-                }
-
-                await _context.SaveChangesAsync();
-            }
-
-            return RedirectToAction(nameof(Details), new { id = model.LearnerId });
-        }
-
 
         private bool LearnerExists(int id)
         {

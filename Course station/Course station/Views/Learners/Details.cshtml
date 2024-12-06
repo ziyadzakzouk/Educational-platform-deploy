@@ -1,16 +1,12 @@
-﻿@model Course_station.ViewModels.LearnerProfileViewModel
-
+﻿@model Course_station.Models.Learner
 @{
     ViewData["Title"] = "Profile";
 }
 
-<h1>@Model.FirstName @Model.LastName's Profile</h1>
+<h1>Profile</h1>
 
 <div class="profile-container">
     <div class="profile-header">
-        <div class="profile-photo">
-            <img src="@Url.Content(Model.PhotoPath ?? "~/images/default-profile.png")" alt="Profile Photo" class="img-thumbnail" />
-        </div>
         <div class="profile-info">
             <h2>@Model.FirstName @Model.LastName</h2>
             <p>@Model.Email</p>
@@ -38,17 +34,6 @@
         <a asp-action="Edit" asp-route-id="@Model.LearnerId" class="btn btn-primary">Edit Profile</a>
         <a asp-action="Index" class="btn btn-secondary">Back to List</a>
     </div>
-
-    <div class="profile-photo-upload">
-        <h4>Upload Profile Photo</h4>
-        <form asp-action="UploadPhoto" asp-controller="Learners" method="post" enctype="multipart/form-data">
-            <div class="form-group">
-                <input type="file" name="Photo" class="form-control" />
-                <input type="hidden" name="LearnerId" value="@Model.LearnerId" />
-            </div>
-            <button type="submit" class="btn btn-success">Upload Photo</button>
-        </form>
-    </div>
 </div>
 
 <style>
@@ -63,16 +48,6 @@
         margin-bottom: 20px;
     }
 
-    .profile-photo {
-        margin-right: 20px;
-    }
-
-        .profile-photo img {
-            width: 150px;
-            height: 150px;
-            object-fit: cover;
-        }
-
     .profile-info {
         flex-grow: 1;
     }
@@ -83,9 +58,5 @@
 
     .profile-actions {
         margin-bottom: 20px;
-    }
-
-    .profile-photo-upload {
-        margin-top: 20px;
     }
 </style>
