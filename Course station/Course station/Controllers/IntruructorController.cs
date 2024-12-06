@@ -46,10 +46,9 @@ namespace Course_station.Controllers
         {
             return View();
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("InstructorId,InstructorName,HireDate")] Instructor instructor)
+        public async Task<IActionResult> Create([Bind("InstructorName,LatestQualification,ExpertiseArea,Email,Password")] Instructor instructor)
         {
             if (ModelState.IsValid)
             {
@@ -60,7 +59,8 @@ namespace Course_station.Controllers
             return View(instructor);
         }
 
-       
+
+
 
         // GET: Instructor/Edit/5
         public async Task<IActionResult> Edit(int? id)
