@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 using System;
 using Microsoft.Data.SqlClient;
 using System.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Course_station.Controllers
 {
+    [Authorize]
     public class InstructorController : Controller
     {
         private readonly ApplicationDbContext _context;

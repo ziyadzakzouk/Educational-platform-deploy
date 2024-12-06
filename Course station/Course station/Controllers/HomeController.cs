@@ -1,6 +1,9 @@
 using Course_station.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace Course_station.Controllers
 {
@@ -20,10 +23,19 @@ namespace Course_station.Controllers
 
         // POST: AdminLogin
         [HttpPost]
-        public IActionResult AdminLogin(string username, string password, string indexPage)
+        public async Task<IActionResult> AdminLogin(string username, string password, string indexPage)
         {
             if (username == "youssef.ashraf" && password == "20052099404Xx")
             {
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, username)
+                };
+
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+
                 // Redirect to the selected index page
                 if (indexPage == "Instructor")
                 {
@@ -33,19 +45,11 @@ namespace Course_station.Controllers
                 {
                     return RedirectToAction("Index", "Learners");
                 }
-                // and the rest for the quest and course and Assessment or other
-                
-                    return RedirectToAction("Index", "Home");
-                
+              ///  else if (indexPage == "Courses") or it can be Assessment or quests or others modify here
             }
-            else
-            {
-                // Invalid login attempt
-                ViewBag.ErrorMessage = "Invalid username or password";
-                return View();
-            }
+            return RedirectToAction("Index", "Home");
         }
-        public IActionResult Index()
+            public IActionResult Index()
         {
             return View();
         }
