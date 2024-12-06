@@ -46,19 +46,7 @@ namespace Course_station.Controllers
         {
             return View();
         }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("InstructorName,LatestQualification,ExpertiseArea,Email,Password")] Instructor instructor)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(instructor);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(instructor);
-        }
-
+       
 
 
 
@@ -82,14 +70,11 @@ namespace Course_station.Controllers
         // POST: Instructor/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("InstructorName,LatestQualification,ExpertiseArea,Email,Password")] Instructor instructor)
+        public async Task<IActionResult> Edit(int id, [Bind("InstructorId,InstructorName,LatestQualification,ExpertiseArea,Email,Password")] Instructor instructor)
         {
             if (id != instructor.InstructorId)
             {
-                _context.Update(instructor);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-                //  return NotFound();
+                return NotFound();
             }
 
             if (ModelState.IsValid)
@@ -98,7 +83,6 @@ namespace Course_station.Controllers
                 {
                     _context.Update(instructor);
                     await _context.SaveChangesAsync();
-                    
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -108,17 +92,14 @@ namespace Course_station.Controllers
                     }
                     else
                     {
-                       
                         throw;
-                        
                     }
                 }
-               
                 return RedirectToAction(nameof(Index));
-               
             }
             return View(instructor);
         }
+
 
         // GET: Instructor/Delete/5
         public async Task<IActionResult> Delete(int? id)
@@ -143,6 +124,33 @@ namespace Course_station.Controllers
             }
 
             return View(instructor);
+        }
+
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(InstructorLoginViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var instructor = await _context.Instructors
+                    .FirstOrDefaultAsync(i => i.InstructorId == model.InstructorId && i.Password == model.Password);
+
+                if (instructor != null)
+                {
+                    // Login successful, redirect to the instructor's details page or dashboard
+                    return RedirectToAction(nameof(Details), new { id = model.InstructorId });
+                }
+
+                // Login failed, show an error message
+                ViewBag.ErrorMessage = "Invalid Instructor ID or Password";
+            }
+
+            return View(model);
         }
         /*
         [HttpPost, ActionName("Delete")]
