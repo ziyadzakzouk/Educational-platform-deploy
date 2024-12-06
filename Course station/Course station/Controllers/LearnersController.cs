@@ -12,21 +12,15 @@ namespace Course_station.Controllers
 {
     public class LearnersController : Controller
     {
+       
         private readonly ApplicationDbContext _context;
-      //  private readonly UserManager<Learner> _userManager;
-      //  private readonly SignInManager<Learner> _signInManager;
-      /*
-        public LearnersController(ApplicationDbContext context, UserManager<Learner> userManager, SignInManager<Learner> signInManager)
+        private readonly LearnerService _learnerService;
+
+        public LearnersController(ApplicationDbContext context, LearnerService learnerService)
         {
             _context = context;
-        //    _userManager = userManager;
-          //  _signInManager = signInManager;
+            _learnerService = learnerService;
         }
-      */
-      public LearnersController(ApplicationDbContext context)
-        {
-            _context = context;
-        }   
 
         // GET: Learners
         public async Task<IActionResult> Index()
@@ -80,28 +74,22 @@ namespace Course_station.Controllers
         {
             return View();
         }
-        /*
         // POST: Learners/Login
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(string userId, string password)
+        public async Task<IActionResult> Login(int id, string password)
         {
             if (ModelState.IsValid)
             {
-                var user = await _userManager.FindByIdAsync(userId);
-                if (user != null)
+                var isValid = await _learnerService.ValidateLearnerAsync(id, password);
+                if (isValid)
                 {
-                    var result = await _signInManager.PasswordSignInAsync(user.Email, password, isPersistent: false, lockoutOnFailure: false);
-                    if (result.Succeeded)
-                    {
-                        return RedirectToAction(nameof(Index), "Home");
-                    }
+                    return RedirectToAction(nameof(Index), "Home");
                 }
                 ModelState.AddModelError(string.Empty, "Invalid login attempt.");
             }
             return View();
         }
-        */
 
         // GET: Learners/Edit/5
         public async Task<IActionResult> Edit(int? id)
