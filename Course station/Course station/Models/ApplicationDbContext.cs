@@ -16,6 +16,7 @@ public partial class ApplicationDbContext : DbContext
     }
 
     public virtual DbSet<Achievement> Achievements { get; set; }
+    public DbSet<LearnerPhoto> LearnerPhotos { get; set; }
 
     public virtual DbSet<Assessment> Assessments { get; set; }
 
