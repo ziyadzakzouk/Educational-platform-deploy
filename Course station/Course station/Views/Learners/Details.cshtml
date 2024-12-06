@@ -1,4 +1,4 @@
-﻿@model Course_station.Service.LearnerProfileViewModel
+﻿@model Course_station.ViewModels.LearnerProfileViewModel
 
 @{
     ViewData["Title"] = "Profile";
@@ -56,28 +56,35 @@
         max-width: 800px;
         margin: 0 auto;
     }
+
     .profile-header {
         display: flex;
         align-items: center;
         margin-bottom: 20px;
     }
+
     .profile-photo {
         margin-right: 20px;
     }
-    .profile-photo img {
-        width: 150px;
-        height: 150px;
-        object-fit: cover;
-    }
+
+        .profile-photo img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+        }
+
     .profile-info {
         flex-grow: 1;
     }
+
     .profile-details {
         margin-bottom: 20px;
     }
+
     .profile-actions {
         margin-bottom: 20px;
     }
+
     .profile-photo-upload {
         margin-top: 20px;
     }

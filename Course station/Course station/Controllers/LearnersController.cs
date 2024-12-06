@@ -45,19 +45,16 @@ namespace Course_station.Controllers
                 return NotFound();
             }
 
-            var learnerPhoto = await _context.LearnerPhotos
-                .FirstOrDefaultAsync(p => p.LearnerId == id);
-
             var viewModel = new LearnerProfileViewModel
             {
                 LearnerId = learner.LearnerId,
                 FirstName = learner.FirstName,
-                LastName = learner.LastName,               
+                LastName = learner.LastName,              
                 Gender = learner.Gender,
                 Country = learner.Country,
                 CulturalBackground = learner.CulturalBackground,
                 Email = learner.Email,
-                PhotoPath = learnerPhoto?.PhotoPath
+                PhotoPath = learner.PhotoPath
             };
 
             return View(viewModel);
@@ -213,7 +210,7 @@ namespace Course_station.Controllers
 
                 if (learnerPhoto == null)
                 {
-                    learnerPhoto = new LearnerPhoto
+                    learnerPhoto = new LearnerPhotos
                     {
                         LearnerId = model.LearnerId,
                         PhotoPath = "/images/" + Path.GetFileName(model.Photo.FileName)

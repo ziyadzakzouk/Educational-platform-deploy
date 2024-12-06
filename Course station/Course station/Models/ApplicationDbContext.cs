@@ -16,7 +16,7 @@ public partial class ApplicationDbContext : DbContext
     }
 
     public virtual DbSet<Achievement> Achievements { get; set; }
-    public DbSet<LearnerPhoto> LearnerPhotos { get; set; }
+    public DbSet<LearnerPhotos> LearnerPhotos { get; set; }
 
     public virtual DbSet<Assessment> Assessments { get; set; }
 
@@ -102,6 +102,8 @@ public partial class ApplicationDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+       
+
         modelBuilder.Entity<Achievement>(entity =>
         {
             entity.HasKey(e => e.AchievementId).HasName("PK__Achievem__276330E0FB4CFE1B");
@@ -125,9 +127,12 @@ public partial class ApplicationDbContext : DbContext
                 .HasForeignKey(d => d.LearnerId)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK__Achieveme__Learn__2FCF1A8A");
+           
         });
+          
 
-        modelBuilder.Entity<Assessment>(entity =>
+
+    modelBuilder.Entity<Assessment>(entity =>
         {
             entity.HasKey(e => e.AssessmentId).HasName("PK__Assessme__6B3C1D9221A3F596");
 

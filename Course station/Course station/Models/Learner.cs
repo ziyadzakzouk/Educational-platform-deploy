@@ -16,6 +16,7 @@ public partial class Learner
     public string? Gender { get; set; }
 
     public string? Country { get; set; }
+    public string? PhotoPath { get; set; } 
 
     public string? CulturalBackground { get; set; }
 
