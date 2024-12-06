@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Course_station.Models;
 using Microsoft.AspNetCore.Identity;
+using Course_station.Service;
 
 namespace Course_station.Controllers
 {
@@ -177,6 +178,29 @@ namespace Course_station.Controllers
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+        [HttpPost]
+        public async Task<IActionResult> UploadPhoto(LearnerProfileViewModel model)
+        {
+            if (model.Photo != null && model.Photo.Length > 0)
+            {
+                var filePath = Path.Combine("wwwroot/images", Path.GetFileName(model.Photo.FileName));
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await model.Photo.CopyToAsync(stream);
+                }
+
+                var learner = await _context.Learners.FindAsync(model.LearnerId);
+                if (learner != null)
+                {
+                    learner.PhotoPath = "/images/" + Path.GetFileName(model.Photo.FileName);
+                    _context.Update(learner);
+                    await _context.SaveChangesAsync();
+                }
+            }
+
+            return RedirectToAction(nameof(Details), new { id = model.LearnerId });
         }
 
         private bool LearnerExists(int id)
