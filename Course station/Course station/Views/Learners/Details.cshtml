@@ -1,72 +1,84 @@
-﻿@model Course_station.Models.Learner
+﻿@model Course_station.Service.LearnerProfileViewModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Profile";
 }
 
-<h1>Details</h1>
+<h1>@Model.FirstName @Model.LastName's Profile</h1>
 
-<div>
-    <h4>Learner</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.LearnerId)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.LearnerId)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.FirstName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.FirstName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.LastName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.LastName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Birthday)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Birthday)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Gender)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Gender)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Country)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Country)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CulturalBackground)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CulturalBackground)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Password)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Password)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-    </dl>
+<div class="profile-container">
+    <div class="profile-header">
+        <div class="profile-photo">
+            <img src="@Url.Content(Model.PhotoPath ?? "~/images/default-profile.png")" alt="Profile Photo" class="img-thumbnail" />
+        </div>
+        <div class="profile-info">
+            <h2>@Model.FirstName @Model.LastName</h2>
+            <p>@Model.Email</p>
+        </div>
+    </div>
+
+    <div class="profile-details">
+        <h4>Personal Information</h4>
+        <dl class="row">
+            <dt class="col-sm-3">Birthday</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Birthday)</dd>
+
+            <dt class="col-sm-3">Gender</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Gender)</dd>
+
+            <dt class="col-sm-3">Country</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Country)</dd>
+
+            <dt class="col-sm-3">Cultural Background</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.CulturalBackground)</dd>
+        </dl>
+    </div>
+
+    <div class="profile-actions">
+        <a asp-action="Edit" asp-route-id="@Model.LearnerId" class="btn btn-primary">Edit Profile</a>
+        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    </div>
+
+    <div class="profile-photo-upload">
+        <h4>Upload Profile Photo</h4>
+        <form asp-action="UploadPhoto" asp-controller="Learners" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <input type="file" name="Photo" class="form-control" />
+                <input type="hidden" name="LearnerId" value="@Model.LearnerId" />
+            </div>
+            <button type="submit" class="btn btn-success">Upload Photo</button>
+        </form>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.LearnerId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+
+<style>
+    .profile-container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    .profile-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+    .profile-photo {
+        margin-right: 20px;
+    }
+    .profile-photo img {
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+    }
+    .profile-info {
+        flex-grow: 1;
+    }
+    .profile-details {
+        margin-bottom: 20px;
+    }
+    .profile-actions {
+        margin-bottom: 20px;
+    }
+    .profile-photo-upload {
+        margin-top: 20px;
+    }
+</style>
