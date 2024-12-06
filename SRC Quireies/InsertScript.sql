@@ -1,11 +1,11 @@
-﻿--use
+--use
 
 -- Insert data into Learner table
-INSERT INTO Learner (first_name, last_name, birthday, gender, country, cultural_background) 
+INSERT INTO Learner (first_name, last_name, birthday, gender, country, cultural_background,password,email) 
 VALUES   
-('Youssef', 'Ashraf', '2005-09-12', 'Male', 'Egypt', 'Eastern'),
-('Ziad', 'Zakzouk', '2005-09-22', 'Male', 'Germany', 'European'),
-('Chris', 'Brown', NULL, 'Male', 'USA', 'Western');
+('Youssef', 'Ashraf', '2005-09-12', 'Male', 'Egypt', 'Eastern','2099','yahoo.gmail.com'),
+('Bob', 'Miller', '2001-09-12', 'Male', 'Germany', 'European','2005','bob@gmail.com'),
+('Chris', 'Brown', NULL, 'Male', 'USA', 'Western','7077','Cb@gmail.com');
 
 -- Insert data into Skills table
 INSERT INTO Skills (Learner_ID, skill) 
@@ -87,10 +87,10 @@ VALUES
 (2, 2, 150);
 
 -- Insert data into Instructor table
-INSERT INTO Instructor (Instructor_name, latest_qualification, expertise_area, email) 
+INSERT INTO Instructor (Instructor_name, latest_qualification, expertise_area, email,password) 
 VALUES 
-('Dr. Brown', 'PhD', 'Computer Science', 'brown@example.com'),
-('Prof. Green', 'MSc', 'Data Structures', 'green@example.com');
+('Dr. Brown', 'PhD', 'Computer Science', 'brown@example.com','1234'),
+('Prof. Green', 'MSc', 'Data Structures', 'green@example.com','2222');
 
 -- Insert data into Teaches table
 INSERT INTO Teaches (Instructor_ID, Course_ID) 
@@ -255,7 +255,6 @@ insert into Leaderboard(season) values
 INSERT INTO Ranking (BoardID, LearnerID, CourseID, rank, total_points) VALUES 
 (1, 3, 1, 4, 900),    -- Charlie ranks 3rd on the Spring 2024 board for Computer Science
 (2, 1, 2, 2, 1300)  -- Alice ranks 2nd on the Summer 2024 board for Mathematics
-
 
 
 

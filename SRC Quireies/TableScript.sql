@@ -1,7 +1,3 @@
-
-Create database EduBase
-
-
 CREATE TABLE Learner (
     Learner_ID INT PRIMARY KEY IDENTITY,
     first_name VARCHAR(20),
@@ -9,7 +5,9 @@ CREATE TABLE Learner (
     birthday DATE,
     gender VARCHAR(10) CHECK (gender IN ('Male', 'Female')),
     country VARCHAR(20),
-    cultural_background VARCHAR(50)   
+    cultural_background VARCHAR(50),
+	password varchar(50),
+	email varchar(50)
 );
 CREATE TABLE Skills(
 Learner_ID INT ,
@@ -142,8 +140,8 @@ CREATE TABLE Instructor (
 	Instructor_name VARCHAR(20),
 	latest_qualification VARCHAR(20),
     expertise_area VARCHAR(50),
-    email VARCHAR(50)
-
+    email VARCHAR(50),
+	password varchar(50)
     );
 
 	    CREATE TABLE LearningPath(        
@@ -403,10 +401,3 @@ CREATE TABLE LearnersGoals (
     FOREIGN KEY (GoalID) REFERENCES Learning_goal(ID) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (LearnerID) REFERENCES Learner(Learner_ID) ON DELETE CASCADE ON UPDATE CASCADE
 );
-
-
-
-
-
-
-

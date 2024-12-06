@@ -1,4 +1,4 @@
-
+ï»¿ --Use
 
 Go
 CREATE PROC ViewInfo --1  --handle the edge cases from the input till the validation
@@ -123,7 +123,7 @@ ON
 GROUP BY 
     c.Course_ID, c.title
 HAVING 
-    COUNT(t.Instructor_ID) > 1;
+    COUNT(t.Instructor_ID)ï¿½>ï¿½1;
 Go
 
 CREATE PROC ViewNot --9
@@ -1114,9 +1114,9 @@ begin
 	end
 
 
-    -- check to be reviewed 
+    
 GO
-CREATE PROC Prerequisites --4 ----xxxxxxxxx
+CREATE PROC Prerequisites --4 
     @LearnerID INT,
     @CourseID INT
 AS
@@ -1611,4 +1611,6 @@ BEGIN
    end
 END;
 GO
+
+
 
