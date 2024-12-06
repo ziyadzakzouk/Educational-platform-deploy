@@ -70,14 +70,11 @@ namespace Course_station.Controllers
         // POST: Instructor/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("InstructorName,LatestQualification,ExpertiseArea,Email,Password")] Instructor instructor)
+        public async Task<IActionResult> Edit(int id, [Bind("InstructorId,InstructorName,LatestQualification,ExpertiseArea,Email,Password")] Instructor instructor)
         {
             if (id != instructor.InstructorId)
             {
-                _context.Update(instructor);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-                //  return NotFound();
+                return NotFound();
             }
 
             if (ModelState.IsValid)
@@ -86,7 +83,6 @@ namespace Course_station.Controllers
                 {
                     _context.Update(instructor);
                     await _context.SaveChangesAsync();
-                    
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -96,17 +92,14 @@ namespace Course_station.Controllers
                     }
                     else
                     {
-                       
                         throw;
-                        
                     }
                 }
-               
                 return RedirectToAction(nameof(Index));
-               
             }
             return View(instructor);
         }
+
 
         // GET: Instructor/Delete/5
         public async Task<IActionResult> Delete(int? id)
