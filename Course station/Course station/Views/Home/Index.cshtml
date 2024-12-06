@@ -88,3 +88,118 @@
         </div>
     </div>
 </div>
+
+<!-- Dark Theme Switch -->
+<div class="theme-switch-wrapper">
+    <label class="theme-switch" for="checkbox">
+        <input type="checkbox" id="checkbox" />
+        <div class="slider round"></div>
+    </label>
+    <em>Enable Dark Mode!</em>
+</div>
+
+<style>
+    /* Dark Theme Styles */
+    body.dark-theme {
+        background-color: #121212;
+        color: #ffffff;
+    }
+
+    .dark-theme .jumbotron {
+        background-color: #1c1c1c;
+        color: #ffffff;
+    }
+
+    .dark-theme .card {
+        background-color: #1c1c1c;
+        color: #ffffff;
+    }
+
+    .dark-theme .btn-primary,
+    .dark-theme .btn-secondary,
+    .dark-theme .btn-success {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+    .theme-switch-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .theme-switch {
+        display: inline-block;
+        height: 34px;
+        position: relative;
+        width: 60px;
+    }
+
+        .theme-switch input {
+            display: none;
+        }
+
+    .slider {
+        background-color: #ccc;
+        bottom: 0;
+        cursor: pointer;
+        left: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
+        transition: 0.4s;
+    }
+
+        .slider:before {
+            background-color: white;
+            bottom: 4px;
+            content: "";
+            height: 26px;
+            left: 4px;
+            position: absolute;
+            transition: 0.4s;
+            width: 26px;
+        }
+
+    input:checked + .slider {
+        background-color: #2196F3;
+    }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+    .slider.round {
+        border-radius: 34px;
+    }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
+        const currentTheme = localStorage.getItem('theme');
+
+        if (currentTheme) {
+            document.body.classList.add(currentTheme);
+
+            if (currentTheme === 'dark-theme') {
+                toggleSwitch.checked = true;
+            }
+        }
+
+        toggleSwitch.addEventListener('change', function (e) {
+            if (e.target.checked) {
+                document.body.classList.add('dark-theme');
+                localStorage.setItem('theme', 'dark-theme');
+            } else {
+                document.body.classList.remove('dark-theme');
+                localStorage.setItem('theme', 'light-theme');
+            }
+        });
+    });
+</script>
