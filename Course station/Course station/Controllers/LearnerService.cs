@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using Course_station.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Course_station.Services
+namespace Course_station.Controllers
 {
     public class LearnerService
     {
