@@ -42,16 +42,19 @@ namespace Course_station.Controllers
         }
 
         // GET: PersonalProfile/Create
-        public IActionResult Create()
+        public IActionResult Create(int learnerId)
         {
-            return View();
+            var personalProfile = new PersonalProfile { LearnerId = learnerId };
+            return View(personalProfile);
         }
 
         // POST: PersonalProfile/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("LearnerId,ProfileId,PreferedContentType,EmotionalState,PersonalityType")] PersonalProfile personalProfile)
+        public async Task<IActionResult> Create(int learnerId, [Bind("ProfileId,PreferedContentType,EmotionalState,PersonalityType")] PersonalProfile personalProfile)
         {
+            personalProfile.LearnerId = learnerId;
+
             if (ModelState.IsValid)
             {
                 _context.Add(personalProfile);

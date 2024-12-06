@@ -1,0 +1,61 @@
+﻿@model IEnumerable<Course_station.Models.PersonalProfile>
+
+@{
+    ViewData["Title"] = "Personal Profiles";
+}
+
+<h1>Personal Profiles</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.First().LearnerId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().ProfileId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().PreferedContentType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().EmotionalState)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().PersonalityType)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LearnerId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProfileId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PreferedContentType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmotionalState)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PersonalityType)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-learnerId="@item.LearnerId" asp-route-profileId="@item.ProfileId">Edit</a> |
+                    <a asp-action="Details" asp-route-learnerId="@item.LearnerId" asp-route-profileId="@item.ProfileId">Details</a> |
+                    <a asp-action="Delete" asp-route-learnerId="@item.LearnerId" asp-route-profileId="@item.ProfileId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div>
+    <a asp-action="Create">Create New</a>
+</div>
