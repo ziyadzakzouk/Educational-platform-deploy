@@ -74,22 +74,26 @@ namespace Course_station.Controllers
         {
             return View();
         }
+        
+        
         // POST: Learners/Login
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(int id, string password)
+        public async Task<IActionResult> Login(int learnerId, string password)
         {
             if (ModelState.IsValid)
             {
-                var isValid = await _learnerService.ValidateLearnerAsync(id, password);
+                var isValid = await _learnerService.ValidateLearnerAsync(learnerId, password);
                 if (isValid)
                 {
+                    TempData["Message"] = "Login successful!";
                     return RedirectToAction(nameof(Index), "Home");
                 }
-                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                TempData["ErrorMessage"] = "Invalid login attempt.";
             }
             return View();
         }
+
 
         // GET: Learners/Edit/5
         public async Task<IActionResult> Edit(int? id)
