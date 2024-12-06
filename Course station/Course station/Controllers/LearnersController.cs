@@ -201,19 +201,36 @@ namespace Course_station.Controllers
                 return View();
             }
 
-            [HttpPost]
-            public async Task<IActionResult> UpdateProfile(int learnerId, int profileId, string preferredContentType, string emotionalState, string personalityType)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UploadProfilePicture(int learnerId, IFormFile profilePicture)
+        {
+            if (profilePicture != null && profilePicture.Length > 0)
             {
-                await _context.Database.ExecuteSqlRawAsync(
-                    "EXEC ProfileUpdate @LearnerID = {0}, @ProfileID = {1}, @PreferedContentType = {2}, @emotional_state = {3}, @PersonalityType = {4}",
-                    learnerId, profileId, preferredContentType, emotionalState, personalityType
-                );
+                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
+                if (!Directory.Exists(uploadsFolder))
+                {
+                    Directory.CreateDirectory(uploadsFolder);
+                }
 
-                return RedirectToAction("ViewInfo", new { learnerId });
+                var filePath = Path.Combine(uploadsFolder, $"{learnerId}_profile.jpg");
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await profilePicture.CopyToAsync(stream);
+                }
+
+                TempData["Message"] = "Profile picture uploaded successfully!";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Please select a valid image file.";
             }
 
-            // 3. View Enrolled Courses
-            public async Task<IActionResult> EnrolledCourses(int learnerId)
+            return RedirectToAction(nameof(Details), new { id = learnerId });
+        }
+        // 3. View Enrolled Courses
+        public async Task<IActionResult> EnrolledCourses(int learnerId)
             {
                 var courses = await _context.Courses
                     .FromSqlRaw("EXEC EnrolledCourses @LearnerID = {0}", learnerId)

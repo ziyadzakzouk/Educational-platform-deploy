@@ -13,6 +13,10 @@
         </div>
     </div>
 
+    <div class="profile-picture mb-4 text-center">
+        <img src="~/images/@($"{Model.LearnerId}_profile.jpg")" alt="Profile Picture" class="img-thumbnail" style="max-width: 200px;">
+    </div>
+
     <div class="profile-details">
         <h4 class="text-secondary">Personal Information</h4>
         <dl class="row">
@@ -32,7 +36,17 @@
 
     <div class="profile-actions mt-4">
         <a asp-action="Edit" asp-route-id="@Model.LearnerId" class="btn btn-primary mr-2">Edit Profile</a>
-       
+    </div>
+
+    <div class="upload-picture mt-4">
+        <form asp-action="UploadProfilePicture" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="profilePicture">Upload Profile Picture</label>
+                <input type="file" class="form-control-file" id="profilePicture" name="profilePicture">
+            </div>
+            <input type="hidden" name="learnerId" value="@Model.LearnerId" />
+            <button type="submit" class="btn btn-success">Upload</button>
+        </form>
     </div>
 </div>
 
