@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "iMvfUg1vbI/NkEK6w1YV0HgIjrQ3xOK5iIgmwEmSgtw=",
+  "Hash": "5bIzkhJtVTD1gOg/9GXz6OmndXVN7LOdZ84B0lrgWHU=",
   "Source": "Course station",
   "BasePath": "_content/Course station",
   "Mode": "Default",
@@ -91,6 +91,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
+    },
+    {
+      "Identity": "E:\\Giu  files\\Semester 3\\Semester 3\\data base\\Project\\Educational-platform\\Course station\\Course station\\wwwroot\\images\\1_profile.jpg",
+      "SourceId": "Course station",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\Giu  files\\Semester 3\\Semester 3\\data base\\Project\\Educational-platform\\Course station\\Course station\\wwwroot\\",
+      "BasePath": "_content/Course station",
+      "RelativePath": "images/1_profile.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\1_profile.jpg"
     },
     {
       "Identity": "E:\\Giu  files\\Semester 3\\Semester 3\\data base\\Project\\Educational-platform\\Course station\\Course station\\wwwroot\\js\\site.js",

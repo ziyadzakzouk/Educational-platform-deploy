@@ -152,6 +152,34 @@ namespace Course_station.Controllers
 
             return View(model);
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UploadProfilePicture(int instructorId, IFormFile profilePicture)
+        {
+            if (profilePicture != null && profilePicture.Length > 0)
+            {
+                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
+                if (!Directory.Exists(uploadsFolder))
+                {
+                    Directory.CreateDirectory(uploadsFolder);
+                }
+
+                var filePath = Path.Combine(uploadsFolder, $"{instructorId}_profile.jpg");
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await profilePicture.CopyToAsync(stream);
+                }
+
+                TempData["Message"] = "Profile picture uploaded successfully!";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Please select a valid image file.";
+            }
+
+            return RedirectToAction(nameof(Details), new { id = instructorId });
+        }
         /*
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
