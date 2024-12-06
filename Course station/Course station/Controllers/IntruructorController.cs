@@ -69,23 +69,27 @@ namespace Course_station.Controllers
             {
                 return NotFound();
             }
-
+           
             var instructor = await _context.Instructors.FindAsync(id);
             if (instructor == null)
             {
                 return NotFound();
             }
+           
             return View(instructor);
         }
 
         // POST: Instructor/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("InstructorId,InstructorName,HireDate")] Instructor instructor)
+        public async Task<IActionResult> Edit(int id, [Bind("InstructorName,LatestQualification,ExpertiseArea,Email,Password")] Instructor instructor)
         {
             if (id != instructor.InstructorId)
             {
-                return NotFound();
+                _context.Update(instructor);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+                //  return NotFound();
             }
 
             if (ModelState.IsValid)
@@ -94,6 +98,7 @@ namespace Course_station.Controllers
                 {
                     _context.Update(instructor);
                     await _context.SaveChangesAsync();
+                    
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -103,10 +108,14 @@ namespace Course_station.Controllers
                     }
                     else
                     {
+                       
                         throw;
+                        
                     }
                 }
+               
                 return RedirectToAction(nameof(Index));
+               
             }
             return View(instructor);
         }
