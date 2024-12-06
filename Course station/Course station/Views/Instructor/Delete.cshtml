@@ -10,6 +10,12 @@
 <div>
     <h4>Instructor</h4>
     <hr />
+    @if (!string.IsNullOrEmpty(ViewData["ErrorMessage"] as string))
+    {
+        <div class="alert alert-danger">
+            @ViewData["ErrorMessage"]
+        </div>
+    }
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.InstructorName)
@@ -17,16 +23,27 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.InstructorName)
         </dd>
-        
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Courses)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Courses)
+            @if (Model.Courses != null && Model.Courses.Any())
+            {
+                <ul>
+                    @foreach (var course in Model.Courses)
+                    {
+                        <li>@course.Title</li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p>No courses assigned</p>
+            }
         </dd>
     </dl>
 
-    <form asp-action="DeleteConfirmed">
+    <form asp-action="Delete">
         <input type="hidden" asp-for="InstructorId" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
         <a asp-action="Index">Back to List</a>

@@ -1,5 +1,42 @@
-﻿
-@{
-}
-<h1> Delete has been conformied </h1>
+﻿@model Course_station.Models.Instructor
 
+@{
+    ViewData["Title"] = "Delete Confirmation";
+}
+
+<h1>Delete Confirmation</h1>
+
+<div>
+    <h4>Instructor Deleted</h4>
+    <hr />
+    <p>The instructor with the following details has been successfully deleted:</p>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.InstructorName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.InstructorName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Courses)
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.Courses != null && Model.Courses.Any())
+            {
+                <ul>
+                    @foreach (var course in Model.Courses)
+                    {
+                        <li>@course.Title</li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p>No courses assigned</p>
+            }
+        </dd>
+    </dl>
+    <div>
+        <a asp-action="Index" class="btn btn-primary">Back to List</a>
+    </div>
+</div>

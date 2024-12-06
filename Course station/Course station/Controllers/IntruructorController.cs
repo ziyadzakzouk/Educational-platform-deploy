@@ -125,21 +125,32 @@ namespace Course_station.Controllers
             {
                 return NotFound();
             }
+            else
+            {
+
+               _context.Instructors.Remove(instructor);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
 
             return View(instructor);
         }
-
-        // POST: Instructor/Delete/5
+        /*
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var instructor = await _context.Instructors.FindAsync(id);
-            _context.Instructors.Remove(instructor);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            var instructor = await _context.Instructors
+                .Include(i => i.Courses)
+                .FirstOrDefaultAsync(m => m.InstructorId == id);
+            if (instructor != null)
+            {
+                _context.Instructors.Remove(instructor);
+                await _context.SaveChangesAsync();
+            }
+            return View("DeleteConfirmed", instructor);
         }
-
+        */
         private bool InstructorExists(int id)
         {
             return _context.Instructors.Any(e => e.InstructorId == id);
