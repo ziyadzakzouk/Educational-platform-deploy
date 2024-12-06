@@ -16,6 +16,7 @@ namespace Course_station.Controllers
        
         private readonly ApplicationDbContext _context;
         private readonly LearnerService _learnerService;
+        
 
         public LearnersController(ApplicationDbContext context, LearnerService learnerService)
         {
@@ -44,8 +45,24 @@ namespace Course_station.Controllers
                 return NotFound();
             }
 
-            return View(learner);
+            var learnerPhoto = await _context.LearnerPhotos
+                .FirstOrDefaultAsync(p => p.LearnerId == id);
+
+            var viewModel = new LearnerProfileViewModel
+            {
+                LearnerId = learner.LearnerId,
+                FirstName = learner.FirstName,
+                LastName = learner.LastName,               
+                Gender = learner.Gender,
+                Country = learner.Country,
+                CulturalBackground = learner.CulturalBackground,
+                Email = learner.Email,
+                PhotoPath = learnerPhoto?.PhotoPath
+            };
+
+            return View(viewModel);
         }
+
 
         // GET: Learners/Create
         public IActionResult Create()
@@ -191,17 +208,30 @@ namespace Course_station.Controllers
                     await model.Photo.CopyToAsync(stream);
                 }
 
-                var learner = await _context.Learners.FindAsync(model.LearnerId);
-                if (learner != null)
+                var learnerPhoto = await _context.LearnerPhotos
+                    .FirstOrDefaultAsync(p => p.LearnerId == model.LearnerId);
+
+                if (learnerPhoto == null)
                 {
-                    learner.PhotoPath = "/images/" + Path.GetFileName(model.Photo.FileName);
-                    _context.Update(learner);
-                    await _context.SaveChangesAsync();
+                    learnerPhoto = new LearnerPhoto
+                    {
+                        LearnerId = model.LearnerId,
+                        PhotoPath = "/images/" + Path.GetFileName(model.Photo.FileName)
+                    };
+                    _context.LearnerPhotos.Add(learnerPhoto);
                 }
+                else
+                {
+                    learnerPhoto.PhotoPath = "/images/" + Path.GetFileName(model.Photo.FileName);
+                    _context.LearnerPhotos.Update(learnerPhoto);
+                }
+
+                await _context.SaveChangesAsync();
             }
 
             return RedirectToAction(nameof(Details), new { id = model.LearnerId });
         }
+
 
         private bool LearnerExists(int id)
         {
