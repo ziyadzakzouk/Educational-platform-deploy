@@ -12,12 +12,11 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.InstructorName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Courses)
-            </th>
+            <th>@Html.DisplayNameFor(model => model.InstructorName)</th>
+            <th>@Html.DisplayNameFor(model => model.LatestQualification)</th>
+            <th>@Html.DisplayNameFor(model => model.ExpertiseArea)</th>
+            <th>@Html.DisplayNameFor(model => model.Email)</th>
+            <th>@Html.DisplayNameFor(model => model.Password)</th>
             <th></th>
         </tr>
     </thead>
@@ -25,17 +24,11 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.InstructorName)
-                </td>
-                <td>
-                    @foreach (var course in item.Courses)
-                    {
-                        <span>@course.Title</span>
-
-                        <br />
-                    }
-                </td>
+                <td>@Html.DisplayFor(modelItem => item.InstructorName)</td>
+                <td>@Html.DisplayFor(modelItem => item.LatestQualification)</td>
+                <td>@Html.DisplayFor(modelItem => item.ExpertiseArea)</td>
+                <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                <td>@Html.DisplayFor(modelItem => item.Password)</td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.InstructorId">Edit</a> |
                     <a asp-action="Details" asp-route-id="@item.InstructorId">Details</a> |
