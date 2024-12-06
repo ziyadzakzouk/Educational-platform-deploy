@@ -59,9 +59,11 @@ namespace Course_station.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewBag.HealthConditions = _context.HealthConditions.ToList();
-            ViewBag.LearningPaths = _context.LearningPaths.ToList();
-            return View(personalProfile);
+            else
+            {
+                return View(personalProfile);
+            }
+            
         }
 
         // GET: PersonalProfile/Edit/5
