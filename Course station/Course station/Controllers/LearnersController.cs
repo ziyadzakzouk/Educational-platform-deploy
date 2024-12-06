@@ -87,7 +87,7 @@ namespace Course_station.Controllers
                 if (isValid)
                 {
                     TempData["Message"] = "Login successful!";
-                    return RedirectToAction(nameof(Index), "Home");
+                    return RedirectToAction(nameof(Details), new { id = learnerId });
                 }
                 TempData["ErrorMessage"] = "Invalid login attempt.";
             }
