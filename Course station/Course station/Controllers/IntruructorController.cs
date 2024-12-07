@@ -19,6 +19,13 @@ namespace Course_station.Controllers
         {
             _context = context;
         }
+
+       // [Authorize(Roles = "Instructor")]
+        public IActionResult Home()
+        {
+            return View();
+        }
+
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
@@ -133,6 +140,7 @@ namespace Course_station.Controllers
             return View();
         }
 
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(InstructorLoginViewModel model)
@@ -144,8 +152,8 @@ namespace Course_station.Controllers
 
                 if (instructor != null)
                 {
-                    // Login successful, redirect to the instructor's details page or dashboard
-                    return RedirectToAction(nameof(Details), new { id = model.InstructorId });
+                    // Login successful, redirect to the instructor's home page
+                    return RedirectToAction("Home", "Instructor");
                 }
 
                 // Login failed, show an error message
@@ -154,6 +162,8 @@ namespace Course_station.Controllers
 
             return View(model);
         }
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UploadProfilePicture(int instructorId, IFormFile profilePicture)

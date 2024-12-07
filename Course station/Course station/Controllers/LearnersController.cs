@@ -23,6 +23,12 @@ namespace Course_station.Controllers
             _context = context;
             _learnerService = learnerService;
         }
+     //   [Authorize(Roles = "Learner")]
+        public IActionResult Home()
+        {
+            return View();
+        }
+
         [Authorize(Roles = "Admin")]
         // GET: Learners
         public async Task<IActionResult> Index()
@@ -76,26 +82,26 @@ namespace Course_station.Controllers
         {
             return View();
         }
-        
-        
+
+
         // POST: Learners/Login
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(int learnerId, string password)
         {
+
             if (ModelState.IsValid)
             {
                 var isValid = await _learnerService.ValidateLearnerAsync(learnerId, password);
                 if (isValid)
                 {
                     TempData["Message"] = "Login successful!";
-                    return RedirectToAction(nameof(Details), new { id = learnerId });
+                    return RedirectToAction("Home", "Learners");
                 }
                 TempData["ErrorMessage"] = "Invalid login attempt.";
             }
             return View();
         }
-
 
         // GET: Learners/Edit/5
         public async Task<IActionResult> Edit(int? id)

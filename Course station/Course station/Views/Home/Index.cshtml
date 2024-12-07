@@ -1,5 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Course Website";
+    ViewData["IsDarkTheme"] = false;
 }
 
 <div class="jumbotron">
@@ -11,88 +12,8 @@
 </div>
 
 <div class="container">
-    <div class="row">
-        <div class="col-md-4">
-            <h2>Featured Courses</h2>
-            <p>Check out our most popular courses and start learning today.</p>
-            <a class="btn btn-secondary" href="#">View Courses &raquo;</a>
-        </div>
-        <div class="col-md-4">
-            <h2>About Us</h2>
-            <p>Learn more about Course Station and our mission to provide quality education.</p>
-            <a class="btn btn-secondary" href="#">Learn More &raquo;</a>
-        </div>
-        <div class="col-md-4">
-            <h2>Contact Us</h2>
-            <p>Have any questions? Get in touch with us and we'll be happy to help.</p>
-            <a class="btn btn-secondary" href="#">Contact &raquo;</a>
-        </div>
-    </div>
-
-    <hr class="my-4">
-
-    <div class="row">
-        <div class="col-md-12">
-            <h2>Our Courses</h2>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4">
-            <div class="card mb-4 shadow-sm">
-                <img src="https://via.placeholder.com/150" class="card-img-top" alt="Course Image">
-                <div class="card-body">
-                    <h5 class="card-title">Course Title 1</h5>
-                    <p class="card-text">This is a brief description of the course. Learn more about the course content and what you will achieve.</p>
-                    <a href="#" class="btn btn-primary">View Details</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card mb-4 shadow-sm">
-                <img src="https://via.placeholder.com/150" class="card-img-top" alt="Course Image">
-                <div class="card-body">
-                    <h5 class="card-title">Course Title 2</h5>
-                    <p class="card-text">This is a brief description of the course. Learn more about the course content and what you will achieve.</p>
-                    <a href="#" class="btn btn-primary">View Details</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card mb-4 shadow-sm">
-                <img src="https://via.placeholder.com/150" class="card-img-top" alt="Course Image">
-                <div class="card-body">
-                    <h5 class="card-title">Course Title 3</h5>
-                    <p class="card-text">This is a brief description of the course. Learn more about the course content and what you will achieve.</p>
-                    <a href="#" class="btn btn-primary">View Details</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <hr class="my-4">
-
-    <div class="row">
-        <div class="col-md-12 text-center">
-            <a class="btn btn-success btn-lg" href="@Url.Action("Create", "Instructor")" role="button">Make an Impact</a>
-        </div>
-    </div>
-
-    <hr class="my-4">
-
-    <div class="row">
-        <div class="col-md-6 text-center">
-            <a class="btn btn-primary btn-lg" href="@Url.Action("Login", "Learners")" role="button">Learner Login</a>
-        </div>
-        <div class="col-md-6 text-center">
-            <a class="btn btn-primary btn-lg" href="@Url.Action("Login", "Instructor")" role="button">Instructor Login</a>
-        </div>
-    </div>
+    <!-- Content here... -->
 </div>
-
-<!-- Admin Button -->
-<p>
-    <a asp-action="AdminLogin" class="btn btn-link" style="font-size: 0.8em;">Admin</a>
-</p>
 
 <!-- Dark Theme Switch -->
 <div class="theme-switch-wrapper">
@@ -102,6 +23,8 @@
     </label>
     <em>Enable Dark Mode!</em>
 </div>
+
+
 
 <style>
     /* Dark Theme Styles */
@@ -194,6 +117,7 @@
 
             if (currentTheme === 'dark-theme') {
                 toggleSwitch.checked = true;
+    @ViewData["IsDarkTheme"] = true;
             }
         }
 
@@ -201,9 +125,11 @@
             if (e.target.checked) {
                 document.body.classList.add('dark-theme');
                 localStorage.setItem('theme', 'dark-theme');
+    @ViewData["IsDarkTheme"] = true;
             } else {
                 document.body.classList.remove('dark-theme');
                 localStorage.setItem('theme', 'light-theme');
+    @ViewData["IsDarkTheme"] = false;
             }
         });
     });
