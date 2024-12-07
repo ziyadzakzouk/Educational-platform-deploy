@@ -87,34 +87,24 @@ namespace Course_station.Controllers
         }
 
 
+        // POST: Learners/Login
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(int learnerId, string password)
         {
             if (ModelState.IsValid)
             {
-                var learner = await _context.Learners.FirstOrDefaultAsync(l => l.LearnerId == learnerId && l.Password == password);
-
-                if (learner != null)
+                var isValid = await _learnerService.ValidateLearnerAsync(learnerId, password);
+                if (isValid)
                 {
-                    var claims = new List<Claim>
-                    {
-                        new Claim(ClaimTypes.Name, learner.FirstName + " " + learner.LastName),
-                        new Claim(ClaimTypes.Role, "Learner")
-                    };
-
-                    var claimsIdentity = new ClaimsIdentity(claims, "Login");
-                    var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
-
-                    await HttpContext.SignInAsync(claimsPrincipal);
-
                     TempData["Message"] = "Login successful!";
-                    return RedirectToAction("Home", "Learners");
+                    return RedirectToAction(nameof(Details), new { id = learnerId });
                 }
                 TempData["ErrorMessage"] = "Invalid login attempt.";
             }
             return View();
         }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -183,7 +173,7 @@ namespace Course_station.Controllers
         }
 
         // GET: Learners/Delete/5
-        [Authorize]
+       // [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)

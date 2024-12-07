@@ -143,6 +143,7 @@ namespace Course_station.Controllers
             return View();
         }
 
+        // POST: Learners/Login
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(InstructorLoginViewModel model)
@@ -154,25 +155,8 @@ namespace Course_station.Controllers
 
                 if (instructor != null)
                 {
-                    // Create claims
-                    var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, instructor.InstructorName),
-                new Claim(ClaimTypes.Role, "Instructor")
-            };
-
-                    // Create identity
-                    var claimsIdentity = new ClaimsIdentity(claims, "Login");
-
-                    // Create principal
-                    var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
-
-                    // Sign in
-                    await HttpContext.SignInAsync(claimsPrincipal);
-
-                    // Login successful, redirect to the instructor's home page
-                    TempData["Message"] = "Login successful!";
-                    return RedirectToAction("Home", "Instructor");
+                    // Login successful, redirect to the instructor's details page or dashboard
+                    return RedirectToAction(nameof(Details), new { id = model.InstructorId });
                 }
 
                 // Login failed, show an error message
@@ -181,6 +165,7 @@ namespace Course_station.Controllers
 
             return View(model);
         }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
