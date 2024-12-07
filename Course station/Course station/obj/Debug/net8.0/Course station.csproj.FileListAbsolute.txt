@@ -565,3 +565,4 @@ C:\Users\Abdelrhman Mostafa\source\repos\Educational-platform\Course station\Cou
 C:\Users\Abdelrhman Mostafa\source\repos\Educational-platform\Course station\Course station\obj\Debug\net8.0\Course station.pdb
 C:\Users\Abdelrhman Mostafa\source\repos\Educational-platform\Course station\Course station\obj\Debug\net8.0\Course station.genruntimeconfig.cache
 C:\Users\Abdelrhman Mostafa\source\repos\Educational-platform\Course station\Course station\obj\Debug\net8.0\ref\Course station.dll
+E:\Giu  files\Semester 3\Semester 3\data base\Project\Educational-platform\Course station\Course station\bin\Debug\net8.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll

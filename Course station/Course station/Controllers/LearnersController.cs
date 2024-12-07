@@ -32,7 +32,7 @@ namespace Course_station.Controllers
             return View();
         }
 
-        [Authorize(Roles = "Admin")]
+       //[Authorize(Roles = "Admin")]
         // GET: Learners
         public async Task<IActionResult> Index()
         {

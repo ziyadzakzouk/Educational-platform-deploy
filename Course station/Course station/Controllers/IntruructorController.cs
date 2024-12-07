@@ -29,7 +29,7 @@ namespace Course_station.Controllers
             return View();
         }
 
-        [Authorize(Roles = "Admin")]
+      
         public async Task<IActionResult> Index()
         {
             var instructors = await _context.Instructors.Include(i => i.Courses).ToListAsync();
