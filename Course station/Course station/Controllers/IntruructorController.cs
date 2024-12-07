@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Course_station.Controllers
 {
-    [Authorize]
+    
     public class InstructorController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -19,7 +19,7 @@ namespace Course_station.Controllers
         {
             _context = context;
         }
-
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             var instructors = await _context.Instructors.Include(i => i.Courses).ToListAsync();

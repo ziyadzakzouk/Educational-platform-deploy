@@ -31,7 +31,8 @@ namespace Course_station.Controllers
             {
                 var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, username)
+                    new Claim(ClaimTypes.Name, username),
+                    new Claim(ClaimTypes.Role, "Admin")
                 };
 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -52,7 +53,7 @@ namespace Course_station.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        [Authorize]
+       
         public IActionResult Index()
         {
             return View();
@@ -63,7 +64,7 @@ namespace Course_station.Controllers
             return View();
         }
 
-        [Authorize]
+        
         [HttpPost]
         public IActionResult Delete(int id)
         {

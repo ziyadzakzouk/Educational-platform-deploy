@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Course_station.Controllers
 {
-    [Authorize]
+    
     public class LearnersController : Controller
     {
        
@@ -23,7 +23,7 @@ namespace Course_station.Controllers
             _context = context;
             _learnerService = learnerService;
         }
-
+        [Authorize(Roles = "Admin")]
         // GET: Learners
         public async Task<IActionResult> Index()
         {
@@ -149,6 +149,7 @@ namespace Course_station.Controllers
         }
 
         // GET: Learners/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
