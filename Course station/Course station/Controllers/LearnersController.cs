@@ -8,6 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using Course_station.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace Course_station.Controllers
 {
@@ -84,17 +87,27 @@ namespace Course_station.Controllers
         }
 
 
-        // POST: Learners/Login
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(int learnerId, string password)
         {
-
             if (ModelState.IsValid)
             {
-                var isValid = await _learnerService.ValidateLearnerAsync(learnerId, password);
-                if (isValid)
+                var learner = await _context.Learners.FirstOrDefaultAsync(l => l.LearnerId == learnerId && l.Password == password);
+
+                if (learner != null)
                 {
+                    var claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.Name, learner.FirstName + " " + learner.LastName),
+                        new Claim(ClaimTypes.Role, "Learner")
+                    };
+
+                    var claimsIdentity = new ClaimsIdentity(claims, "Login");
+                    var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+
+                    await HttpContext.SignInAsync(claimsPrincipal);
+
                     TempData["Message"] = "Login successful!";
                     return RedirectToAction("Home", "Learners");
                 }
@@ -103,6 +116,13 @@ namespace Course_station.Controllers
             return View();
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Index", "Home");
+        }
         // GET: Learners/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {

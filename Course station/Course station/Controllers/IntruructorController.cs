@@ -7,6 +7,9 @@ using System;
 using Microsoft.Data.SqlClient;
 using System.Data;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace Course_station.Controllers
 {
@@ -140,7 +143,6 @@ namespace Course_station.Controllers
             return View();
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(InstructorLoginViewModel model)
@@ -152,7 +154,24 @@ namespace Course_station.Controllers
 
                 if (instructor != null)
                 {
+                    // Create claims
+                    var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, instructor.InstructorName),
+                new Claim(ClaimTypes.Role, "Instructor")
+            };
+
+                    // Create identity
+                    var claimsIdentity = new ClaimsIdentity(claims, "Login");
+
+                    // Create principal
+                    var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+
+                    // Sign in
+                    await HttpContext.SignInAsync(claimsPrincipal);
+
                     // Login successful, redirect to the instructor's home page
+                    TempData["Message"] = "Login successful!";
                     return RedirectToAction("Home", "Instructor");
                 }
 
@@ -163,6 +182,13 @@ namespace Course_station.Controllers
             return View(model);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Index", "Home");
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]

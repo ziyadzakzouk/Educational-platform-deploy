@@ -1,0 +1,11 @@
+﻿
+
+@page
+
+@model Course_station.view.Account.LogoutModel
+@{
+    // Log out the user and redirect to the Home Index page
+    await HttpContext.SignOutAsync(Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationDefaults.AuthenticationScheme);
+    var redirectUrl = Url.Action("Index", "Home") ?? "/";
+    Response.Redirect(redirectUrl);
+}
