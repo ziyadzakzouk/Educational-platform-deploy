@@ -2,31 +2,24 @@
 using Course_station.Models;
 using Microsoft.EntityFrameworkCore;
 
-
 namespace Course_station.Controllers
 {
-    public class CourseController : Controller //CRUD CLASS
-        //Create a course
-        //Read a course
-        //Update a course
-        //Delete a course
-        //More ....
+    public class CourseController : Controller
     {
         private readonly ApplicationDbContext _context;
 
         public CourseController(ApplicationDbContext context)
         {
-            this._context = context;
+            _context = context;
         }
 
-        public IActionResult Index() //get the course
+        public IActionResult Index()
         {
             var courses = _context.Courses.ToList();
             return View(courses);
         }
 
-        
-        public async Task<IActionResult> Details(int? id)  ///to get the details of the course
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
@@ -43,15 +36,14 @@ namespace Course_station.Controllers
             return View(course);
         }
 
-        // GET: Courses/Create
         public IActionResult Create()
         {
             return View();
         }
 
-
         [HttpPost]
-        public async Task<IActionResult> Create(Course course) //create a course
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(Course course)
         {
             if (ModelState.IsValid)
             {
@@ -77,25 +69,38 @@ namespace Course_station.Controllers
             return View(course);
         }
 
-
         [HttpPost]
-        public async Task<IActionResult> Edit(int id, Course course)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("CourseId,Title,Description")] Course course)
         {
-            if (id != course.CourseId)
+            if (id != course.CourseId)  ////the problem is here
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
-                _context.Update(course);
-                await _context.SaveChangesAsync();
+                try
+                {
+                    _context.Update(course);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!CourseExists(course.CourseId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
                 return RedirectToAction(nameof(Index));
             }
             return View(course);
         }
 
-        // GET: Courses/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -113,19 +118,19 @@ namespace Course_station.Controllers
             return View(course);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Delete(int id)
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var course = await _context.Courses.FindAsync(id);
             _context.Courses.Remove(course);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        /* we can add the procedures instead of the above code as c#
-         *  public async Task<List<CourseSummary>> GetCourseSummariesAsync()
-    {
-        return await CourseSummaries.FromSqlRaw("EXEC GetCourseSummaries").ToListAsync();
-    }
-         */
+
+        private bool CourseExists(int id)
+        {
+            return _context.Courses.Any(e => e.CourseId == id);
         }
+    }
 }
