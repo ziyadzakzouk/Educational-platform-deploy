@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Course_station.Models;
 
-public partial class ApplicationDbContext : DbContext
+public partial class ApplicationDbContext : DbContext 
 {
     public ApplicationDbContext()
     {
@@ -102,7 +102,9 @@ public partial class ApplicationDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-       
+
+      //  base.OnModelCreating(modelBuilder);
+      //  OnModelCreatingPartial(modelBuilder);
 
         modelBuilder.Entity<Achievement>(entity =>
         {

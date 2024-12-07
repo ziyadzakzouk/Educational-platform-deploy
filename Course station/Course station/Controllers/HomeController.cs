@@ -22,9 +22,8 @@ namespace Course_station.Controllers
         {
             return View();
         }
-
-        // POST: AdminLogin
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AdminLogin(string username, string password, string indexPage)
         {
             if (username == "youssef.ashraf" && password == "20052099404Xx")
@@ -36,24 +35,24 @@ namespace Course_station.Controllers
                 };
 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                var authProperties = new AuthenticationProperties();
 
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
 
-                // Redirect to the selected index page
                 if (indexPage == "Instructor")
                 {
-                    return RedirectToAction("Index", "Instructor");
+                    return RedirectToAction("InstructorIndex", "Admin");
                 }
                 else if (indexPage == "Learners")
                 {
-                    return RedirectToAction("Index", "Learners");
+                    return RedirectToAction("LearnerIndex", "Admin");
                 }
-                // else if (indexPage == "Courses") or it can be Assessment or quests or others modify here
             }
-            return RedirectToAction("Index", "Home");
+
+            return View();
         }
 
-       
+
         public IActionResult Index()
         {
             return View();
