@@ -186,6 +186,14 @@ namespace Course_station.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
+            if (User.Identity?.Name != null)
+            {
+                // Clear user-specific cache or perform other cleanup tasks
+                var cacheKey = $"UserCache_{User.Identity.Name}";
+                // Assuming you have a cache service, you can clear the cache like this:
+                // _cacheService.Remove(cacheKey);
+            }
+
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Index", "Home");
         }

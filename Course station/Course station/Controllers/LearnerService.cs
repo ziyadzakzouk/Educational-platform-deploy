@@ -19,7 +19,7 @@ namespace Course_station.Controllers
             await _context.SaveChangesAsync();
             return learner;
         }
-
+        
         public async Task<Learner> FindByEmailAsync(int id)
         {
             return await _context.Learners.FirstOrDefaultAsync(l => l.LearnerId == id);
