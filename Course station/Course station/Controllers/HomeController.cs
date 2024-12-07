@@ -2,6 +2,7 @@ using Course_station.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using System.Diagnostics;
 using System.Security.Claims;
 
@@ -15,6 +16,7 @@ namespace Course_station.Controllers
         {
             _logger = logger;
         }
+
         // GET: AdminLogin
         public IActionResult AdminLogin()
         {
@@ -45,17 +47,39 @@ namespace Course_station.Controllers
                 {
                     return RedirectToAction("Index", "Learners");
                 }
-              ///  else if (indexPage == "Courses") or it can be Assessment or quests or others modify here
+                // else if (indexPage == "Courses") or it can be Assessment or quests or others modify here
             }
             return RedirectToAction("Index", "Home");
         }
-            public IActionResult Index()
+
+        [Authorize]
+        public IActionResult Index()
         {
             return View();
         }
 
         public IActionResult Privacy()
         {
+            return View();
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult Delete(int id)
+        {
+            // Add your delete logic here
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult Details(int id)
+        {
+            // Add your details logic here
+            return View();
+        }
+
+        public IActionResult Create()
+        {
+            // Add your create logic here
             return View();
         }
 

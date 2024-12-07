@@ -25,6 +25,10 @@
     <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
 }
 
+<div>
+    <a asp-action="Index" asp-controller="Home">Back to Home</a>
+</div>
+
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
