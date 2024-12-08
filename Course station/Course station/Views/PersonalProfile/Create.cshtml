@@ -1,20 +1,25 @@
 ﻿@model Course_station.Models.PersonalProfile
 
 @{
-    ViewData["Title"] = "Create Personal Profile";
+    ViewData["Title"] = "Create";
 }
 
-<h1>Create Personal Profile</h1>
+<h1>Create</h1>
 
-<h4>Personal Profile</h4>
+<h4>PersonalProfile</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div class="form-group">
                 <label asp-for="LearnerId" class="control-label"></label>
-                <input asp-for="LearnerId" class="form-control" />
+                <input asp-for="LearnerId" class="form-control" readonly />
                 <span asp-validation-for="LearnerId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProfileId" class="control-label"></label>
+                <input asp-for="ProfileId" class="form-control" />
+                <span asp-validation-for="ProfileId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PreferedContentType" class="control-label"></label>

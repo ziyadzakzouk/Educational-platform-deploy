@@ -33,7 +33,8 @@ namespace Course_station.Controllers
         {
             return View(await _context.Learners.ToListAsync());
         }
-
+        
+            
         // GET: Learners/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -52,11 +53,12 @@ namespace Course_station.Controllers
             var enrolledCourses = await _context.Courses
                 .FromSqlRaw("EXEC EnrolledCourses @LearnerID = {0}", id)
                 .ToListAsync();
-
+            var personalProfile = learner.PersonalProfiles.FirstOrDefault();
             var viewModel = new LearnerDetailsViewModel
             {
                 Learner = learner,
-                EnrolledCourses = enrolledCourses
+                EnrolledCourses = enrolledCourses,
+                 PersonalProfile = personalProfile
             };
 
             return View(viewModel);

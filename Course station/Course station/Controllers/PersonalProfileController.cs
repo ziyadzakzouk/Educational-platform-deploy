@@ -1,8 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using System.Threading.Tasks;
 using Course_station.Models;
+using System.Threading.Tasks;
 
 namespace Course_station.Controllers
 {
@@ -18,21 +17,19 @@ namespace Course_station.Controllers
         // GET: PersonalProfile
         public async Task<IActionResult> Index()
         {
-            var personalProfiles = await _context.PersonalProfiles.Include(p => p.Learner).ToListAsync();
-            return View(personalProfiles);
+            return View(await _context.PersonalProfiles.ToListAsync());
         }
 
         // GET: PersonalProfile/Details/5
-        public async Task<IActionResult> Details(int? learnerId, int? profileId)
+        public async Task<IActionResult> Details(int? id)
         {
-            if (learnerId == null || profileId == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
             var personalProfile = await _context.PersonalProfiles
-                .Include(p => p.Learner)
-                .FirstOrDefaultAsync(m => m.LearnerId == learnerId && m.ProfileId == profileId);
+                .FirstOrDefaultAsync(m => m.ProfileId == id);
             if (personalProfile == null)
             {
                 return NotFound();
@@ -50,27 +47,25 @@ namespace Course_station.Controllers
         // POST: PersonalProfile/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProfileId,LearnerId,PreferedContentType,EmotionalState,PersonalityType")] PersonalProfile personalProfile)
+        public async Task<IActionResult> Create([Bind("ProfileId,PreferedContentType,EmotionalState,PersonalityType")] PersonalProfile personalProfile)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(personalProfile);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
             }
             return View(personalProfile);
         }
 
-        // GET: PersonalProfile/Edit/5
-        public async Task<IActionResult> Edit(int? learnerId, int? profileId)
+        public async Task<IActionResult> Edit(int? id, int? anotherKey)
         {
-            if (learnerId == null || profileId == null)
+            if (id == null || anotherKey == null)
             {
                 return NotFound();
             }
 
-            var personalProfile = await _context.PersonalProfiles
-                .FirstOrDefaultAsync(m => m.LearnerId == learnerId && m.ProfileId == profileId);
+            var personalProfile = await _context.PersonalProfiles.FindAsync(id, anotherKey);
             if (personalProfile == null)
             {
                 return NotFound();
@@ -82,9 +77,9 @@ namespace Course_station.Controllers
         // POST: PersonalProfile/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int profileId, [Bind("ProfileId,LearnerId,PreferedContentType,EmotionalState,PersonalityType")] PersonalProfile personalProfile)
+        public async Task<IActionResult> Edit(int id, [Bind("ProfileId,PreferedContentType,EmotionalState,PersonalityType")] PersonalProfile personalProfile)
         {
-            if (profileId != personalProfile.ProfileId)
+            if (id != personalProfile.ProfileId)
             {
                 return NotFound();
             }
@@ -107,22 +102,21 @@ namespace Course_station.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
             }
             return View(personalProfile);
         }
 
         // GET: PersonalProfile/Delete/5
-        public async Task<IActionResult> Delete(int? profileId)
+        public async Task<IActionResult> Delete(int? id)
         {
-            if (profileId == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
             var personalProfile = await _context.PersonalProfiles
-                .Include(p => p.Learner)
-                .FirstOrDefaultAsync(m => m.ProfileId == profileId);
+                .FirstOrDefaultAsync(m => m.ProfileId == id);
             if (personalProfile == null)
             {
                 return NotFound();
@@ -134,25 +128,17 @@ namespace Course_station.Controllers
         // POST: PersonalProfile/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int profileId)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var personalProfile = await _context.PersonalProfiles
-                .FirstOrDefaultAsync(m => m.ProfileId == profileId);
-            if (personalProfile != null)
-            {
-                _context.PersonalProfiles.Remove(personalProfile);
-                await _context.SaveChangesAsync();
-            }
-            else
-            {
-                return NotFound();
-            }
+            var personalProfile = await _context.PersonalProfiles.FindAsync(id);
+            _context.PersonalProfiles.Remove(personalProfile);
+            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool PersonalProfileExists(int profileId)
+        private bool PersonalProfileExists(int id)
         {
-            return _context.PersonalProfiles.Any(e => e.ProfileId == profileId);
+            return _context.PersonalProfiles.Any(e => e.ProfileId == id);
         }
     }
 }

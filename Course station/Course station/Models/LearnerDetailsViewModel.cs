@@ -8,5 +8,6 @@ public class LearnerDetailsViewModel
     public List<Skill> SkillsProficiency { get; set; }
     public List<Leaderboard> LeaderboardRank { get; set; }
     public List<Assessment> AssessmentsList { get; set; }
-}
+        public PersonalProfile PersonalProfile { get; set; }
+    }
 }

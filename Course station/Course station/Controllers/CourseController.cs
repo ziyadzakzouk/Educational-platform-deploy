@@ -73,7 +73,7 @@ namespace Course_station.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("CourseId,Title,Description")] Course course)
         {
-            if (id != course.CourseId)  ////the problem is here
+            if (id != course.CourseId)  
             {
                 return NotFound();
             }

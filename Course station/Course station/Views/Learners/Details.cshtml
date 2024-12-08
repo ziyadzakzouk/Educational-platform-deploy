@@ -50,6 +50,28 @@
         </form>
     </div>
 
+    <div class="personal-profile mt-4">
+        <h4 class="text-secondary">Personal Profile</h4>
+        @if (Model.PersonalProfile != null)
+        {
+            <dl class="row">
+                <dt class="col-sm-3">Preferred Content Type</dt>
+                <dd class="col-sm-9">@Model.PersonalProfile.PreferedContentType</dd>
+
+                <dt class="col-sm-3">Emotional State</dt>
+                <dd class="col-sm-9">@Model.PersonalProfile.EmotionalState</dd>
+
+                <dt class="col-sm-3">Personality Type</dt>
+                <dd class="col-sm-9">@Model.PersonalProfile.PersonalityType</dd>
+            </dl>
+        }
+        else
+        {
+            <p>No personal profile found.</p>
+            <a asp-action="Create" asp-controller="PersonalProfile" asp-route-learnerId="@Model.Learner.LearnerId" class="btn btn-primary">Create Personal Profile</a>
+        }
+    </div>
+
     <div class="enrolled-courses mt-4">
         <h4 class="text-secondary">Enrolled Courses</h4>
         <ul>
@@ -59,7 +81,6 @@
             }
         </ul>
     </div>
-   
 </div>
 
 <style>
