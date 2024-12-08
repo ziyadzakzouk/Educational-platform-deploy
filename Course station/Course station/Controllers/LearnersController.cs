@@ -57,19 +57,6 @@ namespace Course_station.Controllers
             var enrolledCourses = await _context.Courses
                 .FromSqlRaw("EXEC EnrolledCourses @LearnerID = {0}", id)
                 .ToListAsync();
-/*
-            var skillsProficiency = await _context.Skills
-                .FromSqlRaw("EXEC SkillsProfeciency @LearnerID = {0}", id)
-                .ToListAsync();
-*/    /*
-            var leaderboardRank = await _context.Leaderboards
-                .FromSqlRaw("EXEC LeaderboardRank @LeaderboardID = {0}", id)
-                .ToListAsync();
-            */
-
-            var assessmentsList = await _context.Assessments
-                .FromSqlRaw("EXEC AssessmentsList @CourseID = {0}, @ModuleID = {1}, @LearnerID = {2}", 1, 1, id) // Example courseId and moduleId
-                .ToListAsync();
 
             var viewModel = new LearnerDetailsViewModel
             {
@@ -77,7 +64,7 @@ namespace Course_station.Controllers
                 EnrolledCourses = enrolledCourses,
                // SkillsProficiency = skillsProficiency,
                // LeaderboardRank = leaderboardRank,
-                AssessmentsList = assessmentsList
+                //AssessmentsList = assessmentsList
             };
 
             return View(viewModel);
