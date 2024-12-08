@@ -63,53 +63,7 @@ namespace Course_station.Controllers
             return View(personalProfile);
         }
 
-        public async Task<IActionResult> Edit(int? id, int? anotherKey)
-        {
-            if (id == null || anotherKey == null)
-            {
-                return NotFound();
-            }
-
-            var personalProfile = await _context.PersonalProfiles.FindAsync(id, anotherKey);
-            if (personalProfile == null)
-            {
-                return NotFound();
-            }
-            return View(personalProfile);
-        }
-
-        // POST: PersonalProfile/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProfileId,PreferedContentType,EmotionalState,PersonalityType")] PersonalProfile personalProfile)
-        {
-            if (id != personalProfile.ProfileId)
-            {   
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(personalProfile);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!PersonalProfileExists(personalProfile.ProfileId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(personalProfile);
-        }
+       
 
         // GET: PersonalProfile/Delete/5
         public async Task<IActionResult> Delete(int? id)
