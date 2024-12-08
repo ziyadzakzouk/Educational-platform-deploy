@@ -60,8 +60,10 @@ E:\Giu  files\Semester 3\Semester 3\data base\Project\Educational-platform\Cours
 wwwroot\css\site.css
 wwwroot\favicon.ico
 wwwroot\images\1_profile.jpg
+wwwroot\images\12_profile.jpg
 wwwroot\images\17_profile.jpg
 wwwroot\images\2_profile.jpg
+wwwroot\images\7_profile.jpg
 wwwroot\js\site.js
 wwwroot\lib\bootstrap\dist\css\bootstrap.css
 wwwroot\lib\bootstrap\dist\css\bootstrap.css.map

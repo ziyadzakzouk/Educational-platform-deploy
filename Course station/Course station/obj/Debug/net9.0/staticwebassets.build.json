@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "b2H2jbPyDK6hTXIDW6GJciJ1Nor8gyE1JWX8VwaRbw4=",
+  "Hash": "yZ4aQ9THHrZt/MGKD6twpJ9c3qkvfOLVxSnUvAMF07c=",
   "Source": "Course station",
   "BasePath": "_content/Course station",
   "Mode": "Default",
@@ -4028,6 +4028,27 @@
       "OriginalItemSpec": "wwwroot\\images\\1_profile.jpg"
     },
     {
+      "Identity": "E:\\Giu  files\\Semester 3\\Semester 3\\data base\\Project\\Educational-platform\\Course station\\Course station\\wwwroot\\images\\12_profile.jpg",
+      "SourceId": "Course station",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\Giu  files\\Semester 3\\Semester 3\\data base\\Project\\Educational-platform\\Course station\\Course station\\wwwroot\\",
+      "BasePath": "_content/Course station",
+      "RelativePath": "images/12_profile#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "mo1slcct3v",
+      "Integrity": "htwue4Yniq5Aj6n1s2vw5/I5aPFTMg5yF6gSftP8QQM=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\12_profile.jpg"
+    },
+    {
       "Identity": "E:\\Giu  files\\Semester 3\\Semester 3\\data base\\Project\\Educational-platform\\Course station\\Course station\\wwwroot\\images\\17_profile.jpg",
       "SourceId": "Course station",
       "SourceType": "Discovered",
@@ -4068,6 +4089,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\2_profile.jpg"
+    },
+    {
+      "Identity": "E:\\Giu  files\\Semester 3\\Semester 3\\data base\\Project\\Educational-platform\\Course station\\Course station\\wwwroot\\images\\7_profile.jpg",
+      "SourceId": "Course station",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\Giu  files\\Semester 3\\Semester 3\\data base\\Project\\Educational-platform\\Course station\\Course station\\wwwroot\\",
+      "BasePath": "_content/Course station",
+      "RelativePath": "images/7_profile#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "ajwcnlw1q3",
+      "Integrity": "tlr8o7JQw2dsXzkwF3QsqbceP1BRVtVbsLIyRnT8o1s=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\7_profile.jpg"
     },
     {
       "Identity": "E:\\Giu  files\\Semester 3\\Semester 3\\data base\\Project\\Educational-platform\\Course station\\Course station\\wwwroot\\js\\site.js",
@@ -15169,6 +15211,88 @@
       ]
     },
     {
+      "Route": "images/12_profile.jpg",
+      "AssetFile": "E:\\Giu  files\\Semester 3\\Semester 3\\data base\\Project\\Educational-platform\\Course station\\Course station\\wwwroot\\images\\12_profile.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1585815"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"htwue4Yniq5Aj6n1s2vw5/I5aPFTMg5yF6gSftP8QQM=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 08 Dec 2024 07:56:43 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-htwue4Yniq5Aj6n1s2vw5/I5aPFTMg5yF6gSftP8QQM="
+        }
+      ]
+    },
+    {
+      "Route": "images/12_profile.mo1slcct3v.jpg",
+      "AssetFile": "E:\\Giu  files\\Semester 3\\Semester 3\\data base\\Project\\Educational-platform\\Course station\\Course station\\wwwroot\\images\\12_profile.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1585815"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"htwue4Yniq5Aj6n1s2vw5/I5aPFTMg5yF6gSftP8QQM=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 08 Dec 2024 07:56:43 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "mo1slcct3v"
+        },
+        {
+          "Name": "label",
+          "Value": "images/12_profile.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-htwue4Yniq5Aj6n1s2vw5/I5aPFTMg5yF6gSftP8QQM="
+        }
+      ]
+    },
+    {
       "Route": "images/17_profile.jpg",
       "AssetFile": "E:\\Giu  files\\Semester 3\\Semester 3\\data base\\Project\\Educational-platform\\Course station\\Course station\\wwwroot\\images\\17_profile.jpg",
       "Selectors": [],
@@ -15329,6 +15453,88 @@
         {
           "Name": "integrity",
           "Value": "sha256-yrL5XRYejHgJ40lP74rYvLDojJ/F8oua7uI/ljnT8Bc="
+        }
+      ]
+    },
+    {
+      "Route": "images/7_profile.ajwcnlw1q3.jpg",
+      "AssetFile": "E:\\Giu  files\\Semester 3\\Semester 3\\data base\\Project\\Educational-platform\\Course station\\Course station\\wwwroot\\images\\7_profile.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "589983"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"tlr8o7JQw2dsXzkwF3QsqbceP1BRVtVbsLIyRnT8o1s=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 07 Dec 2024 20:34:15 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "ajwcnlw1q3"
+        },
+        {
+          "Name": "label",
+          "Value": "images/7_profile.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-tlr8o7JQw2dsXzkwF3QsqbceP1BRVtVbsLIyRnT8o1s="
+        }
+      ]
+    },
+    {
+      "Route": "images/7_profile.jpg",
+      "AssetFile": "E:\\Giu  files\\Semester 3\\Semester 3\\data base\\Project\\Educational-platform\\Course station\\Course station\\wwwroot\\images\\7_profile.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "589983"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"tlr8o7JQw2dsXzkwF3QsqbceP1BRVtVbsLIyRnT8o1s=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 07 Dec 2024 20:34:15 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-tlr8o7JQw2dsXzkwF3QsqbceP1BRVtVbsLIyRnT8o1s="
         }
       ]
     },
