@@ -1,4 +1,4 @@
-﻿@model Course_station.Models.Learner
+﻿@model Course_station.Models.LearnerDetailsViewModel
 @{
     ViewData["Title"] = "Profile";
 }
@@ -8,38 +8,35 @@
 <div class="profile-container card shadow-sm p-4 mb-5 bg-white rounded">
     <div class="profile-header d-flex align-items-center mb-4">
         <div class="profile-info ml-3">
-            
-            <h2 class="text-primary">@Model.FirstName @Model.LastName</h2>
-            
-            <h3 class="text-primary"> ID :
-                @Model.LearnerId</h3>
-            <p class="text-muted">@Model.Email</p>
+            <h2 class="text-primary">@Model.Learner.FirstName @Model.Learner.LastName</h2>
+            <h3 class="text-primary">ID: @Model.Learner.LearnerId</h3>
+            <p class="text-muted">@Model.Learner.Email</p>
         </div>
     </div>
 
     <div class="profile-picture mb-4 text-center">
-        <img src="~/images/@($"{Model.LearnerId}_profile.jpg")" alt="Profile Picture" class="img-thumbnail" style="max-width: 200px;">
+        <img src="~/images/@($"{Model.Learner.LearnerId}_profile.jpg")" alt="Profile Picture" class="img-thumbnail" style="max-width: 200px;">
     </div>
 
     <div class="profile-details">
         <h4 class="text-secondary">Personal Information</h4>
         <dl class="row">
             <dt class="col-sm-3">Birthday</dt>
-            <dd class="col-sm-9">@Html.DisplayFor(model => model.Birthday)</dd>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Learner.Birthday)</dd>
 
             <dt class="col-sm-3">Gender</dt>
-            <dd class="col-sm-9">@Html.DisplayFor(model => model.Gender)</dd>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Learner.Gender)</dd>
 
             <dt class="col-sm-3">Country</dt>
-            <dd class="col-sm-9">@Html.DisplayFor(model => model.Country)</dd>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Learner.Country)</dd>
 
             <dt class="col-sm-3">Cultural Background</dt>
-            <dd class="col-sm-9">@Html.DisplayFor(model => model.CulturalBackground)</dd>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Learner.CulturalBackground)</dd>
         </dl>
     </div>
 
     <div class="profile-actions mt-4">
-        <a asp-action="Edit" asp-route-id="@Model.LearnerId" class="btn btn-primary mr-2">Edit Profile</a>
+        <a asp-action="Edit" asp-route-id="@Model.Learner.LearnerId" class="btn btn-primary mr-2">Edit Profile</a>
     </div>
 
     <div class="upload-picture mt-4">
@@ -48,9 +45,49 @@
                 <label for="profilePicture">Upload Profile Picture</label>
                 <input type="file" class="form-control-file" id="profilePicture" name="profilePicture">
             </div>
-            <input type="hidden" name="learnerId" value="@Model.LearnerId" />
+            <input type="hidden" name="learnerId" value="@Model.Learner.LearnerId" />
             <button type="submit" class="btn btn-success">Upload</button>
         </form>
+    </div>
+
+    <div class="enrolled-courses mt-4">
+        <h4 class="text-secondary">Enrolled Courses</h4>
+        <ul>
+            @foreach (var course in Model.EnrolledCourses)
+            {
+                <li>@course.Title</li>
+            }
+        </ul>
+    </div>
+    <!--
+    <div class="skills-proficiency mt-4">
+        <h4 class="text-secondary">Skills Proficiency</h4>
+        <ul>
+            @foreach (var skill in Model.SkillsProficiency)
+            {
+                <li>@skill.Skill1: @skill.SkillProgressions</li>
+            }
+        </ul>
+    </div>
+    -->
+    <div class="leaderboard-rank mt-4">
+        <h4 class="text-secondary">Leaderboard Rank</h4>
+        <ul>
+            @foreach (var rank in Model.LeaderboardRank)
+            {
+                <li>@rank.Rankings: @rank.Rankings</li>
+            }
+        </ul>
+    </div>
+
+    <div class="assessments-list mt-4">
+        <h4 class="text-secondary">Assessments List</h4>
+        <ul>
+            @foreach (var assessment in Model.AssessmentsList)
+            {
+                <li>@assessment.Description: @assessment.TotalMarks</li>
+            }
+        </ul>
     </div>
 </div>
 
