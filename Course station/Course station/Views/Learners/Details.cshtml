@@ -68,8 +68,9 @@
         else
         {
             <p>No personal profile found.</p>
-            <a asp-action="Create" asp-controller="PersonalProfile" asp-route-learnerId="@Model.Learner.LearnerId" class="btn btn-primary">Create Personal Profile</a>
+            <a href="/personalprofile/create/@Model.Learner.LearnerId" class="btn btn-primary">Create Personal Profile</a>
         }
+
     </div>
 
     <div class="enrolled-courses mt-4">
