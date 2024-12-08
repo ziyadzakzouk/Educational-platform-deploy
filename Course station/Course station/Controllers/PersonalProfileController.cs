@@ -38,16 +38,21 @@ namespace Course_station.Controllers
             return View(personalProfile);
         }
 
-        // GET: PersonalProfile/Create
-        public IActionResult Create()
+        // GET: PersonalProfile/Create/{learnerId}
+        [HttpGet("PersonalProfile/Create/{learnerId}")]
+        public IActionResult Create(int learnerId)
         {
-            return View();
+            var personalProfile = new PersonalProfile
+            {
+                LearnerId = learnerId
+            };
+            return View(personalProfile);
         }
 
         // POST: PersonalProfile/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProfileId,PreferedContentType,EmotionalState,PersonalityType")] PersonalProfile personalProfile)
+        public async Task<IActionResult> Create([Bind("PreferedContentType,EmotionalState,PersonalityType,LearnerId")] PersonalProfile personalProfile)
         {
             if (ModelState.IsValid)
             {
@@ -73,14 +78,13 @@ namespace Course_station.Controllers
             return View(personalProfile);
         }
 
-
         // POST: PersonalProfile/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ProfileId,PreferedContentType,EmotionalState,PersonalityType")] PersonalProfile personalProfile)
         {
             if (id != personalProfile.ProfileId)
-            {
+            {   
                 return NotFound();
             }
 
