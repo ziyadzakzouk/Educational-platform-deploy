@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Course_station.Models;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Course_station.Controllers
 {
