@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Course_station.Controllers
 {
-    [Route("Learners/{learnerId}/[controller]")]
+   
     public class PersonalProfileController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -27,27 +27,32 @@ namespace Course_station.Controllers
             return View(personalProfiles);
         }
 
-        // GET: Learners/{learnerId}/PersonalProfile/Create
-        [HttpGet("Create")]
+        [HttpGet("PersonalProfile/Create/{learnerId}")]
         public IActionResult Create(int learnerId)
         {
-            ViewBag.LearnerId = learnerId;
-            return View();
+            var personalProfile = new PersonalProfile
+            {
+                LearnerId = learnerId
+            };
+            return View(personalProfile);
         }
 
-        // POST: Learners/{learnerId}/PersonalProfile/Create
-        [HttpPost("Create")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(int learnerId, [Bind("ProfileId,PreferedContentType,EmotionalState,PersonalityType")] PersonalProfile personalProfile)
+        public async Task<IActionResult> Create([Bind("PreferedContentType,EmotionalState,PersonalityType,LearnerId")] PersonalProfile personalProfile)
         {
+            if (personalProfile.LearnerId == 0)
+            {
+                ModelState.AddModelError("LearnerId", "LearnerId is required.");
+            }
+
             if (ModelState.IsValid)
             {
-                personalProfile.LearnerId = learnerId;
                 _context.Add(personalProfile);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index), new { learnerId });
+                return RedirectToAction(nameof(Index));
             }
-            ViewBag.LearnerId = learnerId;
+            // Console.WriteLine(personalProfile.GetType()); // Should output PersonalProfile
             return View(personalProfile);
         }
 

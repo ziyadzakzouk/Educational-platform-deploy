@@ -51,7 +51,7 @@ namespace Course_station.Controllers
             }
 
             var enrolledCourses = await _context.Courses
-                .FromSqlRaw("EXEC EnrolledCourses @LearnerID = {0}", id)
+                .FromSqlRaw("EXEC EnrolledCourses @LearnerID = {0}", id) //course enrollment procedure
                 .ToListAsync();
             var personalProfile = learner.PersonalProfiles.FirstOrDefault();
             var viewModel = new LearnerDetailsViewModel
