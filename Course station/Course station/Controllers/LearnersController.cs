@@ -51,7 +51,7 @@ namespace Course_station.Controllers
             }
 
             var enrolledCourses = await _context.Courses
-                .FromSqlRaw("EXEC EnrolledCourses @LearnerID = {0}", id)
+                .FromSqlRaw("EXEC EnrolledCourses @LearnerID = {0}", id) //course enrollment procedure
                 .ToListAsync();
             var personalProfile = learner.PersonalProfiles.FirstOrDefault();
             var viewModel = new LearnerDetailsViewModel
@@ -165,7 +165,35 @@ namespace Course_station.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+        // GET: Learner/Login
+        public IActionResult Login()
+        {
+            return View();
+        }
 
+        // POST: Learner/Login
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(Learner model)
+        {
+            if (ModelState.IsValid)
+            {
+                var learner = await _context.Learners
+                    .FirstOrDefaultAsync(l => l.LearnerId == model.LearnerId && l.Password == model.Password);
+
+                if (learner != null)
+                {
+                    // Redirect to the learner's profile page
+                    return RedirectToAction("Details", "Learners", new { id = learner.LearnerId });
+                }
+                else
+                {
+                    ViewBag.ErrorMessage = "Invalid Learner ID or Password.";
+                }
+            }
+
+            return View(model);
+        }
         private bool LearnerExists(int id)
         {
             return _context.Learners.Any(e => e.LearnerId == id);
