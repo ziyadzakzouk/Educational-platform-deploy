@@ -496,5 +496,27 @@ namespace Course_station.Controllers
 
             return View(trends);
         }
+        // Add a new action to display the form for adding activities
+        public IActionResult AddActivity(int moduleId)
+        {
+            ViewBag.ModuleId = moduleId;
+            return View();
+        }
+
+        // Add a new action to handle the form submission
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddActivity(int moduleId, [Bind("ActivityType,InstructionDetails,MaxPoints")] LearningActivity activity)
+        {
+            if (ModelState.IsValid)
+            {
+                activity.ModuleId = moduleId;
+                _context.LearningActivities.Add(activity);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Details", "Modules", new { id = moduleId });
+            }
+            return View(activity);
+        }
+
     }
 }
