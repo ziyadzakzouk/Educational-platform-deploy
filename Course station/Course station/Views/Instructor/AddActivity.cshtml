@@ -1,0 +1,25 @@
+﻿@model Course_station.Models.LearningActivity
+
+@{
+    ViewData["Title"] = "Add Activity";
+}
+
+<h1>Add Activity</h1>
+
+<form asp-action="AddActivity">
+    <div class="form-group">
+        <label asp-for="ActivityType" class="control-label"></label>
+        <input asp-for="ActivityType" class="form-control" />
+        <span asp-validation-for="ActivityType" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="InstructionDetails" class="control-label"></label>
+        <input asp-for="InstructionDetails" class="form-control" />
+        <span asp-validation-for="InstructionDetails" class="text-danger"></span>
+    </div>
+  
+    <input type="hidden" asp-for="ModuleId" value="@ViewBag.ModuleId" />
+    <div class="form-group">
+        <input type="submit" value="Add" class="btn btn-primary" />
+    </div>
+</form>

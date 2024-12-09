@@ -61,7 +61,9 @@ wwwroot\css\site.css
 wwwroot\favicon.ico
 wwwroot\images\1_profile.jpg
 wwwroot\images\12_profile.jpg
+wwwroot\images\15_profile.jpg
 wwwroot\images\17_profile.jpg
+wwwroot\images\18_profile.jpg
 wwwroot\images\2_profile.jpg
 wwwroot\images\7_profile.jpg
 wwwroot\js\site.js

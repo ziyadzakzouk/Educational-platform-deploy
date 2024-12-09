@@ -170,8 +170,7 @@ namespace Course_station.Controllers
         {
             return View();
         }
-
-        // POST: Learner/Login
+        // login learner
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(Learner model)
@@ -183,8 +182,8 @@ namespace Course_station.Controllers
 
                 if (learner != null)
                 {
-                    // Redirect to the learner's profile page
-                    return RedirectToAction("Details", "Learners", new { id = learner.LearnerId });
+                    // Login successful, redirect to the learner's home page
+                    return RedirectToAction("Home", "Learners");
                 }
                 else
                 {
@@ -194,6 +193,7 @@ namespace Course_station.Controllers
 
             return View(model);
         }
+
         private bool LearnerExists(int id)
         {
             return _context.Learners.Any(e => e.LearnerId == id);

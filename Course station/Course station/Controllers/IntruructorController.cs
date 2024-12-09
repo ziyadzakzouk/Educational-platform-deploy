@@ -156,7 +156,7 @@ namespace Course_station.Controllers
             return View();
         }
 
-        // POST: Learners/Login
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(InstructorLoginViewModel model)
@@ -168,8 +168,8 @@ namespace Course_station.Controllers
 
                 if (instructor != null)
                 {
-                    // Login successful, redirect to the instructor's details page or dashboard
-                    return RedirectToAction(nameof(Details), new { id = model.InstructorId });
+                    // Login successful, redirect to the instructor's home page
+                    return RedirectToAction("Home", "Instructor");
                 }
 
                 // Login failed, show an error message
@@ -178,6 +178,32 @@ namespace Course_station.Controllers
 
             return View(model);
         }
+
+
+
+
+        // POST: Learners/Login
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Login(InstructorLoginViewModel model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var instructor = await _context.Instructors
+        //            .FirstOrDefaultAsync(i => i.InstructorId == model.InstructorId && i.Password == model.Password);
+
+        //        if (instructor != null)
+        //        {
+        //            // Login successful, redirect to the instructor's details page or dashboard
+        //            return RedirectToAction(nameof(Details), new { id = model.InstructorId });
+        //        }
+
+        //        // Login failed, show an error message
+        //        ViewBag.ErrorMessage = "Invalid Instructor ID or Password";
+        //    }
+
+        //    return View(model);
+        //}
 
 
         [HttpPost]
