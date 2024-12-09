@@ -40,7 +40,6 @@ namespace Course_station.Controllers
             }
             return View(personalProfile);
         }
-
         // GET: PersonalProfile/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
