@@ -10,17 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
-            <div class="form-group">
-                <label asp-for="LearnerId" class="control-label"></label>
-                <input asp-for="LearnerId" class="form-control" />
-                <span asp-validation-for="LearnerId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ProfileId" class="control-label"></label>
-                <input asp-for="ProfileId" class="form-control" />
-                <span asp-validation-for="ProfileId" class="text-danger"></span>
-            </div>
+        <form asp-action="Create" asp-route-learnerId="@ViewBag.LearnerId">
             <div class="form-group">
                 <label asp-for="PreferedContentType" class="control-label"></label>
                 <input asp-for="PreferedContentType" class="form-control" />
@@ -44,5 +34,5 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" asp-route-learnerId="@ViewBag.LearnerId">Back to List</a>
 </div>

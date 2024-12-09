@@ -12,18 +12,6 @@
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.LearnerId)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.LearnerId)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ProfileId)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ProfileId)
-        </dd>
-        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.PreferedContentType)
         </dt>
         <dd class="col-sm-10">
@@ -43,10 +31,9 @@
         </dd>
     </dl>
 
-    <form asp-action="DeleteConfirmed">
+    <form asp-action="DeleteConfirmed" asp-route-learnerId="@ViewBag.LearnerId">
         <input type="hidden" asp-for="ProfileId" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <a asp-action="Index" asp-route-learnerId="@ViewBag.LearnerId">Back to List</a>
     </form>
 </div>
-
