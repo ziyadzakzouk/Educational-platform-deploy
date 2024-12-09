@@ -1,14 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Course_station.Models;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Course_station.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class PersonalProfileController : ControllerBase
+    public class PersonalProfileController : Controller
     {
         private readonly ApplicationDbContext _context;
 
@@ -17,86 +14,59 @@ namespace Course_station.Controllers
             _context = context;
         }
 
-        // GET: api/PersonalProfile
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<PersonalProfile>>> GetPersonalProfiles()
+        // GET: PersonalProfile
+        public async Task<IActionResult> Index()
         {
-            return await _context.PersonalProfiles.ToListAsync();
+            return View(await _context.PersonalProfiles.ToListAsync());
         }
 
-        // GET: api/PersonalProfile/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<PersonalProfile>> GetPersonalProfile(int id)
+        // GET: PersonalProfile/Create
+        public IActionResult Create()
         {
-            var personalProfile = await _context.PersonalProfiles.FindAsync(id);
-
-            if (personalProfile == null)
-            {
-                return NotFound();
-            }
-
-            return personalProfile;
+            return View();
         }
 
-        // PUT: api/PersonalProfile/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutPersonalProfile(int id, PersonalProfile personalProfile)
-        {
-            if (id != personalProfile.ProfileId)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(personalProfile).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PersonalProfileExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/PersonalProfile
+        // POST: PersonalProfile/Create
         [HttpPost]
-        public async Task<ActionResult<PersonalProfile>> PostPersonalProfile(PersonalProfile personalProfile)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("LearnerId,ProfileId,PreferedContentType,EmotionalState,PersonalityType")] PersonalProfile personalProfile)
         {
-            _context.PersonalProfiles.Add(personalProfile);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetPersonalProfile", new { id = personalProfile.ProfileId }, personalProfile);
+            if (ModelState.IsValid)
+            {
+                _context.Add(personalProfile);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(personalProfile);
         }
 
-        // DELETE: api/PersonalProfile/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePersonalProfile(int id)
+        // GET: PersonalProfile/Delete/5
+        public async Task<IActionResult> Delete(int? id)
         {
-            var personalProfile = await _context.PersonalProfiles.FindAsync(id);
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var personalProfile = await _context.PersonalProfiles
+                .FirstOrDefaultAsync(m => m.ProfileId == id);
             if (personalProfile == null)
             {
                 return NotFound();
             }
 
+            return View(personalProfile);
+        }
+
+        // POST: PersonalProfile/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var personalProfile = await _context.PersonalProfiles.FindAsync(id);
             _context.PersonalProfiles.Remove(personalProfile);
             await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool PersonalProfileExists(int id)
-        {
-            return _context.PersonalProfiles.Any(e => e.ProfileId == id);
+            return RedirectToAction(nameof(Index));
         }
     }
 }
