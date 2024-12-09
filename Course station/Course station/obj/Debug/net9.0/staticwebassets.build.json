@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "8xU31HmlQpWoHOM4RI6WGNCz+kM1SBN5+p0nxRehdSc=",
+  "Hash": "Ua+Zk5QiQWQmH8nba+YkUEcpJBUmmtylHMGqtTChkf8=",
   "Source": "Course station",
   "BasePath": "_content/Course station",
   "Mode": "Default",
@@ -3818,6 +3818,27 @@
       "OriginalItemSpec": "C:\\Users\\ya168\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\9.0.0\\staticwebassets\\V5\\lib\\jquery-validation\\dist\\additional-methods.js"
     },
     {
+      "Identity": "E:\\Giu  files\\Semester 3\\Semester 3\\data base\\Project\\Educational-platform\\Course station\\Course station\\obj\\Debug\\net9.0\\compressed\\yrkxxwibcf-9flwqrgqdr.gz",
+      "SourceId": "Course station",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\Giu  files\\Semester 3\\Semester 3\\data base\\Project\\Educational-platform\\Course station\\Course station\\obj\\Debug\\net9.0\\compressed\\",
+      "BasePath": "_content/Course station",
+      "RelativePath": "css/Admin#[.{fingerprint=9flwqrgqdr}]?.css.gz",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "E:\\Giu  files\\Semester 3\\Semester 3\\data base\\Project\\Educational-platform\\Course station\\Course station\\wwwroot\\css\\Admin.css",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "Fingerprint": "bgruvyflbz",
+      "Integrity": "haJxXIFRaSbuudwUZrnYDWQbFiIwMiW4epziw0mqFdo=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "E:\\Giu  files\\Semester 3\\Semester 3\\data base\\Project\\Educational-platform\\Course station\\Course station\\wwwroot\\css\\Admin.css"
+    },
+    {
       "Identity": "E:\\Giu  files\\Semester 3\\Semester 3\\data base\\Project\\Educational-platform\\Course station\\Course station\\obj\\Debug\\net9.0\\compressed\\z2sd9owv3d-5pze98is44.gz",
       "SourceId": "Course station",
       "SourceType": "Discovered",
@@ -3963,6 +3984,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "E:\\Giu  files\\Semester 3\\Semester 3\\data base\\Project\\Educational-platform\\Course station\\Course station\\obj\\Debug\\net9.0\\scopedcss\\projectbundle\\Course station.bundle.scp.css"
+    },
+    {
+      "Identity": "E:\\Giu  files\\Semester 3\\Semester 3\\data base\\Project\\Educational-platform\\Course station\\Course station\\wwwroot\\css\\Admin.css",
+      "SourceId": "Course station",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\Giu  files\\Semester 3\\Semester 3\\data base\\Project\\Educational-platform\\Course station\\Course station\\wwwroot\\",
+      "BasePath": "_content/Course station",
+      "RelativePath": "css/Admin#[.{fingerprint}]?.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "9flwqrgqdr",
+      "Integrity": "dVqtIITdvnEAYyUp5zYDIkCjUy9+2kX2BGv9C3V0bhY=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\Admin.css"
     },
     {
       "Identity": "E:\\Giu  files\\Semester 3\\Semester 3\\data base\\Project\\Educational-platform\\Course station\\Course station\\wwwroot\\css\\site.css",
@@ -5966,6 +6008,304 @@
         {
           "Name": "integrity",
           "Value": "sha256-/HcoTRnGCDeaDwI7YhCpJ6jlWG2FTuy+HuY4bVKoctk="
+        }
+      ]
+    },
+    {
+      "Route": "css/Admin.9flwqrgqdr.css",
+      "AssetFile": "E:\\Giu  files\\Semester 3\\Semester 3\\data base\\Project\\Educational-platform\\Course station\\Course station\\obj\\Debug\\net9.0\\compressed\\yrkxxwibcf-9flwqrgqdr.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.002127659574"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "469"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"haJxXIFRaSbuudwUZrnYDWQbFiIwMiW4epziw0mqFdo=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 09 Dec 2024 19:42:07 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"dVqtIITdvnEAYyUp5zYDIkCjUy9+2kX2BGv9C3V0bhY=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "9flwqrgqdr"
+        },
+        {
+          "Name": "label",
+          "Value": "css/Admin.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-dVqtIITdvnEAYyUp5zYDIkCjUy9+2kX2BGv9C3V0bhY="
+        }
+      ]
+    },
+    {
+      "Route": "css/Admin.9flwqrgqdr.css",
+      "AssetFile": "E:\\Giu  files\\Semester 3\\Semester 3\\data base\\Project\\Educational-platform\\Course station\\Course station\\wwwroot\\css\\Admin.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1584"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"dVqtIITdvnEAYyUp5zYDIkCjUy9+2kX2BGv9C3V0bhY=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 09 Dec 2024 19:42:07 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "9flwqrgqdr"
+        },
+        {
+          "Name": "label",
+          "Value": "css/Admin.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-dVqtIITdvnEAYyUp5zYDIkCjUy9+2kX2BGv9C3V0bhY="
+        }
+      ]
+    },
+    {
+      "Route": "css/Admin.9flwqrgqdr.css.gz",
+      "AssetFile": "E:\\Giu  files\\Semester 3\\Semester 3\\data base\\Project\\Educational-platform\\Course station\\Course station\\obj\\Debug\\net9.0\\compressed\\yrkxxwibcf-9flwqrgqdr.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "469"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"haJxXIFRaSbuudwUZrnYDWQbFiIwMiW4epziw0mqFdo=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 09 Dec 2024 19:42:07 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "9flwqrgqdr"
+        },
+        {
+          "Name": "label",
+          "Value": "css/Admin.css.gz"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-haJxXIFRaSbuudwUZrnYDWQbFiIwMiW4epziw0mqFdo="
+        }
+      ]
+    },
+    {
+      "Route": "css/Admin.css",
+      "AssetFile": "E:\\Giu  files\\Semester 3\\Semester 3\\data base\\Project\\Educational-platform\\Course station\\Course station\\obj\\Debug\\net9.0\\compressed\\yrkxxwibcf-9flwqrgqdr.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.002127659574"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "469"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"haJxXIFRaSbuudwUZrnYDWQbFiIwMiW4epziw0mqFdo=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 09 Dec 2024 19:42:07 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"dVqtIITdvnEAYyUp5zYDIkCjUy9+2kX2BGv9C3V0bhY=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-dVqtIITdvnEAYyUp5zYDIkCjUy9+2kX2BGv9C3V0bhY="
+        }
+      ]
+    },
+    {
+      "Route": "css/Admin.css",
+      "AssetFile": "E:\\Giu  files\\Semester 3\\Semester 3\\data base\\Project\\Educational-platform\\Course station\\Course station\\wwwroot\\css\\Admin.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1584"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"dVqtIITdvnEAYyUp5zYDIkCjUy9+2kX2BGv9C3V0bhY=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 09 Dec 2024 19:42:07 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-dVqtIITdvnEAYyUp5zYDIkCjUy9+2kX2BGv9C3V0bhY="
+        }
+      ]
+    },
+    {
+      "Route": "css/Admin.css.gz",
+      "AssetFile": "E:\\Giu  files\\Semester 3\\Semester 3\\data base\\Project\\Educational-platform\\Course station\\Course station\\obj\\Debug\\net9.0\\compressed\\yrkxxwibcf-9flwqrgqdr.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "469"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"haJxXIFRaSbuudwUZrnYDWQbFiIwMiW4epziw0mqFdo=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 09 Dec 2024 19:42:07 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-haJxXIFRaSbuudwUZrnYDWQbFiIwMiW4epziw0mqFdo="
         }
       ]
     },

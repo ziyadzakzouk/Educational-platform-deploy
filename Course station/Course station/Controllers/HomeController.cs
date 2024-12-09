@@ -22,17 +22,18 @@ namespace Course_station.Controllers
         {
             return View();
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AdminLogin(string username, string password, string indexPage)
         {
-            if (username == "youssef.ashraf" && password == "20052099404Xx")
+            if (username == "youssef.ashraf" && password == "1234")
             {
                 var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name, username),
-                    new Claim(ClaimTypes.Role, "Admin")
-                };
+        {
+            new Claim(ClaimTypes.Name, username),
+            new Claim(ClaimTypes.Role, "Admin")
+        };
 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 var authProperties = new AuthenticationProperties();
@@ -51,6 +52,7 @@ namespace Course_station.Controllers
 
             return View();
         }
+
 
 
         public IActionResult Index()

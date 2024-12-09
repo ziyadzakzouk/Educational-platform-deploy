@@ -391,3 +391,4 @@ E:\Giu  files\Semester 3\Semester 3\data base\Project\Educational-platform\Cours
 E:\Giu  files\Semester 3\Semester 3\data base\Project\Educational-platform\Course station\Course station\obj\Debug\net9.0\Course station.pdb
 E:\Giu  files\Semester 3\Semester 3\data base\Project\Educational-platform\Course station\Course station\obj\Debug\net9.0\Course station.genruntimeconfig.cache
 E:\Giu  files\Semester 3\Semester 3\data base\Project\Educational-platform\Course station\Course station\obj\Debug\net9.0\ref\Course station.dll
+E:\Giu  files\Semester 3\Semester 3\data base\Project\Educational-platform\Course station\Course station\obj\Debug\net9.0\compressed\yrkxxwibcf-9flwqrgqdr.gz
