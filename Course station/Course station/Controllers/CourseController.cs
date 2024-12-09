@@ -132,5 +132,15 @@ namespace Course_station.Controllers
         {
             return _context.Courses.Any(e => e.CourseId == id);
         }
+
+
+        public async Task<IActionResult> Modules(int courseId)
+        {
+            var modules = await _context.Modules
+                .Where(m => m.CourseId == courseId)
+                .ToListAsync();
+            return View(modules);
+        }
+
     }
 }
