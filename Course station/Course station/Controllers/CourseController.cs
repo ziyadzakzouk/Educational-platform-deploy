@@ -141,6 +141,17 @@ namespace Course_station.Controllers
                 .ToListAsync();
             return View(modules);
         }
+        public async Task<IActionResult> TakenCourseDetails(int courseId)
+        {
+            var course = await _context.Courses
+                .Include(c => c.Modules)
+                .FirstOrDefaultAsync(c => c.CourseId == courseId);
+            if (course == null)
+            {
+                return NotFound();
+            }
+            return View(course);
+        }
 
     }
 }

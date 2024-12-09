@@ -517,6 +517,38 @@ namespace Course_station.Controllers
             }
             return View(activity);
         }
+        public async Task<IActionResult> DeleteCourse(int courseId)
+        {
+            var course = await _context.Courses
+                .Include(c => c.CourseEnrollments)
+                .FirstOrDefaultAsync(c => c.CourseId == courseId);
+
+            if (course == null)
+            {
+                return NotFound();
+            }
+
+            if (course.CourseEnrollments.Any())
+            {
+                TempData["ErrorMessage"] = "Cannot delete course with enrolled students.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(course);
+        }
+
+        [HttpPost, ActionName("DeleteCourse")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteCourseConfirmed(int courseId)
+        {
+            var course = await _context.Courses.FindAsync(courseId);
+            if (course != null)
+            {
+                _context.Courses.Remove(course);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction(nameof(Index));
+        }
 
     }
 }

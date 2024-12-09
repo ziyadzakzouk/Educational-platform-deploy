@@ -327,5 +327,26 @@ namespace Course_station.Controllers
             TempData["Message"] = result > 0 ? "Registered successfully!" : "Could not register. Check prerequisites.";
             return RedirectToAction("CourseDetails", new { courseId });
         }
+        public IActionResult Enroll(int courseId)
+        {
+            ViewBag.CourseId = courseId;
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Enroll(int courseId, int learnerId)
+        {
+            var enrollment = new CourseEnrollment
+            {
+                CourseId = courseId,
+                LearnerId = learnerId,
+                EnrollmentDate = DateOnly.FromDateTime(DateTime.Now)
+            };
+            _context.CourseEnrollments.Add(enrollment);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(EnrolledCourses), new { learnerId });
+        }
+
     }
 }
