@@ -23,6 +23,7 @@ namespace Course_station.Controllers
         }
 
         // GET: Module/Details/5
+        // GET: Module/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || id == 0)
@@ -31,6 +32,12 @@ namespace Course_station.Controllers
             }
 
             var module = await _context.Modules
+                .Include(m => m.Assessments)
+                .Include(m => m.ContentLibraries)
+                .Include(m => m.DiscussionForums)
+                .Include(m => m.LearningActivities)
+                .Include(m => m.ModuleContents)
+                .Include(m => m.TargetTraits)
                 .FirstOrDefaultAsync(m => m.ModuleId == id);
             if (module == null)
             {
