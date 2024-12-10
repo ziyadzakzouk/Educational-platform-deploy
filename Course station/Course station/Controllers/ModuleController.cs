@@ -51,7 +51,7 @@ namespace Course_station.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ModuleId,CourseId,Title,DifficultyLevel,ContentUrl")] Module module)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid)  //create method has an error and does not create do we need to consider it as child bec weak entiity ?
             {
                 _context.Add(module);
                 await _context.SaveChangesAsync();
@@ -68,7 +68,7 @@ namespace Course_station.Controllers
                 return NotFound();
             }
 
-            var module = await _context.Modules.FindAsync(id);
+            var module = await _context.Modules.FindAsync(id); //error whild debugging
             if (module == null)
             {
                 return NotFound();
