@@ -9,5 +9,13 @@ public class LearnerDetailsViewModel
     public List<Leaderboard> LeaderboardRank { get; set; }
     public List<Assessment> AssessmentsList { get; set; }
         public PersonalProfile PersonalProfile { get; set; }
+        public List<LearningPath> LearningPaths { get; set; }
+        public List<HealthCondition> HealthConditions { get; set; }
+        public List<Ranking> Rankings { get; set; }
+        public List<Module> Modules { get; set; }
+        public List<CoursePrerequisite> CoursePrerequisites { get; set; }
+        public List<CourseEnrollment> CourseEnrollments { get; set; }
+        public List<TakenAssessment> TakenAssessment { get; set; }
+
     }
 }

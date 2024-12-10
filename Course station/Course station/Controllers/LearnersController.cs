@@ -33,9 +33,10 @@ namespace Course_station.Controllers
         {
             return View(await _context.Learners.ToListAsync());
         }
-        
-            
-        // GET: Learners/Details/5
+
+
+
+
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -44,25 +45,69 @@ namespace Course_station.Controllers
             }
 
             var learner = await _context.Learners
+                .Include(l => l.CourseEnrollments)
+                .ThenInclude(ce => ce.Course)
+                .Include(l => l.TakenAssessments)
+                .ThenInclude(ta => ta.Assessment)
+                .Include(l => l.Skills)
+                .Include(l => l.Rankings)
+                .Include(l => l.PersonalProfiles)
+                .ThenInclude(pp => pp.HealthConditions)
+                .Include(l => l.PersonalProfiles)
+                .ThenInclude(pp => pp.LearningPaths)
                 .FirstOrDefaultAsync(m => m.LearnerId == id);
+
             if (learner == null)
             {
                 return NotFound();
             }
 
             var enrolledCourses = await _context.Courses
-                .FromSqlRaw("EXEC EnrolledCourses @LearnerID = {0}", id) //course enrollment procedure
+                .FromSqlRaw("EXEC EnrolledCourses @LearnerID = {0}", id)
                 .ToListAsync();
+
+            var takenAssessments = await _context.TakenAssessments
+                .Where(ta => ta.LearnerId == id)
+                .Include(ta => ta.Assessment)
+                .ToListAsync();
+
+            var skillsProficiency = await _context.Skills
+                .FromSqlRaw("EXEC SkillsProfeciency @LearnerID = {0}", id)
+                .ToListAsync();
+
+            var leaderboardRank = await _context.Leaderboards
+                .FromSqlRaw("EXEC LeaderboardRank @LearnerID = {0}", id)
+                .ToListAsync();
+
+            var assessmentsList = await _context.Assessments
+                .FromSqlRaw("EXEC AssessmentsList @LearnerID = {0}", id)
+                .ToListAsync();
+
             var personalProfile = learner.PersonalProfiles.FirstOrDefault();
+            var learningPaths = personalProfile?.LearningPaths.ToList() ?? new List<LearningPath>();
+            var healthConditions = personalProfile?.HealthConditions.ToList() ?? new List<HealthCondition>();
+
             var viewModel = new LearnerDetailsViewModel
             {
                 Learner = learner,
                 EnrolledCourses = enrolledCourses,
-                 PersonalProfile = personalProfile
+                TakenAssessment = takenAssessments,
+                SkillsProficiency = skillsProficiency,
+                LeaderboardRank = leaderboardRank,
+                AssessmentsList = assessmentsList,
+                PersonalProfile = personalProfile ?? new PersonalProfile(),
+                LearningPaths = learningPaths,
+                HealthConditions = healthConditions,
+                Rankings = learner.Rankings.ToList(),
+                Modules = learner.CourseEnrollments.SelectMany(ce => ce.Course.Modules).ToList(),
+                CoursePrerequisites = learner.CourseEnrollments.SelectMany(ce => ce.Course.CoursePrerequisites).ToList(),
+                CourseEnrollments = learner.CourseEnrollments.ToList()
             };
 
             return View(viewModel);
         }
+
+
 
         // GET: Learners/Create
         public IActionResult Create()

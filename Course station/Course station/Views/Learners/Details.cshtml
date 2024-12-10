@@ -70,7 +70,6 @@
             <p>No personal profile found.</p>
             <a href="/personalprofile/create/@Model.Learner.LearnerId" class="btn btn-primary">Create Personal Profile</a>
         }
-
     </div>
 
     <div class="enrolled-courses mt-4">
@@ -79,6 +78,96 @@
             @foreach (var course in Model.EnrolledCourses)
             {
                 <li>@course.Title</li>
+            }
+        </ul>
+    </div>
+
+    <div class="taken-assessments mt-4">
+        <h4 class="text-secondary">Taken Assessments</h4>
+        <ul>
+            @foreach (var assessment in Model.TakenAssessment)
+            {
+                <li>@assessment.Assessment.Title - @assessment.Assessment.Description</li>
+            }
+        </ul>
+    </div>
+
+    <div class="skills-proficiency mt-4">
+        <h4 class="text-secondary">Skills Proficiency</h4>
+        <ul>
+            @foreach (var skill in Model.SkillsProficiency)
+            {
+                <li>@skill.SkillProgressions</li>
+            }
+        </ul>
+    </div>
+
+    <div class="leaderboard-rank mt-4">
+        <h4 class="text-secondary">Leaderboard Rank</h4>
+        <ul>
+            @foreach (var rank in Model.LeaderboardRank)
+            {
+                <li>@rank.Season - @rank.Rankings</li>
+            }
+        </ul>
+    </div>
+
+    <div class="assessments-list mt-4">
+        <h4 class="text-secondary">Assessments List</h4>
+        <ul>
+            @foreach (var assessment in Model.AssessmentsList)
+            {
+                <li>@assessment.Title - @assessment.Description</li>
+            }
+        </ul>
+    </div>
+
+    <div class="learning-paths mt-4">
+        <h4 class="text-secondary">Learning Paths</h4>
+        <ul>
+            @foreach (var path in Model.LearningPaths)
+            {
+                <li>@path.PathId</li>
+            }
+        </ul>
+    </div>
+
+    <div class="health-conditions mt-4">
+        <h4 class="text-secondary">Health Conditions</h4>
+        <ul>
+            @foreach (var condition in Model.HealthConditions)
+            {
+                <li>@condition.Condition</li>
+            }
+        </ul>
+    </div>
+
+    <div class="rankings mt-4">
+        <h4 class="text-secondary">Rankings</h4>
+        <ul>
+            @foreach (var ranking in Model.Rankings)
+            {
+                <li>@ranking.Rank</li>
+            }
+        </ul>
+    </div>
+
+    <div class="modules mt-4">
+        <h4 class="text-secondary">Modules</h4>
+        <ul>
+            @foreach (var module in Model.Modules)
+            {
+                <li>@module.Title</li>
+            }
+        </ul>
+    </div>
+
+    <div class="course-prerequisites mt-4">
+        <h4 class="text-secondary">Course Prerequisites</h4>
+        <ul>
+            @foreach (var prerequisite in Model.CoursePrerequisites)
+            {
+                <li>@prerequisite.Prerequisite</li>
             }
         </ul>
     </div>
