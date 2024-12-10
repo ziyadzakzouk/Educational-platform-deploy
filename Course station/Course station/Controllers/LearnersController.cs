@@ -8,6 +8,7 @@ using Course_station.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Course_station.Controllers
 {
@@ -71,13 +72,13 @@ namespace Course_station.Controllers
                 .Include(ta => ta.Assessment)
                 .ToListAsync();
 
-           
+
             /*
             var leaderboardRank = await _context.Leaderboards
                 .FromSqlRaw("EXEC LeaderboardRank @LearnerID = {0}", id)
                 .ToListAsync();
             */
-           
+
 
             var personalProfile = learner.PersonalProfiles.FirstOrDefault();
             var learningPaths = personalProfile?.LearningPaths.ToList() ?? new List<LearningPath>();
@@ -88,9 +89,9 @@ namespace Course_station.Controllers
                 Learner = learner,
                 EnrolledCourses = enrolledCourses,
                 TakenAssessment = takenAssessments,
-             
-               // LeaderboardRank = leaderboardRank,
-               
+
+                // LeaderboardRank = leaderboardRank,
+
                 PersonalProfile = personalProfile ?? new PersonalProfile(),
                 LearningPaths = learningPaths,
                 HealthConditions = healthConditions,
@@ -396,25 +397,34 @@ namespace Course_station.Controllers
             TempData["Message"] = result > 0 ? "Registered successfully!" : "Could not register. Check prerequisites.";
             return RedirectToAction("CourseDetails", new { courseId });
         }
-        public IActionResult Enroll(int courseId)
+        public IActionResult Enroll(int learnerId)
         {
-            ViewBag.CourseId = courseId;
-            return View();
+            ViewBag.Courses = new SelectList(_context.Courses, "CourseId", "Title");
+            var viewModel = new EnrollViewModel
+            {
+                LearnerId = learnerId
+            };
+            return View(viewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Enroll(int courseId, int learnerId)
+        public async Task<IActionResult> Enroll(EnrollViewModel model)
         {
-            var enrollment = new CourseEnrollment
+            if (ModelState.IsValid)
             {
-                CourseId = courseId,
-                LearnerId = learnerId,
-                EnrollmentDate = DateOnly.FromDateTime(DateTime.Now)
-            };
-            _context.CourseEnrollments.Add(enrollment);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(EnrolledCourses), new { learnerId });
+                var enrollment = new CourseEnrollment
+                {
+                    CourseId = model.CourseId,
+                    LearnerId = model.LearnerId,
+                    EnrollmentDate = DateOnly.FromDateTime(DateTime.Now)
+                };
+                _context.CourseEnrollments.Add(enrollment);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(EnrolledCourses), new { learnerId = model.LearnerId });
+            }
+            ViewBag.Courses = new SelectList(_context.Courses, "CourseId", "Title");
+            return View(model);
         }
 
     }

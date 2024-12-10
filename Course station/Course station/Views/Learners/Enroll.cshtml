@@ -1,0 +1,28 @@
+﻿@model Course_station.Models.EnrollViewModel
+@{
+    ViewData["Title"] = "Enroll in a Course";
+}
+
+<h1 class="text-center">Enroll in a Course</h1>
+
+<div class="enroll-container card shadow-sm p-4 mb-5 bg-white rounded">
+    <form asp-action="Enroll" method="post">
+        <div class="form-group">
+            <label for="courseId">Select Course</label>
+            <select asp-for="CourseId" class="form-control" asp-items="ViewBag.Courses"></select>
+        </div>
+        <input type="hidden" asp-for="LearnerId" />
+        <button type="submit" class="btn btn-primary">Enroll</button>
+    </form>
+</div>
+
+<style>
+    .enroll-container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f8f9fa;
+        border-radius: 10px;
+    }
+</style>
+

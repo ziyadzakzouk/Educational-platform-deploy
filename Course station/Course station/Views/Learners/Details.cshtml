@@ -37,6 +37,7 @@
 
     <div class="profile-actions mt-4">
         <a asp-action="Edit" asp-route-id="@Model.Learner.LearnerId" class="btn btn-primary mr-2">Edit Profile</a>
+        <a asp-action="Enroll" asp-route-learnerId="@Model.Learner.LearnerId" class="btn btn-success">Enroll in a Course</a>
     </div>
 
     <div class="upload-picture mt-4">
@@ -91,12 +92,6 @@
             }
         </ul>
     </div>
-
-    
-
-   
-
-    
 
     <div class="learning-paths mt-4">
         <h4 class="text-secondary">Learning Paths</h4>
