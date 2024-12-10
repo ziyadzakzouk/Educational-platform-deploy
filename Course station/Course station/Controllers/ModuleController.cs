@@ -1,14 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Course_station.Models;
 
 namespace Course_station.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ModuleController : ControllerBase
+    public class ModuleController : Controller
     {
         private readonly ApplicationDbContext _context;
 
@@ -17,88 +16,131 @@ namespace Course_station.Controllers
             _context = context;
         }
 
-        // GET: api/Module
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Module>>> GetModules()
+        // GET: Module
+        public async Task<IActionResult> Index()
         {
-            return await _context.Modules.Include(m => m.Course).ToListAsync();
+            return View(await _context.Modules.ToListAsync());
         }
 
-        // GET: api/Module/5/1
-        [HttpGet("{moduleId}/{courseId}")]
-        public async Task<ActionResult<Module>> GetModule(int moduleId, int courseId)
+        // GET: Module/Details/5
+        public async Task<IActionResult> Details(int? id)
         {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
             var module = await _context.Modules
-                .Include(m => m.Course)
-                .FirstOrDefaultAsync(m => m.ModuleId == moduleId && m.CourseId == courseId);
-
+                .FirstOrDefaultAsync(m => m.ModuleId == id);
             if (module == null)
             {
                 return NotFound();
             }
 
-            return module;
+            return View(module);
         }
 
-        // POST: api/Module
+        // GET: Module/Create
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        // POST: Module/Create
         [HttpPost]
-        public async Task<ActionResult<Module>> PostModule(Module module)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("ModuleId,CourseId,Title,DifficultyLevel,ContentUrl")] Module module)
         {
-            _context.Modules.Add(module);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetModule), new { moduleId = module.ModuleId, courseId = module.CourseId }, module);
-        }
-
-        // PUT: api/Module/5/1
-        [HttpPut("{moduleId}/{courseId}")]
-        public async Task<IActionResult> PutModule(int moduleId, int courseId, Module module)
-        {
-            if (moduleId != module.ModuleId || courseId != module.CourseId)
+            if (ModelState.IsValid)
             {
-                return BadRequest();
-            }
-
-            _context.Entry(module).State = EntityState.Modified;
-
-            try
-            {
+                _context.Add(module);
                 await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ModuleExists(moduleId, courseId))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return View(module);
         }
 
-        // DELETE: api/Module/5/1
-        [HttpDelete("{moduleId}/{courseId}")]
-        public async Task<IActionResult> DeleteModule(int moduleId, int courseId)
+        // GET: Module/Edit/5
+        public async Task<IActionResult> Edit(int? id)
         {
-            var module = await _context.Modules.FindAsync(moduleId, courseId);
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var module = await _context.Modules.FindAsync(id);
+            if (module == null)
+            {
+                return NotFound();
+            }
+            return View(module);
+        }
+
+        // POST: Module/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("ModuleId,CourseId,Title,DifficultyLevel,ContentUrl")] Module module)
+        {
+            if (id != module.ModuleId)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(module);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ModuleExists(module.ModuleId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(module);
+        }
+
+        // GET: Module/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var module = await _context.Modules
+                .FirstOrDefaultAsync(m => m.ModuleId == id);
             if (module == null)
             {
                 return NotFound();
             }
 
+            return View(module);
+        }
+
+        // POST: Module/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var module = await _context.Modules.FindAsync(id);
             _context.Modules.Remove(module);
             await _context.SaveChangesAsync();
-
-            return NoContent();
+            return RedirectToAction(nameof(Index));
         }
 
-        private bool ModuleExists(int moduleId, int courseId)
+        private bool ModuleExists(int id)
         {
-            return _context.Modules.Any(e => e.ModuleId == moduleId && e.CourseId == courseId);
+            return _context.Modules.Any(e => e.ModuleId == id);
         }
     }
 }
