@@ -41,7 +41,8 @@ namespace Course_station.Controllers
 
         public IActionResult Create()
         {
-            return View();
+            ViewData["Title"] = "Create Personal Profile";
+            return View(new PersonalProfile());
         }
 
         [HttpPost]
@@ -54,6 +55,7 @@ namespace Course_station.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["Title"] = "Create Personal Profile";
             return View(personalProfile);
         }
 
@@ -64,12 +66,13 @@ namespace Course_station.Controllers
                 return NotFound();
             }
 
-            var personalProfile = await _context.PersonalProfiles.FindAsync(id);
+            var personalProfile = await _context.PersonalProfiles.FindAsync(id); //passed value should be 2 not 1
             if (personalProfile == null)
             {
                 return NotFound();
             }
 
+            ViewData["Title"] = "Edit Personal Profile";
             return View(personalProfile);
         }
 
@@ -102,6 +105,7 @@ namespace Course_station.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["Title"] = "Edit Personal Profile";
             return View(personalProfile);
         }
 
@@ -119,6 +123,7 @@ namespace Course_station.Controllers
                 return NotFound();
             }
 
+            ViewData["Title"] = "Delete Personal Profile";
             return View(personalProfile);
         }
 
