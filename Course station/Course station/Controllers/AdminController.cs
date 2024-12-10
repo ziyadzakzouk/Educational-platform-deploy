@@ -108,7 +108,7 @@ namespace Course_station.Controllers
                 }
                 else if (indexPage == "Learners")
                 {
-                    return RedirectToAction("Index", "Learner");
+                    return RedirectToAction("Index", "Learners");
                 }
             }
 
@@ -128,7 +128,7 @@ namespace Course_station.Controllers
 
         public IActionResult LearnerIndex()
         {
-            return RedirectToAction("Index", "Learner");
+            return RedirectToAction("Index", "Learners");
         }
     }
 }
