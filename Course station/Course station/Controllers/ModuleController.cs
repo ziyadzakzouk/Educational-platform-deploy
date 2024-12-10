@@ -25,7 +25,7 @@ namespace Course_station.Controllers
         // GET: Module/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
+            if (id == null || id == 0)
             {
                 return NotFound();
             }

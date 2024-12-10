@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Course_station.Controllers
 {
@@ -523,26 +524,31 @@ namespace Course_station.Controllers
             return View(trends);
         }
         // Add a new action to display the form for adding activities
-        public IActionResult AddActivity(int moduleId)
+        /* public IActionResult AddActivity(int moduleId)
+         {
+             ViewBag.ModuleId = moduleId;
+             return View();
+         }*/
+        public IActionResult AddActivity()
         {
-            ViewBag.ModuleId = moduleId;
+            ViewBag.Modules = new SelectList(_context.Modules, "ModuleId", "Title");
             return View();
         }
 
-        // Add a new action to handle the form submission
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddActivity(int moduleId, [Bind("ActivityType,InstructionDetails,MaxPoints")] LearningActivity activity)
+        public async Task<IActionResult> AddActivity([Bind("ModuleId,ActivityType,InstructionDetails,MaxPoints")] LearningActivity activity)
         {
             if (ModelState.IsValid)
             {
-                activity.ModuleId = moduleId;
                 _context.LearningActivities.Add(activity);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Details", "Modules", new { id = moduleId });
+                return RedirectToAction("Details", "Module", new { id = activity.ModuleId });
             }
             return View(activity);
         }
+
         public async Task<IActionResult> DeleteCourse(int courseId)
         {
             var course = await _context.Courses
