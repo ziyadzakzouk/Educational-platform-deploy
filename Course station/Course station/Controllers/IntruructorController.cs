@@ -46,6 +46,8 @@ namespace Course_station.Controllers
 
             var instructor = await _context.Instructors
                 .Include(i => i.Courses)
+                .Include(i => i.EmotionalfeedbackReviews)
+                .Include(i => i.Pathreviews)
                 .FirstOrDefaultAsync(m => m.InstructorId == id);
             if (instructor == null)
             {

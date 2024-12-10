@@ -53,6 +53,48 @@
     </div>
 </div>
 
+<div class="reviews-container mt-5">
+    <h4 class="text-secondary">Emotional Feedback Reviews</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Feedback ID</th>
+                <th>Review</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var review in Model.EmotionalfeedbackReviews)
+            {
+                <tr>
+                    <td>@review.FeedbackId</td>
+                    <td>@review.Review</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="pathreviews-container mt-5">
+    <h4 class="text-secondary">Path Reviews</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Path ID</th>
+                <th>Feedback</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var pathreview in Model.Pathreviews)
+            {
+                <tr>
+                    <td>@pathreview.PathId</td>
+                    <td>@pathreview.Feedback</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
 <!-- Toolbox HTML -->
 <div class="toolbox">
     <button class="toolbox-toggle">☰</button>
