@@ -1,0 +1,37 @@
+﻿@model IEnumerable<Course_station.Models.PersonalProfile>
+
+@{
+    ViewData["Title"] = "Personal Profiles";
+}
+
+<h2>Personal Profiles</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Profile ID</th>
+            <th>Learner ID</th>
+            <th>Preferred Content Type</th>
+            <th>Emotional State</th>
+            <th>Personality Type</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.ProfileId</td>
+                <td>@item.LearnerId</td>
+                <td>@item.PreferedContentType</td>
+                <td>@item.EmotionalState</td>
+                <td>@item.PersonalityType</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ProfileId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.ProfileId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ProfileId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

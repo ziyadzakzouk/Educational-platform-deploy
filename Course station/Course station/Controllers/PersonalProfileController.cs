@@ -1,12 +1,11 @@
-using Microsoft.AspNetCore.Mvc;
 using Course_station.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 
 namespace Course_station.Controllers
 {
-   
     public class PersonalProfileController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -16,49 +15,13 @@ namespace Course_station.Controllers
             _context = context;
         }
 
-        // GET: Learners/{learnerId}/PersonalProfile
-        [HttpGet]
-        public async Task<IActionResult> Index(int learnerId)
+        public async Task<IActionResult> Index()
         {
-            var personalProfiles = await _context.PersonalProfiles
-                .Where(p => p.LearnerId == learnerId)
-                .ToListAsync();
-            ViewBag.LearnerId = learnerId;
+            var personalProfiles = await _context.PersonalProfiles.Include(p => p.Learner).ToListAsync();
             return View(personalProfiles);
         }
 
-        [HttpGet("PersonalProfile/Create/{learnerId}")]
-        public IActionResult Create(int learnerId)
-        {
-            var personalProfile = new PersonalProfile
-            {
-                LearnerId = learnerId
-            };
-            return View(personalProfile);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PreferedContentType,EmotionalState,PersonalityType,LearnerId")] PersonalProfile personalProfile)
-        {
-            if (personalProfile.LearnerId == 0)
-            {
-                ModelState.AddModelError("LearnerId", "LearnerId is required.");
-            }
-
-            if (ModelState.IsValid)
-            {
-                _context.Add(personalProfile);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            // Console.WriteLine(personalProfile.GetType()); // Should output PersonalProfile
-            return View(personalProfile);
-        }
-
-        // GET: Learners/{learnerId}/PersonalProfile/Delete/5
-        [HttpGet("Delete/{id}")]
-        public async Task<IActionResult> Delete(int learnerId, int? id)
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
@@ -66,29 +29,115 @@ namespace Course_station.Controllers
             }
 
             var personalProfile = await _context.PersonalProfiles
-                .FirstOrDefaultAsync(m => m.ProfileId == id && m.LearnerId == learnerId);
+                .Include(p => p.Learner)
+                .FirstOrDefaultAsync(m => m.ProfileId == id);
             if (personalProfile == null)
             {
                 return NotFound();
             }
 
-            ViewBag.LearnerId = learnerId;
             return View(personalProfile);
         }
 
-        // POST: Learners/{learnerId}/PersonalProfile/Delete/5
-        [HttpPost("Delete/{id}"), ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int learnerId, int id)
+        public IActionResult Create()
         {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("ProfileId,LearnerId,PreferedContentType,EmotionalState,PersonalityType")] PersonalProfile personalProfile)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(personalProfile);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(personalProfile);
+        }
+
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var personalProfile = await _context.PersonalProfiles.FindAsync(id);
+            if (personalProfile == null)
+            {
+                return NotFound();
+            }
+
+            return View(personalProfile);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("ProfileId,LearnerId,PreferedContentType,EmotionalState,PersonalityType")] PersonalProfile personalProfile)
+        {
+            if (id != personalProfile.ProfileId)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(personalProfile);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!PersonalProfileExists(personalProfile.ProfileId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(personalProfile);
+        }
+
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
             var personalProfile = await _context.PersonalProfiles
-                .FirstOrDefaultAsync(m => m.ProfileId == id && m.LearnerId == learnerId);
+                .FirstOrDefaultAsync(m => m.ProfileId == id);
+            if (personalProfile == null)
+            {
+                return NotFound();
+            }
+
+            return View(personalProfile);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var personalProfile = await _context.PersonalProfiles.FindAsync(id);
             if (personalProfile != null)
             {
                 _context.PersonalProfiles.Remove(personalProfile);
                 await _context.SaveChangesAsync();
             }
-            return RedirectToAction(nameof(Index), new { learnerId });
+            return RedirectToAction(nameof(Index));
+        }
+
+        private bool PersonalProfileExists(int id)
+        {
+            return _context.PersonalProfiles.Any(e => e.ProfileId == id);
         }
     }
 }
