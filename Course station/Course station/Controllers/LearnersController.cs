@@ -71,17 +71,13 @@ namespace Course_station.Controllers
                 .Include(ta => ta.Assessment)
                 .ToListAsync();
 
-            var skillsProficiency = await _context.Skills
-                .FromSqlRaw("EXEC SkillsProfeciency @LearnerID = {0}", id)
-                .ToListAsync();
-
+           
+            /*
             var leaderboardRank = await _context.Leaderboards
                 .FromSqlRaw("EXEC LeaderboardRank @LearnerID = {0}", id)
                 .ToListAsync();
-
-            var assessmentsList = await _context.Assessments
-                .FromSqlRaw("EXEC AssessmentsList @LearnerID = {0}", id)
-                .ToListAsync();
+            */
+           
 
             var personalProfile = learner.PersonalProfiles.FirstOrDefault();
             var learningPaths = personalProfile?.LearningPaths.ToList() ?? new List<LearningPath>();
@@ -92,9 +88,9 @@ namespace Course_station.Controllers
                 Learner = learner,
                 EnrolledCourses = enrolledCourses,
                 TakenAssessment = takenAssessments,
-                SkillsProficiency = skillsProficiency,
-                LeaderboardRank = leaderboardRank,
-                AssessmentsList = assessmentsList,
+             
+               // LeaderboardRank = leaderboardRank,
+               
                 PersonalProfile = personalProfile ?? new PersonalProfile(),
                 LearningPaths = learningPaths,
                 HealthConditions = healthConditions,

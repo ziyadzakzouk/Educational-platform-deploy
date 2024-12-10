@@ -92,35 +92,11 @@
         </ul>
     </div>
 
-    <div class="skills-proficiency mt-4">
-        <h4 class="text-secondary">Skills Proficiency</h4>
-        <ul>
-            @foreach (var skill in Model.SkillsProficiency)
-            {
-                <li>@skill.SkillProgressions</li>
-            }
-        </ul>
-    </div>
+    
 
-    <div class="leaderboard-rank mt-4">
-        <h4 class="text-secondary">Leaderboard Rank</h4>
-        <ul>
-            @foreach (var rank in Model.LeaderboardRank)
-            {
-                <li>@rank.Season - @rank.Rankings</li>
-            }
-        </ul>
-    </div>
+   
 
-    <div class="assessments-list mt-4">
-        <h4 class="text-secondary">Assessments List</h4>
-        <ul>
-            @foreach (var assessment in Model.AssessmentsList)
-            {
-                <li>@assessment.Title - @assessment.Description</li>
-            }
-        </ul>
-    </div>
+    
 
     <div class="learning-paths mt-4">
         <h4 class="text-secondary">Learning Paths</h4>
