@@ -381,7 +381,7 @@ namespace Course_station.Controllers
             return RedirectToAction("CourseDetails", new { courseId });
         }
 
-        public IActionResult Enroll(int learnerId)
+         public IActionResult Enroll(int learnerId)
         {
             ViewBag.Courses = new SelectList(_context.Courses, "CourseId", "Title");
             var viewModel = new EnrollViewModel
@@ -400,23 +400,41 @@ namespace Course_station.Controllers
                 var prerequisitesCompleted = await _coursePrerequisiteService.CheckPrerequisitesCompleted(model.LearnerId, model.CourseId);
                 if (!prerequisitesCompleted)
                 {
-                    TempData["ErrorMessage"] = "You have not completed the prerequisites for this course.";
-                    ViewBag.Courses = new SelectList(_context.Courses, "CourseId", "Title");
-                    return View(model);
+                    TempData["ErrorMessage"] = "You have not completed the prerequisites for this course. Please complete the prerequisites and try again.";
+                    TempData["PrerequisiteCourseId"] = model.CourseId;
+                    return RedirectToAction(nameof(ViewPrerequisites), new { learnerId = model.LearnerId, courseId = model.CourseId });
                 }
 
                 var enrollment = new CourseEnrollment
                 {
                     CourseId = model.CourseId,
                     LearnerId = model.LearnerId,
-                 
+                  //  EnrollmentDate = DateTime.Now
                 };
                 _context.CourseEnrollments.Add(enrollment);
                 await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Enrollment successful!";
                 return RedirectToAction(nameof(EnrolledCourses), new { learnerId = model.LearnerId });
             }
             ViewBag.Courses = new SelectList(_context.Courses, "CourseId", "Title");
             return View(model);
+        }
+
+        public async Task<IActionResult> ViewPrerequisites(int learnerId, int courseId)
+        {
+            var prerequisites = await _context.CoursePrerequisites
+                .Where(cp => cp.CourseId == courseId)
+                .Include(cp => cp.Course)
+                .ToListAsync();
+
+            var viewModel = new PrerequisiteViewModel
+            {
+                LearnerId = learnerId,
+                CourseId = courseId,
+                Prerequisites = prerequisites
+            };
+
+            return View(viewModel);
         }
 
         public async Task<IActionResult> EnrolledCourses(int learnerId)
@@ -427,7 +445,6 @@ namespace Course_station.Controllers
 
             return View(courses);
         }
-
 
     }
 }

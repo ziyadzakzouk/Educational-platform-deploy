@@ -1,0 +1,29 @@
+﻿@model Course_station.Models.PrerequisiteViewModel
+@{
+    ViewData["Title"] = "View Prerequisites";
+}
+
+<h1 class="text-center">Prerequisites for @Model.CourseId</h1>
+
+<div class="prerequisites-container card shadow-sm p-4 mb-5 bg-white rounded">
+    <h4>To enroll in this course, you need to complete the following prerequisites:</h4>
+    <ul>
+        @foreach (var prerequisite in Model.Prerequisites)
+        {
+            <li>@prerequisite.Prerequisite</li>
+        }
+    </ul>
+    <a asp-action="Enroll" asp-route-learnerId="@Model.LearnerId" class="btn btn-primary">Back to Enrollment</a>
+</div>
+
+<style>
+    .prerequisites-container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f8f9fa;
+        border-radius: 10px;
+    }
+</style>
+
+

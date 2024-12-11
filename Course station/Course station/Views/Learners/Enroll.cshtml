@@ -12,6 +12,13 @@
     </div>
 }
 
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
 <div class="enroll-container card shadow-sm p-4 mb-5 bg-white rounded">
     <form asp-action="Enroll" method="post">
         <div class="form-group">
@@ -32,4 +39,5 @@
         border-radius: 10px;
     }
 </style>
+
 
