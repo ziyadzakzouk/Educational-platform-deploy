@@ -78,7 +78,9 @@
         <ul>
             @foreach (var course in Model.EnrolledCourses)
             {
-                <li>@course.Title</li>
+                <li>
+                    <a asp-controller="Course" asp-action="Details" asp-route-id="@course.CourseId">@course.Title</a>
+                </li>
             }
         </ul>
     </div>
@@ -193,3 +195,4 @@
         border-color: #6c757d;
     }
 </style>
+
