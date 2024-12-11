@@ -23,3 +23,37 @@ node_modules/
 /.vs
 /.vs/Educational-platform/FileContentIndex
 /.gitignore
+
+# Ignore build directories
+bin/
+obj/
+
+
+# Ignore appsettings.json
+appsettings.json
+
+# Ignore build files
+*.dll
+*.exe
+*.pdb
+*.cache
+*.ilk
+*.log
+*.obj
+*.o
+*.so
+*.dylib
+*.lib
+*.a
+*.exp
+*.idb
+*.ipdb
+*.iobj
+*.ipch
+*.iobj
+*.tlog
+*.lastbuildstate
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
