@@ -275,16 +275,8 @@ namespace Course_station.Controllers
             return RedirectToAction(nameof(Details), new { id = learnerId });
         }
 
-        // 3. View Enrolled Courses
-        public async Task<IActionResult> EnrolledCourses(int learnerId)
-        {
-            var courses = await _context.Courses
-                .FromSqlRaw("EXEC EnrolledCourses @LearnerID = {0}", learnerId)
-                .ToListAsync();
-
-            return View(courses);
-        }
-
+        
+       
         // 4. Check Prerequisites
         public async Task<IActionResult> CheckPrerequisites(int learnerId, int courseId)
         {
@@ -417,7 +409,7 @@ namespace Course_station.Controllers
                 {
                     CourseId = model.CourseId,
                     LearnerId = model.LearnerId,
-                    EnrollmentDate = DateOnly.FromDateTime(DateTime.Now)
+                 
                 };
                 _context.CourseEnrollments.Add(enrollment);
                 await _context.SaveChangesAsync();
@@ -426,5 +418,16 @@ namespace Course_station.Controllers
             ViewBag.Courses = new SelectList(_context.Courses, "CourseId", "Title");
             return View(model);
         }
+
+        public async Task<IActionResult> EnrolledCourses(int learnerId)
+        {
+            var courses = await _context.Courses
+                .FromSqlRaw("EXEC EnrolledCourses @LearnerID = {0}", learnerId)
+                .ToListAsync();
+
+            return View(courses);
+        }
+
+
     }
 }

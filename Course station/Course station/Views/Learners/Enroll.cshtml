@@ -5,6 +5,13 @@
 
 <h1 class="text-center">Enroll in a Course</h1>
 
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
 <div class="enroll-container card shadow-sm p-4 mb-5 bg-white rounded">
     <form asp-action="Enroll" method="post">
         <div class="form-group">
@@ -25,3 +32,4 @@
         border-radius: 10px;
     }
 </style>
+
