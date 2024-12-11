@@ -1,5 +1,6 @@
 using Course_station.Controllers;
 using Course_station.Models;
+using Course_station.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -32,6 +33,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient();
 
 builder.Services.AddScoped<LearnerService>();
+builder.Services.AddScoped<CoursePrerequisiteService>();
 
 var app = builder.Build();
 

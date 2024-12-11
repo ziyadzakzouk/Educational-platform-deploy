@@ -1,0 +1,25 @@
+﻿@model Course_station.Models.CoursePrerequisite
+@{
+    ViewData["Title"] = "Edit Course Prerequisite";
+}
+
+<h1 class="text-center">Edit Course Prerequisite</h1>
+
+<div class="card">
+    <div class="card-body">
+        <form asp-action="Edit">
+            <div class="form-group">
+                <label asp-for="CourseId" class="control-label">Course</label>
+                <select asp-for="CourseId" class="form-control" asp-items="ViewBag.Courses"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Prerequisite" class="control-label">Prerequisite</label>
+                <input asp-for="Prerequisite" class="form-control" />
+                <span asp-validation-for="Prerequisite" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Save</button>
+            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+        </form>
+    </div>
+</div>
+

@@ -1,0 +1,34 @@
+﻿@model IEnumerable<Course_station.Models.CoursePrerequisite>
+@{
+    ViewData["Title"] = "Course Prerequisites";
+}
+
+<h1 class="text-center">Course Prerequisites</h1>
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Course Title</th>
+                <th>Prerequisite</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Course.Title</td>
+                    <td>@item.Prerequisite</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-courseId="@item.CourseId" asp-route-prerequisite="@item.Prerequisite" class="btn btn-primary">Edit</a>
+                        <a asp-action="Details" asp-route-courseId="@item.CourseId" asp-route-prerequisite="@item.Prerequisite" class="btn btn-info">Details</a>
+                        <a asp-action="Delete" asp-route-courseId="@item.CourseId" asp-route-prerequisite="@item.Prerequisite" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<a asp-action="Create" class="btn btn-success">Create New</a>

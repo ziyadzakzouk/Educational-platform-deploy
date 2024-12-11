@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Course_station.Models;
+using Course_station.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -16,11 +17,13 @@ namespace Course_station.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly LearnerService _learnerService;
+        private readonly CoursePrerequisiteService _coursePrerequisiteService;
 
-        public LearnersController(ApplicationDbContext context, LearnerService learnerService)
+        public LearnersController(ApplicationDbContext context, LearnerService learnerService, CoursePrerequisiteService coursePrerequisiteService)
         {
             _context = context;
             _learnerService = learnerService;
+            _coursePrerequisiteService = coursePrerequisiteService;
         }
 
         // GET: Learners/Home
@@ -34,9 +37,6 @@ namespace Course_station.Controllers
         {
             return View(await _context.Learners.ToListAsync());
         }
-
-
-
 
         public async Task<IActionResult> Details(int? id)
         {
@@ -72,14 +72,6 @@ namespace Course_station.Controllers
                 .Include(ta => ta.Assessment)
                 .ToListAsync();
 
-
-            /*
-            var leaderboardRank = await _context.Leaderboards
-                .FromSqlRaw("EXEC LeaderboardRank @LearnerID = {0}", id)
-                .ToListAsync();
-            */
-
-
             var personalProfile = learner.PersonalProfiles.FirstOrDefault();
             var learningPaths = personalProfile?.LearningPaths.ToList() ?? new List<LearningPath>();
             var healthConditions = personalProfile?.HealthConditions.ToList() ?? new List<HealthCondition>();
@@ -89,22 +81,17 @@ namespace Course_station.Controllers
                 Learner = learner,
                 EnrolledCourses = enrolledCourses,
                 TakenAssessment = takenAssessments,
-
-                // LeaderboardRank = leaderboardRank,
-
                 PersonalProfile = personalProfile ?? new PersonalProfile(),
                 LearningPaths = learningPaths,
                 HealthConditions = healthConditions,
                 Rankings = learner.Rankings.ToList(),
-                Modules = learner.CourseEnrollments.SelectMany(ce => ce.Course.Modules).ToList(),
-                CoursePrerequisites = learner.CourseEnrollments.SelectMany(ce => ce.Course.CoursePrerequisites).ToList(),
+                Modules = learner.CourseEnrollments?.SelectMany(ce => ce.Course?.Modules ?? Enumerable.Empty<Module>()).ToList() ?? new List<Module>(),
+                CoursePrerequisites = learner.CourseEnrollments?.SelectMany(ce => ce.Course?.CoursePrerequisites ?? Enumerable.Empty<CoursePrerequisite>()).ToList() ?? new List<CoursePrerequisite>(),
                 CourseEnrollments = learner.CourseEnrollments.ToList()
             };
 
             return View(viewModel);
         }
-
-
 
         // GET: Learners/Create
         public IActionResult Create()
@@ -207,11 +194,13 @@ namespace Course_station.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
         // GET: Learner/Login
         public IActionResult Login()
         {
             return View();
         }
+
         // login learner
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -240,6 +229,7 @@ namespace Course_station.Controllers
         {
             return _context.Learners.Any(e => e.LearnerId == id);
         }
+
         // 1. Retrieve Learner Info
         public async Task<IActionResult> ViewInfo(int learnerId)
         {
@@ -284,6 +274,7 @@ namespace Course_station.Controllers
 
             return RedirectToAction(nameof(Details), new { id = learnerId });
         }
+
         // 3. View Enrolled Courses
         public async Task<IActionResult> EnrolledCourses(int learnerId)
         {
@@ -397,6 +388,7 @@ namespace Course_station.Controllers
             TempData["Message"] = result > 0 ? "Registered successfully!" : "Could not register. Check prerequisites.";
             return RedirectToAction("CourseDetails", new { courseId });
         }
+
         public IActionResult Enroll(int learnerId)
         {
             ViewBag.Courses = new SelectList(_context.Courses, "CourseId", "Title");
@@ -413,6 +405,14 @@ namespace Course_station.Controllers
         {
             if (ModelState.IsValid)
             {
+                var prerequisitesCompleted = await _coursePrerequisiteService.CheckPrerequisitesCompleted(model.LearnerId, model.CourseId);
+                if (!prerequisitesCompleted)
+                {
+                    TempData["ErrorMessage"] = "You have not completed the prerequisites for this course.";
+                    ViewBag.Courses = new SelectList(_context.Courses, "CourseId", "Title");
+                    return View(model);
+                }
+
                 var enrollment = new CourseEnrollment
                 {
                     CourseId = model.CourseId,
@@ -426,6 +426,5 @@ namespace Course_station.Controllers
             ViewBag.Courses = new SelectList(_context.Courses, "CourseId", "Title");
             return View(model);
         }
-
     }
 }

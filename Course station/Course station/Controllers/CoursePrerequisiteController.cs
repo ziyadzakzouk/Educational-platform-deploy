@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Linq;
 using System.Threading.Tasks;
 using Course_station.Models;
@@ -44,6 +45,7 @@ namespace Course_station.Controllers
         // GET: CoursePrerequisite/Create
         public IActionResult Create()
         {
+            ViewBag.Courses = new SelectList(_context.Courses, "CourseId", "Title");
             return View();
         }
 
@@ -58,6 +60,7 @@ namespace Course_station.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewBag.Courses = new SelectList(_context.Courses, "CourseId", "Title");
             return View(coursePrerequisite);
         }
 
@@ -74,6 +77,7 @@ namespace Course_station.Controllers
             {
                 return NotFound();
             }
+            ViewBag.Courses = new SelectList(_context.Courses, "CourseId", "Title");
             return View(coursePrerequisite);
         }
 
@@ -107,6 +111,7 @@ namespace Course_station.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewBag.Courses = new SelectList(_context.Courses, "CourseId", "Title");
             return View(coursePrerequisite);
         }
 
@@ -143,6 +148,35 @@ namespace Course_station.Controllers
         private bool CoursePrerequisiteExists(int courseId, string prerequisite)
         {
             return _context.CoursePrerequisites.Any(e => e.CourseId == courseId && e.Prerequisite == prerequisite);
+        }
+
+        // Method to check if prerequisites are completed
+        public async Task<bool> CheckPrerequisitesCompleted(int learnerId, int courseId)
+        {
+            var prerequisites = await _context.CoursePrerequisites
+                .Where(cp => cp.CourseId == courseId)
+                .ToListAsync();
+
+            foreach (var prerequisite in prerequisites)
+            {
+                var prerequisiteCourse = await _context.Courses
+                    .FirstOrDefaultAsync(c => c.Title == prerequisite.Prerequisite);
+
+                if (prerequisiteCourse == null)
+                {
+                    return false;
+                }
+
+                var completed = await _context.CourseEnrollments
+                    .AnyAsync(ce => ce.LearnerId == learnerId && ce.CourseId == prerequisiteCourse.CourseId && ce.Status == "Completed");
+
+                if (!completed)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }
