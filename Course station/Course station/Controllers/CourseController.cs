@@ -27,6 +27,7 @@ namespace Course_station.Controllers
             }
 
             var course = await _context.Courses
+                .Include(c => c.Modules)
                 .FirstOrDefaultAsync(m => m.CourseId == id);
             if (course == null)
             {
