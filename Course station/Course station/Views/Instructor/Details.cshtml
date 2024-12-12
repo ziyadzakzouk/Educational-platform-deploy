@@ -39,6 +39,7 @@
 
     <div class="profile-actions mt-4">
         <a asp-action="Edit" asp-route-id="@Model.InstructorId" class="btn btn-primary">Edit Profile</a>
+        <a asp-action="AddActivity" class="btn btn-secondary">Add Activity</a>
     </div>
 
     <div class="upload-picture mt-4">
@@ -117,6 +118,64 @@
                     <td>@course.DiffLevel</td>
                     <td>@course.CreditPoint</td>
                 </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="taken-assessments-container mt-5">
+    <h4 class="text-secondary">Taken Assessments</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Assessment ID</th>
+                <th>Course ID</th>
+                <th>Points</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var course in Model.Courses)
+            {
+                @foreach (var module in course.Modules)
+                {
+                    @foreach (var assessment in module.Assessments)
+                    {
+                        @foreach (var takenAssessment in assessment.TakenAssessments)
+                        {
+                            <tr>
+                                <td>@takenAssessment.AssessmentId</td>
+                                <td>@assessment.CourseId</td>
+                                <td>@takenAssessment.ScoredPoint</td>
+                            </tr>
+                        }
+                    }
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="course-enrollments-container mt-5">
+    <h4 class="text-secondary">Course Enrollments</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Enrollment ID</th>
+                <th>Course ID</th>
+                <th>Enrollment Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var course in Model.Courses)
+            {
+                @foreach (var enrollment in course.CourseEnrollments)
+                {
+                    <tr>
+                        <td>@enrollment.EnrollmentId</td>
+                        <td>@enrollment.CourseId</td>
+                        <td>@enrollment.EnrollmentDate</td>
+                    </tr>
+                }
             }
         </tbody>
     </table>
