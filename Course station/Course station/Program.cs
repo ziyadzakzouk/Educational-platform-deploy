@@ -7,9 +7,6 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//builder.Services.AddControllers();
-//builder.Services.AddHttpClient();
-
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -26,7 +23,6 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.AccessDeniedPath = "/Account/AccessDenied";
     });
 
-
 builder.Services.AddRazorComponents();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddControllersWithViews();
@@ -35,9 +31,16 @@ builder.Services.AddHttpClient();
 builder.Services.AddScoped<LearnerService>();
 builder.Services.AddScoped<CoursePrerequisiteService>();
 
+// Add session services
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
 var app = builder.Build();
-
-
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -53,10 +56,11 @@ else
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+app.UseSession(); // Ensure this is before UseRouting
+
 app.UseRouting();
 
 app.UseAuthorization();
-
 
 app.MapControllerRoute(
     name: "default",
