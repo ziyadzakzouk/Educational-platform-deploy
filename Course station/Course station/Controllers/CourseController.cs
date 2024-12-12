@@ -162,6 +162,7 @@ namespace Course_station.Controllers
             return View(module);
         }
 
+
         public async Task<IActionResult> TakenCourseDetails(int courseId)
         {
             var course = await _context.Courses

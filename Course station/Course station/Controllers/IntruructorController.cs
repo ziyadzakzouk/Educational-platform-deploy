@@ -48,6 +48,12 @@ namespace Course_station.Controllers
                 .Include(i => i.Courses)
                 .Include(i => i.EmotionalfeedbackReviews)
                 .Include(i => i.Pathreviews)
+                .Include(i => i.Courses)
+                    .ThenInclude(c => c.CourseEnrollments)
+                .Include(i => i.Courses)
+                    .ThenInclude(c => c.Modules)
+                        .ThenInclude(m => m.Assessments)
+                            .ThenInclude(a => a.TakenAssessments)
                 .FirstOrDefaultAsync(m => m.InstructorId == id);
             if (instructor == null)
             {
