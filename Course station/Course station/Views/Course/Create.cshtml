@@ -21,6 +21,16 @@
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="DiffLevel" class="control-label"></label>
+                <input asp-for="DiffLevel" class="form-control" />
+                <span asp-validation-for="DiffLevel" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreditPoint" class="control-label"></label>
+                <input asp-for="CreditPoint" class="form-control" />
+                <span asp-validation-for="CreditPoint" class="text-danger"></span>
+            </div>
             <!-- Add other course properties here -->
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -38,3 +48,5 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
+
+

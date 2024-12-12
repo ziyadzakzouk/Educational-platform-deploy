@@ -29,6 +29,18 @@
             @Html.DisplayFor(model => model.CourseId)
         </dd>
         <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DiffLevel)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DiffLevel)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CreditPoint)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CreditPoint)
+        </dd>
+        <dt class="col-sm-2">
             Modules
         </dt>
         <dd class="col-sm-10">
@@ -55,3 +67,5 @@
     <a asp-action="Index">Back to List</a> |
     <a asp-action="CreateAssessment" asp-route-courseId="@Model.CourseId" class="btn btn-primary">Create Assessment</a>
 </div>
+
+
