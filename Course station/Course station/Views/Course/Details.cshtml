@@ -32,12 +32,20 @@
             Modules
         </dt>
         <dd class="col-sm-10">
-            <ul>
-                @foreach (var module in Model.Modules)
-                {
-                    <li>@module.ModuleId - @module.Title</li>
-                }
-            </ul>
+            @if (Model.Modules != null && Model.Modules.Any())
+            {
+                <ul>
+                    @foreach (var module in Model.Modules)
+                    {
+                        <li>@module.ModuleId - @module.Title</li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p>No modules available for this course.</p>
+                <a asp-action="CreateModule" asp-route-courseId="@Model.CourseId" class="btn btn-primary">Create Module</a>
+            }
         </dd>
         <!-- Add other course properties here -->
     </dl>

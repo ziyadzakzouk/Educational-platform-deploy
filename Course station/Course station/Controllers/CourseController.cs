@@ -142,6 +142,26 @@ namespace Course_station.Controllers
                 .ToListAsync();
             return View(modules);
         }
+
+        public IActionResult CreateModule(int courseId)
+        {
+            var module = new Module { CourseId = courseId };
+            return View(module);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateModule(Module module)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Modules.Add(module);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Details), new { id = module.CourseId });
+            }
+            return View(module);
+        }
+
         public async Task<IActionResult> TakenCourseDetails(int courseId)
         {
             var course = await _context.Courses
