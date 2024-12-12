@@ -1,0 +1,30 @@
+﻿@model IEnumerable<Course_station.Models.Assessment>
+
+@{
+    ViewData["Title"] = "Assessments";
+}
+
+<h2>Assessments</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Title</td>
+                <td>@item.Description</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.AssessmentId" class="btn btn-info">Details</a>
+                    <a asp-action="Take" asp-route-id="@item.AssessmentId" class="btn btn-primary">Take</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -201,7 +201,6 @@ namespace Course_station.Controllers
             return View();
         }
 
-        // login learner
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(Learner model)
@@ -213,6 +212,9 @@ namespace Course_station.Controllers
 
                 if (learner != null)
                 {
+                    // Set the LearnerId in the session
+                    HttpContext.Session.SetInt32("LearnerId", learner.LearnerId);
+
                     // Login successful, redirect to the learner's home page
                     return RedirectToAction("Home", "Learners");
                 }
@@ -224,6 +226,7 @@ namespace Course_station.Controllers
 
             return View(model);
         }
+
 
         private bool LearnerExists(int id)
         {
