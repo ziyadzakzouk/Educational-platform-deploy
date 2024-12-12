@@ -88,9 +88,12 @@
     <div class="taken-assessments mt-4">
         <h4 class="text-secondary">Taken Assessments</h4>
         <ul>
-            @foreach (var assessment in Model.TakenAssessment)
+            @foreach (var assessment in Model.TakenAssessments)
             {
-                <li>@assessment.Assessment.Title - @assessment.Assessment.Description</li>
+                <li>
+                    @assessment.Assessment.Title - @assessment.Assessment.Description
+                    <a asp-controller="Assessments" asp-action="Take" asp-route-id="@assessment.AssessmentId" class="btn btn-primary btn-sm ml-2">Take Assessment</a>
+                </li>
             }
         </ul>
     </div>

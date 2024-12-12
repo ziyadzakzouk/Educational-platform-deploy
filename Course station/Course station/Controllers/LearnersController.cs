@@ -80,7 +80,7 @@ namespace Course_station.Controllers
             {
                 Learner = learner,
                 EnrolledCourses = enrolledCourses,
-                TakenAssessment = takenAssessments,
+                TakenAssessments = takenAssessments, // Ensure this property is populated
                 PersonalProfile = personalProfile ?? new PersonalProfile(),
                 LearningPaths = learningPaths,
                 HealthConditions = healthConditions,

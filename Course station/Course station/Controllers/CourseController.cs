@@ -162,6 +162,25 @@ namespace Course_station.Controllers
             return View(module);
         }
 
+        public IActionResult CreateAssessment(int courseId)
+        {
+            var assessment = new Assessment { CourseId = courseId };
+            return View(assessment);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateAssessment(Assessment assessment)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Assessments.Add(assessment);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Details), new { id = assessment.CourseId });
+            }
+            return View(assessment);
+        }
+
 
         public async Task<IActionResult> TakenCourseDetails(int courseId)
         {
@@ -174,6 +193,7 @@ namespace Course_station.Controllers
             }
             return View(course);
         }
+      
 
     }
 }
