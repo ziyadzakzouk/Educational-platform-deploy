@@ -1,5 +1,6 @@
 using Course_station.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
@@ -42,6 +43,14 @@ namespace Course_station.Controllers
         public IActionResult Create()
         {
             ViewData["Title"] = "Create Personal Profile";
+            var learners = _context.Learners
+                .Select(l => new
+                {
+                    LearnerId = l.LearnerId,
+                    FullName = l.FirstName + " " + l.LastName
+                })
+                .ToList();
+            ViewData["Learners"] = new SelectList(learners, "LearnerId", "FullName");
             return View(new PersonalProfile());
         }
 
@@ -56,17 +65,28 @@ namespace Course_station.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["Title"] = "Create Personal Profile";
+            var learners = _context.Learners
+                .Select(l => new
+                {
+                    LearnerId = l.LearnerId,
+                    FullName = l.FirstName + " " + l.LastName
+                })
+                .ToList();
+            ViewData["Learners"] = new SelectList(learners, "LearnerId", "FullName", personalProfile.LearnerId);
             return View(personalProfile);
         }
 
-        public async Task<IActionResult> Edit(int? id)
+
+
+        public async Task<IActionResult> Edit(int? profileId, int? learnerId)
         {
-            if (id == null)
+            if (profileId == null || learnerId == null)
             {
                 return NotFound();
             }
 
-            var personalProfile = await _context.PersonalProfiles.FindAsync(id); //passed value should be 2 not 1
+            var personalProfile = await _context.PersonalProfiles
+                .FirstOrDefaultAsync(p => p.ProfileId == profileId && p.LearnerId == learnerId);
             if (personalProfile == null)
             {
                 return NotFound();
@@ -75,6 +95,7 @@ namespace Course_station.Controllers
             ViewData["Title"] = "Edit Personal Profile";
             return View(personalProfile);
         }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
