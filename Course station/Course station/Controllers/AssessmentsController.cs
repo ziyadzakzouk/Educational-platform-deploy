@@ -57,8 +57,18 @@ namespace Course_station.Controllers
                 return NotFound();
             }
 
-            return View(assessment);
+            // Assuming you have a way to get the logged-in learner's ID
+            var learnerId = HttpContext.Session.GetInt32("LearnerId") ?? 0;
+
+            var takenAssessment = new TakenAssessment
+            {
+                AssessmentId = assessment.AssessmentId,
+                LearnerId = learnerId
+            };
+
+            return View(takenAssessment);
         }
+
 
         // POST: Assessments/Take/5
         [HttpPost]

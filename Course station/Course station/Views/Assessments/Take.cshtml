@@ -1,6 +1,5 @@
 ﻿@model Course_station.Models.TakenAssessment
 
-
 @{
     ViewData["Title"] = "Take Assessment";
 }
@@ -11,10 +10,8 @@
     <h4>@Model.AssessmentId</h4>
     <hr />
     <dl class="row">
-       
         <dt class="col-sm-2">Total Marks</dt>
         <dd class="col-sm-10">@Model.ScoredPoint</dd>
-        
     </dl>
 </div>
 
@@ -25,7 +22,7 @@
         <span asp-validation-for="ScoredPoint" class="text-danger"></span>
     </div>
     <input type="hidden" asp-for="AssessmentId" />
-    <input type="hidden" asp-for="LearnerId" value="1" /> <!-- Replace with actual learner ID -->
+    <input type="hidden" asp-for="LearnerId" />
     <div class="form-group">
         <input type="submit" value="Submit" class="btn btn-primary" />
     </div>
