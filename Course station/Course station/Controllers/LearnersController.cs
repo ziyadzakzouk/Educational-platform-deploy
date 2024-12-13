@@ -260,6 +260,16 @@ namespace Course_station.Controllers
 
             return View(viewModel);
         }
+        public async Task<IActionResult> MarkAsRead(int learnerId, int id)
+        {
+            var notification = await _context.Notifications.FindAsync(id);
+            if (notification != null)
+            {
+                notification.Readstatus = true;
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction("ViewInfo", new { learnerId });
+        }
 
         // 2. Update Profile
         public IActionResult UpdateProfile()

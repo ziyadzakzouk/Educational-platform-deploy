@@ -37,15 +37,33 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
-                        <!-- Notifications added here -->
+                        <!-- Notifications link in the navbar -->
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Notifications" asp-action="Index">
-                                Notifications 
-                                @if (ViewBag.NotificationCount > 0)
-                                {
-                                    <span class="badge bg-danger">@ViewBag.NotificationCount</span>
-                                }
-                            </a>
+                            @if (User?.IsInRole("Instructor") == true)
+                            {
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Notifications" asp-action="Create">
+                                    Notifications
+                                </a>
+                            }
+                            else if (User?.IsInRole("admin") == true)
+                            {
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Notifications" asp-action="Index">
+                                    Notifications
+                                </a>
+                            }
+                            else if (User?.IsInRole("Learner") == true)
+                            {
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Notifications" asp-action="Index">
+                                    Notifications
+                                </a>
+                            }
+                            else
+                            {
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Notifications" asp-action="NotUser">
+                                    Notifications
+                                </a>
+                            }
+                           
                         </li>
                     </ul>
                     <ul class="navbar-nav">
