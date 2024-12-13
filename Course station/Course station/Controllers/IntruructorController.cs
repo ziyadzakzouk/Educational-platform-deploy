@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Course_station.Controllers
 {
-    
+   
     public class InstructorController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -24,13 +24,18 @@ namespace Course_station.Controllers
             _context = context;
         }
 
-       // [Authorize(Roles = "Instructor")]
+        // [Authorize(Roles = "Instructor")]
         public IActionResult Home()
         {
+            var learnerId = HttpContext.Session.GetInt32("InstructorId");
+            if (learnerId == null)
+            {
+                return RedirectToAction("Login", "Instructor");
+            }
             return View();
         }
 
-      
+
         public async Task<IActionResult> Index()
         {
             var instructors = await _context.Instructors.Include(i => i.Courses).ToListAsync();
@@ -167,26 +172,32 @@ namespace Course_station.Controllers
 
 
         [HttpPost]
+        [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(InstructorLoginViewModel model)
+        public async Task<IActionResult> Login(Instructor model)
         {
             if (ModelState.IsValid)
             {
                 var instructor = await _context.Instructors
-                    .FirstOrDefaultAsync(i => i.InstructorId == model.InstructorId && i.Password == model.Password);
+                    .FirstOrDefaultAsync(l => l.InstructorId == model.InstructorId && l.Password == model.Password);
 
                 if (instructor != null)
                 {
-                    // Login successful, redirect to the instructor's home page
+                    // Set the LearnerId in the session
+                    HttpContext.Session.SetInt32("InstructorId", instructor.InstructorId);
+
+                    // Login successful, redirect to the learner's home page
                     return RedirectToAction("Home", "Instructor");
                 }
-
-                // Login failed, show an error message
-                ViewBag.ErrorMessage = "Invalid Instructor ID or Password";
+                else
+                {
+                    ViewBag.ErrorMessage = "Invalid Mentor ID or Password.";
+                }
             }
 
             return View(model);
         }
+
 
 
 
