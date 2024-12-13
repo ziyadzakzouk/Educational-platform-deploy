@@ -1,0 +1,37 @@
+﻿@model Course_station.Models.LearnerInfoViewModel
+
+@{
+    ViewData["Title"] = "View Info";
+}
+
+<h1>View Info</h1>
+
+<div>
+    <h2>@Model.Learner.FirstName @Model.Learner.LastName</h2>
+    <p>Email: @Model.Learner.Email</p>
+    <p>Country: @Model.Learner.Country</p>
+    <!-- Add more learner details as needed -->
+</div>
+
+<h3>Notifications</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>TimeStamp</th>
+            <th>Message</th>
+            <th>Urgency</th>
+            <th>Read Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var notification in Model.Notifications)
+        {
+            <tr>
+                <td>@notification.TimeStamp</td>
+                <td>@notification.Message</td>
+                <td>@notification.Urgency</td>
+                <td>@notification.Readstatus</td>
+            </tr>
+        }
+    </tbody>
+</table>
