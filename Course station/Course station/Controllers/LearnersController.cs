@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Course_station.Controllers
 {
+   // [Authorize]
     public class LearnersController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -29,6 +30,11 @@ namespace Course_station.Controllers
         // GET: Learners/Home
         public IActionResult Home()
         {
+            var learnerId = HttpContext.Session.GetInt32("LearnerId");
+            if (learnerId == null)
+            {
+                return RedirectToAction("Login", "Learners");
+            }
             return View();
         }
 
@@ -196,12 +202,14 @@ namespace Course_station.Controllers
         }
 
         // GET: Learner/Login
+        [AllowAnonymous]
         public IActionResult Login()
         {
             return View();
         }
 
         [HttpPost]
+        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(Learner model)
         {
@@ -226,9 +234,6 @@ namespace Course_station.Controllers
 
             return View(model);
         }
-
-
-
 
         private bool LearnerExists(int id)
         {
@@ -280,8 +285,6 @@ namespace Course_station.Controllers
             return RedirectToAction(nameof(Details), new { id = learnerId });
         }
 
-        
-       
         // 4. Check Prerequisites
         public async Task<IActionResult> CheckPrerequisites(int learnerId, int courseId)
         {
@@ -386,7 +389,7 @@ namespace Course_station.Controllers
             return RedirectToAction("CourseDetails", new { courseId });
         }
 
-         public IActionResult Enroll(int learnerId)
+        public IActionResult Enroll(int learnerId)
         {
             ViewBag.Courses = new SelectList(_context.Courses, "CourseId", "Title");
             var viewModel = new EnrollViewModel
@@ -414,7 +417,7 @@ namespace Course_station.Controllers
                 {
                     CourseId = model.CourseId,
                     LearnerId = model.LearnerId,
-                  //  EnrollmentDate = DateTime.Now
+                    //  EnrollmentDate = DateTime.Now
                 };
                 _context.CourseEnrollments.Add(enrollment);
                 await _context.SaveChangesAsync();
@@ -450,6 +453,5 @@ namespace Course_station.Controllers
 
             return View(courses);
         }
-
     }
 }

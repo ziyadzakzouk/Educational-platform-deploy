@@ -19,7 +19,7 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>()
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.LoginPath = "/Account/Login";
+        options.LoginPath = "/Learners/Login";
         options.AccessDeniedPath = "/Account/AccessDenied";
     });
 
@@ -56,10 +56,10 @@ else
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
-app.UseSession(); // Ensure this is before UseRouting
-
+app.UseSession(); 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
