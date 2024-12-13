@@ -244,10 +244,21 @@ namespace Course_station.Controllers
         public async Task<IActionResult> ViewInfo(int learnerId)
         {
             var learner = await _context.Learners
-                .FromSqlRaw("EXEC ViewInfo @LearnerID = {0}", learnerId)
-                .ToListAsync();
+                .Include(l => l.Notifications)
+                .FirstOrDefaultAsync(l => l.LearnerId == learnerId);
 
-            return View(learner);
+            if (learner == null)
+            {
+                return NotFound();
+            }
+
+            var viewModel = new LearnerInfoViewModel
+            {
+                Learner = learner,
+                Notifications = learner.Notifications.ToList()
+            };
+
+            return View(viewModel);
         }
 
         // 2. Update Profile
