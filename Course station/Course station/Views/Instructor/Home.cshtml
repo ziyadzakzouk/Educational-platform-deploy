@@ -2,5 +2,29 @@
     ViewData["Title"] = "Instructor Home";
 }
 
-<h2>Instrcutor Home</h2>
+<h2>Instructor Home</h2>
 <p>Welcome to the Instructor home page!</p>
+
+<div class="actions">
+    <h3>Actions</h3>
+    <div class="btn-group-vertical">
+        <a asp-controller="Instructor" asp-action="AddActivity" class="btn btn-primary">Add Activity</a>
+        <a asp-controller="Instructor" asp-action="CreateCourse" class="btn btn-success">Create Course</a>
+        <a asp-controller="Instructor" asp-action="CreateAssessment" class="btn btn-info">Create Assessment</a>
+    </div>
+</div>
+
+<style>
+    .actions {
+        margin-top: 20px;
+    }
+
+    .btn-group-vertical {
+        display: flex;
+        flex-direction: column;
+    }
+
+        .btn-group-vertical .btn {
+            margin-bottom: 10px;
+        }
+</style>

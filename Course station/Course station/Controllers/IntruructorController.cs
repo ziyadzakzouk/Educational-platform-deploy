@@ -345,6 +345,44 @@ namespace Course_station.Controllers
 
             return View(courses);
         }
+        public IActionResult CreateCourse()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateCourse([Bind("CourseId,Title,Description,DiffLevel,CreditPoint,LearningObjective")] Course course)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Courses.Add(course);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(course);
+        }
+
+        public IActionResult CreateAssessment()
+        {
+            ViewBag.Modules = new SelectList(_context.Modules, "ModuleId", "Title");
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateAssessment([Bind("AssessmentId,ModuleId,Title,Description,MaxPoints")] Assessment assessment)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Assessments.Add(assessment);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            ViewBag.Modules = new SelectList(_context.Modules, "ModuleId", "Title", assessment.ModuleId);
+            return View(assessment);
+        }
+
 
         // 7. Add a new collaborative Quest
         [HttpPost]
