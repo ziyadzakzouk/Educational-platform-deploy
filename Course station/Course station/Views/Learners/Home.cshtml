@@ -1,7 +1,38 @@
-﻿
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
 @{
     ViewData["Title"] = "Learner Home";
+    var learnerId = HttpContextAccessor.HttpContext.Session.GetInt32("LearnerId");
 }
 
 <h2>Learner Home</h2>
 <p>Welcome to the learner home page!</p>
+
+<div class="actions">
+    <h3>Actions</h3>
+    <div class="btn-group-vertical">
+        <a asp-controller="Learners" asp-action="Details" asp-route-id="@learnerId" class="btn btn-primary">View Profile</a>
+        <a asp-controller="Learners" asp-action="EnrolledCourses" asp-route-learnerId="@learnerId" class="btn btn-success">View Enrolled Courses</a>
+        <a asp-controller="Learners" asp-action="AssessmentsList" asp-route-learnerId="@learnerId" class="btn btn-info">View Assessments</a>
+        <a asp-controller="Learners" asp-action="LeaderboardRank" asp-route-learnerId="@learnerId" class="btn btn-warning">View Leaderboard</a>
+        <a asp-controller="Learners" asp-action="SkillsProficiency" asp-route-learnerId="@learnerId" class="btn btn-secondary">View Skills Proficiency</a>
+        <a asp-controller="Learners" asp-action="ViewInfo" asp-route-learnerId="@learnerId" class="btn btn-dark">View Info</a>
+        <a asp-controller="Learners" asp-action="UpdateProfile" asp-route-learnerId="@learnerId" class="btn btn-light">Update Profile</a>
+    </div>
+</div>
+
+<style>
+    .actions {
+        margin-top: 20px;
+    }
+
+    .btn-group-vertical {
+        display: flex;
+        flex-direction: column;
+    }
+
+        .btn-group-vertical .btn {
+            margin-bottom: 10px;
+        }
+</style>
