@@ -141,5 +141,13 @@ namespace Course_station.Controllers
         {
             return _context.Notifications.Any(e => e.NotificationId == id);
         }
+        
+        public async Task<IActionResult> MarkAsRead(int id)
+        {
+            var notification = await _context.Notifications.FindAsync(id);
+            notification.Readstatus = true;
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

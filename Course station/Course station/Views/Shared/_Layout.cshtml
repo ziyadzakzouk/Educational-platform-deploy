@@ -37,6 +37,16 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+                        <!-- Notifications added here -->
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Notifications" asp-action="Index">
+                                Notifications 
+                                @if (ViewBag.NotificationCount > 0)
+                                {
+                                    <span class="badge bg-danger">@ViewBag.NotificationCount</span>
+                                }
+                            </a>
+                        </li>
                     </ul>
                     <ul class="navbar-nav">
                         @if (User?.Identity?.IsAuthenticated == true)
