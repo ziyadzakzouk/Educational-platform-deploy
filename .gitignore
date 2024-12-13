@@ -1,4 +1,3 @@
-
 ﻿################################################################################
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
@@ -6,7 +5,6 @@
 /.vs/Educational-platform/FileContentIndex
 /.vs/slnx.sqlite
 .vs/
-
 
 # Ignore all .log files
 *.log
@@ -28,9 +26,9 @@ node_modules/
 bin/
 obj/
 
-
-# Ignore appsettings.json
+# Ignore appsettings.json and appsettings.Development.json
 appsettings.json
+appsettings.Development.json
 
 # Ignore build files
 *.dll
