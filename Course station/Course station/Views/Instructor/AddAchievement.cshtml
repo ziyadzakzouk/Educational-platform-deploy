@@ -1,0 +1,65 @@
+﻿@model Course_station.Models.Achievement
+
+@{
+    ViewData["Title"] = "AddAchievement";
+}
+
+<h2>Add Achievement</h2>
+
+@using (Html.BeginForm("AddAchievement", "Instructor", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken();
+
+    <div class="form-horizontal">
+        <h4>Achievement</h4>
+        <hr />
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.LearnerId, "Learner", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("LearnerId", ViewBag.Learners as SelectList, "Select Learner", htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.LearnerId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.BadgeId, "Badge", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("BadgeId", ViewBag.Badges as SelectList, "Select Badge", htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.BadgeId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DateEarned, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DateEarned, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.DateEarned, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Add Achievement" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -681,7 +681,49 @@ namespace Course_station.Controllers
 
 
 
+        // GET: Instructor/AddAchievement
+        public IActionResult AddAchievement()
+        {
+            ViewBag.Learners = new SelectList(_context.Learners, "LearnerId", "FirstName");
+            ViewBag.Badges = new SelectList(_context.Badges, "BadgeId", "Description");
+            return View();
+        }
 
+        // POST: Instructor/AddAchievement
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddAchievement([Bind("LearnerId,BadgeId,Description,DateEarned")] Achievement achievement)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Achievements.Add(achievement);
+                await _context.SaveChangesAsync();
+
+                // Send notification to the learner
+                var notification = new Notification
+                {
+                    TimeStamp = DateTime.Now,
+                    Message = $"You have earned a new achievement: {achievement.Description}",
+                    Urgency = "Normal",
+                    Readstatus = false
+                };
+
+                // Add the notification to the learner's notifications
+                var learner = await _context.Learners.FindAsync(achievement.LearnerId);
+                if (learner != null)
+                {
+                    learner.Notifications.Add(notification);
+                    await _context.SaveChangesAsync();
+                }
+
+                TempData["Message"] = "Achievement added and learner notified successfully!";
+                return RedirectToAction(nameof(Index));
+            }
+
+            ViewBag.Learners = new SelectList(_context.Learners, "LearnerId", "FirstName", achievement.LearnerId);
+            ViewBag.Badges = new SelectList(_context.Badges, "BadgeId", "Description", achievement.BadgeId);
+            return View(achievement);
+        }
 
 
     }
