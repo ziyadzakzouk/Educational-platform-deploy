@@ -1,18 +1,40 @@
-@model TModel
+@model IEnumerable<Course_station.Models.EmotionalFeedback>
 
 @{
-    Layout = null;
+    ViewData["Title"] = "Emotional Feedback Index";
 }
 
-<!DOCTYPE html>
+<h1>Emotional Feedback Index</h1>
 
-<html>
-<head>
-    <title>title</title>
-</head>
-<body>
-<div>
-      
-</div>
-</body>
-</html>
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
+</p>
+<table class="table">
+    <thead>
+    <tr>
+        <th>@Html.DisplayNameFor(model => model.FeedbackId)</th>
+        <th>@Html.DisplayNameFor(model => model.LearnerId)</th>
+        <th>@Html.DisplayNameFor(model => model.ActivityId)</th>
+        <th>@Html.DisplayNameFor(model => model.Timestamp)</th>
+        <th>@Html.DisplayNameFor(model => model.EmotionalState)</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => item.FeedbackId)</td>
+            <td>@Html.DisplayFor(modelItem => item.LearnerId)</td>
+            <td>@Html.DisplayFor(modelItem => item.ActivityId)</td>
+            <td>@Html.DisplayFor(modelItem => item.Timestamp)</td>
+            <td>@Html.DisplayFor(modelItem => item.EmotionalState)</td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.FeedbackId" class="btn btn-secondary">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.FeedbackId" class="btn btn-info">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.FeedbackId" class="btn btn-danger">Delete</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
