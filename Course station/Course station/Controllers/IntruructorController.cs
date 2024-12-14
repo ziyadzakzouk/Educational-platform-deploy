@@ -639,5 +639,50 @@ namespace Course_station.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public IActionResult CreateQuest()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateQuestWithDeadline([Bind("QuestId,DifficultyLevel,Criteria,Description,Title,Collaborative,SkillMastery")] Quest quest, DateTime deadline)
+        {
+            if (deadline == null)
+            {
+                ModelState.AddModelError("Deadline", "The Deadline field is required.");
+            }
+
+            if (ModelState.IsValid)
+            {
+                // Add the quest to the context
+                _context.Quests.Add(quest);
+                await _context.SaveChangesAsync();
+
+                // Handle the deadline separately
+                // You can store the deadline in a dictionary or any other structure as needed
+                // For example, using a dictionary to store deadlines
+                var questDeadlines = new Dictionary<int, DateTime>();
+                questDeadlines[quest.QuestId] = deadline;
+
+                // Save the deadline to the database or any other storage as needed
+                // This is just an example, you need to implement the actual storage logic
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            // Pass the validation message to the view
+            ViewBag.DeadlineValidationMessage = ModelState["Deadline"]?.Errors.FirstOrDefault()?.ErrorMessage;
+
+            return View(quest);
+        }
+
+
+
+
+
+
+
+
     }
 }

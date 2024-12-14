@@ -24,6 +24,7 @@ namespace Course_station.Controllers
         }
 
         // GET: Quests/Details/5
+
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -32,16 +33,22 @@ namespace Course_station.Controllers
             }
 
             var quest = await _context.Quests
-                .Include(q => q.Collaborative)
-                .ThenInclude(c => c.LearnerCollaborations)
                 .FirstOrDefaultAsync(m => m.QuestId == id);
             if (quest == null)
             {
                 return NotFound();
             }
 
+            // Retrieve the deadline from the storage
+            var questDeadlines = new Dictionary<int, DateTime>(); // Replace with actual storage retrieval logic
+            DateTime? deadline = questDeadlines.ContainsKey(quest.QuestId) ? questDeadlines[quest.QuestId] : (DateTime?)null;
+
+            ViewBag.Deadline = deadline;
+
             return View(quest);
         }
+
+
 
         // GET: Quests/Create
         public IActionResult Create()
@@ -52,7 +59,7 @@ namespace Course_station.Controllers
         // POST: Quests/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("QuestId,DifficultyLevel,Criteria,Description,Title,Deadline")] Quest quest)
+        public async Task<IActionResult> Create([Bind("QuestId,DifficultyLevel,Criteria,Description,Title,Collaborative,SkillMastery")] Quest quest)
         {
             if (ModelState.IsValid)
             {
@@ -82,7 +89,7 @@ namespace Course_station.Controllers
         // POST: Quests/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("QuestId,DifficultyLevel,Criteria,Description,Title,Deadline")] Quest quest)
+        public async Task<IActionResult> Edit(int id, [Bind("QuestId,DifficultyLevel,Criteria,Description,Title,Collaborative,SkillMastery")] Quest quest)
         {
             if (id != quest.QuestId)
             {
@@ -155,31 +162,36 @@ namespace Course_station.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Join(int questId, int learnerId)
         {
+            // Retrieve the quest from the database, including its collaborative details
             var quest = await _context.Quests
                 .Include(q => q.Collaborative)
                 .FirstOrDefaultAsync(q => q.QuestId == questId);
 
+            // Check if the quest or its collaborative details are not found
             if (quest == null || quest.Collaborative == null)
             {
                 return NotFound();
             }
 
+            // Check if the quest has reached the maximum number of participants
             if (quest.Collaborative.LearnerCollaborations.Count >= quest.Collaborative.MaxNumParticipants)
             {
                 TempData["ErrorMessage"] = "Quest is full.";
                 return RedirectToAction(nameof(Details), new { id = questId });
             }
 
+            // Create a new learner collaboration entry
             var learnerCollaboration = new LearnerCollaboration
             {
                 QuestId = questId,
                 LearnerId = learnerId
             };
 
+            // Add the learner collaboration to the database
             _context.LearnerCollaborations.Add(learnerCollaboration);
             await _context.SaveChangesAsync();
 
-            // Award achievement for joining the quest
+            // Create a new achievement for joining the quest
             var achievement = new Achievement
             {
                 Description = "Joined a Collaborative Quest",
@@ -188,13 +200,16 @@ namespace Course_station.Controllers
                 LearnerId = learnerId
             };
 
+            // Retrieve the learner from the database
             var learner = await _context.Learners.FindAsync(learnerId);
             if (learner != null)
             {
+                // Add the achievement to the learner's profile
                 learner.Achievements.Add(achievement);
                 await _context.SaveChangesAsync();
             }
 
+            // Set a success message and redirect to the quest details page
             TempData["Message"] = "Successfully joined the quest!";
             return RedirectToAction(nameof(Details), new { id = questId });
         }
@@ -220,5 +235,7 @@ namespace Course_station.Controllers
 
             return View(quest);
         }
+
+
     }
 }
