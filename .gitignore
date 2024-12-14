@@ -58,3 +58,4 @@ Course station/Models/ApplicationDbContext.cs
 *.user
 *.userosscache
 *.sln.docstates
+/Course station/Course station/Models/ApplicationDbContext.cs
