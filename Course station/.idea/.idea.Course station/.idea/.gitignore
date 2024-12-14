@@ -40,7 +40,7 @@ appsettings.json
 appsettings.Development.json
 
 # Ignore ApplicationDbContext.cs
-Course station/Models/ApplicationDbContext.cs
+Course station/Course station/Models/ApplicationDbContext.cs
 
 # Ignore build files
 *.dll
