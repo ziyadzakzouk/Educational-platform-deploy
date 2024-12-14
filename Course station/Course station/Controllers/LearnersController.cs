@@ -464,5 +464,49 @@ namespace Course_station.Controllers
 
             return View(courses);
         }
+
+
+        //public async Task<IActionResult> QuestProgress(int learnerId)
+        //{
+        //    var learner = await _context.Learners
+        //        .Include(l => l.LearnerCollaborations)
+        //        .ThenInclude(lc => lc.Quest)
+        //        .FirstOrDefaultAsync(l => l.LearnerId == learnerId);
+
+        //    if (learner == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var quests = learner.LearnerCollaborations.Select(lc => lc.Quest).ToList();
+        //    return View(quests);
+        //}
+        public IActionResult QuestProgress()
+        {
+            var quests = _context.Quests.ToList(); // Ensure this is a list of Quest objects
+            return View(quests);
+        }
+
+
+        public async Task<IActionResult> AchievementProgress(int learnerId)
+        {
+            var learner = await _context.Learners
+                .Include(l => l.Achievements)
+                .ThenInclude(a => a.Badge)
+                .FirstOrDefaultAsync(l => l.LearnerId == learnerId);
+
+            if (learner == null)
+            {
+                return NotFound();
+            }
+
+            var achievements = learner.Achievements.ToList();
+            return View(achievements);
+        }
+
+
+
+
+
     }
 }

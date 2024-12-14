@@ -1,0 +1,27 @@
+﻿@model IEnumerable<Course_station.Models.Quest>
+
+@{
+    ViewData["Title"] = "QuestProgress";
+}
+
+<h1>Quest Progress</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Difficulty Level</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var quest in Model)
+        {
+            <tr>
+                <td>@quest.Title</td>
+                <td>@quest.Description</td>
+                <td>@quest.DifficultyLevel</td>
+            </tr>
+        }
+    </tbody>
+</table>

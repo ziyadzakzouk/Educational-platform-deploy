@@ -1,0 +1,27 @@
+﻿@model IEnumerable<Course_station.Models.Achievement>
+
+@{
+    ViewData["Title"] = "AchievementProgress";
+}
+
+<h1>Achievement Progress</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Description</th>
+            <th>Date Earned</th>
+            <th>Badge</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var achievement in Model)
+        {
+            <tr>
+                <td>@achievement.Description</td>
+                <td>@achievement.DateEarned</td>
+                <td>@achievement.Badge?.Title</td>
+            </tr>
+        }
+    </tbody>
+</table>
