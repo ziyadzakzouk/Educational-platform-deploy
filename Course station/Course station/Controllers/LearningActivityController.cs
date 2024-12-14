@@ -119,7 +119,6 @@ namespace Course_station.Controllers
             }
 
             var learningActivity = await _context.LearningActivities
-                .Include(la => la.Module)
                 .FirstOrDefaultAsync(m => m.ActivityId == id);
             if (learningActivity == null)
             {
@@ -129,16 +128,22 @@ namespace Course_station.Controllers
             return View(learningActivity);
         }
 
-        // POST: LearningActivity/Delete/5
+// POST: LearningActivity/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var learningActivity = await _context.LearningActivities.FindAsync(id);
-            _context.LearningActivities.Remove(learningActivity);
-            await _context.SaveChangesAsync();
+            if (learningActivity != null)
+            {
+                _context.LearningActivities.Remove(learningActivity);
+                await _context.SaveChangesAsync();
+            }
+
             return RedirectToAction(nameof(Index));
         }
+
+       
 
         private bool LearningActivityExists(int id)
         {
