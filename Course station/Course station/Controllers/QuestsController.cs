@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Course_station.Models;
 
@@ -179,6 +178,22 @@ namespace Course_station.Controllers
 
             _context.LearnerCollaborations.Add(learnerCollaboration);
             await _context.SaveChangesAsync();
+
+            // Award achievement for joining the quest
+            var achievement = new Achievement
+            {
+                Description = "Joined a Collaborative Quest",
+                DateEarned = DateOnly.FromDateTime(DateTime.Now),
+                BadgeId = 1, // Assign appropriate BadgeId
+                LearnerId = learnerId
+            };
+
+            var learner = await _context.Learners.FindAsync(learnerId);
+            if (learner != null)
+            {
+                learner.Achievements.Add(achievement);
+                await _context.SaveChangesAsync();
+            }
 
             TempData["Message"] = "Successfully joined the quest!";
             return RedirectToAction(nameof(Details), new { id = questId });
