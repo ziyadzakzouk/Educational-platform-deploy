@@ -1,0 +1,69 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+# Rider ignored files
+/.idea.Course station.iml
+/contentModel.xml
+/modules.xml
+/projectSettingsUpdater.xml
+# Editor-based HTTP Client requests
+/httpRequests/
+# Datasource local storage ignored files
+/dataSources/
+/dataSources.local.xml
+
+/.vs/Educational-platform/FileContentIndex
+/.vs/slnx.sqlite
+.vs/
+
+# Ignore all .log files
+*.log
+
+# Ignore node_modules directory
+node_modules/
+
+# Ignore compiled code
+*.class
+
+# Ignored Identifyer
+*.Zone.Identifier
+
+/.vs
+/.vs/Educational-platform/FileContentIndex
+
+# Ignore build directories
+bin/
+obj/
+
+# Ignore appsettings.json and appsettings.Development.json
+appsettings.json
+appsettings.Development.json
+
+# Ignore ApplicationDbContext.cs
+Course station/Models/ApplicationDbContext.cs
+
+# Ignore build files
+*.dll
+*.exe
+*.pdb
+*.cache
+*.ilk
+*.log
+*.obj
+*.o
+*.so
+*.dylib
+*.lib
+*.a
+*.exp
+*.idb
+*.ipdb
+*.iobj
+*.ipch
+*.iobj
+*.tlog
+*.lastbuildstate
+*.suo
+*.user
+*.userosscache
+*.sln.docstatesk
