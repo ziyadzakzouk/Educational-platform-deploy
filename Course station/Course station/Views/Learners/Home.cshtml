@@ -14,9 +14,6 @@
 <h2>Learner Home</h2>
 <p>Welcome to the learner home page!</p>
 
-<div class="view-info">
-    <a asp-controller="Learners" asp-action="ViewInfo" asp-route-learnerId="@learnerId" class="btn btn-sm btn-dark">View Info</a>
-</div>
 
 <div class="actions">
     <h3>Actions</h3>
@@ -26,6 +23,7 @@
         <a asp-controller="Learners" asp-action="AssessmentsList" asp-route-learnerId="@learnerId" class="btn btn-info">View Assessments</a>
         <a asp-controller="Learners" asp-action="LeaderboardRank" asp-route-learnerId="@learnerId" class="btn btn-warning">View Leaderboard</a>
         <a asp-controller="Learners" asp-action="SkillsProficiency" asp-route-learnerId="@learnerId" class="btn btn-secondary">View Skills Proficiency</a>
+        <a asp-controller="Learners" asp-action="Viewinfo" asp-route-learnerId="@learnerId" class="btn btn-custom-red">View Notifications</a>
         <a asp-controller="Learners" asp-action="UpdateProfile" asp-route-learnerId="@learnerId" class="btn btn-light">Update Profile</a>
     </div>
 </div>
@@ -39,15 +37,14 @@
         display: flex;
         flex-direction: column;
     }
+    
+    .btn-custom-red {
+        background-color: red;
+        color: white;
+    }
 
         .btn-group-vertical .btn {
             margin-bottom: 10px;
         }
-
-    .view-info {
-        position: absolute;
-        top: 20px;
-        right: 50%;
-        transform: translateX(50%);
-    }
+        
 </style>

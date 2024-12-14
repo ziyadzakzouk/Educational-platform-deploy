@@ -20,6 +20,25 @@ namespace Course_station.Controllers
         {
             return View(await _context.Notifications.ToListAsync());
         }
+        
+        // GET: Notifications of the learner
+        public async Task<IActionResult> IndexLearner()
+        {
+            return View(await _context.Notifications.ToListAsync());
+        }
+        // GET: Notifications of the instructor
+        public async Task<IActionResult> IndexInstructor()
+        {
+            return View(await _context.Notifications.ToListAsync());
+        }
+        public async Task<IActionResult> IndexAdmin()
+        {
+            return View(await _context.Notifications.ToListAsync());
+        }
+        public async Task<IActionResult> NotUser()
+        {
+            return RedirectToAction("Create", "Learners");
+        }
 
         // GET: Notifications/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -38,6 +57,7 @@ namespace Course_station.Controllers
 
             return View(notification);
         }
+        
 
         // GET: Notifications/Create
         public IActionResult Create()
@@ -141,5 +161,14 @@ namespace Course_station.Controllers
         {
             return _context.Notifications.Any(e => e.NotificationId == id);
         }
+        
+        public async Task<IActionResult> MarkAsRead(int id)
+        {
+            var notification = await _context.Notifications.FindAsync(id);
+            notification.Readstatus = true;
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+        
     }
 }

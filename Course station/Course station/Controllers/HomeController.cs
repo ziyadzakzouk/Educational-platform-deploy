@@ -27,7 +27,7 @@ namespace Course_station.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AdminLogin(string username, string password, string indexPage)
         {
-            if (username == "youssef.ashraf" && password == "1234")
+            if (username == "youssef.ashraf" && password == "1234"||username == "admin" && password == "admin")
             {
                 var claims = new List<Claim>
         {
