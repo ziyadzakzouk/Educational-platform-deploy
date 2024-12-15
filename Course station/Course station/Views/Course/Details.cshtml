@@ -59,13 +59,10 @@
                 <a asp-action="CreateModule" asp-route-courseId="@Model.CourseId" class="btn btn-primary">Create Module</a>
             }
         </dd>
-        <!-- Add other course properties here -->
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.CourseId">Edit</a> |
-    <a asp-action="Index">Back to List</a> |
+    <a asp-action="EditCourse" asp-route-id="@Model.CourseId" class="btn btn-primary">Edit</a> |
+    <a asp-action="ManageCourses" class="btn btn-secondary">Back to List</a> |
     <a asp-action="CreateAssessment" asp-route-courseId="@Model.CourseId" class="btn btn-primary">Create Assessment</a>
 </div>
-
-
