@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 using System;
 using Microsoft.Data.SqlClient;
 using System.Data;
-using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication;
 
 namespace Course_station.Controllers
 {
@@ -248,19 +248,23 @@ namespace Course_station.Controllers
             return View("~/Views/Course/Delete.cshtml", course);
         }
 
-        // POST: Instructor/DeleteCourse/5
-        [HttpPost, ActionName("DeleteCourse")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteCourseConfirmed(int id)
+        // GET: Instructor/Delete/5
+        public async Task<IActionResult> Delete(int? id)
         {
-            var course = await _context.Courses.FindAsync(id);
-            _context.Courses.Remove(course);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(ManageCourses));
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var instructor = await _context.Instructors
+                .FirstOrDefaultAsync(m => m.InstructorId == id);
+            if (instructor == null)
+            {
+                return NotFound();
+            }
+
+            return View(instructor);
         }
-
-       
-
 
         // POST: Instructor/Delete/5
         [HttpPost, ActionName("Delete")]
@@ -268,11 +272,25 @@ namespace Course_station.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var instructor = await _context.Instructors.FindAsync(id);
-            _context.Instructors.Remove(instructor);
-            await _context.SaveChangesAsync();
+            if (instructor == null)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                _context.Instructors.Remove(instructor);
+                await _context.SaveChangesAsync();
+                TempData["Message"] = "Instructor deleted successfully!";
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = $"Error deleting instructor: {ex.Message}";
+            }
+
             return RedirectToAction(nameof(Index));
         }
-
+        [AllowAnonymous]
         public IActionResult Login()
         {
             return View();
@@ -285,26 +303,32 @@ namespace Course_station.Controllers
         {
             if (ModelState.IsValid)
             {
-                var instructor = await _context.Instructors
-                    .FirstOrDefaultAsync(l => l.InstructorId == model.InstructorId && l.Password == model.Password);
-
-                if (instructor != null)
+                try
                 {
-                    // Set the InstructorId in the session
-                    HttpContext.Session.SetInt32("InstructorId", instructor.InstructorId);
+                    var instructor = await _context.Instructors
+                        .FirstOrDefaultAsync(l => l.InstructorId == model.InstructorId && l.Password == model.Password);
 
-                    // Login successful, redirect to the instructor's home page
-                    return RedirectToAction("Home", "Instructor");
+                    if (instructor != null)
+                    {
+                        // Set the InstructorId in the session
+                        HttpContext.Session.SetInt32("InstructorId", instructor.InstructorId);
+
+                        // Login successful, redirect to the instructor's home page
+                        return RedirectToAction("Home", "Instructor");
+                    }
+                    else
+                    {
+                        ViewBag.ErrorMessage = "Invalid ID or Password.";
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    ViewBag.ErrorMessage = "Invalid Instructor ID or Password.";
+                    ViewBag.ErrorMessage = $"An error occurred: {ex.Message}";
                 }
             }
 
             return View(model);
         }
-
         public async Task<IActionResult> SendNotification()
         {
             var instructorId = HttpContext.Session.GetInt32("InstructorId");
