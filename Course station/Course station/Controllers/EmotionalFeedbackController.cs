@@ -18,7 +18,8 @@ namespace Course_station.Controllers
         public async Task<IActionResult> Trend()
         {
             var emotionalFeedbacks = _context.EmotionalFeedbacks.Include(e => e.Activity).Include(e => e.Learner);
-            return View(await emotionalFeedbacks.ToListAsync());
+            await emotionalFeedbacks.ToListAsync();
+            return RedirectToAction("Index", "EmotionalfeedbackReview");
         }
 
         // GET: EmotionalFeedback
