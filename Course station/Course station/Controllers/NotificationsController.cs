@@ -18,9 +18,26 @@ namespace Course_station.Controllers
         // GET: Notifications
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Notifications.ToListAsync());
+            var instructorId = HttpContext.Session.GetInt32("InstructorId");
+            var learnerId = HttpContext.Session.GetInt32("LearnerId");
+
+            IQueryable<Notification> notificationsQuery = _context.Notifications;
+
+            if (instructorId != null)
+            {
+                notificationsQuery = notificationsQuery.Where(n => n.Learners.Any(l => l.CourseEnrollments.Any(ce => ce.Course.Instructors.Any(i => i.InstructorId == instructorId))));
+            }
+            else if (learnerId != null)
+            {
+                notificationsQuery = notificationsQuery.Where(n => n.Learners.Any(l => l.LearnerId == learnerId));
+            }
+
+            var notifications = await notificationsQuery.ToListAsync();
+            return View(notifications);
         }
-        
+
+
+       
         // GET: Notifications of the learner
         public async Task<IActionResult> IndexLearner()
         {

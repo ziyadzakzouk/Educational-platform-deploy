@@ -1,11 +1,4 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-@model Course_station.Models.Notification
-
-@{
+﻿@{
     ViewData["Title"] = "Send Notification";
 }
 
@@ -13,20 +6,16 @@
 
 <form asp-action="SendNotification" method="post">
     <div class="form-group">
-        <label asp-for="CourseId" class="control-label">Course</label>
-        <select asp-for="CourseId" class="form-control" asp-items="ViewBag.Courses" id="courseSelect"></select>
+        <label for="courseSelect" class="control-label">Course</label>
+        <select class="form-control" id="courseSelect" name="courseId" asp-items="ViewBag.Courses"></select>
     </div>
     <div class="form-group">
-        <label for="learnerSelect" class="control-label">Learners</label>
-        <select multiple class="form-control" id="learnerSelect" name="learnerIds"></select>
+        <label for="message" class="control-label">Message</label>
+        <textarea class="form-control" id="message" name="message"></textarea>
     </div>
     <div class="form-group">
-        <label asp-for="Message" class="control-label">Message</label>
-        <textarea asp-for="Message" class="form-control"></textarea>
-    </div>
-    <div class="form-group">
-        <label asp-for="Urgency" class="control-label">Urgency</label>
-        <select asp-for="Urgency" class="form-control">
+        <label for="urgency" class="control-label">Urgency</label>
+        <select class="form-control" id="urgency" name="urgency">
             <option value="Low">Low</option>
             <option value="Medium">Medium</option>
             <option value="High">High</option>
@@ -34,27 +23,3 @@
     </div>
     <button type="submit" class="btn btn-primary">Send</button>
 </form>
-
-@section Scripts {
-    <script>
-        $(document).ready(function () {
-            $('#courseSelect').change(function () {
-                var courseId = $(this).val();
-                $.ajax({
-                    url: '@Url.Action("GetLearnersByCourse", "Instructor")',
-                    data: { courseId: courseId },
-                    success: function (data) {
-                        var learnerSelect = $('#learnerSelect');
-                        learnerSelect.empty();
-                        $.each(data, function (index, learner) {
-                            learnerSelect.append($('<option>', {
-                                value: learner.learnerId,
-                                text: learner.learnerName
-                            }));
-                        });
-                    }
-                });
-            });
-        });
-    </script>
-}

@@ -227,6 +227,7 @@ namespace Course_station.Controllers
 
 
         // GET: Instructor/SendNotification
+        // GET: Instructor/SendNotification
         public async Task<IActionResult> SendNotification()
         {
             var instructorId = HttpContext.Session.GetInt32("InstructorId");
@@ -243,28 +244,30 @@ namespace Course_station.Controllers
             return View();
         }
 
-
-
         // POST: Instructor/SendNotification
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SendNotification(int courseId, int[] learnerIds, string message, string urgency)
+        public async Task<IActionResult> SendNotification(int courseId, string message, string urgency)
         {
             if (ModelState.IsValid)
             {
-                var notifications = learnerIds.Select(learnerId => new Notification
+                var learners = await _context.Learners
+                    .Where(l => l.CourseEnrollments.Any(ce => ce.CourseId == courseId))
+                    .ToListAsync();
+
+                var notifications = learners.Select(learner => new Notification
                 {
                     TimeStamp = DateTime.Now,
                     Message = message,
                     Urgency = urgency,
                     Readstatus = false,
-                    Learners = new List<Learner> { _context.Learners.Find(learnerId) }
+                    Learners = new List<Learner> { learner }
                 }).ToList();
 
                 _context.Notifications.AddRange(notifications);
                 await _context.SaveChangesAsync();
                 TempData["Message"] = "Notifications sent successfully!";
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Notifications");
             }
 
             var instructorId = HttpContext.Session.GetInt32("InstructorId");
@@ -276,17 +279,21 @@ namespace Course_station.Controllers
             return View();
         }
 
-
         // GET: Instructor/GetLearnersByCourse
         public async Task<IActionResult> GetLearnersByCourse(int courseId)
         {
             var learners = await _context.Learners
                 .Where(l => l.CourseEnrollments.Any(ce => ce.CourseId == courseId))
-                .Select(l => new { l.LearnerId, l.FirstName,l.LastName })
+                .Select(l => new { l.LearnerId, FullName = l.FirstName + " " + l.LastName })
                 .ToListAsync();
 
             return Json(learners);
         }
+
+
+
+        // GET: Instructor/GetLearnersByCourse
+      
 
 
         [HttpPost]
