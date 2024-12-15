@@ -15,6 +15,12 @@ namespace Course_station.Controllers
             _context = context;
         }
 
+        public async Task<IActionResult> Trend()
+        {
+            var emotionalFeedbacks = _context.EmotionalFeedbacks.Include(e => e.Activity).Include(e => e.Learner);
+            return View(await emotionalFeedbacks.ToListAsync());
+        }
+
         // GET: EmotionalFeedback
         public async Task<IActionResult> Index()
         {
@@ -70,15 +76,20 @@ namespace Course_station.Controllers
                 return NotFound();
             }
 
-            var emotionalFeedback = await _context.EmotionalFeedbacks.FindAsync(id);
+            var emotionalFeedback = await _context.EmotionalFeedbacks
+                .Include(e => e.Activity)
+                .Include(e => e.Learner)
+                .FirstOrDefaultAsync(e => e.FeedbackId == id);
+
             if (emotionalFeedback == null)
             {
                 return NotFound();
             }
+
             return View(emotionalFeedback);
         }
 
-        // POST: EmotionalFeedback/Edit/5
+// POST: EmotionalFeedback/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("FeedbackId,LearnerId,ActivityId,Timestamp,EmotionalState")] EmotionalFeedback emotionalFeedback)
@@ -108,8 +119,11 @@ namespace Course_station.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+
             return View(emotionalFeedback);
         }
+        
+
 
         // GET: EmotionalFeedback/Delete/5
         public async Task<IActionResult> Delete(int? id)

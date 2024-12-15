@@ -1,0 +1,32 @@
+@model IEnumerable<Course_station.Models.EmotionalfeedbackReview>
+
+@{
+    ViewData["Title"] = "Emotional Feedback Review Index";
+}
+
+<h1>Emotional Feedback Review Index</h1>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>@Html.DisplayNameFor(model => model.FeedbackId)</th>
+        <th>@Html.DisplayNameFor(model => model.InstructorId)</th>
+        <th>@Html.DisplayNameFor(model => model.Review)</th>
+        <th> Trends </th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => item.FeedbackId)</td>
+            <td>@Html.DisplayFor(modelItem => item.InstructorId)</td>
+            <td>@Html.DisplayFor(modelItem => item.Review)</td>
+           
+            <td>
+                <a asp-action="Trend" asp-route-feedbackId="@item.FeedbackId" asp-route-instructorId="@item.InstructorId" class="btn btn-info">Show</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

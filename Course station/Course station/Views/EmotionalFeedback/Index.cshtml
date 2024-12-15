@@ -8,6 +8,7 @@
 
 <p>
     <a asp-action="Create" class="btn btn-primary">Create New</a>
+    <a asp-action ="Trend"class="btn btn-primary">See trends</a>
 </p>
 <table class="table">
     <thead>
@@ -30,7 +31,6 @@
             <td>@Html.DisplayFor(modelItem => item.Timestamp)</td>
             <td>@Html.DisplayFor(modelItem => item.EmotionalState)</td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.FeedbackId" class="btn btn-secondary">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.FeedbackId" class="btn btn-info">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.FeedbackId" class="btn btn-danger">Delete</a>
             </td>

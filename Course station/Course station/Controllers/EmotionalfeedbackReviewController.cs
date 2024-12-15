@@ -48,29 +48,38 @@ namespace Course_station.Controllers
             return View();
         }
 
-        // POST: EmotionalfeedbackReview/Create
+// POST: EmotionalfeedbackReview/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("FeedbackId,InstructorId,Review")] EmotionalfeedbackReview emotionalfeedbackReview)
+        public async Task<IActionResult> Create([Bind("LearnerID,Activity_ID,Timestamp,EmotionalState")] EmotionalfeedbackReview emotionalfeedbackReview)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(emotionalfeedbackReview);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    _context.Add(emotionalfeedbackReview);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (DbUpdateException)
+                {
+                    ModelState.AddModelError("", "Unable to save changes. Ensure all foreign key constraints are met.");
+                }
             }
             return View(emotionalfeedbackReview);
         }
 
+      
+
         // GET: EmotionalfeedbackReview/Edit/5
-        public async Task<IActionResult> Edit(int? feedbackId, int? instructorId)
+        public async Task<IActionResult> Edit(int? id)
         {
-            if (feedbackId == null || instructorId == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var emotionalfeedbackReview = await _context.EmotionalfeedbackReviews.FindAsync(feedbackId, instructorId);
+            var emotionalfeedbackReview = await _context.EmotionalfeedbackReviews.FindAsync(id);
             if (emotionalfeedbackReview == null)
             {
                 return NotFound();
@@ -78,12 +87,13 @@ namespace Course_station.Controllers
             return View(emotionalfeedbackReview);
         }
 
-        // POST: EmotionalfeedbackReview/Edit/5
+// POST: EmotionalfeedbackReview/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int feedbackId, int instructorId, [Bind("FeedbackId,InstructorId,Review")] EmotionalfeedbackReview emotionalfeedbackReview)
+        public async Task<IActionResult> Edit(int id, [Bind("FeedbackId,LearnerID,Activity_ID,Timestamp,EmotionalState")] EmotionalfeedbackReview emotionalfeedbackReview)
         {
-            if (feedbackId != emotionalfeedbackReview.FeedbackId || instructorId != emotionalfeedbackReview.InstructorId)
+            
+            if (id != emotionalfeedbackReview.FeedbackId)
             {
                 return NotFound();
             }
@@ -94,10 +104,11 @@ namespace Course_station.Controllers
                 {
                     _context.Update(emotionalfeedbackReview);
                     await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!EmotionalfeedbackReviewExists(emotionalfeedbackReview.FeedbackId, emotionalfeedbackReview.InstructorId))
+                    if (!_context.EmotionalfeedbackReviews.Any(e => e.FeedbackId == id))
                     {
                         return NotFound();
                     }
@@ -106,10 +117,14 @@ namespace Course_station.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                catch (DbUpdateException)
+                {
+                    ModelState.AddModelError("", "Unable to save changes. Ensure all foreign key constraints are met.");
+                }
             }
             return View(emotionalfeedbackReview);
         }
+
 
         // GET: EmotionalfeedbackReview/Delete/5
         public async Task<IActionResult> Delete(int? feedbackId, int? instructorId)
@@ -146,5 +161,24 @@ namespace Course_station.Controllers
         {
             return _context.EmotionalfeedbackReviews.Any(e => e.FeedbackId == feedbackId && e.InstructorId == instructorId);
         }
+        
+        public async Task<IActionResult> EmotionalTrendAnalysis(int courseId, int moduleId, DateTime timePeriod)
+        {
+            var result = await _context.EmotionalFeedbacks
+                .FromSqlInterpolated($"EXEC EmotionalTrendAnalysis @CourseID = {courseId}, @ModuleID = {moduleId}, @TimePeriod = {timePeriod}")
+                .ToListAsync();
+
+            if (!result.Any())
+            {
+                ViewBag.Message = "No emotional feedback data found for the specified course and module.";
+                return View("NoData");
+            }
+
+            return View(result);
+        }
+
+        
+        
+
     }
 }
