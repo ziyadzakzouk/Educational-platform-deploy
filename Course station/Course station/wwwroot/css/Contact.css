@@ -1,37 +1,37 @@
 ﻿/* Center the form and image on the page */
-.text-center {
+/*.text-center {
     display: flex;
     align-items: center;
     justify-content: center;
     min-height: 100vh;
     background-color:aliceblue;
-    background-image: url('/images/background.jpg'); /* Add a background image */
-    background-size: cover;
+    background-image: url('/images/background.jpg');*/ /* Add a background image */
+    /*background-size: cover;
     background-position: center;
-}
+}*/
 
 /* Style the form container */
-.form-container {
+/*.form-container {
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 80%;
     max-width: 1200px;
-}
+}*/
 
 /* Style the form */
-form {
-    background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent background */
-    padding: 20px;
+/*form {
+    background-color: rgba(255, 255, 255, 0.9);*/ /* Slightly transparent background */
+    /*padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 400px;
-    backdrop-filter: blur(10px); /* Blur the background behind the form */
-}
+    backdrop-filter: blur(10px);*/ /* Blur the background behind the form */
+/*}*/
 
     /* Style the form elements */
-    form div {
+    /*form div {
         margin-bottom: 15px;
     }
 
@@ -49,11 +49,11 @@ textarea {
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
-    background-image: url('/images/input-icon.png'); /* Add an icon to the input fields */
-    background-repeat: no-repeat;
+    background-image: url('/images/input-icon.png');*/ /* Add an icon to the input fields */
+    /*background-repeat: no-repeat;
     background-position: 10px center;
-    padding-left: 40px; /* Adjust padding to make room for the icon */
-}
+    padding-left: 40px;*/ /* Adjust padding to make room for the icon */
+/*}
 
 textarea {
     resize: vertical;
@@ -68,20 +68,20 @@ button[type="submit"] {
     border-radius: 4px;
     cursor: pointer;
     font-size: 16px;
-    background-image: url('/images/button-icon.png'); /* Add an icon to the button */
-    background-repeat: no-repeat;
+    background-image: url('/images/button-icon.png');*/ /* Add an icon to the button */
+    /*background-repeat: no-repeat;
     background-position: 10px center;
-    padding-left: 40px; /* Adjust padding to make room for the icon */
-}
+    padding-left: 40px;*/ /* Adjust padding to make room for the icon */
+/*}
 
     button[type="submit"]:hover {
         background-color: #0056b3;
-    }
+    }*/
 
 /* Style the image */
-.image-container img {
+/*.image-container img {
     max-width: 100%;
     height: auto;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
+}*/

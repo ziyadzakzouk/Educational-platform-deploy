@@ -1,5 +1,5 @@
 ﻿/* General form styling */
-.login-form {
+/*.login-form {
     max-width: 400px;
     margin: 0 auto;
     padding: 20px;
@@ -7,10 +7,10 @@
     border-radius: 10px;
     background-color: #f9f9f9;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
+}*/
 
 /* General form styling */
-.login-form {
+/*.login-form {
     max-width: 400px;
     margin: 0 auto;
     padding: 20px;
@@ -18,34 +18,34 @@
     border-radius: 10px;
     background-color: #f9f9f9;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
+}*/
 
     /* Form group styling */
-    .login-form .form-group {
+    /*.login-form .form-group {
         display: flex;
         flex-direction: column;
         align-items: center;
         margin-bottom: 15px;
-    }
+    }*/
 
     /* Label styling */
-    .login-form label {
+    /*.login-form label {
         display: block;
         margin-bottom: 5px;
         font-weight: bold;
         text-align: center;
-    }
+    }*/
 
     /* Input styling */
-    .login-form .form-control {
+    /*.login-form .form-control {
         width: 100%;
         padding: 10px;
         border: 1px solid #ccc;
         border-radius: 5px;
-    }
+    }*/
 
     /* Radio group styling */
-    .login-form .radio-group {
+    /*.login-form .radio-group {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -54,10 +54,10 @@
 
         .login-form .radio-group input {
             margin-right: 10px;
-        }
+        }*/
 
     /* Button styling */
-    .login-form .btn {
+    /*.login-form .btn {
         width: 100%;
         padding: 10px;
         border: none;
@@ -70,5 +70,5 @@
 
         .login-form .btn:hover {
             background-color: #0056b3;
-        }
+        }*/
 
