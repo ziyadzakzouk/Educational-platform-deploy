@@ -150,55 +150,7 @@ namespace Course_station.Controllers
             return View(courses);
         }
 
-        //// GET: Instructor/EditCourse/5
-        //public async Task<IActionResult> EditCourse(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var course = await _context.Courses.FindAsync(id);
-        //    if (course == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return View(course);
-        //}
-
-        //// POST: Instructor/EditCourse/5
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> EditCourse(int id, [Bind("CourseId,Title,Description,DiffLevel,CreditPoint,LearningObjective")] Course course)
-        //{
-        //    if (id != course.CourseId)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
-        //            _context.Update(course);
-        //            await _context.SaveChangesAsync();
-        //        }
-        //        catch (DbUpdateConcurrencyException)
-        //        {
-        //            if (!CourseExists(course.CourseId))
-        //            {
-        //                return NotFound();
-        //            }
-        //            else
-        //            {
-        //                throw;
-        //            }
-        //        }
-        //        return RedirectToAction(nameof(ManageCourses));
-        //    }
-        //    return View(course);
-        //}
-
+        
         // GET: Course /details/5
         public async Task<IActionResult> CourseDetails(int? id)
         {
@@ -219,35 +171,7 @@ namespace Course_station.Controllers
         }
 
 
-        //// GET: Instructor/DeleteCourse/5
-        //public async Task<IActionResult> DeleteCourse(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var course = await _context.Courses
-        //        .FirstOrDefaultAsync(m => m.CourseId == id);
-        //    if (course == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return View(course);
-        //}
-
-        //// POST: Instructor/DeleteCourse/5
-        //[HttpPost, ActionName("DeleteCourse")]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> DeleteCourseConfirmed(int id)
-        //{
-        //    var course = await _context.Courses.FindAsync(id);
-        //    _context.Courses.Remove(course);
-        //    await _context.SaveChangesAsync();
-        //    return RedirectToAction(nameof(ManageCourses));
-        //}
-
+        
 
         // GET: Instructor/EditCourse/5
         public async Task<IActionResult> EditCourse(int? id)
@@ -306,23 +230,6 @@ namespace Course_station.Controllers
         }
 
         // GET: Instructor/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var instructor = await _context.Instructors
-                .FirstOrDefaultAsync(m => m.InstructorId == id);
-            if (instructor == null)
-            {
-                return NotFound();
-            }
-
-            return View(instructor);
-        }
-
         // GET: Instructor/DeleteCourse/5
         public async Task<IActionResult> DeleteCourse(int? id)
         {
@@ -352,6 +259,7 @@ namespace Course_station.Controllers
             return RedirectToAction(nameof(ManageCourses));
         }
 
+       
 
 
         // POST: Instructor/Delete/5
