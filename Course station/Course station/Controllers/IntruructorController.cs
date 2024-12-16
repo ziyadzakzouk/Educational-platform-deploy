@@ -34,8 +34,12 @@ namespace Course_station.Controllers
             return View();
         }
 
+        [AdminPageOnly]
         public async Task<IActionResult> Index()
         {
+            var adminId = HttpContext.Session.GetInt32("AdminId");
+            var isAdminLoggedIn = User.Identity != null && User.Identity.IsAuthenticated && User.Identity.Name == "admin";
+
             var instructors = await _context.Instructors.Include(i => i.Courses).ToListAsync();
             return View(instructors);
         }
