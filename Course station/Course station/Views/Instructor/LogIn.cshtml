@@ -1,41 +1,4 @@
-﻿@* @model Course_station.Controllers.InstructorLoginViewModel *@
-
-@* @{ *@
-@*     ViewData["Title"] = "Instructor Login"; *@
-@* } *@
-
-@* <h2>Instructor Login</h2> *@
-
-@* <form asp-action="Login" method="post"> *@
-@*     <div class="form-group"> *@
-@*         <label asp-for="InstructorId">Instructor ID</label> *@
-@*         <input asp-for="InstructorId" class="form-control" /> *@
-@*         <span asp-validation-for="InstructorId" class="text-danger"></span> *@
-@*     </div> *@
-@*     <div class="form-group"> *@
-@*         <label asp-for="Password">Password</label> *@
-@*         <input asp-for="Password" type="password" class="form-control" /> *@
-@*         <span asp-validation-for="Password" class="text-danger"></span> *@
-@*     </div> *@
-@*     <button type="submit" class="btn btn-primary">Login</button> *@
-@* </form> *@
-
-@* @if (ViewBag.ErrorMessage != null) *@
-@* { *@
-@*     <div class="alert alert-danger">@ViewBag.ErrorMessage</div> *@
-@* } *@
-
-@* <div> *@
-@*     <a asp-action="Index" asp-controller="Home">Back to Home</a> *@
-@* </div> *@
-
-@* @section Scripts { *@
-@*     @{ *@
-@*         await Html.RenderPartialAsync("_ValidationScriptsPartial"); *@
-@*     } *@
-@* } *@
-
-@model Course_station.Controllers.InstructorLoginViewModel
+﻿@model Course_station.Controllers.InstructorLoginViewModel
 
 @{
     ViewData["Title"] = "Instructor Login";
@@ -66,8 +29,8 @@
     <a asp-action="Index" asp-controller="Home">Back to Home</a>
 </div>
 
- @section Scripts { 
-   @{ 
-        await Html.RenderPartialAsync("_ValidationScriptsPartial"); 
-    } 
- } 
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

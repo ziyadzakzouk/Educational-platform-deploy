@@ -18,42 +18,42 @@ namespace Course_station.Controllers
         }
 
         // GET: AdminLogin
-        public IActionResult AdminLogin()
+        public IActionResult AdminLogin(string returnUrl = null)
         {
+            ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AdminLogin(string username, string password, string indexPage)
+        public async Task<IActionResult> AdminLogin(string username, string password, string returnUrl = null)
         {
-            if (username == "youssef.ashraf" && password == "1234")
+            if ((username == "youssef.ashraf" && password == "1234") || (username == "admin" && password == "admin"))
             {
                 var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.Name, username),
-            new Claim(ClaimTypes.Role, "Admin")
-        };
+                {
+                    new Claim(ClaimTypes.Name, username),
+                    new Claim(ClaimTypes.Role, "Admin")
+                };
 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 var authProperties = new AuthenticationProperties();
 
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
 
-                if (indexPage == "Instructor")
+                if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
                 {
-                    return RedirectToAction("InstructorIndex", "Admin");
+                    return Redirect(returnUrl);
                 }
-                else if (indexPage == "Learners")
+                else
                 {
-                    return RedirectToAction("LearnerIndex", "Admin");
+                    return RedirectToAction("AdminPage", "Admin");
                 }
             }
 
+            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
             return View();
         }
-
-
 
         public IActionResult Index()
         {

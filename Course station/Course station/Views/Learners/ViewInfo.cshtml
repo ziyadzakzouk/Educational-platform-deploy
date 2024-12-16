@@ -1,37 +1,33 @@
 ﻿@model Course_station.Models.LearnerInfoViewModel
 
 @{
-    ViewData["Title"] = "View Info";
+    ViewData["Title"] = "Notifications";
 }
 
-<h1>View Info</h1>
-
-<div>
-    <h2>@Model.Learner.FirstName @Model.Learner.LastName</h2>
-    <p>Email: @Model.Learner.Email</p>
-    <p>Country: @Model.Learner.Country</p>
-    <!-- Add more learner details as needed -->
-</div>
-
 <h3>Notifications</h3>
+
 <table class="table">
     <thead>
-        <tr>
-            <th>TimeStamp</th>
-            <th>Message</th>
-            <th>Urgency</th>
-            <th>Read Status</th>
-        </tr>
+    <tr>
+        <th>TimeStamp</th>
+        <th>Message</th>
+        <th>Urgency</th>
+        <th>Read Status</th>
+        <th>Actions</th>
+    </tr>
     </thead>
     <tbody>
-        @foreach (var notification in Model.Notifications)
-        {
-            <tr>
-                <td>@notification.TimeStamp</td>
-                <td>@notification.Message</td>
-                <td>@notification.Urgency</td>
-                <td>@notification.Readstatus</td>
-            </tr>
-        }
+    @foreach (var notification in Model.Notifications)
+    {
+        <tr>
+            <td>@notification.TimeStamp</td>
+            <td>@notification.Message</td>
+            <td>@notification.Urgency</td>
+            <td>@(notification.Readstatus == true ? "Read" : "Unread")</td>
+            <td>
+                <a asp-action="MarkAsRead" asp-route-learnerId="@Model.Learner.LearnerId" asp-route-id="@notification.NotificationId" >Mark as Read</a>
+            </td>
+        </tr>
+    }
     </tbody>
 </table>

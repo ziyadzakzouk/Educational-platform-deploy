@@ -16,12 +16,16 @@ namespace Course_station.Controllers
         }
 
         // GET: Assessments
+       
         public async Task<IActionResult> Index()
         {
+           
+
             return View(await _context.Assessments.ToListAsync());
         }
 
-        // GET: Assessments/Details/5
+       
+        // GET: Assessment/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -30,13 +34,18 @@ namespace Course_station.Controllers
             }
 
             var assessment = await _context.Assessments
+                .Include(a => a.Module)
                 .Include(a => a.TakenAssessments)
                 .FirstOrDefaultAsync(m => m.AssessmentId == id);
-
             if (assessment == null)
             {
                 return NotFound();
             }
+
+            var takenAssessments = assessment.TakenAssessments;
+            ViewBag.AverageScore = takenAssessments.Any() ? takenAssessments.Average(ta => ta.ScoredPoint) : 0;
+            ViewBag.HighestScore = takenAssessments.Any() ? takenAssessments.Max(ta => ta.ScoredPoint) : 0;
+            ViewBag.LowestScore = takenAssessments.Any() ? takenAssessments.Min(ta => ta.ScoredPoint) : 0;
 
             return View(assessment);
         }

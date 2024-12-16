@@ -39,8 +39,12 @@ namespace Course_station.Controllers
         }
 
         // GET: Learners
+        [AdminPageOnly]
         public async Task<IActionResult> Index()
         {
+            var adminId = HttpContext.Session.GetInt32("AdminId");
+            var isAdminLoggedIn = User.Identity != null && User.Identity.IsAuthenticated && User.Identity.Name == "admin";
+
             return View(await _context.Learners.ToListAsync());
         }
 
@@ -259,6 +263,16 @@ namespace Course_station.Controllers
             };
 
             return View(viewModel);
+        }
+        public async Task<IActionResult> MarkAsRead(int learnerId, int id)
+        {
+            var notification = await _context.Notifications.FindAsync(id);
+            if (notification != null)
+            {
+                notification.Readstatus = true;
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction("ViewInfo", new { learnerId });
         }
 
         // 2. Update Profile

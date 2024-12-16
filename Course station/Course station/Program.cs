@@ -56,7 +56,7 @@ else
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
-app.UseSession(); 
+app.UseSession();
 app.UseRouting();
 
 app.UseAuthentication();

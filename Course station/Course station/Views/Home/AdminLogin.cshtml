@@ -1,10 +1,12 @@
 ﻿@{
     ViewData["Title"] = "Admin Login";
+    var returnUrl = ViewData["ReturnUrl"] as string;
 }
 
 <h2 class="text-center">Admin Login</h2>
 
 <form asp-action="AdminLogin" method="post" class="login-form">
+    <div asp-validation-summary="All" class="text-danger"></div>
     <div class="form-group">
         <label for="username">Username</label>
         <input type="text" class="form-control" id="username" name="username" required>
@@ -13,17 +15,10 @@
         <label for="password">Password</label>
         <input type="password" class="form-control" id="password" name="password" required>
     </div>
-    <div class="form-group">
-        <label for="indexPage">Select Index Page</label>
-        <div class="radio-group">
-            <input type="radio" id="instructorIndex" name="indexPage" value="Instructor" required>
-            <label for="instructorIndex">Instructor Index</label>
-        </div>
-        <div class="radio-group">
-            <input type="radio" id="learnersIndex" name="indexPage" value="Learners" required>
-            <label for="learnersIndex">Learners Index</label>
-        </div>
-    </div>
+    <input type="hidden" name="returnUrl" value="@returnUrl" />
     <button type="submit" class="btn btn-primary">Login</button>
 </form>
 
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

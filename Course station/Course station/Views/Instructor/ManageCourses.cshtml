@@ -1,0 +1,30 @@
+﻿@model IEnumerable<Course_station.Models.Course>
+
+@{
+    ViewData["Title"] = "Manage Courses";
+}
+
+<h2>Manage Courses</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var course in Model)
+        {
+            <tr>
+                <td>@course.Title</td>
+                <td>@course.Description</td>
+                <td>
+                    <a asp-controller="Course" asp-action="Edit" asp-route-id="@course.CourseId" class="btn btn-primary">Edit</a>
+                    <a asp-controller="Course" asp-action="Delete" asp-route-id="@course.CourseId" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

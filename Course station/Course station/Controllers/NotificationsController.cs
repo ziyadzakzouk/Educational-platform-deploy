@@ -16,9 +16,49 @@ namespace Course_station.Controllers
         }
 
         // GET: Notifications
+        [AdminPageOnly]
         public async Task<IActionResult> Index()
         {
+            var adminId = HttpContext.Session.GetInt32("AdminId");
+            var isAdminLoggedIn = User.Identity != null && User.Identity.IsAuthenticated && User.Identity.Name == "admin";
+
+            var instructorId = HttpContext.Session.GetInt32("InstructorId");
+            var learnerId = HttpContext.Session.GetInt32("LearnerId");
+
+            IQueryable<Notification> notificationsQuery = _context.Notifications;
+
+            if (instructorId != null)
+            {
+                notificationsQuery = notificationsQuery.Where(n => n.Learners.Any(l => l.CourseEnrollments.Any(ce => ce.Course.Instructors.Any(i => i.InstructorId == instructorId))));
+            }
+            else if (learnerId != null)
+            {
+                notificationsQuery = notificationsQuery.Where(n => n.Learners.Any(l => l.LearnerId == learnerId));
+            }
+
+            var notifications = await notificationsQuery.ToListAsync();
+            return View(notifications);
+        }
+
+
+       
+        // GET: Notifications of the learner
+        public async Task<IActionResult> IndexLearner()
+        {
             return View(await _context.Notifications.ToListAsync());
+        }
+        // GET: Notifications of the instructor
+        public async Task<IActionResult> IndexInstructor()
+        {
+            return View(await _context.Notifications.ToListAsync());
+        }
+        public async Task<IActionResult> IndexAdmin()
+        {
+            return View(await _context.Notifications.ToListAsync());
+        }
+        public async Task<IActionResult> NotUser()
+        {
+            return RedirectToAction("Create", "Learners");
         }
 
         // GET: Notifications/Details/5
@@ -38,6 +78,7 @@ namespace Course_station.Controllers
 
             return View(notification);
         }
+        
 
         // GET: Notifications/Create
         public IActionResult Create()
@@ -141,5 +182,14 @@ namespace Course_station.Controllers
         {
             return _context.Notifications.Any(e => e.NotificationId == id);
         }
+        
+        public async Task<IActionResult> MarkAsRead(int id)
+        {
+            var notification = await _context.Notifications.FindAsync(id);
+            notification.Readstatus = true;
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+        
     }
 }

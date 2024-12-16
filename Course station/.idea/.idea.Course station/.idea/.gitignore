@@ -1,6 +1,16 @@
-﻿################################################################################
-# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
-################################################################################
+# Default ignored files
+/shelf/
+/workspace.xml
+# Rider ignored files
+/.idea.Course station.iml
+/contentModel.xml
+/modules.xml
+/projectSettingsUpdater.xml
+# Editor-based HTTP Client requests
+/httpRequests/
+# Datasource local storage ignored files
+/dataSources/
+/dataSources.local.xml
 
 /.vs/Educational-platform/FileContentIndex
 /.vs/slnx.sqlite
@@ -20,7 +30,6 @@ node_modules/
 
 /.vs
 /.vs/Educational-platform/FileContentIndex
-/.gitignore
 
 # Ignore build directories
 bin/
@@ -31,7 +40,7 @@ appsettings.json
 appsettings.Development.json
 
 # Ignore ApplicationDbContext.cs
-Course station/Models/ApplicationDbContext.cs
+Course station/Course station/Models/ApplicationDbContext.cs
 
 # Ignore build files
 *.dll
@@ -57,5 +66,4 @@ Course station/Models/ApplicationDbContext.cs
 *.suo
 *.user
 *.userosscache
-*.sln.docstates
-/Course station/Course station/Models/ApplicationDbContext.cs
+*.sln.docstatesk
