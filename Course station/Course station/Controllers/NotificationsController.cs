@@ -16,11 +16,11 @@ namespace Course_station.Controllers
         }
 
         // GET: Notifications
-        [AdminPageOnly]
+        //[AdminPageOnly]
         public async Task<IActionResult> Index()
         {
-            var adminId = HttpContext.Session.GetInt32("AdminId");
-            var isAdminLoggedIn = User.Identity != null && User.Identity.IsAuthenticated && User.Identity.Name == "admin";
+          //var adminId = HttpContext.Session.GetInt32("AdminId");
+          //  var isAdminLoggedIn = User.Identity != null && User.Identity.IsAuthenticated && User.Identity.Name == "admin";
 
             var instructorId = HttpContext.Session.GetInt32("InstructorId");
             var learnerId = HttpContext.Session.GetInt32("LearnerId");
