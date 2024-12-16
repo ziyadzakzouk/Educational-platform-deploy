@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["Title"] = "DeleteQuest";
+}
+
+<h2>Delete Completed Quest</h2>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Message"]
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<form asp-action="DeleteCompletedQuest" method="post">
+    <div class="form-group">
+        <label for="questId">Quest ID</label>
+        <input type="number" class="form-control" id="questId" name="questId" required />
+    </div>
+    <button type="submit" class="btn btn-danger">Delete Quest</button>
+</form>
