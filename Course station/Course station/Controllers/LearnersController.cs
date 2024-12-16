@@ -466,28 +466,33 @@ namespace Course_station.Controllers
         }
 
 
-        //public async Task<IActionResult> QuestProgress(int learnerId)
-        //{
-        //    var learner = await _context.Learners
-        //        .Include(l => l.LearnerCollaborations)
-        //        .ThenInclude(lc => lc.Quest)
-        //        .FirstOrDefaultAsync(l => l.LearnerId == learnerId);
-
-        //    if (learner == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var quests = learner.LearnerCollaborations.Select(lc => lc.Quest).ToList();
-        //    return View(quests);
-        //}
         public IActionResult QuestProgress()
         {
             var quests = _context.Quests.ToList(); // Ensure this is a list of Quest objects
             return View(quests);
         }
+        // Join a collaborative quest
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> JoinCollaborativeQuest(int learnerId, int questId)
+        {
+            var result = await _context.Database.ExecuteSqlRawAsync(
+                "EXEC JoinCollaborativeQuest @LearnerID = {0}, @QuestID = {1}",
+                learnerId, questId
+            );
 
+            TempData["Message"] = result > 0 ? "Successfully joined the collaborative quest!" : "Quest is full or an error occurred.";
+            return RedirectToAction(nameof(AvailableQuests));
+        }
 
+        public async Task<IActionResult> AvailableQuests()
+        {
+            var quests = await _context.Quests
+                .Where(q => q.Collaborative != null)
+                .ToListAsync();
+
+            return View(quests);
+        }
         public async Task<IActionResult> AchievementProgress(int learnerId)
         {
             var learner = await _context.Learners
@@ -503,6 +508,40 @@ namespace Course_station.Controllers
             var achievements = learner.Achievements.ToList();
             return View(achievements);
         }
+
+        public class ActiveQuestParticipantsViewModel
+        {
+            public Learner Learner { get; set; }
+            public List<Collaborative> ActiveQuests { get; set; }
+        }
+        public async Task<IActionResult> ActiveQuestParticipants(int learnerId)
+        {
+            var learner = await _context.Learners
+                .Include(l => l.LearnerCollaborations)
+                .ThenInclude(lc => lc.Quest)
+                .ThenInclude(q => q.LearnerCollaborations)
+                .ThenInclude(lc => lc.Learner)
+                .FirstOrDefaultAsync(l => l.LearnerId == learnerId);
+
+            if (learner == null)
+            {
+                return NotFound();
+            }
+
+            var activeQuests = learner.LearnerCollaborations
+                .Where(lc => lc.CompletionStatus != "Completed")
+                .Select(lc => lc.Quest)
+                .ToList();
+
+            var viewModel = new ActiveQuestParticipantsViewModel
+            {
+                Learner = learner,
+                ActiveQuests = activeQuests
+            };
+
+            return View(viewModel);
+        }
+
 
 
 
