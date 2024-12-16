@@ -56,7 +56,6 @@ namespace Course_station.Controllers
             return View();
         }
 
-        // POST: Quests/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("QuestId,DifficultyLevel,Criteria,Description,Title,Collaborative,SkillMastery")] Quest quest)
@@ -69,6 +68,7 @@ namespace Course_station.Controllers
             }
             return View(quest);
         }
+
 
         // GET: Quests/Edit/5
         public async Task<IActionResult> Edit(int? id)

@@ -747,6 +747,25 @@ namespace Course_station.Controllers
             }
             return View(activity);
         }
+
+        public IActionResult CreateQuest()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateQuest([Bind("QuestId,DifficultyLevel,Criteria,Description,Title,Collaborative,SkillMastery")] Quest quest)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Quests.Add(quest);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index", "Quests");
+            }
+            return View(quest);
+        }
+
         /*
         // GET: Instructor/DeleteCourse/5
         public async Task<IActionResult> DeleteCourse(int? id)
