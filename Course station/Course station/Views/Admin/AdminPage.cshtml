@@ -1,0 +1,11 @@
+﻿@{
+    ViewData["Title"] = "Admin Page";
+}
+
+<h2 class="text-center">Admin Page</h2>
+
+<div class="list-group">
+    <a href="@Url.Action("Index", "Instructor")" class="list-group-item list-group-item-action">Manage Instructors</a>
+    <a href="@Url.Action("Index", "Course")" class="list-group-item list-group-item-action">Manage Courses</a>
+    <!-- Add more links as needed -->
+</div>

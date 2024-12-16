@@ -37,11 +37,12 @@ namespace Course_station.Controllers
         public async Task<IActionResult> Index()
         {
             var adminId = HttpContext.Session.GetInt32("AdminId");
-            if (adminId == null)
-            {
-                return RedirectToAction("AdminLogin", "Home", new { returnUrl = Url.Action("Index", "Instructor") });
-            }
+            var isAdminLoggedIn = User.Identity != null && User.Identity.IsAuthenticated && User.Identity.Name == "admin";
 
+           if(adminId==null)
+            {
+                return RedirectToAction("AdminLogin", "Home");
+            }
             var instructors = await _context.Instructors.Include(i => i.Courses).ToListAsync();
             return View(instructors);
         }

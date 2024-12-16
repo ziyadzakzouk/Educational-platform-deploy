@@ -45,11 +45,16 @@ namespace Course_station.Controllers
                 }
                 else
                 {
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("AdminPage", "Admin");
                 }
             }
 
             ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+            return View();
+        }
+
+        public IActionResult AdminPage()
+        {
             return View();
         }
 
