@@ -234,7 +234,6 @@ namespace Course_station.Controllers
             return _context.Courses.Any(e => e.CourseId == id);
         }
 
-        // GET: Instructor/Delete/5
         // GET: Instructor/DeleteCourse/5
         public async Task<IActionResult> DeleteCourse(int? id)
         {
@@ -250,8 +249,24 @@ namespace Course_station.Controllers
                 return NotFound();
             }
 
-            return View("~/Views/Course/Delete.cshtml", course);
+            return View(course);
         }
+
+        // POST: Instructor/DeleteCourse/5
+        [HttpPost, ActionName("DeleteCourse")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteCourseConfirmed(int id)
+        {
+            var course = await _context.Courses.FindAsync(id);
+            if (course != null)
+            {
+                _context.Courses.Remove(course);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction(nameof(ManageCourses));
+        }
+
+
 
         // GET: Instructor/Delete/5
         public async Task<IActionResult> Delete(int? id)
