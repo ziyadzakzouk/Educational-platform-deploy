@@ -1,25 +1,25 @@
-﻿@model Course_station.Views.Learners.ActiveQuestParticipantsModel
+﻿@* @model Course_station.Views.Learners.ActiveQuestParticipantsModel *@
 
-@{
-    ViewData["Title"] = "ActiveQuestParticipants";
-}
+@* @{ *@
+@*     ViewData["Title"] = "ActiveQuestParticipants"; *@
+@* } *@
 
-<h3>Active Quests for @Model.Learner.FirstName @Model.Learner.LastName</h3>
-@foreach (var quest in Model.ActiveQuests)
-{
-    <div class="card mb-3">
-        <div class="card-header">
-            <h4>@quest.Quest.Title</h4>
-        </div>
-        <div class="card-body">
-            <p>@quest.Quest.Description</p>
-            <h5>Participants:</h5>
-            <ul>
-                @foreach (var participant in quest.LearnerCollaborations.Select(lc => lc.Learner))
-                {
-                    <li>@participant.FirstName @participant.LastName</li>
-                }
-            </ul>
-        </div>
-    </div>
-}
+@* <h3>Active Quests for @Model.Learner.FirstName @Model.Learner.LastName</h3> *@
+@* @foreach (var quest in Model.ActiveQuests) *@
+@* { *@
+@*     <div class="card mb-3"> *@
+@*         <div class="card-header"> *@
+@*             <h4>@quest.Quest.Title</h4> *@
+@*         </div> *@
+@*         <div class="card-body"> *@
+@*             <p>@quest.Quest.Description</p> *@
+@*             <h5>Participants:</h5> *@
+@*             <ul> *@
+@*                 @foreach (var participant in quest.LearnerCollaborations.Select(lc => lc.Learner)) *@
+@*                 { *@
+@*                     <li>@participant.FirstName @participant.LastName</li> *@
+@*                 } *@
+@*             </ul> *@
+@*         </div> *@
+@*     </div> *@
+@* } *@
