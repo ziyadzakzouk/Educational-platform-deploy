@@ -1,16 +1,19 @@
 /* site.css */
 
 /* Center text in the navbar */
+
 .navbar-nav {
     margin: 0 auto;
     display: flex;
     justify-content: center;
 }
 
+
     .navbar-nav .nav-item {
         text-align: center;
         margin: 0 10px; /* Add space between items */
     }
+    hover::after
 
     .navbar-nav .nav-link {
         color: #333;

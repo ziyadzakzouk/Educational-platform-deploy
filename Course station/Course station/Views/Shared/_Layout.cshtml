@@ -25,37 +25,47 @@
                     <ul class="navbar-nav flex-grow-1">
                          
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                              <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>  
+                             @* <a class=a class="nav-link text-dark" asp-area="" href="#Aboutus">Home</a>  *@
+                            @* <a class="nav-link text-dark" asp-area="" asp-fragment="Aboutus">Home</a> *@
+                            @* <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index" asp-fragment="Aboutus">Home</a> *@
+                            @* <a class="nav-link text-dark" href="/Home/Index#Aboutus">Home</a> *@
+
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="About">About Us</a>
+                            @* <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="About">About Us</a> *@
+                            <a class="nav-link text-dark" href="/Home/Index#Aboutus">About Us</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="FeaturedCourse">Course</a>
+                            @* <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="FeaturedCourse">Course</a> *@
+                            <a class="nav-link text-dark" href="/Home/Index#Course">Course</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Contact">Contact</a>
+                            @* <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Contact">Contact</a> *@
+                            <a class="nav-link text-dark" href="/Home/Index#Contact"> Contact Us </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Contact">Plans</a>
+                            @* <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Contact">Plans</a> *@
+                            <a class="nav-link text-dark" href="/Home/Index#Servicies"> Servicies </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Contact">Bloge</a>
+                            @* <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Contact">Bloge</a> *@
+                            <a class="nav-link text-dark" href="/Home/Index#Planes"> Planes </a>
                         </li>
                     </ul>
                     <ul class="navbar-nav">
-                        @if (User?.Identity?.IsAuthenticated == true)
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Login</a>
-                            </li>
-                        }
-                        else
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Logout</a>
-                            </li>
-                        }
+                         @if (User?.Identity?.IsAuthenticated == true) 
+                         { 
+                             <li class="nav-item"> 
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Login</a> 
+                             </li> 
+                         }
+                        else 
+                         { 
+                            <li class="nav-item"> 
+                               <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Logout</a> 
+                           </li> 
+                        } 
                     </ul>
                 </div>
             </div>

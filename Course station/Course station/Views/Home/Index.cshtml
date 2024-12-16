@@ -37,9 +37,10 @@
 </div>
 <!-- about us -->
 
-<h1>About US</h1>
+<h1 id="Aboutus">About US</h1>
 
-<p class="Aboutus">
+<p >
+    @* class="Aboutus" *@
     Welcome to Course Station, your ultimate destination for online learning.<br />
     Our mission is to provide high-quality education that is accessible to everyone, everywhere.<br />
     We believe in the power of knowledge and strive to create a platform that brings the best of offline learning experiences to the digital world.<br />
@@ -53,7 +54,7 @@
 <hr />
 
 <!-- demand courses -->
-<h1> Our most populor and demands courses</h1>
+<h1 id="Course"> Our most populor and demands courses</h1>
 
 <div class="row row-cols-1 row-cols-md-3 g-4">
     <div class="col">
@@ -95,7 +96,7 @@
 </div>
 
 <hr />
-<h1>Servicies</h1>
+<h1 id="Servicies">Servicies</h1>
 <div class="container">
     <div class="row">
         <div class="col-md-4 mb-4">
@@ -145,7 +146,7 @@
             </div>
         </div>
     </div>
-
+    </div>
     <hr />
     <!-- project-section -->
     <div class="project-section">
@@ -173,7 +174,7 @@
 
 <hr />
 <!-- Our plans -->
-<h1>Our Planes</h1>
+<h1 id="Planes">Our Planes</h1>
 <p class="card-text">
     The Free plan offers access to a selection of our courses, perfect for beginners who want to get started with online learning.
     Enjoy flexible learning schedules and access to course materials at your own pace.
@@ -209,7 +210,7 @@
                 <h2 class="card-title text-center">Premium</h2>
                 <hr />
                 <p class="starting">Starting From</p>
-                <p class="price">$1500</p>
+                <p class="price">$100</p>
                 <button class="btn btn-close-white">Get Started</button>
                 <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
             </div>
@@ -221,7 +222,7 @@
                 <h2 class="card-title text-center">Standard</h2>
                 <hr />
                 <p class="starting">Starting From</p>
-                <p class="price">$950</p>
+                <p class="price">$50</p>
                 <button class="btn btn-primary">Get Started</button>
                 <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
             </div>
@@ -230,7 +231,7 @@
 </div>
 <hr />
 <!-- contact us -->
-<h1>Contact us</h1>
+<h1 id="Contact">Contact us</h1>
 <div class="contact-container">
     <form action="action_page.php">
 
@@ -239,6 +240,9 @@
 
         <label for="lname">Last Name</label>
         <input type="text" id="lname" name="lastname" placeholder="Your last name..">
+
+            <label for="Email">Email</label>
+            <input type="text" id="Email" placeholder="Enter your Email..">
 
         <label for="country">Country</label>
         <select id="country" name="country">
