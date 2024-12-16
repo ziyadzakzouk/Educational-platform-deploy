@@ -16,32 +16,15 @@ namespace Course_station.Controllers
         }
 
         // GET: Assessments
+       
         public async Task<IActionResult> Index()
         {
+           
+
             return View(await _context.Assessments.ToListAsync());
         }
 
-        // GET: Assessments/Details/5
-        /*
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var assessment = await _context.Assessments
-                .Include(a => a.TakenAssessments)
-                .FirstOrDefaultAsync(m => m.AssessmentId == id);
-
-            if (assessment == null)
-            {
-                return NotFound();
-            }
-
-            return View(assessment);
-        }
-        */
+       
         // GET: Assessment/Details/5
         public async Task<IActionResult> Details(int? id)
         {
