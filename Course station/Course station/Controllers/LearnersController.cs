@@ -39,8 +39,12 @@ namespace Course_station.Controllers
         }
 
         // GET: Learners
+        [AdminPageOnly]
         public async Task<IActionResult> Index()
         {
+            var adminId = HttpContext.Session.GetInt32("AdminId");
+            var isAdminLoggedIn = User.Identity != null && User.Identity.IsAuthenticated && User.Identity.Name == "admin";
+
             return View(await _context.Learners.ToListAsync());
         }
 
