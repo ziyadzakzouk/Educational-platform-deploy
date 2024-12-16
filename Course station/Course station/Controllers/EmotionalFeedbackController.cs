@@ -21,8 +21,32 @@ namespace Course_station.Controllers
             await emotionalFeedbacks.ToListAsync();
             return RedirectToAction("Index", "EmotionalfeedbackReview");
         }
+        public IActionResult EmotionalTrendAnalysis()
+        {
+            return View();
+        }
 
-        // GET: EmotionalFeedback
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EmotionalTrendAnalysis(int CourseID, int ModuleID, DateTime TimePeriod)
+        {
+            if (ModelState.IsValid)
+            {
+                var result =  _context.EmotionalFeedbacks
+                    .FromSqlRaw("EXEC EmotionalTrendAnalysis @CourseID = {0}, @ModuleID = {1}, @TimePeriod = {2}",
+                        CourseID, ModuleID, TimePeriod)
+                    .AsEnumerable() // Perform the composition on the client side
+                    .Select(e => new { e.EmotionalState })
+                    .ToList();
+                
+                var anonymousResult = result.Select(e => new { e.EmotionalState }).ToList();
+
+                return View("EmotionalTrendAnalysisResult", result);
+            }
+            return View();
+        }
+
+            // GET: EmotionalFeedback
         public async Task<IActionResult> Index()
         {
             var emotionalFeedbacks = _context.EmotionalFeedbacks.Include(e => e.Activity).Include(e => e.Learner);

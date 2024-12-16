@@ -1,0 +1,23 @@
+@{
+    ViewData["Title"] = "Emotional Trend Analysis Input";
+}
+
+<h1>Emotional Trend Analysis Input</h1>
+
+<form asp-action="EmotionalTrendAnalysis">
+    <div class="form-group">
+        <label for="CourseID" class="control-label">Course ID</label>
+        <input type="number" id="CourseID" name="CourseID" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="ModuleID" class="control-label">Module ID</label>
+        <input type="number" id="ModuleID" name="ModuleID" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="TimePeriod" class="control-label">Time Period</label>
+        <input type="datetime-local" id="TimePeriod" name="TimePeriod" class="form-control" />
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Analyze" class="btn btn-primary" />
+    </div>
+</form>
