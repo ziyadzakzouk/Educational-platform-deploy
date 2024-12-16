@@ -189,6 +189,28 @@ namespace Course_station.Controllers
 
             return View(learner);
         }
+        
+        public IActionResult CreateFeedback(int learnerId)
+        {
+            var viewModel = new EmotionalFeedback
+            {
+                LearnerId = learnerId
+            };
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateFeedback(EmotionalFeedback feedback)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.EmotionalFeedbacks.Add(feedback);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Home));
+            }
+            return View(feedback);
+        }
 
         // POST: Learners/Delete/5
         [HttpPost]

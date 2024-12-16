@@ -1,0 +1,51 @@
+@model Course_station.Models.EmotionalFeedback
+
+@{
+    ViewData["Title"] = "Delete Emotional Feedback";
+}
+
+<h1>Delete Emotional Feedback</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Emotional Feedback</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FeedbackId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FeedbackId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LearnerId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LearnerId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ActivityId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ActivityId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Timestamp)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Timestamp)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EmotionalState)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EmotionalState)
+        </dd>
+    </dl>
+
+    <form asp-action="Delete" method="post">
+        <input type="hidden" asp-for="FeedbackId" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    </form>
+</div>

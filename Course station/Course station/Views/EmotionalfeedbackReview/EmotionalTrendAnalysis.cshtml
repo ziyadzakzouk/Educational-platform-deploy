@@ -1,0 +1,25 @@
+@model IEnumerable<Course_station.Models.EmotionalFeedback>
+
+@{
+    ViewData["Title"] = "Emotional Trend Analysis";
+}
+
+<h1>Emotional Trend Analysis</h1>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Activity ID</th>
+        <th>Emotional State</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var feedback in Model)
+    {
+        <tr>
+            <td>@feedback.ActivityId</td>
+            <td>@feedback.EmotionalState</td>
+        </tr>
+    }
+    </tbody>
+</table>

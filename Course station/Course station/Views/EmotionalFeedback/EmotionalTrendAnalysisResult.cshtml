@@ -1,0 +1,23 @@
+@model IEnumerable<dynamic>
+
+@{
+    ViewData["Title"] = "Emotional Trend Analysis Result";
+}
+
+<h1>Emotional Trend Analysis Result</h1>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Emotional State</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var feedback in Model)
+    {
+        <tr>
+            <td>@feedback.EmotionalState</td>
+        </tr>
+    }
+    </tbody>
+</table>

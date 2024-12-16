@@ -15,7 +15,38 @@ namespace Course_station.Controllers
             _context = context;
         }
 
-        // GET: EmotionalFeedback
+        public async Task<IActionResult> Trend()
+        {
+            var emotionalFeedbacks = _context.EmotionalFeedbacks.Include(e => e.Activity).Include(e => e.Learner);
+            await emotionalFeedbacks.ToListAsync();
+            return RedirectToAction("Index", "EmotionalfeedbackReview");
+        }
+        public IActionResult EmotionalTrendAnalysis()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EmotionalTrendAnalysis(int CourseID, int ModuleID, DateTime TimePeriod)
+        {
+            if (ModelState.IsValid)
+            {
+                var result =  _context.EmotionalFeedbacks
+                    .FromSqlRaw("EXEC EmotionalTrendAnalysis @CourseID = {0}, @ModuleID = {1}, @TimePeriod = {2}",
+                        CourseID, ModuleID, TimePeriod)
+                    .AsEnumerable() // Perform the composition on the client side
+                    .Select(e => new { e.EmotionalState })
+                    .ToList();
+                
+                var anonymousResult = result.Select(e => new { e.EmotionalState }).ToList();
+
+                return View("EmotionalTrendAnalysisResult", result);
+            }
+            return View();
+        }
+
+            // GET: EmotionalFeedback
         public async Task<IActionResult> Index()
         {
             var emotionalFeedbacks = _context.EmotionalFeedbacks.Include(e => e.Activity).Include(e => e.Learner);
@@ -70,15 +101,20 @@ namespace Course_station.Controllers
                 return NotFound();
             }
 
-            var emotionalFeedback = await _context.EmotionalFeedbacks.FindAsync(id);
+            var emotionalFeedback = await _context.EmotionalFeedbacks
+                .Include(e => e.Activity)
+                .Include(e => e.Learner)
+                .FirstOrDefaultAsync(e => e.FeedbackId == id);
+
             if (emotionalFeedback == null)
             {
                 return NotFound();
             }
+
             return View(emotionalFeedback);
         }
 
-        // POST: EmotionalFeedback/Edit/5
+// POST: EmotionalFeedback/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("FeedbackId,LearnerId,ActivityId,Timestamp,EmotionalState")] EmotionalFeedback emotionalFeedback)
@@ -108,8 +144,11 @@ namespace Course_station.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+
             return View(emotionalFeedback);
         }
+        
+
 
         // GET: EmotionalFeedback/Delete/5
         public async Task<IActionResult> Delete(int? id)
