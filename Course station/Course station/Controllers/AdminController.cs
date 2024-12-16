@@ -32,9 +32,13 @@ namespace Course_station.Controllers
         public async Task<IActionResult> AdminLogin(string username, string password, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
-            var result = await _signInManager.PasswordSignInAsync(username, password, false, false);
-            if (result.Succeeded)
+
+            // Check if the username and password are "admin"
+            if (username == "admin" && password == "admin")
             {
+                // Set the AdminId in the session
+                HttpContext.Session.SetInt32("AdminId", 1);
+
                 if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
                 {
                     return Redirect(returnUrl);

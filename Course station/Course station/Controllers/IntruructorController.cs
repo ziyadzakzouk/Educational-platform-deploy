@@ -46,6 +46,7 @@ namespace Course_station.Controllers
             return View(instructors);
         }
 
+
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
