@@ -36,3 +36,11 @@
         <input type="submit" value="Create" class="btn btn-primary" />
     </div>
 </form>
+
+<div>
+    <a asp-action="ManageCourses" asp-controller="Instructor">Back to List</a>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

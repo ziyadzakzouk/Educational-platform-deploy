@@ -155,6 +155,7 @@ namespace Course_station.Controllers
         }
 
 
+
         // GET: Course /details/5
         public async Task<IActionResult> CourseDetails(int? id)
         {
@@ -515,19 +516,34 @@ namespace Course_station.Controllers
         {
             return View();
         }
+       
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateCourse([Bind("CourseId,Title,Description,DiffLevel,CreditPoint,LearningObjective")] Course course)
         {
+            var instructorId = HttpContext.Session.GetInt32("InstructorId");
+            if (instructorId == null)
+            {
+                return RedirectToAction("Login", "Instructor");
+            }
+
             if (ModelState.IsValid)
             {
-                _context.Courses.Add(course);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var instructor = await _context.Instructors.FindAsync(instructorId);
+                if (instructor != null)
+                {
+                    course.Instructors = new List<Instructor> { instructor };
+                    _context.Courses.Add(course);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(ManageCourses)); // Redirect to the ManageCourses action
+                }
             }
             return View(course);
         }
+
+
+
 
         public IActionResult CreateAssessment()
         {
@@ -766,121 +782,24 @@ namespace Course_station.Controllers
             return View(quest);
         }
 
-        /*
-        // GET: Instructor/DeleteCourse/5
-        public async Task<IActionResult> DeleteCourse(int? id)
+        public async Task<IActionResult> UpdateDeadline(int questId, DateOnly deadline)
         {
-            if (id == null)
+            var quest = await _context.Quests
+                .Include(q => q.Collaborative)
+                .FirstOrDefaultAsync(q => q.QuestId == questId);
+
+            if (quest == null || quest.Collaborative == null)
             {
                 return NotFound();
             }
 
-            var course = await _context.Courses
-                .FirstOrDefaultAsync(m => m.CourseId == id);
-            if (course == null)
-            {
-                return NotFound();
-            }
-
-            return View("~/Views/Course/Delete.cshtml", course);
-        }*/
-        /*
-        // POST: Instructor/DeleteCourse/5
-        [HttpPost, ActionName("DeleteCourse")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteCourseConfirmed(int id)
-        {
-            var course = await _context.Courses.FindAsync(id);
-            _context.Courses.Remove(course);
+            quest.Collaborative.Deadline = deadline;
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(ManageCourses));
+
+            TempData["Message"] = "Deadline updated successfully!";
+            return RedirectToAction("Edit", "Quests", new { id = questId });
         }
 
-        */
-        /*
-        public async Task<IActionResult> DeleteCourse(int courseId)
-        {
-            var course = await _context.Courses
-                .Include(c => c.CourseEnrollments)
-                .FirstOrDefaultAsync(c => c.CourseId == courseId);
-
-            if (course == null)
-            {
-                return NotFound();
-            }
-
-            if (course.CourseEnrollments.Any())
-            {
-                TempData["ErrorMessage"] = "Cannot delete course with enrolled students.";
-                return RedirectToAction(nameof(Index));
-            }
-
-            return View(course);
-        }*/
-        /*
-        [HttpPost, ActionName("DeleteCourse")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteCourseConfirmed(int courseId)
-        {
-            var course = await _context.Courses.FindAsync(courseId);
-            if (course != null)
-            {
-                _context.Courses.Remove(course);
-                await _context.SaveChangesAsync();
-            }
-            return RedirectToAction(nameof(Index));
-        }
-
-
-        public IActionResult CreateQuest()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateQuestWithDeadline([Bind("QuestId,DifficultyLevel,Criteria,Description,Title,Collaborative,SkillMastery")] Quest quest, DateTime deadline)
-        {
-            if (deadline == null)
-            {
-                ModelState.AddModelError("Deadline", "The Deadline field is required.");
-            }
-
-            if (ModelState.IsValid)
-            {
-                // Add the quest to the context
-                _context.Quests.Add(quest);
-                await _context.SaveChangesAsync();
-
-                // Handle the deadline separately
-                // You can store the deadline in a dictionary or any other structure as needed
-                // For example, using a dictionary to store deadlines
-                var questDeadlines = new Dictionary<int, DateTime>();
-                questDeadlines[quest.QuestId] = deadline;
-
-                // Save the deadline to the database or any other storage as needed
-                // This is just an example, you need to implement the actual storage logic
-
-                return RedirectToAction(nameof(Index));
-            }
-
-            // Pass the validation message to the view
-            ViewBag.DeadlineValidationMessage = ModelState["Deadline"]?.Errors.FirstOrDefault()?.ErrorMessage;
-
-            return View(quest);
-        }
-
-
-
-
-
-        // GET: Instructor/AddAchievement
-        public IActionResult AddAchievement()
-        {
-            ViewBag.Learners = new SelectList(_context.Learners, "LearnerId", "FirstName");
-            ViewBag.Badges = new SelectList(_context.Badges, "BadgeId", "Description");
-            return View();
-        }
 
         // POST: Instructor/AddAchievement
         [HttpPost]
@@ -917,11 +836,29 @@ namespace Course_station.Controllers
             ViewBag.Badges = new SelectList(_context.Badges, "BadgeId", "Description", achievement.BadgeId);
             return View(achievement);
         }
+        
+        
+      
+       
+
+       
+
+
+
+
+
+        // GET: Instructor/AddAchievement
+        public IActionResult AddAchievement()
+        {
+            ViewBag.Learners = new SelectList(_context.Learners, "LearnerId", "FirstName");
+            ViewBag.Badges = new SelectList(_context.Badges, "BadgeId", "Description");
+            return View();
+        }
+
+       
 
 
 
     }
 }
-*/
-    }
-}
+
