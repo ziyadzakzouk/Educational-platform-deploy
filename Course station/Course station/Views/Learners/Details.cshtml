@@ -38,6 +38,10 @@
     <div class="profile-actions mt-4">
         <a asp-action="Edit" asp-route-id="@Model.Learner.LearnerId" class="btn btn-primary mr-2">Edit Profile</a>
         <a asp-action="Enroll" asp-route-learnerId="@Model.Learner.LearnerId" class="btn btn-success">Enroll in a Course</a>
+        <p>
+            <a asp-action="QuestProgress" asp-route-learnerId="@Model.Learner.LearnerId">View Quest Progress</a> |
+            <a asp-action="AchievementProgress" asp-route-learnerId="@Model.Learner.LearnerId">View Achievement Progress</a>
+        </p>
     </div>
 
     <div class="upload-picture mt-4">
@@ -154,8 +158,9 @@
         max-width: 800px;
         margin: 0 auto;
         padding: 20px;
-        background-color: #f8f9fa;
+        background-color: #ffffff;
         border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
     .profile-header {
@@ -166,6 +171,11 @@
 
     .profile-info {
         flex-grow: 1;
+    }
+
+    .profile-picture img {
+        border-radius: 50%;
+        border: 2px solid #007bff;
     }
 
     .profile-details {
@@ -193,8 +203,75 @@
         border-color: #007bff;
     }
 
-    .btn-secondary {
-        background-color: #6c757d;
-        border-color: #6c757d;
+    .btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+
+        .btn-primary:hover, .btn-success:hover {
+            opacity: 0.8;
+        }
+
+    .form-group label {
+        font-weight: bold;
+    }
+
+    .form-control-file {
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+        padding: 0.375rem 0.75rem;
+    }
+
+    .mt-4 {
+        margin-top: 1.5rem !important;
+    }
+
+    .mb-4 {
+        margin-bottom: 1.5rem !important;
+    }
+
+    .mb-5 {
+        margin-bottom: 3rem !important;
+    }
+
+    .shadow-sm {
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+    }
+
+    .rounded {
+        border-radius: 0.25rem !important;
+    }
+
+    .card {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        word-wrap: break-word;
+        background-color: #fff;
+        background-clip: border-box;
+        border: 1px solid rgba(0, 0, 0, 0.125);
+        border-radius: 0.25rem;
+    }
+
+    .text-center {
+        text-align: center !important;
+    }
+
+    .d-flex {
+        display: flex !important;
+    }
+
+    .align-items-center {
+        align-items: center !important;
+    }
+
+    .ml-3 {
+        margin-left: 1rem !important;
+    }
+
+    .mr-2 {
+        margin-right: 0.5rem !important;
     }
 </style>
+

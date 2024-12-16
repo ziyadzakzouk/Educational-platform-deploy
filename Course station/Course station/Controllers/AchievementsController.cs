@@ -1,27 +1,27 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc;
 using Course_station.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace Course_station.Controllers
 {
-    public class QuestController : Controller
+    public class AchievementsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public QuestController(ApplicationDbContext context)
+        public AchievementsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Quest
+        // GET: Achievements
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Quests.ToListAsync());
+            var model = await _context.Achievements.ToListAsync();
+            return View(model);
         }
 
-        // GET: Quest/Details/5
+        // GET: Achievements/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -29,40 +29,38 @@ namespace Course_station.Controllers
                 return NotFound();
             }
 
-            var quest = await _context.Quests
-                .Include(q => q.Collaborative)
-                .Include(q => q.QuestRewards)
-                .Include(q => q.SkillMastery)
-                .FirstOrDefaultAsync(m => m.QuestId == id);
-            if (quest == null)
+            var achievement = await _context.Achievements
+                .FirstOrDefaultAsync(a => a.AchievementId == id);
+
+            if (achievement == null)
             {
                 return NotFound();
             }
 
-            return View(quest);
+            return View(achievement);
         }
 
-        // GET: Quest/Create
+        // GET: Achievements/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Quest/Create
+        // POST: Achievements/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("QuestId,DifficultyLevel,Criteria,Description,Title")] Quest quest)
+        public async Task<IActionResult> Create(Achievement achievement)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(quest);
+                _context.Add(achievement);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            }
-            return View(quest);
+           }
+            return View(achievement);
         }
 
-        // GET: Quest/Edit/5
+        // GET: Achievements/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -70,20 +68,22 @@ namespace Course_station.Controllers
                 return NotFound();
             }
 
-            var quest = await _context.Quests.FindAsync(id);
-            if (quest == null)
+            var achievement = await _context.Achievements.FindAsync(id);
+
+            if (achievement == null)
             {
                 return NotFound();
             }
-            return View(quest);
+
+            return View(achievement);
         }
 
-        // POST: Quest/Edit/5
+        // POST: Achievements/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("QuestId,DifficultyLevel,Criteria,Description,Title")] Quest quest)
+        public async Task<IActionResult> Edit(int id, [Bind("AchievementId,Title,Description")] Achievement achievement)
         {
-            if (id != quest.QuestId)
+            if (id != achievement.AchievementId)
             {
                 return NotFound();
             }
@@ -92,12 +92,12 @@ namespace Course_station.Controllers
             {
                 try
                 {
-                    _context.Update(quest);
+                    _context.Update(achievement);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!QuestExists(quest.QuestId))
+                    if (!_context.Achievements.Any(e => e.AchievementId == id))
                     {
                         return NotFound();
                     }
@@ -108,10 +108,10 @@ namespace Course_station.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(quest);
+            return View(achievement);
         }
 
-        // GET: Quest/Delete/5
+        // GET: Achievements/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -119,30 +119,31 @@ namespace Course_station.Controllers
                 return NotFound();
             }
 
-            var quest = await _context.Quests
-                .FirstOrDefaultAsync(m => m.QuestId == id);
-            if (quest == null)
+            var achievement = await _context.Achievements
+                .FirstOrDefaultAsync(a => a.AchievementId == id);
+
+            if (achievement == null)
             {
                 return NotFound();
             }
 
-            return View(quest);
+            return View(achievement);
         }
 
-        // POST: Quest/Delete/5
+        // POST: Achievements/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var quest = await _context.Quests.FindAsync(id);
-            _context.Quests.Remove(quest);
+            var achievement = await _context.Achievements.FindAsync(id);
+            if (achievement == null)
+            {
+                return NotFound();
+            }
+
+            _context.Achievements.Remove(achievement);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool QuestExists(int id)
-        {
-            return _context.Quests.Any(e => e.QuestId == id);
         }
     }
 }

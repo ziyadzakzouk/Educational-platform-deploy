@@ -1,4 +1,4 @@
-﻿/* General form styling */
+﻿ General form styling 
 .login-form {
     max-width: 400px;
     margin: 0 auto;
@@ -9,7 +9,7 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-/* General form styling */
+ General form styling 
 .login-form {
     max-width: 400px;
     margin: 0 auto;
@@ -20,7 +20,7 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-    /* Form group styling */
+     Form group styling 
     .login-form .form-group {
         display: flex;
         flex-direction: column;
@@ -28,7 +28,7 @@
         margin-bottom: 15px;
     }
 
-    /* Label styling */
+     Label styling 
     .login-form label {
         display: block;
         margin-bottom: 5px;
@@ -36,7 +36,7 @@
         text-align: center;
     }
 
-    /* Input styling */
+     Input styling 
     .login-form .form-control {
         width: 100%;
         padding: 10px;
@@ -44,7 +44,7 @@
         border-radius: 5px;
     }
 
-    /* Radio group styling */
+     Radio group styling 
     .login-form .radio-group {
         display: flex;
         align-items: center;
@@ -56,7 +56,7 @@
             margin-right: 10px;
         }
 
-    /* Button styling */
+     Button styling 
     .login-form .btn {
         width: 100%;
         padding: 10px;

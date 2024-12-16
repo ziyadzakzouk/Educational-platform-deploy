@@ -65,6 +65,7 @@ namespace Course_station.Controllers
             return View();
         }
 
+
         [HttpPost]
         public IActionResult Delete(int id)
         {

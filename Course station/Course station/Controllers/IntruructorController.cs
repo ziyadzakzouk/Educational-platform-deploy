@@ -811,6 +811,95 @@ namespace Course_station.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
-        */
+
+
+        public IActionResult CreateQuest()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateQuestWithDeadline([Bind("QuestId,DifficultyLevel,Criteria,Description,Title,Collaborative,SkillMastery")] Quest quest, DateTime deadline)
+        {
+            if (deadline == null)
+            {
+                ModelState.AddModelError("Deadline", "The Deadline field is required.");
+            }
+
+            if (ModelState.IsValid)
+            {
+                // Add the quest to the context
+                _context.Quests.Add(quest);
+                await _context.SaveChangesAsync();
+
+                // Handle the deadline separately
+                // You can store the deadline in a dictionary or any other structure as needed
+                // For example, using a dictionary to store deadlines
+                var questDeadlines = new Dictionary<int, DateTime>();
+                questDeadlines[quest.QuestId] = deadline;
+
+                // Save the deadline to the database or any other storage as needed
+                // This is just an example, you need to implement the actual storage logic
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            // Pass the validation message to the view
+            ViewBag.DeadlineValidationMessage = ModelState["Deadline"]?.Errors.FirstOrDefault()?.ErrorMessage;
+
+            return View(quest);
+        }
+
+
+
+
+
+        // GET: Instructor/AddAchievement
+        public IActionResult AddAchievement()
+        {
+            ViewBag.Learners = new SelectList(_context.Learners, "LearnerId", "FirstName");
+            ViewBag.Badges = new SelectList(_context.Badges, "BadgeId", "Description");
+            return View();
+        }
+
+        // POST: Instructor/AddAchievement
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddAchievement([Bind("LearnerId,BadgeId,Description,DateEarned")] Achievement achievement)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Achievements.Add(achievement);
+                await _context.SaveChangesAsync();
+
+                // Send notification to the learner
+                var notification = new Notification
+                {
+                    TimeStamp = DateTime.Now,
+                    Message = $"You have earned a new achievement: {achievement.Description}",
+                    Urgency = "Normal",
+                    Readstatus = false
+                };
+
+                // Add the notification to the learner's notifications
+                var learner = await _context.Learners.FindAsync(achievement.LearnerId);
+                if (learner != null)
+                {
+                    learner.Notifications.Add(notification);
+                    await _context.SaveChangesAsync();
+                }
+
+                TempData["Message"] = "Achievement added and learner notified successfully!";
+                return RedirectToAction(nameof(Index));
+            }
+
+            ViewBag.Learners = new SelectList(_context.Learners, "LearnerId", "FirstName", achievement.LearnerId);
+            ViewBag.Badges = new SelectList(_context.Badges, "BadgeId", "Description", achievement.BadgeId);
+            return View(achievement);
+        }
+
+
+
     }
 }
