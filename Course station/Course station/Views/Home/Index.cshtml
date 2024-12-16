@@ -3,16 +3,15 @@
    
 }
 
-<div class="container">
-    <div class="row justify-content-center my-3">
-        <div class="col-md-4 text-center">
-            <a class="btn btn-primary btn-lg" href="@Url.Action("Create", "Learners")" role="button">Join Us</a>
+<div class="headercontainer">
+    <div class="row justify-content-center">
+        <div class="col-auto">
+            <a class="btn btn-primary btn-lg" href="@Url.Action("Create", "Learners")" role="button" style="width: 200px;">Join Us</a>
         </div>
-        <div class="col-md-4 text-center">
-            <a class="btn btn-success btn-lg" href="@Url.Action("Create", "Instructor")" role="button">Make an Impact</a>
+        <div class="col-auto">
+            <a class="btn btn-success btn-lg" href="@Url.Action("Create", "Instructor")" role="button" style="width: 200px;">Make an Impact</a>
         </div>
     </div>
-
     <!-- Header -->
     <div class="header">
         INTRO
@@ -25,9 +24,7 @@
                 <h2>unlock your potential with our platform</h2>
                 <p>
                     Our team was tasked with creating a platform that would bring the offline<br />
-                    school experience to the digital world without losing the benefits of live interaction
-                </p>
-                <p>
+                    school experience to the digital world without losing the benefits of live interaction.<br />
                     learn Anything,AnyTime,AnyWhere<br />
                     with our Comprehensive Courses
                 </p>
@@ -53,7 +50,7 @@
     Our platform features live interaction tools, personalized learning paths, and a community of learners and instructors who are passionate about education.<br />
     Join us at Course Station and unlock your potential with our comprehensive courses.
 </p>
-
+<hr />
 
 <!-- demand courses -->
 <h1> Our most populor and demands courses</h1>
@@ -97,10 +94,98 @@
     </div>
 </div>
 
+<hr />
+<h1>Servicies</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="flip-box">
+                <div class="flip-box-inner">
+                    <div class="flip-box-front">
+                        <h2>Learner</h2>
+                    </div>
+                    <div class="flip-box-back">
+                        <p class="card-text">
+                            Access a wide range of courses and learn at your own pace.
+                            Benefit from flexible schedules and interactive tools to enhance your learning experience.
+                        </p>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="flip-box">
+                <div class="flip-box-inner">
+                    <div class="flip-box-front">
+                        <h2>Instructor</h2>
+                    </div>
+                    <div class="flip-box-back">
+                        <p class="card-text">
+                            Join our team of expert instructors and share your knowledge with learners worldwide.
+                            Create engaging and interactive courses to help students achieve their goals.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="flip-box">
+                <div class="flip-box-inner">
+                    <div class="flip-box-front">
+                        <h2>Course</h2>
+                    </div>
+                    <div class="flip-box-back">
+                        <p class="card-text">
+                            Discover our comprehensive course offerings, tailored to meet the needs of learners at all levels.
+                            Enhance your skills and advance your career with our expertly crafted courses.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr />
+    <!-- project-section -->
+    <div class="project-section">
+        <div class="project-text">
+            <h1 class="project-title">
+                One Efficient System<br />
+                For All Your<br />
+                Needs
+            </h1>
+            <p class="project-description">
+                Course Station is a comprehensive online learning platform designed to meet all your educational needs.
+                Our system is built to provide a seamless and efficient learning experience, whether you are a learner looking to acquire new skills,
+                an instructor aiming to share your knowledge, or an organization seeking to enhance your team's capabilities.
+                With a wide range of courses, flexible learning schedules, and interactive tools, Course Station is your one-stop solution for all things education.
+                Join us and unlock your potential with our expertly crafted courses and supportive learning community.
+            </p>
+        </div>
+        <div class="project-image-container">
+            <img src="~/images/back.webp" class="project-image" alt="Project Image" />
+        </div>
+    </div>
 
 
 
 
+<hr />
+<!-- Our plans -->
+<h1>Our Planes</h1>
+<p class="card-text">
+    The Free plan offers access to a selection of our courses, perfect for beginners who want to get started with online learning.
+    Enjoy flexible learning schedules and access to course materials at your own pace.
+</p>
+<p class="card-text">
+    The Basic plan offers access to a selection of our courses, perfect for beginners who want to get started with online learning.
+    Enjoy flexible learning schedules and access to course materials at your own pace.
+</p>
+<p class="card-text">
+    The Standard plan offers a balance between the Basic and Premium plans. It includes access to a wider range of courses,
+    some live sessions, and additional resources to enhance your learning experience. Perfect for those who want more than the basics but don't need all the premium features.
+</p>
 
 
 <!-- cards -->
@@ -108,10 +193,10 @@
     <div class="col">
         <div class="card h-100">
             <div class="card-body">
-                <h2 class="card-title text-center">Basic</h2>
+                <h2 class="card-title text-center">Free</h2>
                 <hr />
                 <p class="starting">Starting From</p>
-                <p class="price">$450</p>
+                <p class="price">$0</p>
                 <button class="btn btn-primary">Get Started</button>
                 <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
                 
@@ -143,7 +228,7 @@
         </div>
     </div>
 </div>
-
+<hr />
 <!-- contact us -->
 <h1>Contact us</h1>
 <div class="contact-container">

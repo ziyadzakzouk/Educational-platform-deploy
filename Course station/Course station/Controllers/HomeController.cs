@@ -64,20 +64,6 @@ namespace Course_station.Controllers
         {
             return View();
         }
-        public IActionResult Contact()
-        {
-            return View();
-        }
-
-        public IActionResult FeaturedCourse()
-        {
-            return View();
-        }
-
-        public IActionResult About()
-        {
-            return View();
-        }
 
 
         [HttpPost]
