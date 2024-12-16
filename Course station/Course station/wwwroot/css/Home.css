@@ -3,7 +3,7 @@
 /* General styles */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f8f9fa;
+    background-color: white;
     color: #333;
     margin: 0;
     padding: 0;
@@ -11,20 +11,158 @@ body {
 
 .container {
     margin-top: 2rem;
-    padding: 0 15px;
 }
 
 .header {
-    text-align: center;
-    font-size: 2rem;
+    font-size: 4rem;
     font-weight: bold;
     margin-bottom: 2rem;
 }
 
 .content {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content:safe center;
+    font-size: 1rem;
+    font-weight: bold;
 }
 
+/* Custom styles for premium card */
+.card-premium {
+    background-color: #007bff;
+    color: #fff;
+}
 
+.card {
+    border-radius: 20px;
+}
+
+.card-premium .card-title,
+.card-premium .card-text,
+.card-premium p {
+    color: #fff;
+}
+
+.card-premium hr {
+    border-top: 1px solid #fff;
+}
+
+.card-premium button {
+    background-color: #0056b3;
+    border-color: #0056b3;
+    color: #fff;
+}
+
+/* Center button in card */
+.card-body {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+    .card-body .btn {
+        align-self: center;
+    }
+
+/* Styles for starting and price classes */
+.starting {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 0.5rem;
+}
+
+.price {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #007bff;
+    margin-bottom: 1rem;
+}
+
+.btn-lg {
+    padding: 0.75rem 1.25rem;
+    font-size: 1.25rem;
+    border-radius: 0.3rem;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.my-4 {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+@media (max-width: 768px) {
+    .content {
+        flex-direction: column;
+    }
+
+    .content-box {
+        flex: 1 1 100%;
+    }
+}
+
+.Aboutus {
+    font-size: 1.2rem;
+/*    line-height: 1.6;*/
+    color: #333;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-left: 5px solid #007bff;
+}
+
+/* Contact form styles */
+.contact-container {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+input[type="text"], select, textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+    input[type="submit"]:hover {
+        background-color: #45a049;
+    }
