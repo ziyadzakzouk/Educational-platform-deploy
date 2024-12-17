@@ -364,6 +364,11 @@ namespace Course_station.Controllers
             return View(rankings);
         }
 
+        public async Task<IActionResult> LeaderboardRedrict()
+        {
+            return RedirectToAction("Index","Leaderboard");
+        }
+
         // 7. Submit emotional feedback for an activity
         [HttpPost]
         public async Task<IActionResult> SubmitEmotionalFeedback(int activityId, int learnerId, string emotionalState)
