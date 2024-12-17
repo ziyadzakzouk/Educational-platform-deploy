@@ -365,6 +365,8 @@ namespace Course_station.Controllers
 
             return View(rankings);
         }
+       
+
 
         // 7. Submit emotional feedback for an activity
         [HttpPost]
@@ -414,16 +416,28 @@ namespace Course_station.Controllers
             return View();
         }
 
-        // 11. View assessments and grades for a module
-        public async Task<IActionResult> AssessmentsList(int courseId, int moduleId, int learnerId)
+        public async Task<IActionResult> AssessmentsList(int learnerId, int courseId)
         {
+            // Ensure the learner is enrolled in the specified course
+            var isEnrolled = await _context.CourseEnrollments
+                .AnyAsync(ce => ce.LearnerId == learnerId && ce.CourseId == courseId);
+
+            if (!isEnrolled)
+            {
+                TempData["ErrorMessage"] = "Learner is not enrolled in the specified course.";
+                return RedirectToAction("Index", "Assessments");
+            }
+
+            // Fetch the assessments for the specified course
             var assessments = await _context.Assessments
-                .FromSqlRaw("EXEC AssessmentsList @CourseID = {0}, @ModuleID = {1}, @LearnerID = {2}",
-                courseId, moduleId, learnerId)
+                .Where(a => a.CourseId == courseId)
                 .ToListAsync();
 
-            return View(assessments);
+            TempData["Assessments"] = assessments;
+            return RedirectToAction("Index", "Assessments");
         }
+
+
 
         // 12. Register for a course
         [HttpPost]

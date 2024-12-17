@@ -18,26 +18,32 @@ namespace Course_station.Controllers
         // GET: Reward
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Rewards.ToListAsync());
+            var rankings = _context.Rankings
+                .Include(r => r.Board)
+                .Include(r => r.Course)
+                .Include(r => r.Learner);
+            return View(await rankings.ToListAsync());
         }
 
-        // GET: Reward/Details/5
-        public async Task<IActionResult> Details(int? id)
+        // GET: Ranking/Details/5
+        public async Task<IActionResult> Details(int? boardId, int? learnerId)
         {
-            if (id == null)
+            if (boardId == null || learnerId == null)
             {
                 return NotFound();
             }
 
-            var reward = await _context.Rewards
-                .Include(r => r.QuestRewards)
-                .FirstOrDefaultAsync(m => m.RewardId == id);
-            if (reward == null)
+            var ranking = await _context.Rankings
+                .Include(r => r.Board)
+                .Include(r => r.Course)
+                .Include(r => r.Learner)
+                .FirstOrDefaultAsync(m => m.BoardId == boardId && m.LearnerId == learnerId);
+            if (ranking == null)
             {
                 return NotFound();
             }
 
-            return View(reward);
+            return View(ranking);
         }
 
         // GET: Reward/Create
