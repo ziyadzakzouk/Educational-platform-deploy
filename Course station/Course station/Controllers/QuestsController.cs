@@ -64,7 +64,7 @@ namespace Course_station.Controllers
             {
                 _context.Add(quest);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Details), new { id = quest.QuestId });
             }
             return View(quest);
         }
@@ -83,7 +83,7 @@ namespace Course_station.Controllers
             {
                 return NotFound();
             }
-            return View(quest);
+            return RedirectToAction(nameof(Index));
         }
 
         // POST: Quests/Edit/5
