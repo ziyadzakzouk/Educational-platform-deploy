@@ -31,6 +31,9 @@ namespace Course_station.Controllers
 
             var leaderboard = await _context.Leaderboards
                 .Include(l => l.Rankings)
+                .ThenInclude(r => r.Learner)
+                .Include(l => l.Rankings)
+                .ThenInclude(r => r.Course)
                 .FirstOrDefaultAsync(m => m.BoardId == id);
             if (leaderboard == null)
             {
