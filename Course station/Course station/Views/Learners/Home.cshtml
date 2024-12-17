@@ -82,15 +82,15 @@
         <br>
 
     <div class="btn-group-vertical">
-        <a asp-controller="Learners" asp-action="Details" asp-route-id="@learnerId" class="btn btn-primary">View Profile</a>
-        <a asp-controller="Learners" asp-action="EnrolledCourses" asp-route-learnerId="@learnerId" class="btn btn-success">View Enrolled Courses</a>
-        <a asp-controller="Learners" asp-action="AssessmentsList" asp-route-learnerId="@learnerId" class="btn btn-info">View Assessments</a>
+        @* <a asp-controller="Learners" asp-action="Details" asp-route-id="@learnerId" class="btn btn-primary">View Profile</a> *@
+        @* <a asp-controller="Learners" asp-action="EnrolledCourses" asp-route-learnerId="@learnerId" class="btn btn-success">View Enrolled Courses</a> *@
+        @* <a asp-controller="Learners" asp-action="AssessmentsList" asp-route-learnerId="@learnerId" class="btn btn-info">View Assessments</a> *@
         <a asp-controller="Leaderboard" asp-action="Index" class="btn btn-warning">View Leaderboard</a>
-        <a asp-controller="Learners" asp-action="SkillsProficiency" asp-route-learnerId="@learnerId" class="btn btn-secondary">View Skills Proficiency</a>
-        <a asp-controller="Learners" asp-action="Viewinfo" asp-route-learnerId="@learnerId" class="btn btn-custom-red">View Notifications</a>
-        <a asp-controller="Learners" asp-action="UpdateProfile" asp-route-learnerId="@learnerId" class="btn btn-light">Update Profile</a>
-        <a asp-action="Enroll" asp-route-learnerId="@learnerId" class="btn btn-dark">Enroll in Course</a>
-        <a asp-controller="Quests" asp-action="Index" class="btn btn-custom-green">Join Quest</a>
+        @* <a asp-controller="Learners" asp-action="SkillsProficiency" asp-route-learnerId="@learnerId" class="btn btn-secondary">View Skills Proficiency</a> *@
+        @* <a asp-controller="Learners" asp-action="Viewinfo" asp-route-learnerId="@learnerId" class="btn btn-custom-red">View Notifications</a> *@
+        @* <a asp-controller="Learners" asp-action="UpdateProfile" asp-route-learnerId="@learnerId" class="btn btn-light">Update Profile</a> *@
+        @* <a asp-action="Enroll" asp-route-learnerId="@learnerId" class="btn btn-dark">Enroll in Course</a> *@
+        @* <a asp-controller="Quests" asp-action="Index" class="btn btn-custom-green">Join Quest</a> *@
 
         <a asp-controller="Learners" asp-action="CreateFeedback" asp-route-learnerId="@learnerId" class="btn btn-custom-red">Give us your feedback</a>
     </div>
