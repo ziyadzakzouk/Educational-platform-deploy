@@ -1,12 +1,12 @@
-﻿@model Course_station.Models.Quest
+﻿@model Course_station.Models.Course
 
 @{
-    ViewData["Title"] = "CreateQuest";
+    ViewData["Title"] = "Create Course";
 }
 
-<h1>Create Quest</h1>
+<h1>Create Course</h1>
 
-<form asp-action="CreateQuestWithDeadline" method="post">
+<form asp-action="CreateCourse" method="post">
     <div class="form-group">
         <label asp-for="Title" class="control-label"></label>
         <input asp-for="Title" class="form-control" />
@@ -18,29 +18,19 @@
         <span asp-validation-for="Description" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="DifficultyLevel" class="control-label"></label>
-        <input asp-for="DifficultyLevel" class="form-control" />
-        <span asp-validation-for="DifficultyLevel" class="text-danger"></span>
+        <label asp-for="DiffLevel" class="control-label"></label>
+        <input asp-for="DiffLevel" class="form-control" />
+        <span asp-validation-for="DiffLevel" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="Criteria" class="control-label"></label>
-        <input asp-for="Criteria" class="form-control" />
-        <span asp-validation-for="Criteria" class="text-danger"></span>
+        <label asp-for="CreditPoint" class="control-label"></label>
+        <input asp-for="CreditPoint" class="form-control" />
+        <span asp-validation-for="CreditPoint" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="Collaborative" class="control-label"></label>
-        <input asp-for="Collaborative" class="form-control" />
-        <span asp-validation-for="Collaborative" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="SkillMastery" class="control-label"></label>
-        <input asp-for="SkillMastery" class="form-control" />
-        <span asp-validation-for="SkillMastery" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label for="Deadline" class="control-label">Deadline</label>
-        <input id="Deadline" name="Deadline" class="form-control" type="datetime-local" />
-        <span id="DeadlineValidationMessage" class="text-danger">@ViewBag.DeadlineValidationMessage</span>
+        <label asp-for="LearningObjective" class="control-label"></label>
+        <input asp-for="LearningObjective" class="form-control" />
+        <span asp-validation-for="LearningObjective" class="text-danger"></span>
     </div>
     <div class="form-group">
         <input type="submit" value="Create" class="btn btn-primary" />
@@ -48,11 +38,9 @@
 </form>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="ManageCourses" asp-controller="Instructor">Back to List</a>
 </div>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    @await Html.PartialAsync("_ValidationScriptsPartial")
 }

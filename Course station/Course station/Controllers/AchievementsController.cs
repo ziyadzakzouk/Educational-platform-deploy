@@ -5,23 +5,23 @@ using System.Threading.Tasks;
 
 namespace Course_station.Controllers
 {
-    public class AchievementsController : Controller
+    public class AchievementController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public AchievementsController(ApplicationDbContext context)
+        public AchievementController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Achievements
+        // List all achievements
         public async Task<IActionResult> Index()
         {
-            var model = await _context.Achievements.ToListAsync();
-            return View(model);
+            var achievements = await _context.Achievements.ToListAsync();
+            return View(achievements);
         }
 
-        // GET: Achievements/Details/5
+        // Details of a single achievement
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -31,7 +31,6 @@ namespace Course_station.Controllers
 
             var achievement = await _context.Achievements
                 .FirstOrDefaultAsync(a => a.AchievementId == id);
-
             if (achievement == null)
             {
                 return NotFound();
@@ -40,13 +39,13 @@ namespace Course_station.Controllers
             return View(achievement);
         }
 
-        // GET: Achievements/Create
+        // Create achievement - GET
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Achievements/Create
+        // Create achievement - POST
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Achievement achievement)
@@ -56,11 +55,11 @@ namespace Course_station.Controllers
                 _context.Add(achievement);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-           }
+            }
             return View(achievement);
         }
 
-        // GET: Achievements/Edit/5
+        // Edit achievement - GET
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -69,16 +68,14 @@ namespace Course_station.Controllers
             }
 
             var achievement = await _context.Achievements.FindAsync(id);
-
             if (achievement == null)
             {
                 return NotFound();
             }
-
             return View(achievement);
         }
 
-        // POST: Achievements/Edit/5
+        // Edit achievement - POST
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("AchievementId,Title,Description")] Achievement achievement)
@@ -97,7 +94,7 @@ namespace Course_station.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!_context.Achievements.Any(e => e.AchievementId == id))
+                    if (!AchievementExists(achievement.AchievementId))
                     {
                         return NotFound();
                     }
@@ -111,7 +108,7 @@ namespace Course_station.Controllers
             return View(achievement);
         }
 
-        // GET: Achievements/Delete/5
+        // Delete achievement - GET
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -121,7 +118,6 @@ namespace Course_station.Controllers
 
             var achievement = await _context.Achievements
                 .FirstOrDefaultAsync(a => a.AchievementId == id);
-
             if (achievement == null)
             {
                 return NotFound();
@@ -130,20 +126,20 @@ namespace Course_station.Controllers
             return View(achievement);
         }
 
-        // POST: Achievements/Delete/5
+        // Delete achievement - POST
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var achievement = await _context.Achievements.FindAsync(id);
-            if (achievement == null)
-            {
-                return NotFound();
-            }
-
             _context.Achievements.Remove(achievement);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        private bool AchievementExists(int id)
+        {
+            return _context.Achievements.Any(e => e.AchievementId == id);
         }
     }
 }

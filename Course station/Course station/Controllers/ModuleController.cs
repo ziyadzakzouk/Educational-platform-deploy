@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Course_station.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
+using System.Linq;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Course_station.Controllers
 {
@@ -19,19 +19,20 @@ namespace Course_station.Controllers
         // GET: Module
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Modules.ToListAsync());
+            var modules = await _context.Modules.Include(m => m.Course).ToListAsync();
+            return View(modules);
         }
 
         // GET: Module/Details/5
-        // GET: Module/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || id == 0)
+            if (id == null)
             {
                 return NotFound();
             }
 
             var module = await _context.Modules
+                .Include(m => m.Course)
                 .Include(m => m.Assessments)
                 .Include(m => m.ContentLibraries)
                 .Include(m => m.DiscussionForums)
@@ -50,71 +51,113 @@ namespace Course_station.Controllers
         // GET: Module/Create
         public IActionResult Create()
         {
+            ViewBag.Courses = new SelectList(_context.Courses, "CourseId", "Title");
+
             return View();
         }
 
-        // POST: Module/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ModuleId,CourseId,Title,DifficultyLevel,ContentUrl")] Module module)
         {
-            if (ModelState.IsValid)  //create method has an error and does not create do we need to consider it as child bec weak entiity ?
-            {
-                _context.Add(module);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(module);
-        }
+            bool isValid = true;
 
-        // GET: Module/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
+            // Manual validation for Title
+            if (string.IsNullOrWhiteSpace(module.Title))
             {
-                return NotFound();
+                ModelState.AddModelError("Title", "Title is required.");
+                isValid = false;
             }
 
-            var module = await _context.Modules.FindAsync(id); //error whild debugging
-            if (module == null)
+            // Manual validation for CourseId
+            if (module.CourseId <= 0)
             {
-                return NotFound();
-            }
-            return View(module);
-        }
-
-        // POST: Module/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ModuleId,CourseId,Title,DifficultyLevel,ContentUrl")] Module module)
-        {
-            if (id != module.ModuleId)
-            {
-                return NotFound();
+                ModelState.AddModelError("CourseId", "Please select a valid course.");
+                isValid = false;
             }
 
-            if (ModelState.IsValid)
+           
+            // Optional: Manual validation for ContentUrl
+            if (!string.IsNullOrWhiteSpace(module.ContentUrl) && !Uri.IsWellFormedUriString(module.ContentUrl, UriKind.Absolute))
+            {
+                ModelState.AddModelError("ContentUrl", "Please provide a valid URL.");
+                isValid = false;
+            }
+
+            // Check if all manual validations passed
+            if (isValid)
             {
                 try
                 {
-                    _context.Update(module);
+                    _context.Add(module);
                     await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (Exception ex)
                 {
-                    if (!ModuleExists(module.ModuleId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    // Catch any database or other errors
+                    ModelState.AddModelError(string.Empty, $"An error occurred while saving the module: {ex.Message}");
                 }
-                return RedirectToAction(nameof(Index));
             }
+
+            // If validation fails, reload the form with errors
+            ViewBag.Courses = new SelectList(_context.Courses, "CourseId", "Title", module.CourseId);
             return View(module);
         }
+
+
+
+
+        //// GET: Module/Edit/5
+        //public async Task<IActionResult> Edit(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var module = await _context.Modules.FindAsync(id);
+        //    if (module == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    ViewBag.Courses = new SelectList(_context.Courses, "CourseId", "Title", module.CourseId);
+        //    return View(module);
+        //}
+
+        //// POST: Module/Edit/5
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Edit(int id, [Bind("ModuleId,CourseId,Title,DifficultyLevel,ContentUrl")] Module module)
+        //{
+        //    if (id != module.ModuleId)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    if (ModelState.IsValid)
+        //    {
+        //        try
+        //        {
+        //            _context.Update(module);
+        //            await _context.SaveChangesAsync();
+        //        }
+        //        catch (DbUpdateConcurrencyException)
+        //        {
+        //            if (!ModuleExists(module.ModuleId))
+        //            {
+        //                return NotFound();
+        //            }
+        //            else
+        //            {
+        //                throw;
+        //            }
+        //        }
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    ViewBag.Courses = new SelectList(_context.Courses, "CourseId", "Title", module.CourseId);
+        //    return View(module);
+        //}
 
         // GET: Module/Delete/5
         public async Task<IActionResult> Delete(int? id)
@@ -125,6 +168,7 @@ namespace Course_station.Controllers
             }
 
             var module = await _context.Modules
+                .Include(m => m.Course)
                 .FirstOrDefaultAsync(m => m.ModuleId == id);
             if (module == null)
             {

@@ -4,187 +4,38 @@
     ViewData["Title"] = "Module Details";
 }
 
-<h1>Module Details</h1>
+<h2>Module Details</h2>
 
 <div>
     <h4>Module</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ModuleId)
+            Title
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ModuleId)
+            @Model.Title
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CourseId)
+            Difficulty Level
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CourseId)
+            @Model.DifficultyLevel
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
+            Course
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Title)
+            @Model.Course.Title
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.DifficultyLevel)
+            Content URL
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.DifficultyLevel)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ContentUrl)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ContentUrl)
+            @Model.ContentUrl
         </dd>
     </dl>
 </div>
-
-<div>
-    <h4>Assessments</h4>
-    <hr />
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Type</th>
-                <th>Total Marks</th>
-                <th>Passing Marks</th>
-                <th>Weightage</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var assessment in Model.Assessments)
-            {
-                <tr>
-                    <td>@assessment.Title</td>
-                    <td>@assessment.Type</td>
-                    <td>@assessment.TotalMarks</td>
-                    <td>@assessment.PassingMarks</td>
-                    <td>@assessment.Weightage</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
-
-<div>
-    <h4>Content Libraries</h4>
-    <hr />
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Type</th>
-                <th>Content URL</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var contentLibrary in Model.ContentLibraries)
-            {
-                <tr>
-                    <td>@contentLibrary.Title</td>
-                    <td>@contentLibrary.Description</td>
-                    <td>@contentLibrary.Type</td>
-                    <td>@contentLibrary.ContentUrl</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
-
-<div>
-    <h4>Discussion Forums</h4>
-    <hr />
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Last Active</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var forum in Model.DiscussionForums)
-            {
-                <tr>
-                    <td>@forum.Title</td>
-                    <td>@forum.Description</td>
-                    <td>@forum.LastActive</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
-
-<div>
-    <h4>Learning Activities</h4>
-    <hr />
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Activity Type</th>
-                <th>Instruction Details</th>
-                <th>Max Score</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var activity in Model.LearningActivities)
-            {
-                <tr>
-                    <td>@activity.ActivityType</td>
-                    <td>@activity.InstructionDetails</td>
-                    <td>@activity.MaxScore</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
-
-<div>
-    <h4>Module Contents</h4>
-    <hr />
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Content Type</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var content in Model.ModuleContents)
-            {
-                <tr>
-                    <td>@content.ContetntType</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
-
-<div>
-    <h4>Target Traits</h4>
-    <hr />
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Trait</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var trait in Model.TargetTraits)
-            {
-                <tr>
-                    <td>@trait.Trait</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
-
 <div>
     <a asp-action="Edit" asp-route-id="@Model.ModuleId">Edit</a> |
     <a asp-action="Index">Back to List</a>
