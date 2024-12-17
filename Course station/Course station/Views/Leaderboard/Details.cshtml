@@ -1,0 +1,71 @@
+@model Course_station.Models.Leaderboard
+
+@{
+    ViewData["Title"] = "Rankings Details";
+}
+
+<h2>Leaderboard Details</h2>
+
+<div>
+    <h4>Leaderboard</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Season)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Season)
+        </dd>
+    </dl>
+</div>
+
+@if (Model.Rankings != null && Model.Rankings.Any())
+{
+    <h4>Rankings</h4>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>
+                Rank
+            </th>
+            <th>
+                Player
+            </th>
+            <th>
+                Course
+            </th>
+            <th>
+                Score
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var ranking in Model.Rankings)
+        {
+            <tr>
+                <td>
+                    @ranking.Rank
+                </td>
+                <td>
+                    @(ranking.Learner != null ? ranking.Learner.FirstName : "Unknown")
+                </td>
+                <td>
+                    @(ranking.Course != null ? ranking.Course.Title : "N/A")
+                </td>
+                <td>
+                    @ranking.TotalPoints
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No rankings available for this leaderboard.</p>
+}
+
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.BoardId" class="btn btn-primary">Edit</a> |
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</div>
