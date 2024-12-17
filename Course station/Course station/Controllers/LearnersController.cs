@@ -365,28 +365,7 @@ namespace Course_station.Controllers
 
             return View(rankings);
         }
-        //public async Task<IActionResult> LeaderboardView(int learnerId)
-        //{
-        //    // Fetch the leaderboards for the learner
-        //    var leaderboards = await _context.Leaderboards
-        //        .Where(lb => lb.Rankings.Any(r => r.LearnerId == learnerId))
-        //        .ToListAsync();
-
-        //    TempData["Leaderboards"] = leaderboards;
-        //    return RedirectToAction("Index", "Leaderboard");
-        //}
-        //public async Task<IActionResult> LeaderboardRedirect(int learnerId)
-        //{
-        //    // Fetch the leaderboards for the learner
-        //    var leaderboards = await _context.Leaderboards
-        //        .Include(lb => lb.Rankings)
-        //        .Where(lb => lb.Rankings.Any(r => r.LearnerId == learnerId))
-        //        .ToListAsync();
-
-        //    TempData["Leaderboards"] = leaderboards;
-        //    return RedirectToAction("Index", "Leaderboard");
-        //}
-
+       
 
 
         // 7. Submit emotional feedback for an activity
