@@ -51,7 +51,6 @@ namespace Course_station.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ProfileId,LearnerId,PreferedContentType,EmotionalState,PersonalityType")] PersonalProfile personalProfile)
         {
-
             // Add this logging
             _logger.LogInformation($"Received LearnerId: {personalProfile.LearnerId}");
             foreach (var key in Request.Form.Keys)
@@ -61,7 +60,7 @@ namespace Course_station.Controllers
             // Log the received data
             _logger.LogInformation($"Received profile creation request - LearnerId: {personalProfile.LearnerId}");
 
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 _logger.LogWarning("Model state is invalid");
                 foreach (var modelStateEntry in ModelState.Values)
@@ -75,7 +74,7 @@ namespace Course_station.Controllers
 
             try
             {
-                if (ModelState.IsValid)
+                if (!ModelState.IsValid)
                 {
                     // Verify if the learner exists
                     var learnerExists = await _context.Learners
@@ -114,9 +113,10 @@ namespace Course_station.Controllers
             return View(personalProfile);
         }
 
-        
 
-public async Task<IActionResult> Edit(int? profileId, int? learnerId)
+
+
+        public async Task<IActionResult> Edit(int? profileId, int? learnerId)
         {
             if (profileId == null || learnerId == null)
             {
