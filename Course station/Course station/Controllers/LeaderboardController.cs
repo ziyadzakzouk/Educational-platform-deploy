@@ -22,6 +22,7 @@ namespace Course_station.Controllers
         }
 
         // GET: Leaderboard/Details/5
+        // GET: Leaderboard/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -31,6 +32,7 @@ namespace Course_station.Controllers
 
             var leaderboard = await _context.Leaderboards
                 .Include(l => l.Rankings)
+                .ThenInclude(r => r.Learner)
                 .FirstOrDefaultAsync(m => m.BoardId == id);
             if (leaderboard == null)
             {
@@ -39,7 +41,6 @@ namespace Course_station.Controllers
 
             return View(leaderboard);
         }
-
         // GET: Leaderboard/Create
         public IActionResult Create()
         {
