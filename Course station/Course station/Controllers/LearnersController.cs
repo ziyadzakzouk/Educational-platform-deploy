@@ -37,8 +37,11 @@ namespace Course_station.Controllers
 
             return View();
         }
-
-
+        public async Task<IActionResult> LeaderboardRedrict()
+        {
+            return RedirectToAction("Index","Leaderboard");
+        }
+        
         // GET: Learners
         [AdminPageOnly]
         public async Task<IActionResult> Index()
