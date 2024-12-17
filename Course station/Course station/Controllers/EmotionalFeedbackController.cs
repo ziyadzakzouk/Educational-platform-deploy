@@ -26,6 +26,12 @@ namespace Course_station.Controllers
             return View();
         }
 
+        public class EmotionalTrendAnalysisResult
+        {
+            public int? ActivityId { get; set; }
+            public string? EmotionalState { get; set; }
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EmotionalTrendAnalysis(int CourseID, int ModuleID, DateTime TimePeriod)
@@ -33,15 +39,20 @@ namespace Course_station.Controllers
             if (ModelState.IsValid)
             {
                 var result = await _context.EmotionalFeedbacks
-                    .FromSqlRaw("EXEC EmotionalTrendAnalysis @CourseID = {0}, @ModuleID = {1}, @TimePeriod = {2}",
-                        CourseID, ModuleID, TimePeriod)
-                    .Select(e => new { e.EmotionalState })
+                    .Where(e => e.Activity.CourseId == CourseID && e.Activity.ModuleId == ModuleID && e.Timestamp >= TimePeriod)
+                    .Select(e => new EmotionalTrendAnalysisResult
+                    {
+                        ActivityId = e.ActivityId,
+                        EmotionalState = e.EmotionalState
+                    })
                     .ToListAsync();
 
                 return View("EmotionalTrendAnalysisResult", result);
             }
             return View();
         }
+
+
 
 
         // GET: EmotionalFeedback

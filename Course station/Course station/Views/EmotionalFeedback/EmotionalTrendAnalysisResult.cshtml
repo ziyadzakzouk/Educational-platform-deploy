@@ -1,4 +1,4 @@
-@model IEnumerable<dynamic>
+@model IEnumerable<Course_station.Controllers.EmotionalFeedbackController.EmotionalTrendAnalysisResult>
 
 @{
     ViewData["Title"] = "Emotional Trend Analysis Result";
@@ -8,16 +8,18 @@
 
 <table class="table">
     <thead>
-    <tr>
-        <th>Emotional State</th>
-    </tr>
+        <tr>
+            <th>Activity ID</th>
+            <th>Emotional State</th>
+        </tr>
     </thead>
     <tbody>
-    @foreach (var feedback in Model)
-    {
-        <tr>
-            <td>@feedback.EmotionalState</td>
-        </tr>
-    }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.ActivityId</td>
+                <td>@item.EmotionalState</td>
+            </tr>
+        }
     </tbody>
 </table>
