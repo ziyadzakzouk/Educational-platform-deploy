@@ -24,39 +24,39 @@
     <h4>Rankings</h4>
     <table class="table">
         <thead>
-            <tr>
-                <th>
-                    Rank
-                </th>
-                <th>
-                    Player
-                </th>
-                <th>
-                    Course
-                </th>
-                <th>
-                    Score
-                </th>
-            </tr>
+        <tr>
+            <th>
+                Rank
+            </th>
+            <th>
+                Student
+            </th>
+            <th>
+                Course
+            </th>
+            <th>
+                Score
+            </th>
+        </tr>
         </thead>
         <tbody>
-            @foreach (var ranking in Model.Rankings)
-            {
-                <tr>
-                    <td>
-                        @ranking.Rank
-                    </td>
-                    <td>
-                        @(ranking.Learner != null ? ranking.Learner.FirstName + " " + ranking.Learner.LastName : "Unknown")
-                    </td>
-                    <td>
-                        @(ranking.Course != null ? ranking.Course.Title : "N/A")
-                    </td>
-                    <td>
-                        @ranking.TotalPoints
-                    </td>
-                </tr>
-            }
+        @foreach (var ranking in Model.Rankings)
+        {
+            <tr>
+                <td>
+                    @ranking.Rank
+                </td>
+                <td>
+                    @(ranking.Learner != null ? ranking.Learner.FirstName : "Unknown")
+                </td>
+                <td>
+                    @(ranking.Course != null ? ranking.Course.Title : "N/A")
+                </td>
+                <td>
+                    @ranking.TotalPoints
+                </td>
+            </tr>
+        }
         </tbody>
     </table>
 }
