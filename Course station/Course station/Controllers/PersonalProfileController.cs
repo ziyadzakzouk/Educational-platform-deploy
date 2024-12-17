@@ -51,6 +51,13 @@ namespace Course_station.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ProfileId,LearnerId,PreferedContentType,EmotionalState,PersonalityType")] PersonalProfile personalProfile)
         {
+
+            // Add this logging
+            _logger.LogInformation($"Received LearnerId: {personalProfile.LearnerId}");
+            foreach (var key in Request.Form.Keys)
+            {
+                _logger.LogInformation($"Form field {key}: {Request.Form[key]}");
+            }
             // Log the received data
             _logger.LogInformation($"Received profile creation request - LearnerId: {personalProfile.LearnerId}");
 

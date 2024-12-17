@@ -11,21 +11,33 @@
 
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create" method="post">
+        <form asp-action="Create" method="post" id="profileForm">
             <div asp-validation-summary="All" class="text-danger"></div>
 
             @* Display detailed validation errors *@
-            @foreach (var modelState in ViewData.ModelState.Values)
+            @if (!ViewData.ModelState.IsValid)
             {
-                foreach (var error in modelState.Errors)
-                {
-                    <div class="text-danger">@error.ErrorMessage</div>
-                }
+                <div class="alert alert-danger">
+                    <h6>Validation Errors:</h6>
+                    @foreach (var modelState in ViewData.ModelState)
+                    {
+                        <strong>@modelState.Key:</strong>
+                        <ul>
+                            @foreach (var error in modelState.Value.Errors)
+                            {
+                                <li>@error.ErrorMessage</li>
+                            }
+                        </ul>
+                    }
+                </div>
             }
 
             <div class="form-group mb-3">
                 <label asp-for="LearnerId" class="control-label">Learner</label>
-                <select asp-for="LearnerId" class="form-control" asp-items="ViewBag.Learners">
+                <select asp-for="LearnerId"
+                        class="form-control"
+                        asp-items="ViewBag.Learners"
+                        onchange="console.log('Selected LearnerId:', this.value)">
                     <option value="">-- Select a Learner --</option>
                 </select>
                 <span asp-validation-for="LearnerId" class="text-danger"></span>
@@ -33,7 +45,9 @@
 
             <div class="form-group mb-3">
                 <label asp-for="PreferedContentType" class="control-label">Preferred Content Type</label>
-                <select asp-for="PreferedContentType" class="form-control">
+                <select asp-for="PreferedContentType"
+                        class="form-control"
+                        onchange="console.log('Selected Content Type:', this.value)">
                     <option value="">-- Select Content Type --</option>
                     <option value="Video">Video</option>
                     <option value="Text">Text</option>
@@ -45,7 +59,9 @@
 
             <div class="form-group mb-3">
                 <label asp-for="EmotionalState" class="control-label">Emotional State</label>
-                <select asp-for="EmotionalState" class="form-control">
+                <select asp-for="EmotionalState"
+                        class="form-control"
+                        onchange="console.log('Selected Emotional State:', this.value)">
                     <option value="">-- Select Emotional State --</option>
                     <option value="Happy">Happy</option>
                     <option value="Neutral">Neutral</option>
@@ -57,7 +73,9 @@
 
             <div class="form-group mb-3">
                 <label asp-for="PersonalityType" class="control-label">Personality Type</label>
-                <select asp-for="PersonalityType" class="form-control">
+                <select asp-for="PersonalityType"
+                        class="form-control"
+                        onchange="console.log('Selected Personality Type:', this.value)">
                     <option value="">-- Select Personality Type --</option>
                     <option value="Introvert">Introvert</option>
                     <option value="Extrovert">Extrovert</option>
@@ -67,10 +85,48 @@
             </div>
 
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-primary" onclick="console.log('Form submitted')" />
                 <a asp-action="Index" class="btn btn-secondary">Back to List</a>
             </div>
         </form>
+    </div>
+</div>
+
+@* Debug Information Section *@
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0">Debug Information</h5>
+            </div>
+            <div class="card-body">
+                <h6>Model State:</h6>
+                <pre>IsValid: @ViewData.ModelState.IsValid</pre>
+
+                <h6>Available Learners:</h6>
+                <ul>
+                    @if (ViewBag.Learners != null)
+                    {
+                        foreach (var item in (SelectList)ViewBag.Learners)
+                        {
+                            <li>Value: @item.Value, Text: @item.Text</li>
+                        }
+                    }
+                    else
+                    {
+                        <li class="text-danger">No learners available in ViewBag.Learners</li>
+                    }
+                </ul>
+
+                <h6>Current Form Values:</h6>
+                <pre>
+LearnerId: @Model?.LearnerId
+PreferedContentType: @Model?.PreferedContentType
+EmotionalState: @Model?.EmotionalState
+PersonalityType: @Model?.PersonalityType
+                </pre>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -78,4 +134,15 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+
+    <script>
+        // Add form submission debugging
+        document.getElementById('profileForm').addEventListener('submit', function(e) {
+            console.log('Form submitting...');
+            console.log('LearnerId:', document.querySelector('[name="LearnerId"]').value);
+            console.log('PreferedContentType:', document.querySelector('[name="PreferedContentType"]').value);
+            console.log('EmotionalState:', document.querySelector('[name="EmotionalState"]').value);
+            console.log('PersonalityType:', document.querySelector('[name="PersonalityType"]').value);
+        });
+    </script>
 }
