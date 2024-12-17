@@ -399,7 +399,7 @@ namespace Course_station.Controllers
         public async Task<IActionResult> SkillsProficiency(int learnerId)
         {
             var skills = await _context.Skills
-                .FromSqlRaw("EXEC SkillsProfeciency @LearnerID = {0}", learnerId)
+                .FromSqlRaw("EXEC SkillsProficiency @Learner_ID = {0}", learnerId)
                 .ToListAsync();
 
             return View(skills);
