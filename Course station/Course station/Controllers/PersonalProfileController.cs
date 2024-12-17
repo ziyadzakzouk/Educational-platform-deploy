@@ -2,6 +2,7 @@ using Course_station.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,46 +11,38 @@ namespace Course_station.Controllers
     public class PersonalProfileController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly ILogger<PersonalProfileController> _logger;
 
-        public PersonalProfileController(ApplicationDbContext context)
+        public PersonalProfileController(ApplicationDbContext context, ILogger<PersonalProfileController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         public async Task<IActionResult> Index()
         {
-            var personalProfiles = await _context.PersonalProfiles.Include(p => p.Learner).ToListAsync();
-            return View(personalProfiles);
-        }
-
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var personalProfile = await _context.PersonalProfiles
+            var personalProfiles = await _context.PersonalProfiles
                 .Include(p => p.Learner)
-                .FirstOrDefaultAsync(m => m.ProfileId == id);
-            if (personalProfile == null)
-            {
-                return NotFound();
-            }
-
-            return View(personalProfile);
+                .ToListAsync();
+            return View(personalProfiles);
         }
 
         public IActionResult Create()
         {
             ViewData["Title"] = "Create Personal Profile";
+
+            // Get list of learners with both ID and full name
             var learners = _context.Learners
                 .Select(l => new
                 {
                     LearnerId = l.LearnerId,
-                    FullName = l.FirstName + " " + l.LastName
+                    FullName = $"{l.FirstName} {l.LastName}"
                 })
                 .ToList();
+
+            // Log the number of learners found
+            _logger.LogInformation($"Found {learners.Count} learners for dropdown");
+
             ViewData["Learners"] = new SelectList(learners, "LearnerId", "FullName");
             return View(new PersonalProfile());
         }
@@ -58,27 +51,65 @@ namespace Course_station.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ProfileId,LearnerId,PreferedContentType,EmotionalState,PersonalityType")] PersonalProfile personalProfile)
         {
-            if (ModelState.IsValid)
+            // Log the received data
+            _logger.LogInformation($"Received profile creation request - LearnerId: {personalProfile.LearnerId}");
+
+            if (!ModelState.IsValid)
             {
-                _context.Add(personalProfile);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                _logger.LogWarning("Model state is invalid");
+                foreach (var modelStateEntry in ModelState.Values)
+                {
+                    foreach (var error in modelStateEntry.Errors)
+                    {
+                        _logger.LogError($"Validation error: {error.ErrorMessage}");
+                    }
+                }
             }
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    // Verify if the learner exists
+                    var learnerExists = await _context.Learners
+                        .AnyAsync(l => l.LearnerId == personalProfile.LearnerId);
+
+                    if (!learnerExists)
+                    {
+                        ModelState.AddModelError("LearnerId", "Selected learner does not exist");
+                        _logger.LogError($"Attempted to create profile for non-existent LearnerId: {personalProfile.LearnerId}");
+                    }
+                    else
+                    {
+                        _context.Add(personalProfile);
+                        await _context.SaveChangesAsync();
+                        _logger.LogInformation($"Successfully created profile for LearnerId: {personalProfile.LearnerId}");
+                        return RedirectToAction(nameof(Index));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error creating personal profile");
+                ModelState.AddModelError(string.Empty, "An error occurred while creating the personal profile. Please try again.");
+            }
+
+            // If we get here, something went wrong - reload the form
             ViewData["Title"] = "Create Personal Profile";
             var learners = _context.Learners
                 .Select(l => new
                 {
                     LearnerId = l.LearnerId,
-                    FullName = l.FirstName + " " + l.LastName
+                    FullName = $"{l.FirstName} {l.LastName}"
                 })
                 .ToList();
             ViewData["Learners"] = new SelectList(learners, "LearnerId", "FullName", personalProfile.LearnerId);
             return View(personalProfile);
         }
 
+        
 
-
-        public async Task<IActionResult> Edit(int? profileId, int? learnerId)
+public async Task<IActionResult> Edit(int? profileId, int? learnerId)
         {
             if (profileId == null || learnerId == null)
             {

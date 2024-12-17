@@ -8,34 +8,74 @@
 
 <h4>PersonalProfile</h4>
 <hr />
+
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
-            <div class="form-group">
-                <label asp-for="LearnerId" class="control-label"></label>
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            @* Display detailed validation errors *@
+            @foreach (var modelState in ViewData.ModelState.Values)
+            {
+                foreach (var error in modelState.Errors)
+                {
+                    <div class="text-danger">@error.ErrorMessage</div>
+                }
+            }
+
+            <div class="form-group mb-3">
+                <label asp-for="LearnerId" class="control-label">Learner</label>
                 <select asp-for="LearnerId" class="form-control" asp-items="ViewBag.Learners">
-                    <option value="">Select a learner</option>
+                    <option value="">-- Select a Learner --</option>
                 </select>
                 <span asp-validation-for="LearnerId" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="PreferedContentType" class="control-label"></label>
-                <input asp-for="PreferedContentType" class="form-control" />
+
+            <div class="form-group mb-3">
+                <label asp-for="PreferedContentType" class="control-label">Preferred Content Type</label>
+                <select asp-for="PreferedContentType" class="form-control">
+                    <option value="">-- Select Content Type --</option>
+                    <option value="Video">Video</option>
+                    <option value="Text">Text</option>
+                    <option value="Audio">Audio</option>
+                    <option value="Interactive">Interactive</option>
+                </select>
                 <span asp-validation-for="PreferedContentType" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="EmotionalState" class="control-label"></label>
-                <input asp-for="EmotionalState" class="form-control" />
+
+            <div class="form-group mb-3">
+                <label asp-for="EmotionalState" class="control-label">Emotional State</label>
+                <select asp-for="EmotionalState" class="form-control">
+                    <option value="">-- Select Emotional State --</option>
+                    <option value="Happy">Happy</option>
+                    <option value="Neutral">Neutral</option>
+                    <option value="Anxious">Anxious</option>
+                    <option value="Focused">Focused</option>
+                </select>
                 <span asp-validation-for="EmotionalState" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="PersonalityType" class="control-label"></label>
-                <input asp-for="PersonalityType" class="form-control" />
+
+            <div class="form-group mb-3">
+                <label asp-for="PersonalityType" class="control-label">Personality Type</label>
+                <select asp-for="PersonalityType" class="form-control">
+                    <option value="">-- Select Personality Type --</option>
+                    <option value="Introvert">Introvert</option>
+                    <option value="Extrovert">Extrovert</option>
+                    <option value="Ambivert">Ambivert</option>
+                </select>
                 <span asp-validation-for="PersonalityType" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Back to List</a>
             </div>
         </form>
     </div>
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
