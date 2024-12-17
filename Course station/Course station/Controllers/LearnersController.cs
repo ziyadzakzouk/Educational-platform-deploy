@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Course_station.Controllers
 {
-   // [Authorize]
+    // [Authorize]
     public class LearnersController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -27,16 +27,17 @@ namespace Course_station.Controllers
             _coursePrerequisiteService = coursePrerequisiteService;
         }
 
-        // GET: Learners/Home
-        public IActionResult Home()
+        public async Task<IActionResult> Home()
         {
             var learnerId = HttpContext.Session.GetInt32("LearnerId");
             if (learnerId == null)
             {
                 return RedirectToAction("Login", "Learners");
             }
+
             return View();
         }
+
 
         // GET: Learners
         [AdminPageOnly]
@@ -118,7 +119,8 @@ namespace Course_station.Controllers
             {
                 _context.Add(learner);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                //   return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "Learners", new { id = learner.LearnerId });
             }
             return View(learner);
         }
@@ -189,7 +191,7 @@ namespace Course_station.Controllers
 
             return View(learner);
         }
-        
+
         public IActionResult CreateFeedback(int learnerId)
         {
             var viewModel = new EmotionalFeedback
@@ -362,11 +364,6 @@ namespace Course_station.Controllers
                 .ToListAsync();
 
             return View(rankings);
-        }
-
-        public async Task<IActionResult> LeaderboardRedrict()
-        {
-            return RedirectToAction("Index","Leaderboard");
         }
 
         // 7. Submit emotional feedback for an activity

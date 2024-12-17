@@ -3,14 +3,15 @@
     ViewData["Title"] = "Profile";
 }
 
-<h1 class="text-center">Profile</h1>
+<h1 class="text-center">Personal Profile</h1>
 
 <div class="profile-container card shadow-sm p-4 mb-5 bg-white rounded">
     <div class="profile-header d-flex align-items-center mb-4">
         <div class="profile-info ml-3">
             <h2 class="text-primary">@Model.Learner.FirstName @Model.Learner.LastName</h2>
             <h3 class="text-primary">ID: @Model.Learner.LearnerId</h3>
-            <p class="text-muted">@Model.Learner.Email</p>
+            <p class="text-muted">Email: @Model.Learner.Email</p>
+            <p class="text-muted">Pass: @Model.Learner.Password</p>
         </div>
     </div>
 
@@ -38,10 +39,10 @@
     <div class="profile-actions mt-4">
         <a asp-action="Edit" asp-route-id="@Model.Learner.LearnerId" class="btn btn-primary mr-2">Edit Profile</a>
         <a asp-action="Enroll" asp-route-learnerId="@Model.Learner.LearnerId" class="btn btn-success">Enroll in a Course</a>
-        <p>
-            <a asp-action="QuestProgress" asp-route-learnerId="@Model.Learner.LearnerId">View Quest Progress</a> |
-            <a asp-action="AchievementProgress" asp-route-learnerId="@Model.Learner.LearnerId">View Achievement Progress</a>
-        </p>
+
+        <a asp-action="QuestProgress" asp-route-learnerId="@Model.Learner.LearnerId" class="btn btn-info mr-2">View Quest Progress</a>
+        <a asp-action="AchievementProgress" asp-route-learnerId="@Model.Learner.LearnerId" class="btn btn-info">View Achievement Progress</a>
+
     </div>
 
     <div class="upload-picture mt-4">
@@ -151,7 +152,12 @@
             }
         </ul>
     </div>
+
+    <div class="mt-4">
+        <a asp-action="Home" class="btn btn-primary">Go to Home</a>
+    </div>
 </div>
+
 
 <style>
     .profile-container {

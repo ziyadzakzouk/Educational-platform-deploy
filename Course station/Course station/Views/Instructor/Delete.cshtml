@@ -10,10 +10,16 @@
 <div>
     <h4>Instructor</h4>
     <hr />
-    @if (!string.IsNullOrEmpty(ViewData["ErrorMessage"] as string))
+    @if (!string.IsNullOrEmpty(TempData["ErrorMessage"] as string))
     {
         <div class="alert alert-danger">
-            @ViewData["ErrorMessage"]
+            @TempData["ErrorMessage"]
+        </div>
+    }
+    @if (!string.IsNullOrEmpty(TempData["Message"] as string))
+    {
+        <div class="alert alert-success">
+            @TempData["Message"]
         </div>
     }
     <dl class="row">

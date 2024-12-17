@@ -83,10 +83,12 @@ namespace Course_station.Controllers
             {
                 _context.Add(instructor);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", new { id = instructor.InstructorId });
             }
             return View(instructor);
         }
+
+
 
         // GET: Instructor/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -138,135 +140,6 @@ namespace Course_station.Controllers
             return View(instructor);
         }
 
-        // GET: Instructor/ManageCourses
-        public async Task<IActionResult> ManageCourses()
-        {
-            var instructorId = HttpContext.Session.GetInt32("InstructorId");
-            if (instructorId == null)
-            {
-                return RedirectToAction("Login", "Instructor");
-            }
-
-            var courses = await _context.Courses
-                .Where(c => c.Instructors.Any(i => i.InstructorId == instructorId))
-                .ToListAsync();
-
-            return View(courses);
-        }
-
-
-
-        // GET: Course /details/5
-        public async Task<IActionResult> CourseDetails(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var course = await _context.Courses
-                .Include(c => c.Modules)
-                .FirstOrDefaultAsync(m => m.CourseId == id);
-            if (course == null)
-            {
-                return NotFound();
-            }
-
-            return View("~/Views/Course/Details.cshtml", course);
-        }
-
-
-
-        // GET: Instructor/EditCourse/5
-        //public async Task<IActionResult> EditCourse(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var course = await _context.Courses.FindAsync(id);
-        //    if (course == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return View(course);
-        //}
-
-        //// POST: Instructor/EditCourse/5
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> EditCourse(int id, [Bind("CourseId,Title,Description,DiffLevel,CreditPoint,LearningObjective")] Course course)
-        //{
-        //    if (id != course.CourseId)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
-        //            _context.Update(course);
-        //            await _context.SaveChangesAsync();
-        //        }
-        //        catch (DbUpdateConcurrencyException)
-        //        {
-        //            if (!CourseExists(course.CourseId))
-        //            {
-        //                return NotFound();
-        //            }
-        //            else
-        //            {
-        //                throw;
-        //            }
-        //        }
-        //        return RedirectToAction(nameof(ManageCourses));
-        //    }
-        //    return View(course);
-        //}
-
-
-
-        private bool CourseExists(int id)
-        {
-            return _context.Courses.Any(e => e.CourseId == id);
-        }
-
-        // GET: Instructor/DeleteCourse/5
-        public async Task<IActionResult> DeleteCourse(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var course = await _context.Courses
-                .FirstOrDefaultAsync(m => m.CourseId == id);
-            if (course == null)
-            {
-                return NotFound();
-            }
-
-            return View(course);
-        }
-
-        // POST: Instructor/DeleteCourse/5
-        [HttpPost, ActionName("DeleteCourse")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteCourseConfirmed(int id)
-        {
-            var course = await _context.Courses.FindAsync(id);
-            if (course != null)
-            {
-                _context.Courses.Remove(course);
-                await _context.SaveChangesAsync();
-            }
-            return RedirectToAction(nameof(ManageCourses));
-        }
-
-
-
         // GET: Instructor/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -309,6 +182,122 @@ namespace Course_station.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+        // GET: Instructor/ManageCourses
+        public async Task<IActionResult> ManageCourses()
+        {
+            var instructorId = HttpContext.Session.GetInt32("InstructorId");
+            if (instructorId == null)
+            {
+                return RedirectToAction("Login", "Instructor");
+            }
+
+            var courses = await _context.Courses
+                .Where(c => c.Instructors.Any(i => i.InstructorId == instructorId))
+                .ToListAsync();
+
+            return View(courses);
+        }
+
+
+        // GET: Course /details/5
+        public async Task<IActionResult> CourseDetails(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var course = await _context.Courses
+                .Include(c => c.Modules)
+                .FirstOrDefaultAsync(m => m.CourseId == id);
+            if (course == null)
+            {
+                return NotFound();
+            }
+
+            return View("~/Views/Course/Details.cshtml", course);
+        }
+
+
+
+
+        // GET: Instructor/EditCourse/5
+        public async Task<IActionResult> EditCourse(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var course = await _context.Courses.FindAsync(id);
+            if (course == null)
+            {
+                return NotFound();
+            }
+            return View("~/Views/Course/Edit.cshtml", course);
+        }
+
+        // POST: Instructor/EditCourse/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditCourse(int id, [Bind("CourseId,Title,Description,DiffLevel,CreditPoint,LearningObjective")] Course course)
+        {
+            if (id != course.CourseId)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(course);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!CourseExists(course.CourseId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(ManageCourses));
+            }
+            return View("~/Views/Course/Edit.cshtml", course);
+        }
+
+
+
+        private bool CourseExists(int id)
+        {
+            return _context.Courses.Any(e => e.CourseId == id);
+        }
+
+        // GET: Instructor/Delete/5
+        // GET: Instructor/DeleteCourse/5
+        public async Task<IActionResult> DeleteCourse(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var course = await _context.Courses
+                .FirstOrDefaultAsync(m => m.CourseId == id);
+            if (course == null)
+            {
+                return NotFound();
+            }
+
+            return View("~/Views/Course/Delete.cshtml", course);
+        }
+
+
         [AllowAnonymous]
         public IActionResult Login()
         {
@@ -530,34 +519,19 @@ namespace Course_station.Controllers
         {
             return View();
         }
-       
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateCourse([Bind("CourseId,Title,Description,DiffLevel,CreditPoint,LearningObjective")] Course course)
         {
-            var instructorId = HttpContext.Session.GetInt32("InstructorId");
-            if (instructorId == null)
-            {
-                return RedirectToAction("Login", "Instructor");
-            }
-
             if (ModelState.IsValid)
             {
-                var instructor = await _context.Instructors.FindAsync(instructorId);
-                if (instructor != null)
-                {
-                    course.Instructors = new List<Instructor> { instructor };
-                    _context.Courses.Add(course);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(ManageCourses)); // Redirect to the ManageCourses action
-                }
+                _context.Courses.Add(course);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
             }
             return View(course);
         }
-
-
-
 
         public IActionResult CreateAssessment()
         {
@@ -777,102 +751,6 @@ namespace Course_station.Controllers
             }
             return View(activity);
         }
-
-        public IActionResult CreateQuest()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateQuest([Bind("QuestId,DifficultyLevel,Criteria,Description,Title,Collaborative,SkillMastery")] Quest quest)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Quests.Add(quest);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Quests");
-            }
-            return View(quest);
-        }
-
-        public async Task<IActionResult> UpdateDeadline(int questId, DateOnly deadline)
-        {
-            var quest = await _context.Quests
-                .Include(q => q.Collaborative)
-                .FirstOrDefaultAsync(q => q.QuestId == questId);
-
-            if (quest == null || quest.Collaborative == null)
-            {
-                return NotFound();
-            }
-
-            quest.Collaborative.Deadline = deadline;
-            await _context.SaveChangesAsync();
-
-            TempData["Message"] = "Deadline updated successfully!";
-            return RedirectToAction("Edit", "Quests", new { id = questId });
-        }
-
-
-        // POST: Instructor/AddAchievement
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddAchievement([Bind("LearnerId,BadgeId,Description,DateEarned")] Achievement achievement)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Achievements.Add(achievement);
-                await _context.SaveChangesAsync();
-
-                // Send notification to the learner
-                var notification = new Notification
-                {
-                    TimeStamp = DateTime.Now,
-                    Message = $"You have earned a new achievement: {achievement.Description}",
-                    Urgency = "Normal",
-                    Readstatus = false
-                };
-
-                // Add the notification to the learner's notifications
-                var learner = await _context.Learners.FindAsync(achievement.LearnerId);
-                if (learner != null)
-                {
-                    learner.Notifications.Add(notification);
-                    await _context.SaveChangesAsync();
-                }
-
-                TempData["Message"] = "Achievement added and learner notified successfully!";
-                return RedirectToAction(nameof(Index));
-            }
-
-            ViewBag.Learners = new SelectList(_context.Learners, "LearnerId", "FirstName", achievement.LearnerId);
-            ViewBag.Badges = new SelectList(_context.Badges, "BadgeId", "Description", achievement.BadgeId);
-            return View(achievement);
-        }
-        
-        
-      
-       
-
-       
-
-
-
-
-
-        // GET: Instructor/AddAchievement
-        public IActionResult AddAchievement()
-        {
-            ViewBag.Learners = new SelectList(_context.Learners, "LearnerId", "FirstName");
-            ViewBag.Badges = new SelectList(_context.Badges, "BadgeId", "Description");
-            return View();
-        }
-
-       
-
-
-
     }
 }
 
