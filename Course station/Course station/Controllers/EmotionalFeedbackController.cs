@@ -32,21 +32,19 @@ namespace Course_station.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result =  _context.EmotionalFeedbacks
+                var result = await _context.EmotionalFeedbacks
                     .FromSqlRaw("EXEC EmotionalTrendAnalysis @CourseID = {0}, @ModuleID = {1}, @TimePeriod = {2}",
                         CourseID, ModuleID, TimePeriod)
-                    .AsEnumerable() // Perform the composition on the client side
                     .Select(e => new { e.EmotionalState })
-                    .ToList();
-                
-                var anonymousResult = result.Select(e => new { e.EmotionalState }).ToList();
+                    .ToListAsync();
 
                 return View("EmotionalTrendAnalysisResult", result);
             }
             return View();
         }
 
-            // GET: EmotionalFeedback
+
+        // GET: EmotionalFeedback
         public async Task<IActionResult> Index()
         {
             var emotionalFeedbacks = _context.EmotionalFeedbacks.Include(e => e.Activity).Include(e => e.Learner);
@@ -79,19 +77,28 @@ namespace Course_station.Controllers
             return View();
         }
 
-        // POST: EmotionalFeedback/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("FeedbackId,LearnerId,ActivityId,Timestamp,EmotionalState")] EmotionalFeedback emotionalFeedback)
         {
             if (ModelState.IsValid)
             {
+                var activityExists = await _context.LearningActivities.AnyAsync(a => a.ActivityId == emotionalFeedback.ActivityId);
+                if (!activityExists)
+                {
+                    ModelState.AddModelError("ActivityId", "Invalid Activity ID.");
+                    return View(emotionalFeedback);
+                }
+
                 _context.Add(emotionalFeedback);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(emotionalFeedback);
         }
+
+
+
 
         // GET: EmotionalFeedback/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -113,6 +120,8 @@ namespace Course_station.Controllers
 
             return View(emotionalFeedback);
         }
+
+
 
 // POST: EmotionalFeedback/Edit/5
         [HttpPost]
