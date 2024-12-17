@@ -37,11 +37,8 @@ namespace Course_station.Controllers
 
             return View();
         }
-        public async Task<IActionResult> LeaderboardRedrict()
-        {
-            return RedirectToAction("Index","Leaderboard");
-        }
-        
+
+
         // GET: Learners
         [AdminPageOnly]
         public async Task<IActionResult> Index()
@@ -368,6 +365,29 @@ namespace Course_station.Controllers
 
             return View(rankings);
         }
+        //public async Task<IActionResult> LeaderboardView(int learnerId)
+        //{
+        //    // Fetch the leaderboards for the learner
+        //    var leaderboards = await _context.Leaderboards
+        //        .Where(lb => lb.Rankings.Any(r => r.LearnerId == learnerId))
+        //        .ToListAsync();
+
+        //    TempData["Leaderboards"] = leaderboards;
+        //    return RedirectToAction("Index", "Leaderboard");
+        //}
+        //public async Task<IActionResult> LeaderboardRedirect(int learnerId)
+        //{
+        //    // Fetch the leaderboards for the learner
+        //    var leaderboards = await _context.Leaderboards
+        //        .Include(lb => lb.Rankings)
+        //        .Where(lb => lb.Rankings.Any(r => r.LearnerId == learnerId))
+        //        .ToListAsync();
+
+        //    TempData["Leaderboards"] = leaderboards;
+        //    return RedirectToAction("Index", "Leaderboard");
+        //}
+
+
 
         // 7. Submit emotional feedback for an activity
         [HttpPost]
@@ -399,7 +419,7 @@ namespace Course_station.Controllers
         public async Task<IActionResult> SkillsProficiency(int learnerId)
         {
             var skills = await _context.Skills
-                .FromSqlRaw("EXEC SkillsProficiency @Learner_ID = {0}", learnerId)
+                .FromSqlRaw("EXEC SkillsProfeciency @LearnerID = {0}", learnerId)
                 .ToListAsync();
 
             return View(skills);
