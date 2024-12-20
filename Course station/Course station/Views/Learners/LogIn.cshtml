@@ -4,12 +4,10 @@
     ViewData["Title"] = "Login";
 }
 
-<h1>Login</h1>
-
-<h4>Learner</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="login-container">
+    <div class="login-form">
+        <h1>Login</h1>
+        <hr />
         <form asp-action="Login">
             <div class="form-group">
                 <label asp-for="LearnerId" class="control-label"></label>
@@ -25,16 +23,14 @@
                 <input type="submit" value="Login" class="btn btn-primary" />
             </div>
         </form>
+
+        @if (ViewBag.ErrorMessage != null)
+        {
+            <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+        }
+
+        <a asp-action="Index" asp-controller="Home">Back to Home</a>
     </div>
-</div>
-
-@if (ViewBag.ErrorMessage != null)
-{
-    <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
-}
-
-<div>
-    <a asp-action="Index" asp-controller="Home">Back to Home</a>
 </div>
 
 @section Scripts {
@@ -42,3 +38,63 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
+
+<style>
+    /* Login form styles */
+    .login-container {
+        margin-top: 50px;
+        display: flex;
+        justify-content: center;
+    }
+
+    .login-form {
+        width: 100%;
+        max-width: 400px;
+        padding: 15px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+        .login-form h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            text-align: center;
+        }
+
+        .login-form .form-group {
+            margin-bottom: 15px;
+        }
+
+        .login-form .form-control {
+            height: 45px;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .login-form .btn-primary {
+            width: 100%;
+            padding: 10px;
+            font-size: 18px;
+            border-radius: 5px;
+        }
+
+        .login-form .alert {
+            margin-top: 20px;
+        }
+
+        .login-form a {
+            display: block;
+            margin-top: 10px;
+            text-align: center;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+            .login-form a:hover {
+                text-decoration: underline;
+            }
+</style>

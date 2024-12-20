@@ -10,92 +10,99 @@
         return;
     }
 }
+<h2 class="text-center"> welcome to the Homepage </h2>
 
-<h2>Learner Home</h2>
-<div class="welcome-section">
-    <p>Welcome to the learner home page!</p>
-    <a asp-controller="Learners" asp-action="Viewinfo" asp-route-learnerId="@learnerId" class="notification-btn" style="text-decoration: none;">
-        <svg xmlns="http://www.w3.org/2000/svg"
-             viewBox="0 0 24 24"
-             width="24"
-             height="24">
-            <path fill="none" d="M0 0h24v24H0z"></path>
-            <path fill="currentColor"
-                  d="M20 17h2v2H2v-2h2v-7a8 8 0 1 1 16 0v7zm-2 0v-7a6 6 0 1 0-12 0v7h12zm-9 4h6v2H9v-2z"></path>
-        </svg>
-    </a>
+<div id="carouselExampleControlsNoTouching" class="carousel slide" data-bs-touch="false">
+    <div class="carousel-inner">
+        <div class="carousel-item">
+            <img src="~/images/Welcome.png" class="d-block w-100 carousel-image">
+        </div>
+        <div class="carousel-item active">
+            <img src="~/images/Hero_image.webp" class="d-block w-100 carousel-image" >
+        </div>
+        <div class="carousel-item">
+            <img src="~/images/back.webp" class="d-block w-100 carousel-image" >
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControlsNoTouching" data-bs-slide="prev" color="black">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControlsNoTouching" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
 </div>
+<hr />
 <a asp-controller="Learners" asp-action="Details" asp-route-id="@learnerId" style="text-decoration: none;">
-<button class="button">
+    <button class="button">
         View Profile
-    <div class="arrow">›</div>
-</button>
+        <div class="arrow">›</div>
+    </button>
 </a>
 
-
-
 <div class="actions">
-    <h3>Actions</h3>
-
     <div class="btn-group-wrap">
-        <a asp-controller="Learners" asp-action="EnrolledCourses" asp-route-learnerId="@learnerId" style="text-decoration: none;">
-            <button class="button2">
-                View Enrolled Courses
-                <div class="arrow">›</div>
-            </button>
-        </a>
-        <br>
-        <a asp-controller="assessments" asp-action="Index" style="text-decoration: none;">
-            <button class="button2">
-                View Assessments
-                <div class="arrow">›</div>
-            </button>
-        </a>
-<br>
-        <a asp-controller="Leaderboard" asp-action="Index" asp-route-learnerId="@learnerId" style="text-decoration: none;">
-            <button class="button2">
-                View Leaderboard
-                <div class="arrow">›</div>
-            </button>
-        </a>
-        <br>
-        <a asp-controller="Learners" asp-action="Edit" asp-route-Id="@learnerId" style="text-decoration: none;">
-            <button class="button2">
-                Update Profile
-                <div class="arrow">›</div>
-            </button>
-        </a>
-        <br>
-        <a asp-action="Enroll" asp-route-learnerId="@learnerId" style="text-decoration: none;">
-            <button class="button2">
-                Enroll in Course
-                <div class="arrow">›</div>
-            </button>
-        </a>
-        <br>
-        <a asp-controller="Quests" asp-action="Index" style="text-decoration: none;">
-            <button class="button2">
-                Join Quest
-                <div class="arrow">›</div>
-            </button>
-        </a>
-        <br>
+        <div class="card border-primary mb-3 card-fixed-size">
+            <div class="card-header">Courses</div>
+            <div class="card-body text-primary">
+                <a asp-controller="Learners" asp-action="EnrolledCourses" asp-route-learnerId="@learnerId" class="card-text" style="text-decoration: none;">View Enrolled Courses</a>
+            </div>
+        </div>
 
-    <div class="btn-group-vertical">
-        @* <a asp-controller="Learners" asp-action="Details" asp-route-id="@learnerId" class="btn btn-primary">View Profile</a> *@
-        @* <a asp-controller="Learners" asp-action="EnrolledCourses" asp-route-learnerId="@learnerId" class="btn btn-success">View Enrolled Courses</a> *@
-        @* <a asp-controller="Learners" asp-action="AssessmentsList" asp-route-learnerId="@learnerId" class="btn btn-info">View Assessments</a> *@
-        <a asp-controller="Leaderboard" asp-action="Index" class="btn btn-warning">View Leaderboard</a>
-        @* <a asp-controller="Learners" asp-action="SkillsProficiency" asp-route-learnerId="@learnerId" class="btn btn-secondary">View Skills Proficiency</a> *@
-        @* <a asp-controller="Learners" asp-action="Viewinfo" asp-route-learnerId="@learnerId" class="btn btn-custom-red">View Notifications</a> *@
-        @* <a asp-controller="Learners" asp-action="UpdateProfile" asp-route-learnerId="@learnerId" class="btn btn-light">Update Profile</a> *@
-        @* <a asp-action="Enroll" asp-route-learnerId="@learnerId" class="btn btn-dark">Enroll in Course</a> *@
-        @* <a asp-controller="Quests" asp-action="Index" class="btn btn-custom-green">Join Quest</a> *@
+        <div class="card border-secondary mb-3 card-fixed-size">
+            <div class="card-header">Assessments</div>
+            <div class="card-body text-secondary">
+                <a asp-controller="assessments" asp-action="Index" class="card-text" style="text-decoration: none;">View Assessments</a>
+            </div>
+        </div>
 
-        <a asp-controller="Learners" asp-action="CreateFeedback" asp-route-learnerId="@learnerId" class="btn btn-custom-red">Give us your feedback</a>
+        <div class="card border-success mb-3 card-fixed-size">
+            <div class="card-header">Leaderboard</div>
+            <div class="card-body text-success">
+                <a asp-controller="Leaderboard" asp-action="Index" asp-route-learnerId="@learnerId" class="card-text" style="text-decoration: none;">View Leaderboard</a>
+            </div>
+        </div>
+
+        <div class="card border-danger mb-3 card-fixed-size">
+            <div class="card-header">Profile</div>
+            <div class="card-body text-danger">
+                <a asp-controller="Learners" asp-action="Edit" asp-route-Id="@learnerId" class="card-text" style="text-decoration: none;">Update Profile</a>
+            </div>
+        </div>
+
+        <div class="card border-warning mb-3 card-fixed-size">
+            <div class="card-header">Enroll</div>
+            <div class="card-body">
+                <a asp-action="Enroll" asp-route-learnerId="@learnerId" class="card-text" style="text-decoration: none;">Enroll in Course</a>
+            </div>
+        </div>
+
+        <div class="card border-info mb-3 card-fixed-size">
+            <div class="card-header">Quest</div>
+            <div class="card-body">
+                <a asp-controller="Quests" asp-action="Index" class="card-text" style="text-decoration: none;">Join Quest</a>
+            </div>
+        </div>
+
+        <div class="card border-light mb-3 card-fixed-size">
+            <div class="card-header">Feedback</div>
+            <div class="card-body">
+                <a asp-controller="Learners" asp-action="CreateFeedback" asp-route-learnerId="@learnerId" class="card-text" style="text-decoration: none;">Give us your feedback</a>
+            </div>
+        </div>
+
+        <div class="card border-primary mb-3 card-fixed-size">
+            <div class="card-header">Notification</div>
+            <div class="card-body text-primary">
+                <a asp-controller="Learners" asp-action="Viewinfo" asp-route-learnerId="@learnerId" class="notification-btn" style="text-decoration: none;">
+                    View Notifications
+                </a>
+            </div>
+        </div>
     </div>
 </div>
-            
+
 <style>
     .welcome-section {
         display: flex;
@@ -103,7 +110,7 @@
         justify-content: space-between;
         gap: 10px; /* Add some space between the text and the button fu*/
     }
-   
+
     .notification-btn {
         background: none;
         border: none;
@@ -125,29 +132,19 @@
         margin-top: 20px;
     }
 
-    .btn-group-vertical {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .btn-custom-red {
-        background-color: red;
-        color: white;
-    }
-
-    .btn-custom-green {
-        background-color: green;
-        color: white;
-    }
-
-    .btn-group-vertical .btn {
-        margin-bottom: 10px;
-    }
-
     .btn-group-wrap {
         display: flex;
         flex-wrap: wrap; /* Allows wrapping to the next line */
         gap: 20px; /* Adds spacing between buttons */
     }
-</style>
 
+    .card-fixed-size {
+        max-width: 18rem;
+        width: 18rem;
+    }
+
+    .carousel-image {
+        object-fit: cover;
+        height: 500px; /* Adjust the height as needed */
+    }
+</style>

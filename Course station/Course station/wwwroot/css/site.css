@@ -7,22 +7,25 @@
     display: flex;
     justify-content: center;
 }
+    .navbar-nav .nav-link {
+        color: #333;
+       
+    }
+
+        .navbar-nav .nav-link:hover {
+            color: deepskyblue;
+            background-color: rgba(0, 123, 255, 0.1); /* Light blue background on hover */
+            border-radius: 5px; /* Rounded corners */
+            padding: 5px 10px; /* Add padding for better visual effect */
+        }
 
 
     .navbar-nav .nav-item {
         text-align: center;
         margin: 0 10px; /* Add space between items */
     }
-    hover::after
+  
 
-    .navbar-nav .nav-link {
-        color: #333;
-        transition: color 0.3s ease; /* Smooth transition for hover effect */
-    }
-
-        .navbar-nav .nav-link:hover {
-            color:deepskyblue;
-        }
 
 /* General styles */
 body {

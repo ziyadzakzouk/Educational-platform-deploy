@@ -1,0 +1,77 @@
+﻿@{
+    ViewData["Title"] = "LogIn";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login Selection</title>
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        .btn-custom {
+            color: white;
+            margin-bottom: 10px;
+            width: 200px;
+            /* border-radius: 10px; */
+        }
+
+        .btn-custom-red {
+            background-color: #ff0000;
+        }
+
+            .btn-custom-red:hover {
+                background-color: #cc0000;
+            }
+
+        .btn-custom-blue {
+            background-color: #0000ff;
+        }
+
+            .btn-custom-blue:hover {
+                background-color: #0000cc;
+            }
+
+        .login-box {
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 400px;
+            margin: 50px auto;
+        }
+
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center align the buttons */
+        }
+
+        .account-info {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+            .account-info p {
+                margin: 0;
+                margin-right: 5px;
+            }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="login-box">
+            <div class="btn-group" role="group">
+                <a asp-controller="Learners" asp-action="LogIn" class="btn btn-primary btn-custom btn-custom-red">Login as Learner</a>
+                <a asp-controller="Instructor" asp-action="LogIn" class="btn btn-primary btn-custom btn-custom-blue">Login as Instructor</a>
+            </div>
+            <div class="account-info">
+                <p>I don't have an account?</p>
+                <a href="@Url.Action("Create", "Learners")" class="btn btn-link">Create account</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

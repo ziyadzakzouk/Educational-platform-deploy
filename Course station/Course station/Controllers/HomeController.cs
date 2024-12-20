@@ -54,7 +54,6 @@ namespace Course_station.Controllers
             ModelState.AddModelError(string.Empty, "Invalid login attempt.");
             return View();
         }
-
         public IActionResult Index()
         {
             return View();
@@ -80,6 +79,11 @@ namespace Course_station.Controllers
         }
 
         public IActionResult Create()
+        {
+            // Add your create logic here
+            return View();
+        }
+        public IActionResult LogIn()
         {
             // Add your create logic here
             return View();

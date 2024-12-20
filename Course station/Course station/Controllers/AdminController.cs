@@ -29,7 +29,7 @@ namespace Course_station.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> AdminLogin(string username, string password, string returnUrl = null)
+        public async Task<IActionResult> Login(string username, string password, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
 

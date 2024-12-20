@@ -462,6 +462,37 @@ namespace Course_station.Controllers
             return View(viewModel);
         }
 
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Enroll(EnrollViewModel model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var prerequisitesCompleted = await _coursePrerequisiteService.CheckPrerequisitesCompleted(model.LearnerId, model.CourseId);
+        //        if (!prerequisitesCompleted)
+        //        {
+        //            TempData["ErrorMessage"] = "You have not completed the prerequisites for this course. Please complete the prerequisites and try again.";
+        //            TempData["PrerequisiteCourseId"] = model.CourseId;
+        //            return RedirectToAction(nameof(ViewPrerequisites), new { learnerId = model.LearnerId, courseId = model.CourseId });
+        //        }
+
+        //        var enrollment = new CourseEnrollment
+        //        {
+        //            CourseId = model.CourseId,
+        //            LearnerId = model.LearnerId,
+        //            //  EnrollmentDate = DateTime.Now
+        //        };
+        //        _context.CourseEnrollments.Add(enrollment);
+        //        await _context.SaveChangesAsync();
+        //        TempData["SuccessMessage"] = "Enrollment successful!";
+        //        //return RedirectToAction(nameof(EnrolledCourses), new { learnerId = model.LearnerId });
+        //        return RedirectToAction("Index", "Home", new { learnerId = model.LearnerId });
+        //    }
+        //    //ViewBag.Courses = new SelectList(_context.Courses, "CourseId", "Title");
+        //    //return View(model);
+        //    TempData["ErrorMessage"] = "Enrollment failed. Please try again.";
+        //    return View(model);
+        //}
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Enroll(EnrollViewModel model)
@@ -485,11 +516,12 @@ namespace Course_station.Controllers
                 _context.CourseEnrollments.Add(enrollment);
                 await _context.SaveChangesAsync();
                 TempData["SuccessMessage"] = "Enrollment successful!";
-                return RedirectToAction(nameof(EnrolledCourses), new { learnerId = model.LearnerId });
+                return RedirectToAction("Home", "Learners", new { id = model.LearnerId });
             }
-            ViewBag.Courses = new SelectList(_context.Courses, "CourseId", "Title");
+            TempData["ErrorMessage"] = "Enrollment failed. Please try again.";
             return View(model);
         }
+
 
         public async Task<IActionResult> ViewPrerequisites(int learnerId, int courseId)
         {
