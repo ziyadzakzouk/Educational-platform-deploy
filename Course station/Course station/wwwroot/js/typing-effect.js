@@ -20,7 +20,7 @@ function type() {
         }
     }
 
-    setTimeout(type, isDeleting ? 50 : 100); // Speed up when deleting
+    setTimeout(type, isDeleting ? 30 : 150); // Speed up when deleting
 }
 
 type();

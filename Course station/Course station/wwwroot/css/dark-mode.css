@@ -1,12 +1,24 @@
-/* wwwroot/css/dark-mode.css */
-body.dark-mode {
+body.dark-theme {
     background-color: #121212;
-    color: #ffffff;
+    color: #e0e0e0;
 }
 
-nav.dark-mode {
-    background-color: #333333;
-    color: #ffffff;
+.navbar.dark-theme {
+    background-color: #1f1f1f;
+    border-color: #333;
 }
 
-/* Add more dark mode styles as needed */
+.footer.dark-theme {
+    background-color: #1f1f1f;
+    border-color: #333;
+}
+
+a.dark-theme {
+    color: #bb86fc;
+}
+
+.btn-secondary.dark-theme {
+    background-color: #bb86fc;
+    border-color: #bb86fc;
+    color: #121212;
+}
