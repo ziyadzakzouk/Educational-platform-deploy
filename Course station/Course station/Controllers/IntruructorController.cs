@@ -461,34 +461,73 @@ namespace Course_station.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> UploadProfilePicture(int instructorId, IFormFile profilePicture)
+        //{
+        //    if (profilePicture != null && profilePicture.Length > 0)
+        //    {
+        //        var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
+        //        if (!Directory.Exists(uploadsFolder))
+        //        {
+        //            Directory.CreateDirectory(uploadsFolder);
+        //        }
+
+        //        var filePath = Path.Combine(uploadsFolder, $"{instructorId}_profile.jpg");
+
+        //        using (var stream = new FileStream(filePath, FileMode.Create))
+        //        {
+        //            await profilePicture.CopyToAsync(stream);
+        //        }
+
+        //        TempData["Message"] = "Profile picture uploaded successfully!";
+        //    }
+        //    else
+        //    {
+        //        TempData["ErrorMessage"] = "Please select a valid image file.";
+        //    }
+
+        //    return RedirectToAction(nameof(Details), new { id = instructorId });
+        //}
+
+
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> UploadProfilePicture(int instructorId, IFormFile profilePicture)
         {
             if (profilePicture != null && profilePicture.Length > 0)
             {
-                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
-                if (!Directory.Exists(uploadsFolder))
+                // Validate the file type (optional)
+                var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
+                var extension = Path.GetExtension(profilePicture.FileName).ToLowerInvariant();
+
+                if (!allowedExtensions.Contains(extension))
                 {
-                    Directory.CreateDirectory(uploadsFolder);
+                    // Handle invalid file types (e.g., show an error message)
+                    return RedirectToAction("Details", new { id = instructorId });
                 }
 
-                var filePath = Path.Combine(uploadsFolder, $"{instructorId}_profile.jpg");
+                // Define the path to save the image
+                var fileName = $"{instructorId}_profile{extension}";
+                var uploads = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images");
+                var filePath = Path.Combine(uploads, fileName);
 
-                using (var stream = new FileStream(filePath, FileMode.Create))
+                // Ensure the images directory exists
+                if (!Directory.Exists(uploads))
                 {
-                    await profilePicture.CopyToAsync(stream);
+                    Directory.CreateDirectory(uploads);
                 }
 
-                TempData["Message"] = "Profile picture uploaded successfully!";
-            }
-            else
-            {
-                TempData["ErrorMessage"] = "Please select a valid image file.";
+                // Save the file
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await profilePicture.CopyToAsync(fileStream);
+                }
             }
 
-            return RedirectToAction(nameof(Details), new { id = instructorId });
+            // Redirect back to the instructor's details page
+            return RedirectToAction("Details", new { id = instructorId });
         }
+
 
         private bool InstructorExists(int id)
         {
