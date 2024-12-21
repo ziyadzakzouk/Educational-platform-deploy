@@ -43,6 +43,9 @@
         <a asp-action="QuestProgress" asp-route-learnerId="@Model.Learner.LearnerId" class="btn btn-info mr-2">View Quest Progress</a>
         <a asp-action="AchievementProgress" asp-route-learnerId="@Model.Learner.LearnerId" class="btn btn-info">View Achievement Progress</a>
 
+        <form asp-action="Delete" asp-route-id="@Model.Learner.LearnerId" method="post" class="d-inline">
+            <button type="submit" class="btn btn-danger">Delete Profile</button>
+        </form>
     </div>
 
     <div class="upload-picture mt-4">
@@ -214,7 +217,12 @@
         border-color: #28a745;
     }
 
-        .btn-primary:hover, .btn-success:hover {
+    .btn-danger {
+        background-color: #dc3545;
+        border-color: #dc3545;
+    }
+
+        .btn-primary:hover, .btn-success:hover, .btn-danger:hover {
             opacity: 0.8;
         }
 
@@ -279,5 +287,8 @@
     .mr-2 {
         margin-right: 0.5rem !important;
     }
-</style>
 
+    .d-inline {
+        display: inline !important;
+    }
+</style>
