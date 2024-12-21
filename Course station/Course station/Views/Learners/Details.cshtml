@@ -11,8 +11,8 @@
             <div class="profile-image-container">
                 <img src="~/images/@($"{Model.Learner.LearnerId}_profile.jpg")" alt="Profile Picture" class="profile-image">
                 <div class="profile-image-upload">
-                    <form asp-action="UploadProfilePicture" method="post" enctype="multipart/form-data" class="upload-form">
-                        <input type="file" id="profilePicture" name="profilePicture" class="file-input">
+                    <form id="uploadForm" asp-action="UploadProfilePicture" method="post" enctype="multipart/form-data" class="upload-form">
+                        <input type="file" id="profilePicture" name="profilePicture" class="file-input" onchange="submitForm()">
                         <input type="hidden" name="learnerId" value="@Model.Learner.LearnerId" />
                         <label for="profilePicture" class="upload-label">
                             <i class="fas fa-camera"></i>
@@ -212,3 +212,9 @@
 </div>
 
 <link rel="stylesheet" href="~/css/Lprofile.css" />
+
+<script>
+    function submitForm() {
+        document.getElementById('uploadForm').submit();
+    }
+</script>
