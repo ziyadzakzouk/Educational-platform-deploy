@@ -51,11 +51,14 @@ body {
 }
 
 /* Center button in card */
+
 .card-body {
     text-align: center;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    color: #000 !important;
+    
 }
 
     .card-body .btn {
@@ -140,6 +143,7 @@ form {
 label {
     margin-top: 10px;
     font-weight: bold;
+    color: #000 !important;
 }
 
 input[type="text"], select, textarea {
