@@ -39,7 +39,7 @@
                         <input type="hidden" asp-for="LearnerId" />
                         <button type="submit" class="enroll-button">Enroll Now</button>
                     </form>
-                    <a asp-controller="Course" asp-action="Details" asp-route-id="@course.Value" class="btn btn-info mt-2">Details</a>
+                    <a asp-controller="Course" asp-action="DetailsForLearner" asp-route-id="@course.Value" class="btn btn-info mt-2">Details</a>
                 </div>
             </div>
         }
@@ -49,4 +49,5 @@
         <p>No courses available at the moment.</p>
     }
 </div>
+
 
