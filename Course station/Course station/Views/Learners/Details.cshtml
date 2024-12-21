@@ -3,354 +3,212 @@
     ViewData["Title"] = "Profile";
 }
 
-<h1 class="text-center">Personal Profile</h1>
-
-<div class="profile-container card shadow-sm p-4 mb-5 bg-white rounded">
-    <div class="profile-header d-flex align-items-center mb-4">
-        <div class="profile-picture">
-            <img src="~/images/@($"{Model.Learner.LearnerId}_profile.jpg")" alt="Profile Picture" class="img-thumbnail">
-        </div>
-        <div class="profile-info ml-3">
-            <h2 class="text-primary">@Model.Learner.FirstName @Model.Learner.LastName</h2>
-            <h3 class="text-primary">ID: @Model.Learner.LearnerId</h3>
-            <p class="text-muted">Email: @Model.Learner.Email</p>
-            <p class="text-muted">Pass: @Model.Learner.Password</p>
-        </div>
-    </div>
-
-    <div class="profile-content d-flex">
-        <div class="profile-details mr-4">
-            <h4 class="text-secondary">Personal Information</h4>
-            <dl class="row">
-                <dt class="col-sm-3">Birthday</dt>
-                <dd class="col-sm-9">@Html.DisplayFor(model => model.Learner.Birthday)</dd>
-
-                <dt class="col-sm-3">Gender</dt>
-                <dd class="col-sm-9">@Html.DisplayFor(model => model.Learner.Gender)</dd>
-
-                <dt class="col-sm-3">Country</dt>
-                <dd class="col-sm-9">@Html.DisplayFor(model => model.Learner.Country)</dd>
-
-                <dt class="col-sm-3">Cultural Background</dt>
-                <dd class="col-sm-9">@Html.DisplayFor(model => model.Learner.CulturalBackground)</dd>
-            </dl>
-        </div>
-
-        <div class="profile-actions">
-            <a asp-action="Edit" asp-route-id="@Model.Learner.LearnerId" class="btn btn-primary mr-2">Edit Profile</a>
-            <a asp-action="Enroll" asp-route-learnerId="@Model.Learner.LearnerId" class="btn btn-success">Enroll in a Course</a>
-
-            <a asp-action="QuestProgress" asp-route-learnerId="@Model.Learner.LearnerId" class="btn btn-info mr-2">View Quest Progress</a>
-            <a asp-action="AchievementProgress" asp-route-learnerId="@Model.Learner.LearnerId" class="btn btn-info">View Achievement Progress</a>
-
-            <form asp-action="Delete" asp-route-id="@Model.Learner.LearnerId" method="post" class="d-inline">
-                <button type="submit" class="btn btn-danger">Delete Profile</button>
-            </form>
-        </div>
-    </div>
-
-    <div class="upload-picture mt-4">
-        <form asp-action="UploadProfilePicture" method="post" enctype="multipart/form-data">
-            <div class="form-group">
-                <label for="profilePicture">Upload Profile Picture</label>
-                <input type="file" class="form-control-file" id="profilePicture" name="profilePicture">
+<div class="profile-container">
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <div class="hero-overlay"></div>
+        <div class="profile-header">
+            <div class="profile-image-container">
+                <img src="~/images/@($"{Model.Learner.LearnerId}_profile.jpg")" alt="Profile Picture" class="profile-image">
+                <div class="profile-image-upload">
+                    <form asp-action="UploadProfilePicture" method="post" enctype="multipart/form-data" class="upload-form">
+                        <input type="file" id="profilePicture" name="profilePicture" class="file-input">
+                        <input type="hidden" name="learnerId" value="@Model.Learner.LearnerId" />
+                        <label for="profilePicture" class="upload-label">
+                            <i class="fas fa-camera"></i>
+                            Update Photo
+                        </label>
+                        <button type="submit" class="btn-upload">Save</button>
+                    </form>
+                </div>
             </div>
-            <input type="hidden" name="learnerId" value="@Model.Learner.LearnerId" />
-            <button type="submit" class="btn btn-success">Upload</button>
+            <div class="profile-details">
+                <h1 class="profile-name">@Model.Learner.FirstName @Model.Learner.LastName</h1>
+                <p class="profile-id">Student ID: @Model.Learner.LearnerId</p>
+                <p class="profile-email">@Model.Learner.Email</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+        <a asp-action="Edit" asp-route-id="@Model.Learner.LearnerId" class="action-button primary">
+            <i class="fas fa-edit"></i> Edit Profile
+        </a>
+        <a asp-action="Enroll" asp-route-learnerId="@Model.Learner.LearnerId" class="action-button success">
+            <i class="fas fa-book"></i> Enroll in Course
+        </a>
+        <a asp-action="QuestProgress" asp-route-learnerId="@Model.Learner.LearnerId" class="action-button info">
+            <i class="fas fa-tasks"></i> Quest Progress
+        </a>
+        <a asp-action="AchievementProgress" asp-route-learnerId="@Model.Learner.LearnerId" class="action-button warning">
+            <i class="fas fa-trophy"></i> Achievements
+        </a>
+    </div>
+
+    <!-- Main Content Grid -->
+    <div class="content-grid">
+        <!-- Personal Information Card -->
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-user"></i>
+                <h2>Personal Information</h2>
+            </div>
+            <div class="card-body">
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-label">Birthday</span>
+                        <span class="info-value">@Html.DisplayFor(model => model.Learner.Birthday)</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Gender</span>
+                        <span class="info-value">@Html.DisplayFor(model => model.Learner.Gender)</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Country</span>
+                        <span class="info-value">@Html.DisplayFor(model => model.Learner.Country)</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Cultural Background</span>
+                        <span class="info-value">@Html.DisplayFor(model => model.Learner.CulturalBackground)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Personal Profile Card -->
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-address-card"></i>
+                <h2>Personal Profile</h2>
+            </div>
+            <div class="card-body">
+                @if (Model.PersonalProfile != null)
+                {
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="info-label">Preferred Content</span>
+                            <span class="info-value">@Model.PersonalProfile.PreferedContentType</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Emotional State</span>
+                            <span class="info-value">@Model.PersonalProfile.EmotionalState</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Personality Type</span>
+                            <span class="info-value">@Model.PersonalProfile.PersonalityType</span>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="empty-state">
+                        <p>No personal profile available</p>
+                        <a href="/personalprofile/create/@Model.Learner.LearnerId" class="btn-create">
+                            <i class="fas fa-plus"></i> Create Profile
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Enrolled Courses Card -->
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-graduation-cap"></i>
+                <h2>Enrolled Courses</h2>
+            </div>
+            <div class="card-body">
+                <div class="courses-list">
+                    @foreach (var course in Model.EnrolledCourses)
+                    {
+                        <div class="course-item">
+                            <i class="fas fa-book"></i>
+                            <a asp-controller="Course" asp-action="Details" asp-route-id="@course.CourseId">
+                                @course.Title
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Assessments Card -->
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-clipboard-check"></i>
+                <h2>Assessments</h2>
+            </div>
+            <div class="card-body">
+                <div class="assessment-list">
+                    @foreach (var assessment in Model.TakenAssessments)
+                    {
+                        <div class="assessment-item">
+                            <div class="assessment-info">
+                                <h3>@assessment.Assessment.Title</h3>
+                                <p>@assessment.Assessment.Description</p>
+                            </div>
+                            <a asp-controller="Assessments" asp-action="Take"
+                               asp-route-id="@assessment.AssessmentId"
+                               class="btn-assessment">
+                                Take Assessment
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Learning Paths Card -->
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-road"></i>
+                <h2>Learning Paths</h2>
+            </div>
+            <div class="card-body">
+                <div class="path-list">
+                    @foreach (var path in Model.LearningPaths)
+                    {
+                        <div class="path-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>@path.PathId</span>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Health Conditions Card -->
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-heartbeat"></i>
+                <h2>Health Conditions</h2>
+            </div>
+            <div class="card-body">
+                <div class="health-list">
+                    @foreach (var condition in Model.HealthConditions)
+                    {
+                        <div class="health-item">
+                            <i class="fas fa-notes-medical"></i>
+                            <span>@condition.Condition</span>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Danger Zone -->
+    <div class="danger-zone">
+        <h2>Danger Zone</h2>
+        <p>Once you delete your profile, there is no going back. Please be certain.</p>
+        <form asp-action="Delete" asp-route-id="@Model.Learner.LearnerId" method="post"
+              onsubmit="return confirm('Are you sure you want to delete your profile? This action cannot be undone.');">
+            <button type="submit" class="btn-danger">
+                <i class="fas fa-trash"></i> Delete Profile
+            </button>
         </form>
-    </div>
-
-    <div class="personal-profile mt-4">
-        <h4 class="text-secondary">Personal Profile</h4>
-        @if (Model.PersonalProfile != null)
-        {
-            <dl class="row">
-                <dt class="col-sm-3">Preferred Content Type</dt>
-                <dd class="col-sm-9">@Model.PersonalProfile.PreferedContentType</dd>
-
-                <dt class="col-sm-3">Emotional State</dt>
-                <dd class="col-sm-9">@Model.PersonalProfile.EmotionalState</dd>
-
-                <dt class="col-sm-3">Personality Type</dt>
-                <dd class="col-sm-9">@Model.PersonalProfile.PersonalityType</dd>
-            </dl>
-        }
-        else
-        {
-            <p>No personal profile found.</p>
-            <a href="/personalprofile/create/@Model.Learner.LearnerId" class="btn btn-primary">Create Personal Profile</a>
-        }
-    </div>
-
-    <div class="enrolled-courses mt-4">
-        <h4 class="text-secondary">Enrolled Courses</h4>
-        <ul>
-            @foreach (var course in Model.EnrolledCourses)
-            {
-                <li>
-                    <a asp-controller="Course" asp-action="Details" asp-route-id="@course.CourseId">@course.Title</a>
-                </li>
-            }
-        </ul>
-    </div>
-
-    <div class="taken-assessments mt-4">
-        <h4 class="text-secondary">Taken Assessments</h4>
-        <ul>
-            @foreach (var assessment in Model.TakenAssessments)
-            {
-                <li>
-                    @assessment.Assessment.Title - @assessment.Assessment.Description
-                    <a asp-controller="Assessments" asp-action="Take" asp-route-id="@assessment.AssessmentId" class="btn btn-primary btn-sm ml-2">Take Assessment</a>
-                </li>
-            }
-        </ul>
-    </div>
-
-    <div class="learning-paths mt-4">
-        <h4 class="text-secondary">Learning Paths</h4>
-        <ul>
-            @foreach (var path in Model.LearningPaths)
-            {
-                <li>@path.PathId</li>
-            }
-        </ul>
-    </div>
-
-    <div class="health-conditions mt-4">
-        <h4 class="text-secondary">Health Conditions</h4>
-        <ul>
-            @foreach (var condition in Model.HealthConditions)
-            {
-                <li>@condition.Condition</li>
-            }
-        </ul>
-    </div>
-
-    <div class="rankings mt-4">
-        <h4 class="text-secondary">Rankings</h4>
-        <ul>
-            @foreach (var ranking in Model.Rankings)
-            {
-                <li>@ranking.Rank</li>
-            }
-        </ul>
-    </div>
-
-    <div class="modules mt-4">
-        <h4 class="text-secondary">Modules</h4>
-        <ul>
-            @foreach (var module in Model.Modules)
-            {
-                <li>@module.Title</li>
-            }
-        </ul>
-    </div>
-
-    <div class="course-prerequisites mt-4">
-        <h4 class="text-secondary">Course Prerequisites</h4>
-        <ul>
-            @foreach (var prerequisite in Model.CoursePrerequisites)
-            {
-                <li>@prerequisite.Prerequisite</li>
-            }
-        </ul>
-    </div>
-
-    <div class="mt-4">
-        <a asp-action="Home" class="btn btn-primary">Go to Home</a>
     </div>
 </div>
 
-<style>
-    .profile-container {
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 20px;
-        background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .profile-header {
-        display: flex;
-        align-items: center;
-        margin-bottom: 20px;
-    }
-
-    .profile-info {
-        flex-grow: 1;
-    }
-
-    .profile-picture img {
-        border-radius: 50%;
-        border: 4px solid #007bff;
-        max-width: 150px;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-        .profile-picture img:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-        }
-
-    .profile-content {
-        display: flex;
-        justify-content: space-between;
-    }
-
-    .profile-details {
-        flex: 1;
-        margin-right: 20px;
-    }
-
-    .profile-actions {
-        flex: 1;
-    }
-
-    .text-primary {
-        color: #007bff !important;
-    }
-
-    .text-secondary {
-        color: #6c757d !important;
-    }
-
-    .text-muted {
-        color: #6c757d !important;
-    }
-
-    .btn-primary {
-        background-color: #007bff;
-        border-color: #007bff;
-        transition: background-color 0.3s ease, border-color 0.3s ease;
-    }
-
-        .btn-primary:hover {
-            background-color: #0056b3;
-            border-color: #004085;
-        }
-
-    .btn-success {
-        background-color: #28a745;
-        border-color: #28a745;
-        transition: background-color 0.3s ease, border-color 0.3s ease;
-    }
-
-        .btn-success:hover {
-            background-color: #218838;
-            border-color: #1e7e34;
-        }
-
-    .btn-danger {
-        background-color: #dc3545;
-        border-color: #dc3545;
-        transition: background-color 0.3s ease, border-color 0.3s ease;
-    }
-
-        .btn-danger:hover {
-            background-color: #c82333;
-            border-color: #bd2130;
-        }
-
-    .form-group label {
-        font-weight: bold;
-    }
-
-    .form-control-file {
-        border: 1px solid #ced4da;
-        border-radius: 0.25rem;
-        padding: 0.375rem 0.75rem;
-    }
-
-    .mt-4 {
-        margin-top: 1.5rem !important;
-    }
-
-    .mb-4 {
-        margin-bottom: 1.5rem !important;
-    }
-
-    .mb-5 {
-        margin-bottom: 3rem !important;
-    }
-
-    .shadow-sm {
-        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
-    }
-
-    .rounded {
-        border-radius: 0.25rem !important;
-    }
-
-    .card {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        min-width: 0;
-        word-wrap: break-word;
-        background-color: #fff;
-        background-clip: border-box;
-        border: 1px solid rgba(0, 0, 0, 0.125);
-        border-radius: 0.25rem;
-    }
-
-    .text-center {
-        text-align: center !important;
-    }
-
-    .d-flex {
-        display: flex !important;
-    }
-
-    .align-items-center {
-        align-items: center !important;
-    }
-
-    .ml-3 {
-        margin-left: 1rem !important;
-    }
-
-    .mr-2 {
-        margin-right: 0.5rem !important;
-    }
-
-    .d-inline {
-        display: inline !important;
-    }
-
-    dl.row {
-        background-color: #f8f9fa;
-        padding: 10px;
-        border-radius: 5px;
-    }
-
-    dt.col-sm-3 {
-        font-weight: bold;
-    }
-
-    dd.col-sm-9 {
-        margin-bottom: 10px;
-    }
-
-    ul {
-        list-style-type: none;
-        padding: 0;
-    }
-
-        ul li {
-            background-color: #f8f9fa;
-            margin-bottom: 10px;
-            padding: 10px;
-            border-radius: 5px;
-        }
-
-            ul li a {
-                text-decoration: none;
-                color: #007bff;
-            }
-
-                ul li a:hover {
-                    text-decoration: underline;
-                }
-</style>
+<link rel="stylesheet" href="~/css/Lprofile.css" />
