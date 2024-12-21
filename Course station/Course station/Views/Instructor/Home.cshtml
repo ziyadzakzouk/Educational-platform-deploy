@@ -1,5 +1,13 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@{
     ViewData["Title"] = "Instructor Home";
+    var instructorId = HttpContextAccessor.HttpContext?.Session.GetInt32("InstructorId");
+    if (instructorId == null)
+    {
+        HttpContextAccessor.HttpContext?.Response.Redirect("/Instructor/LogIn");
+        return;
+    }
 }
 
 <h2>Instructor Home</h2>
@@ -14,6 +22,7 @@
         <a asp-controller="Instructor" asp-action="SendNotification" class="btn btn-warning">Send Notification</a>
         <a asp-controller="Instructor" asp-action="ManageCourses" class="btn btn-secondary">Manage Courses</a>
         <a asp-controller="Quests" asp-action="Create" class="btn btn-dark">Create Quest</a>
+        <a asp-controller="Instructor" asp-action="Details" asp-route-id="@instructorId" class="btn btn-light">View Profile</a>
     </div>
 </div>
 
