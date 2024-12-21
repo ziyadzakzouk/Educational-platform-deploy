@@ -10,20 +10,75 @@
     }
 }
 
-<div class="instructor-home-container">
-    <h2>Instructor Home</h2>
-    <p>Welcome to the Instructor home page!</p>
+<div class="container instructor-home-container mt-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4">Welcome to Course Station!</h1>
+        <p class="lead">Impact and change the world with knowledge.</p>
+    </div>
 
-    <div class="actions">
-        <h3>Actions</h3>
-        <div class="btn-group-vertical">
-            <a asp-controller="Instructor" asp-action="AddActivity" class="btn btn-primary">Add Activity</a>
-            <a asp-controller="Instructor" asp-action="CreateCourse" class="btn btn-success">Create Course</a>
-            <a asp-controller="Instructor" asp-action="CreateAssessment" class="btn btn-info">Create Assessment</a>
-            <a asp-controller="Instructor" asp-action="SendNotification" class="btn btn-warning">Send Notification</a>
-            <a asp-controller="Instructor" asp-action="ManageCourses" class="btn btn-secondary">Manage Courses</a>
-            <a asp-controller="Quests" asp-action="Create" class="btn btn-dark">Create Quest</a>
-            <a asp-controller="Instructor" asp-action="Details" asp-route-id="@instructorId" class="btn btn-light">View Profile</a>
+    <div id="motivationalCarousel" class="carousel slide mb-5" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#motivationalCarousel" data-bs-slide-to="0" class="active" aria-current="true"></button>
+            <button type="button" data-bs-target="#motivationalCarousel" data-bs-slide-to="1"></button>
+            <button type="button" data-bs-target="#motivationalCarousel" data-bs-slide-to="2"></button>
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="~/images/motivation1.jpg" class="d-block w-100" alt="Motivation 1">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>Inspire</h5>
+                    <p>Educate to innovate and transform lives.</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="~/images/motivation2.jpg" class="d-block w-100" alt="Motivation 2">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>Empower</h5>
+                    <p>Knowledge is the pathway to success.</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="~/images/motivation3.jpg" class="d-block w-100" alt="Motivation 3">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>Achieve</h5>
+                    <p>Together, we shape the future through learning.</p>
+                </div>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#motivationalCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#motivationalCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+
+    <div class="actions text-center">
+        <h3 class="mb-4">What would you like to do today?</h3>
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <a asp-controller="Instructor" asp-action="AddActivity" class="btn btn-primary btn-lg w-100">Add Activity</a>
+            </div>
+            <div class="col-md-4 mb-3">
+                <a asp-controller="Instructor" asp-action="CreateCourse" class="btn btn-success btn-lg w-100">Create Course</a>
+            </div>
+            <div class="col-md-4 mb-3">
+                <a asp-controller="Instructor" asp-action="CreateAssessment" class="btn btn-info btn-lg w-100">Create Assessment</a>
+            </div>
+            <div class="col-md-4 mb-3">
+                <a asp-controller="Instructor" asp-action="SendNotification" class="btn btn-warning btn-lg w-100">Send Notification</a>
+            </div>
+            <div class="col-md-4 mb-3">
+                <a asp-controller="Instructor" asp-action="ManageCourses" class="btn btn-secondary btn-lg w-100">Manage Courses</a>
+            </div>
+            <div class="col-md-4 mb-3">
+                <a asp-controller="Quests" asp-action="Create" class="btn btn-dark btn-lg w-100">Create Quest</a>
+            </div>
+            <div class="col-md-12 mb-3">
+                <a asp-controller="Instructor" asp-action="Details" asp-route-id="@instructorId" class="btn btn-light btn-lg w-100">View Profile</a>
+            </div>
         </div>
     </div>
 </div>
