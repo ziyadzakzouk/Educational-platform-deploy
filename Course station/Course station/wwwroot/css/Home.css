@@ -10,7 +10,7 @@ body {
 }
 
 .headercontainer {
-    margin-top: 2rem;
+    margin-top: 1rem;
 }
 
 .header {
@@ -18,6 +18,34 @@ body {
     font-weight: bold;
     margin-bottom: 2rem;
 }
+
+#typing-effect {
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: 2px solid;
+    width: 0;
+    animation: typing 4s steps(30, end), blink 0.5s step-end infinite;
+}
+
+@keyframes typing {
+    0% {
+        width: 0;
+    }
+    50% {
+        width: 100%;
+    }
+    100% {
+        width: 0;
+    }
+}
+
+@keyframes blink {
+    50% {
+        border-color: transparent;
+    }
+}
+
 
 .content {
     font-size: 1rem;
