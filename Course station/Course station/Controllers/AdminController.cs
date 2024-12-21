@@ -53,9 +53,27 @@ namespace Course_station.Controllers
             return View();
         }
 
+        private bool IsAdminLoggedIn()
+        {
+            var adminId = HttpContext.Session.GetInt32("AdminId");
+            return adminId.HasValue && adminId.Value == 1;
+        }
+
         public IActionResult AdminPage()
         {
+            if (!IsAdminLoggedIn())
+            {
+                //HttpContext.Session.Clear();
+                return RedirectToAction("AdminLogin");
+            }
+
             return View();
+        }
+
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("AdminLogin");
         }
 
         public IActionResult Index()

@@ -1,0 +1,67 @@
+﻿@model Course_station.Models.Course
+
+@{
+    ViewData["Title"] = "Course Details";
+}
+
+<h2 class="text-center my-4">Course Details</h2>
+
+<div class="container">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Course Information</h4>
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3 font-weight-bold">
+                    @Html.DisplayNameFor(model => model.Title)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Title)
+                </dd>
+                <dt class="col-sm-3 font-weight-bold">
+                    @Html.DisplayNameFor(model => model.Description)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Description)
+                </dd>
+                <dt class="col-sm-3 font-weight-bold">
+                    @Html.DisplayNameFor(model => model.CourseId)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.CourseId)
+                </dd>
+                <dt class="col-sm-3 font-weight-bold">
+                    @Html.DisplayNameFor(model => model.DiffLevel)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.DiffLevel)
+                </dd>
+                <dt class="col-sm-3 font-weight-bold">
+                    @Html.DisplayNameFor(model => model.CreditPoint)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.CreditPoint)
+                </dd>
+                <dt class="col-sm-3 font-weight-bold">
+                    Modules
+                </dt>
+                <dd class="col-sm-9">
+                    @if (Model.Modules != null && Model.Modules.Any())
+                    {
+                        <ul class="list-group">
+                            @foreach (var module in Model.Modules)
+                            {
+                                <li class="list-group-item">@module.ModuleId - @module.Title</li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <p>No modules available for this course.</p>
+                    }
+                </dd>
+            </dl>
+        </div>
+    </div>
+</div>

@@ -39,7 +39,7 @@ namespace Course_station.Controllers
         }
 
 
-        // GET: Learners
+        // GET: Learners (Admin only)
         [AdminPageOnly]
         public async Task<IActionResult> Index()
         {
@@ -51,6 +51,12 @@ namespace Course_station.Controllers
 
         public async Task<IActionResult> Details(int? id)
         {
+            //var learnerId = HttpContext.Session.GetInt32("LearnerId");
+            //if (learnerId == null)
+            //{
+            //    return RedirectToAction("Login", "Learners");
+            //}
+
             if (id == null)
             {
                 return NotFound();
@@ -120,7 +126,8 @@ namespace Course_station.Controllers
                 _context.Add(learner);
                 await _context.SaveChangesAsync();
                 //   return RedirectToAction(nameof(Index));
-                return RedirectToAction("Details", "Learners", new { id = learner.LearnerId });
+                return Json(new { redirectToUrl = Url.Action("Details", new { id = learner.LearnerId }) });
+              //  return RedirectToAction("Details", "Learners", new { id = learner.LearnerId });
             }
             return View(learner);
         }
@@ -128,6 +135,12 @@ namespace Course_station.Controllers
         // GET: Learners/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+
+            var learnerId = HttpContext.Session.GetInt32("LearnerId");
+            if (learnerId == null)
+            {
+                return RedirectToAction("Login", "Learners");
+            }
             if (id == null)
             {
                 return NotFound();
@@ -146,6 +159,8 @@ namespace Course_station.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("LearnerId,FirstName,LastName,Birthday,Gender,Country,CulturalBackground,Password,Email")] Learner learner)
         {
+            
+
             if (id != learner.LearnerId)
             {
                 return NotFound();
@@ -177,6 +192,8 @@ namespace Course_station.Controllers
         // GET: Learners/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+
+           
             if (id == null)
             {
                 return NotFound();
