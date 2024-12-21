@@ -75,6 +75,7 @@
 <div class="actions mt-4 d-flex justify-content-center">
     <a href="/Instructor/Edit/@Model.InstructorId" class="btn btn-warning btn-lg mx-2 shadow">Edit</a>
     <form method="post" action="/Instructor/Delete/@Model.InstructorId" onsubmit="return confirm('Are you sure you want to delete this instructor?');">
+        <input type="hidden" name="InstructorId" value="@Model.InstructorId" />
         <button type="submit" class="btn btn-danger btn-lg mx-2 shadow">Delete</button>
     </form>
 </div>

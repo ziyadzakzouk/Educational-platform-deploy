@@ -143,6 +143,7 @@ namespace Course_station.Controllers
         }
 
         // GET: Instructor/Delete/5
+        // GET: Instructor/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -157,18 +158,25 @@ namespace Course_station.Controllers
                 return NotFound();
             }
 
-            return View(instructor);
+            return View("DeleteConfirmation", instructor);
         }
 
-        // POST: Instructor/Delete/5
-        [HttpPost, ActionName("Delete")]
+        // POST: Instructor/DeleteConfirmed/5
+        [HttpPost, ActionName("DeleteConfirmed")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            if (id <= 0)
+            {
+                TempData["ErrorMessage"] = "Invalid instructor ID.";
+                return RedirectToAction("Index", "Home");
+            }
+
             var instructor = await _context.Instructors.FindAsync(id);
             if (instructor == null)
             {
-                return NotFound();
+                TempData["ErrorMessage"] = "Instructor not found.";
+                return RedirectToAction("Index", "Home");
             }
 
             try
@@ -182,8 +190,9 @@ namespace Course_station.Controllers
                 TempData["ErrorMessage"] = $"Error deleting instructor: {ex.Message}";
             }
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Home");
         }
+
 
         // GET: Instructor/ManageCourses
         public async Task<IActionResult> ManageCourses()
