@@ -32,24 +32,14 @@
                 <div class="course-content">
                     <h2 class="course-title">@course.Text</h2>
                     <div class="course-details">
-                        <div class="detail-item">
-                            <i class="fas fa-clock"></i>
-                            <span>8 weeks</span>
-                        </div>
-                        <div class="detail-item">
-                            <i class="fas fa-users"></i>
-                            <span>25 students</span>
-                        </div>
-                        <div class="detail-item">
-                            <i class="fas fa-book"></i>
-                            <span>Beginner</span>
-                        </div>
+                        
                     </div>
                     <form asp-action="Enroll" method="post" class="enroll-form">
                         <input type="hidden" name="CourseId" value="@course.Value" />
                         <input type="hidden" asp-for="LearnerId" />
                         <button type="submit" class="enroll-button">Enroll Now</button>
                     </form>
+                    <a asp-controller="Course" asp-action="Details" asp-route-id="@course.Value" class="btn btn-info mt-2">Details</a>
                 </div>
             </div>
         }
@@ -59,3 +49,4 @@
         <p>No courses available at the moment.</p>
     }
 </div>
+
