@@ -94,5 +94,19 @@ namespace Course_station.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+        [HttpPost]
+        public IActionResult SubmitForm(string firstname, string lastname, string email, string country, string subject)
+        {
+            // Handle form submission logic here
+            // For example, save the data to the database or send an email
+
+            // Redirect to a thank you page or return a view with a thank you message
+            return RedirectToAction("ThankYou");
+        }
+
+        public IActionResult ThankYou()
+        {
+            return View();
+        }
     }
 }
