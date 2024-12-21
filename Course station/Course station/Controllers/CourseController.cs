@@ -36,6 +36,21 @@ namespace Course_station.Controllers
 
             return View(course);
         }
+        public IActionResult DetailsForLearner(int id)
+        {
+            var course = _context.Courses
+                .Include(c => c.Modules)
+                .FirstOrDefault(c => c.CourseId == id);
+
+            if (course == null)
+            {
+                return NotFound();
+            }
+
+            return View("DetailsForLearner", course);
+        }
+
+
 
         public IActionResult Create()
         {
