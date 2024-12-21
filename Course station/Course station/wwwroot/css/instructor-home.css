@@ -1,0 +1,57 @@
+﻿.instructor-home-container {
+    max-width: 800px;
+    margin: 30px auto;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+    .instructor-home-container h2 {
+        font-size: 2.5rem;
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    .instructor-home-container p {
+        font-size: 1.2rem;
+        color: #666;
+        margin-bottom: 30px;
+    }
+
+.actions {
+    margin-top: 20px;
+}
+
+    .actions h3 {
+        font-size: 1.8rem;
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+.btn-group-vertical {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+    .btn-group-vertical .btn {
+        width: 80%;
+        margin-bottom: 10px;
+        padding: 15px;
+        font-size: 1.1rem;
+        border-radius: 25px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+        .btn-group-vertical .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+@media (max-width: 768px) {
+    .btn-group-vertical .btn {
+        width: 100%;
+    }
+}
