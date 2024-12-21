@@ -63,7 +63,7 @@ namespace Course_station.Controllers
         {
             if (!IsAdminLoggedIn())
             {
-                HttpContext.Session.Clear();
+                //HttpContext.Session.Clear();
                 return RedirectToAction("AdminLogin");
             }
 

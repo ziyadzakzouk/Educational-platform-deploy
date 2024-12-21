@@ -10,18 +10,7 @@
 <div>
     <h4>Instructor</h4>
     <hr />
-    @if (!string.IsNullOrEmpty(TempData["ErrorMessage"] as string))
-    {
-        <div class="alert alert-danger">
-            @TempData["ErrorMessage"]
-        </div>
-    }
-    @if (!string.IsNullOrEmpty(TempData["Message"] as string))
-    {
-        <div class="alert alert-success">
-            @TempData["Message"]
-        </div>
-    }
+   
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.InstructorName)
@@ -49,7 +38,7 @@
         </dd>
     </dl>
 
-    <form asp-action="DeleteConfirmed" method="post">
+    <form asp-action="Delete">
         <input type="hidden" asp-for="InstructorId" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
         <a asp-action="Index">Back to List</a>
