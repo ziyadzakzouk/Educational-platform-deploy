@@ -3,7 +3,11 @@
     ViewData["Title"] = "Enroll in a Course";
 }
 
-<h1 class="text-center">Enroll in a Course</h1>
+<link rel="stylesheet" href="~/css/enroll-styles.css" />
+<!-- Add Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+<h1 class="text-center">Available Courses</h1>
 
 @if (TempData["ErrorMessage"] != null)
 {
@@ -19,25 +23,39 @@
     </div>
 }
 
-<div class="enroll-container card shadow-sm p-4 mb-5 bg-white rounded">
-    <form asp-action="Enroll" method="post">
-        <div class="form-group">
-            <label for="courseId">Select Course</label>
-            <select asp-for="CourseId" class="form-control" asp-items="ViewBag.Courses"></select>
-        </div>
-        <input type="hidden" asp-for="LearnerId" />
-        <button type="submit" class="btn btn-primary">Enroll</button>
-    </form>
-</div>
-
-<style>
-    .enroll-container {
-        max-width: 600px;
-        margin: 0 auto;
-        padding: 20px;
-        background-color: #f8f9fa;
-        border-radius: 10px;
+<div class="courses-grid">
+    @if (ViewBag.Courses != null)
+    {
+        @foreach (var course in ViewBag.Courses)
+        {
+            <div class="course-card">
+                <div class="course-content">
+                    <h2 class="course-title">@course.Text</h2>
+                    <div class="course-details">
+                        <div class="detail-item">
+                            <i class="fas fa-clock"></i>
+                            <span>8 weeks</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-users"></i>
+                            <span>25 students</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-book"></i>
+                            <span>Beginner</span>
+                        </div>
+                    </div>
+                    <form asp-action="Enroll" method="post" class="enroll-form">
+                        <input type="hidden" name="CourseId" value="@course.Value" />
+                        <input type="hidden" asp-for="LearnerId" />
+                        <button type="submit" class="enroll-button">Enroll Now</button>
+                    </form>
+                </div>
+            </div>
+        }
     }
-</style>
-
-
+    else
+    {
+        <p>No courses available at the moment.</p>
+    }
+</div>
