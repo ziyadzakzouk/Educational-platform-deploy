@@ -72,7 +72,8 @@ namespace Course_station.Controllers
 
         public IActionResult Create()
         {
-            return View();
+            ViewData["Title"] = "Create";
+            return View(new Instructor());
         }
 
         [HttpPost]
@@ -83,7 +84,8 @@ namespace Course_station.Controllers
             {
                 _context.Add(instructor);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Details", new { id = instructor.InstructorId });
+                return Json(new { redirectToUrl = Url.Action("Details", new { id = instructor.InstructorId }) });
+
             }
             return View(instructor);
         }

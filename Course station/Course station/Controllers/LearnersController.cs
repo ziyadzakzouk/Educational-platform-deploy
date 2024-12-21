@@ -51,11 +51,11 @@ namespace Course_station.Controllers
 
         public async Task<IActionResult> Details(int? id)
         {
-            var learnerId = HttpContext.Session.GetInt32("LearnerId");
-            if (learnerId == null)
-            {
-                return RedirectToAction("Login", "Learners");
-            }
+            //var learnerId = HttpContext.Session.GetInt32("LearnerId");
+            //if (learnerId == null)
+            //{
+            //    return RedirectToAction("Login", "Learners");
+            //}
 
             if (id == null)
             {
@@ -126,7 +126,8 @@ namespace Course_station.Controllers
                 _context.Add(learner);
                 await _context.SaveChangesAsync();
                 //   return RedirectToAction(nameof(Index));
-                return RedirectToAction("Details", "Learners", new { id = learner.LearnerId });
+                return Json(new { redirectToUrl = Url.Action("Details", new { id = learner.LearnerId }) });
+              //  return RedirectToAction("Details", "Learners", new { id = learner.LearnerId });
             }
             return View(learner);
         }
