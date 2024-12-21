@@ -1,0 +1,137 @@
+﻿body {
+    /* Main Container */
+    .profile-container
+
+{
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 40px;
+    background: #f9f9f9;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-container:hover {
+    transform: scale(1.03);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+}
+
+/* Profile Header */
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 35px;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+    .profile-header img {
+        border-radius: 50%;
+        width: 200px;
+        height: 180px;
+        border: 5px solid #ffffff;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+/* Profile Information */
+.profile-info {
+    text-align: center;
+}
+
+    .profile-info h2 {
+        font-size: 2rem;
+        color: #333;
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+
+    .profile-info h4 {
+        font-size: 1.2rem;
+        color: #666;
+        font-weight: 500;
+        margin-bottom: 15px;
+    }
+
+    .profile-info a {
+        font-size: 1rem;
+        color: #007bff;
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+
+        .profile-info a:hover {
+            color: #0056b3;
+        }
+
+/* Action Buttons */
+.actions {
+    text-align: center;
+    margin-top: 20px;
+}
+
+    .actions a,
+    .actions button {
+        display: inline-block;
+        padding: 14px 30px;
+        margin: 10px;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #fff;
+        border-radius: 25px;
+        text-transform: uppercase;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        text-decoration: none;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+        .actions a:hover,
+        .actions button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+    .actions .btn-warning {
+        background: #ffca28;
+        border: none;
+    }
+
+    .actions .btn-danger {
+        background: #f44336;
+        border: none;
+    }
+
+    .actions .btn-secondary {
+        background: #90a4ae;
+        border: none;
+    }
+
+/* Course List Items */
+.list-group-item {
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+    .list-group-item:hover {
+        background-color: #e0f7fa;
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .profile-header {
+        flex-direction: column;
+    }
+
+    .profile-info {
+        text-align: center;
+    }
+
+    .actions a,
+    .actions button {
+        display: block;
+        width: 100%;
+        margin: 10px auto;
+    }
+}
+}

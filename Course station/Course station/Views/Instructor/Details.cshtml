@@ -4,19 +4,62 @@
     ViewData["Title"] = "Instructor Profile";
 }
 
+<!-- Link to the new CSS file -->
+<link rel="stylesheet" href="~/css/Iprofile.css" />
+
 <h1 class="text-center text-secondary">Instructor Profile</h1>
 
 <div class="profile-container card shadow-lg p-4 bg-light rounded">
     <div class="profile-header d-flex align-items-center">
         <div class="profile-image">
-            <img src="~/images/@($"{Model.InstructorId}_profile.jpg")" alt="Profile Picture" class="img-thumbnail" style="max-width: 200px;">
+            <img src="~/images/@($"{Model.InstructorId}_profile.jpg")" alt="Profile Picture" class="img-thumbnail">
         </div>
         <div class="profile-info ml-4">
             <h2 class="text-dark font-weight-bold">@Model.InstructorName</h2>
             <h4 class="text-secondary">ID: @Model.InstructorId</h4>
             <p class="text-muted mb-0">Email: <a href="mailto:@Model.Email" class="text-decoration-none text-info">@Model.Email</a></p>
+            <p class="text-muted mb-0">Latest Qualification: @Model.LatestQualification</p>
+            <p class="text-muted mb-0">Expertise Area: @Model.ExpertiseArea</p>
         </div>
     </div>
+</div>
+
+<div class="profile-details mt-4">
+    <h3 class="text-center text-secondary">Courses</h3>
+    <ul class="list-group">
+        @foreach (var course in Model.Courses)
+        {
+            <li class="list-group-item">
+                <strong>@course.Title</strong> - @course.Description
+            </li>
+        }
+    </ul>
+</div>
+
+<div class="profile-details mt-4">
+    <h3 class="text-center text-secondary">Emotional Feedback Reviews</h3>
+    <ul class="list-group">
+        @foreach (var review in Model.EmotionalfeedbackReviews)
+        {
+            <li class="list-group-item">
+                <strong>Feedback ID:</strong> @review.FeedbackId <br />
+                <strong>Review:</strong> @review.Review
+            </li>
+        }
+    </ul>
+</div>
+
+<div class="profile-details mt-4">
+    <h3 class="text-center text-secondary">Path Reviews</h3>
+    <ul class="list-group">
+        @foreach (var review in Model.Pathreviews)
+        {
+            <li class="list-group-item">
+                <strong>Path ID:</strong> @review.PathId <br />
+                <strong>Feedback:</strong> @review.Feedback
+            </li>
+        }
+    </ul>
 </div>
 
 <div class="actions mt-4 d-flex justify-content-center">
@@ -24,20 +67,4 @@
     <form method="post" action="/Instructor/Delete/@Model.InstructorId" onsubmit="return confirm('Are you sure you want to delete this instructor?');">
         <button type="submit" class="btn btn-danger btn-lg mx-2 shadow">Delete</button>
     </form>
-   
 </div>
-
-<style>
-    .profile-container {
-        max-width: 600px;
-        margin: 0 auto;
-    }
-
-    .profile-header {
-        gap: 20px;
-    }
-
-    .profile-info h2 {
-        margin-bottom: 5px;
-    }
-</style>
