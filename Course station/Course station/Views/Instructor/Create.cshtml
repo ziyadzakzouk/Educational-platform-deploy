@@ -10,7 +10,7 @@
         <form id="createInstructorForm" asp-action="Create">
             <div class="form-group">
                 <label asp-for="InstructorName" class="control-label"></label>
-                <input asp-for="InstructorName" class="form-control" />
+                <input asp-for="InstructorName" class="form-control" required />
                 <span asp-validation-for="InstructorName" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -25,12 +25,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
+                <input asp-for="Email" class="form-control" type="email" required />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" type="password" />
+                <input asp-for="Password" class="form-control" type="password" required />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="form-group text-center">
@@ -135,4 +135,3 @@
         });
     </script>
 }
-
