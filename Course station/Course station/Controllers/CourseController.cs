@@ -12,6 +12,19 @@ namespace Course_station.Controllers
         {
             _context = context;
         }
+        //[HttpPost]
+        //public async Task<IActionResult> CreateModule(Module module)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        _context.Modules.Add(module);
+        //        await _context.SaveChangesAsync();
+
+        //        // Redirect to Instructor Home
+        //        return RedirectToAction("Home", "Instructor");
+        //    }
+        //    return View(module);
+        //}
 
         public IActionResult Index()
         {
