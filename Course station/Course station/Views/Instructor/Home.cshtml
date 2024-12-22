@@ -10,13 +10,13 @@
     }
 }
 
-<div class="container instructor-home-container ">
-    <div class="text-center ">
+<div class="container instructor-home-container mt-5">
+    <div class="text-center mb-5">
         <h1 class="display-4">Welcome to Course Station</h1>
         <p class="lead">Impact and change the world with knowledge.</p>
     </div>
 
-    <div id="motivationalCarousel" class="carousel slide " data-bs-ride="carousel">
+    <div id="motivationalCarousel" class="carousel slide mb-5" data-bs-ride="carousel">
         <div class="carousel-indicators">
             <button type="button" data-bs-target="#motivationalCarousel" data-bs-slide-to="0" class="active" aria-current="true"></button>
             <button type="button" data-bs-target="#motivationalCarousel" data-bs-slide-to="1"></button>
@@ -46,48 +46,48 @@
     <div class="actions text-center">
         <h3 class="mb-4">What would you like to do today?</h3>
         <div class="row">
-            <div class="col-md-4 mb-3">
-                <div class="card border-primary mb-3" style="max-width: 18rem;">
+            <div class="col-md-12 mb-3">
+                <div class="card border-primary mb-3">
                     <div class="card-header">Add Activity</div>
                     <div class="card-body text-primary">
                         <a asp-controller="Instructor" asp-action="AddActivity">Add Activity</a>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 mb-3">
-                <div class="card border-success mb-3" style="max-width: 18rem;">
+            <div class="col-md-12 mb-3">
+                <div class="card border-success mb-3">
                     <div class="card-header">Create Course</div>
                     <div class="card-body text-success">
                         <a asp-controller="Instructor" asp-action="CreateCourse">Create Course</a>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 mb-3">
-                <div class="card border-info mb-3" style="max-width: 18rem;">
+            <div class="col-md-12 mb-3">
+                <div class="card border-info mb-3">
                     <div class="card-header">Create Assessment</div>
                     <div class="card-body text-info">
                         <a asp-controller="Instructor" asp-action="CreateAssessment">Create Assessment</a>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 mb-3">
-                <div class="card border-warning mb-3" style="max-width: 18rem;">
+            <div class="col-md-12 mb-3">
+                <div class="card border-warning mb-3">
                     <div class="card-header">Send Notification</div>
                     <div class="card-body text-warning">
                         <a asp-controller="Instructor" asp-action="SendNotification">Send Notification</a>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 mb-3">
-                <div class="card border-secondary mb-3" style="max-width: 18rem;">
+            <div class="col-md-12 mb-3">
+                <div class="card border-secondary mb-3">
                     <div class="card-header">Manage Courses</div>
                     <div class="card-body text-secondary">
                         <a asp-controller="Instructor" asp-action="ManageCourses">Manage Courses</a>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 mb-3">
-                <div class="card border-dark mb-3" style="max-width: 18rem;">
+            <div class="col-md-12 mb-3">
+                <div class="card border-dark mb-3">
                     <div class="card-header">Create Quest</div>
                     <div class="card-body text-dark">
                         <a asp-controller="Quests" asp-action="Create">Create Quest</a>
@@ -95,7 +95,7 @@
                 </div>
             </div>
             <div class="col-md-12 mb-3">
-                <div class="card border-light mb-3" style="max-width: 18rem;">
+                <div class="card border-light mb-3">
                     <div class="card-header">View Profile</div>
                     <div class="card-body text-light">
                         <a asp-controller="Instructor" asp-action="Details" asp-route-id="@instructorId">View Profile</a>
