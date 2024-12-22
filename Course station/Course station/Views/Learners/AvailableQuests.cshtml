@@ -1,0 +1,45 @@
+﻿@model Course_station.Controllers.LearnersController.AvailableQuestsViewModel
+
+@{
+    ViewData["Title"] = "Available Quests";
+}
+
+<h2>Available Quests</h2>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">@TempData["Message"]</div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Difficulty Level</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var quest in Model.Quests)
+        {
+            <tr>
+                <td>@quest.Title</td>
+                <td>@quest.Description</td>
+                <td>@quest.DifficultyLevel</td>
+                <td>
+                    <form asp-controller="Learners" asp-action="JoinQuest" method="post">
+                        <input type="hidden" name="learnerId" value="@Model.LearnerId" />
+                        <input type="hidden" name="questId" value="@quest.QuestId" />
+                        <button type="submit" class="btn btn-primary">Join Quest</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

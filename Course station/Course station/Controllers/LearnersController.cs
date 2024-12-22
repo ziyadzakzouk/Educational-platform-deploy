@@ -110,6 +110,112 @@ namespace Course_station.Controllers
             return View(viewModel);
         }
 
+
+        public class AvailableQuestsViewModel
+        {
+            public int LearnerId { get; set; }
+            public List<Quest> Quests { get; set; }
+        }
+
+        public async Task<IActionResult> AvailableQuests(int learnerId)
+        {
+            var quests = await _context.Quests
+                .Include(q => q.Collaborative)
+                .ToListAsync();
+
+            var viewModel = new AvailableQuestsViewModel
+            {
+                LearnerId = learnerId,
+                Quests = quests
+            };
+
+            return View(viewModel);
+        }
+
+
+        public class JoinQuestViewModel
+        {
+            public int LearnerId { get; set; }
+            public Quest Quest { get; set; }
+        }
+
+        public async Task<IActionResult> JoinQuest(int learnerId, int questId)
+        {
+            var quest = await _context.Quests
+                .Include(q => q.Collaborative)
+                .FirstOrDefaultAsync(q => q.QuestId == questId);
+
+            if (quest == null)
+            {
+                return NotFound();
+            }
+
+            var viewModel = new JoinQuestViewModel
+            {
+                LearnerId = learnerId,
+                Quest = quest
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ConfirmJoinQuest(int learnerId, int questId)
+        {
+            var quest = await _context.Quests
+                .Include(q => q.Collaborative)
+                .FirstOrDefaultAsync(q => q.QuestId == questId);
+
+            if (quest == null || quest.Collaborative == null)
+            {
+                return NotFound();
+            }
+
+            if (quest.Collaborative.LearnerCollaborations.Count >= quest.Collaborative.MaxNumParticipants)
+            {
+                TempData["ErrorMessage"] = "Quest is full.";
+                return RedirectToAction(nameof(AvailableQuests), new { learnerId });
+            }
+
+            var existingCollaboration = await _context.LearnerCollaborations
+                .FirstOrDefaultAsync(lc => lc.LearnerId == learnerId && lc.QuestId == questId);
+
+            if (existingCollaboration != null)
+            {
+                TempData["ErrorMessage"] = "You have already joined this quest.";
+                return RedirectToAction(nameof(AvailableQuests), new { learnerId });
+            }
+
+            var learnerCollaboration = new LearnerCollaboration
+            {
+                QuestId = questId,
+                LearnerId = learnerId
+            };
+
+            _context.LearnerCollaborations.Add(learnerCollaboration);
+            await _context.SaveChangesAsync();
+
+            var achievement = new Achievement
+            {
+                Description = "Joined a Collaborative Quest",
+                DateEarned = DateOnly.FromDateTime(DateTime.Now),
+                BadgeId = 1,
+                LearnerId = learnerId
+            };
+
+            var learner = await _context.Learners.FindAsync(learnerId);
+            if (learner != null)
+            {
+                learner.Achievements.Add(achievement);
+                await _context.SaveChangesAsync();
+            }
+
+            TempData["Message"] = "Successfully joined the quest!";
+            return RedirectToAction(nameof(AvailableQuests), new { learnerId });
+        }
+
+
         // GET: Learners/Create
         public IActionResult Create()
         {
@@ -399,17 +505,17 @@ namespace Course_station.Controllers
         }
 
         // 8. Join a collaborative quest if space is available
-        [HttpPost]
-        public async Task<IActionResult> JoinQuest(int learnerId, int questId)
-        {
-            var result = await _context.Database.ExecuteSqlRawAsync(
-                "EXEC JoinQuest @LearnerID = {0}, @QuestID = {1}",
-                learnerId, questId
-            );
+      //  [HttpPost]
+        //public async Task<IActionResult> JoinQuest(int learnerId, int questId)
+        //{
+        //    var result = await _context.Database.ExecuteSqlRawAsync(
+        //        "EXEC JoinQuest @LearnerID = {0}, @QuestID = {1}",
+        //        learnerId, questId
+        //    );
 
-            TempData["Message"] = result > 0 ? "Successfully joined the quest!" : "Quest is full.";
-            return RedirectToAction("QuestDetails", new { questId });
-        }
+        //    TempData["Message"] = result > 0 ? "Successfully joined the quest!" : "Quest is full.";
+        //    return RedirectToAction("QuestDetails", new { questId });
+        //}
 
         // 9. View skill proficiency levels
         public async Task<IActionResult> SkillsProficiency(int learnerId)
@@ -586,14 +692,14 @@ namespace Course_station.Controllers
             return RedirectToAction(nameof(AvailableQuests));
         }
 
-        public async Task<IActionResult> AvailableQuests()
-        {
-            var quests = await _context.Quests
-                .Where(q => q.Collaborative != null)
-                .ToListAsync();
+        //public async Task<IActionResult> AvailableQuests()
+        //{
+        //    var quests = await _context.Quests
+        //        .Where(q => q.Collaborative != null)
+        //        .ToListAsync();
 
-            return View(quests);
-        }
+        //    return View(quests);
+        //}
         public async Task<IActionResult> AchievementProgress(int learnerId)
         {
             var learner = await _context.Learners
