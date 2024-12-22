@@ -1,7 +1,7 @@
 ﻿/* General styles */
 body {
-    font-family: Arial, sans-serif;
-    background-color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
     color: #333;
     margin: 0;
     padding: 0;
@@ -13,7 +13,7 @@ body {
 }
 
 .header {
-    font-size: 4.5rem; /* Increased font size for the header */
+    font-size: 4.5rem;
     font-weight: bold;
     margin-bottom: 1rem;
 }
@@ -23,13 +23,14 @@ body {
     white-space: nowrap;
     overflow: hidden;
     border-right: 2px solid;
-    animation: typing 12s steps(60, end), blink 0.5s step-end infinite; /* Increased duration to 12s */
+    animation: typing 12s steps(60, end), blink 0.5s step-end infinite;
 }
 
 @keyframes typing {
     0% {
         width: 0;
     }
+
     100% {
         width: 100%;
     }
@@ -46,6 +47,7 @@ body {
     font-weight: bold;
     margin-top: 1rem;
 }
+
 .text-body-secondary {
     color: #000 !important;
 }
@@ -55,14 +57,21 @@ body {
     background-color: #007bff;
     color: #fff;
 }
-.card-premium button:hover {
-    background-color: #007bff !important;
-    border-color: #007bff !important;
-}
+
+    .card-premium button:hover {
+        background-color: #0056b3 !important;
+        border-color: #0056b3 !important;
+    }
 
 .card {
     border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
 }
+
+    .card:hover {
+        transform: translateY(-5px);
+    }
 
 .card-premium .card-title,
 .card-premium .card-text,
@@ -89,9 +98,9 @@ body {
     color: #000 !important;
 }
 
-.card-body .btn {
-    align-self: center;
-}
+    .card-body .btn {
+        align-self: center;
+    }
 
 /* Styles for starting and price classes */
 .starting {
@@ -157,7 +166,7 @@ body {
 .contact-container {
     margin: 2rem auto;
     padding: 20px;
-    background-color: #f9f9f9;
+    background-color: #fff;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -193,9 +202,9 @@ input[type="submit"] {
     font-size: 16px;
 }
 
-input[type="submit"]:hover {
-    background-color: #45a049;
-}
+    input[type="submit"]:hover {
+        background-color: #45a049;
+    }
 
 /* Flip box styles */
 .flip-box {
