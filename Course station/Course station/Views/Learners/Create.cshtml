@@ -12,14 +12,14 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label asp-for="FirstName" class="control-label"></label>
-                    <input asp-for="FirstName" class="form-control" />
+                    <input asp-for="FirstName" class="form-control" required />
                     <span asp-validation-for="FirstName" class="text-danger"></span>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label asp-for="LastName" class="control-label"></label>
-                    <input asp-for="LastName" class="form-control" />
+                    <input asp-for="LastName" class="form-control" required />
                     <span asp-validation-for="LastName" class="text-danger"></span>
                 </div>
             </div>
@@ -61,14 +61,14 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label asp-for="Email" class="control-label"></label>
-                    <input asp-for="Email" class="form-control" />
+                    <input asp-for="Email" class="form-control" required />
                     <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label asp-for="Password" class="control-label"></label>
-                    <input asp-for="Password" class="form-control" />
+                    <input asp-for="Password" class="form-control" required />
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
             </div>
@@ -148,9 +148,7 @@
 </style>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+
     <script>
         document.getElementById('createForm').addEventListener('submit', async function (event) {
             event.preventDefault();
@@ -164,6 +162,7 @@
             if (response.ok) {
                 var result = await response.json();
                 if (result.redirectToUrl) {
+                    localStorage.setItem('accountCreated', 'true');
                     window.location.href = result.redirectToUrl;
                 } else {
                     alert('An error occurred: ' + result.message);
@@ -174,5 +173,3 @@
         });
     </script>
 }
-
-
