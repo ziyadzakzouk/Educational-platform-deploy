@@ -5,8 +5,8 @@
 }
 
 <h1 class="text-center">Create Instructor</h1>
-<div class="d-flex justify-content-center">
-    <div class="container">
+<div class="d-flex justify-content-center align-items-center min-vh-100">
+    <div class="container form-container">
         <form id="createInstructorForm" asp-action="Create">
             <div class="form-group">
                 <label asp-for="InstructorName" class="control-label"></label>
@@ -46,14 +46,18 @@
 </div>
 
 <style>
-    .container {
+    .min-vh-100 {
+        min-height: 100vh;
+    }
+
+    .form-container {
         max-width: 600px;
-        margin: auto;
-        border: 1px solid #ccc;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 100%;
         padding: 20px;
         background-color: #fff;
+        border: 1px solid #ccc;
         border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
     .form-group {
@@ -105,6 +109,10 @@
 
     .justify-content-center {
         justify-content: center;
+    }
+
+    .align-items-center {
+        align-items: center;
     }
 </style>
 
