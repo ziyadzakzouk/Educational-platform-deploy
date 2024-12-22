@@ -1,0 +1,208 @@
+﻿/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
+
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #f0f4f8;
+    color: #333;
+}
+
+/* Container */
+.home-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+/* Welcome Text */
+.welcome-text {
+    text-align: center;
+    font-size: 48px;
+    font-weight: 600;
+    margin-bottom: 60px;
+    color: #0d1b2a;
+    position: relative;
+}
+
+    .welcome-text::after {
+        content: '';
+        width: 100px;
+        height: 4px;
+        background-color: #1b263b;
+        display: block;
+        margin: 20px auto 0;
+        border-radius: 2px;
+    }
+
+/* Carousel */
+.carousel-container {
+    margin-bottom: 60px;
+}
+
+.carousel-item {
+    height: 500px;
+}
+
+    .carousel-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 15px;
+    }
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    width: 50px;
+    height: 50px;
+    background-color: rgba(27, 38, 59, 0.7);
+    border-radius: 50%;
+}
+
+.carousel-indicators [data-bs-target] {
+    background-color: #1b263b;
+}
+
+/* Profile Button */
+.profile-button {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.btn-profile {
+    display: inline-block;
+    background: linear-gradient(135deg, #1e3a8a, #2563eb);
+    color: #fff;
+    padding: 15px 40px;
+    font-size: 22px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+    .btn-profile .arrow {
+        margin-left: 15px;
+        transition: margin-left 0.3s ease;
+    }
+
+    .btn-profile:hover {
+        background: linear-gradient(135deg, #2563eb, #1e3a8a);
+        box-shadow: 0 10px 20px rgba(30, 58, 138, 0.3);
+    }
+
+        .btn-profile:hover .arrow {
+            margin-left: 25px;
+        }
+
+    .btn-profile::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.2);
+        transform: skewX(-45deg);
+        transition: all 0.5s;
+    }
+
+    .btn-profile:hover::before {
+        left: 100%;
+    }
+
+/* Cards */
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    justify-content: center;
+}
+
+.card {
+    background-color: #fff;
+    width: 300px;
+    border: none;
+    border-radius: 15px;
+    text-align: center;
+    overflow: hidden;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    position: relative;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+    .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    .card::before {
+        content: '';
+        position: absolute;
+        top: -60px;
+        right: -60px;
+        background: #1e3a8a;
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        z-index: -1;
+    }
+
+.card-header {
+    background-color: transparent;
+    padding: 30px 20px 20px;
+}
+
+    .card-header .card-icon {
+        font-size: 50px;
+        color: #1e3a8a;
+        margin-bottom: 20px;
+    }
+
+    .card-header h3 {
+        font-size: 24px;
+        font-weight: 600;
+        color: #0d1b2a;
+    }
+
+.card-body {
+    padding: 0 20px 30px;
+}
+
+.card-link, .card-text, .notification-btn {
+    display: inline-block;
+    margin-top: 15px;
+    color: #1e3a8a;
+    font-size: 18px;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+    .card-link:hover, .card-text:hover, .notification-btn:hover {
+        color: #2563eb;
+    }
+
+/* Responsive */
+@media (max-width: 768px) {
+    .welcome-text {
+        font-size: 36px;
+    }
+
+    .btn-profile {
+        font-size: 20px;
+        padding: 12px 30px;
+    }
+
+    .card {
+        width: 100%;
+    }
+}
