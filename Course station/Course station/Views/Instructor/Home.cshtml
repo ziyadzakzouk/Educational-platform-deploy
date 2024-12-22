@@ -12,93 +12,143 @@
 
 <div class="container instructor-home-container mt-5">
     <div class="text-center mb-5">
-        <h1 class="display-4">Welcome to Course Station</h1>
-        <p class="lead">Impact and change the world with knowledge.</p>
+        <h1 class="display-4 fw-bold">Welcome to Course Station</h1>
+        <p class="lead text-muted">Impact and change the world with knowledge.</p>
     </div>
 
-    <div id="motivationalCarousel" class="carousel slide mb-5" data-bs-ride="carousel">
+    <div id="motivationalCarousel" class="carousel slide mb-5 shadow-lg rounded" data-bs-ride="carousel">
+        <!-- Indicators -->
         <div class="carousel-indicators">
             <button type="button" data-bs-target="#motivationalCarousel" data-bs-slide-to="0" class="active" aria-current="true"></button>
             <button type="button" data-bs-target="#motivationalCarousel" data-bs-slide-to="1"></button>
             <button type="button" data-bs-target="#motivationalCarousel" data-bs-slide-to="2"></button>
         </div>
-        <div class="carousel-inner">
+        <!-- Slides -->
+        <div class="carousel-inner rounded">
             <div class="carousel-item active">
-                <img src="~/images/motivation1.jpg" class="d-block w-100" alt="Motivation 1">
+                <img src="~/images/motivation1.jpg" class="d-block w-100" alt="Inspire">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5 class="text-shadow">Inspire Minds</h5>
+                    <p class="text-shadow">Your knowledge ignites change.</p>
+                </div>
             </div>
             <div class="carousel-item">
-                <img src="~/images/motivation2.jpg" class="d-block w-100" alt="Motivation 2">
+                <img src="~/images/motivation2.jpg" class="d-block w-100" alt="Create">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5 class="text-shadow">Create Futures</h5>
+                    <p class="text-shadow">Shape the leaders of tomorrow.</p>
+                </div>
             </div>
             <div class="carousel-item">
-                <img src="~/images/motivation3.jpg" class="d-block w-100" alt="Motivation 3">
+                <img src="~/images/motivation3.jpg" class="d-block w-100" alt="Impact">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5 class="text-shadow">Impact Lives</h5>
+                    <p class="text-shadow">Leave a lasting legacy.</p>
+                </div>
             </div>
         </div>
+        <!-- Controls -->
         <button class="carousel-control-prev" type="button" data-bs-target="#motivationalCarousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="carousel-control-prev-icon bg-dark rounded-circle" aria-hidden="true"></span>
             <span class="visually-hidden">Previous</span>
         </button>
         <button class="carousel-control-next" type="button" data-bs-target="#motivationalCarousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="carousel-control-next-icon bg-dark rounded-circle" aria-hidden="true"></span>
             <span class="visually-hidden">Next</span>
         </button>
     </div>
 
     <div class="actions text-center">
-        <h3 class="mb-4">What would you like to do today?</h3>
-        <div class="row">
-            <div class="col-md-12 mb-3">
-                <div class="card border-primary mb-3">
-                    <div class="card-header">Add Activity</div>
-                    <div class="card-body text-primary">
-                        <a asp-controller="Instructor" asp-action="AddActivity">Add Activity</a>
+        <h3 class="mb-4 fw-bold">What would you like to do today?</h3>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            <!-- Add Activity Card -->
+            <div class="col">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <i class="bi bi-plus-circle fs-1 text-primary"></i>
+                        </div>
+                        <h5 class="card-title">Add Activity</h5>
+                        <p class="card-text">Engage students with new activities.</p>
+                        <a class="btn btn-primary" asp-controller="Instructor" asp-action="AddActivity">Add Activity</a>
                     </div>
                 </div>
             </div>
-            <div class="col-md-12 mb-3">
-                <div class="card border-success mb-3">
-                    <div class="card-header">Create Course</div>
-                    <div class="card-body text-success">
-                        <a asp-controller="Instructor" asp-action="CreateCourse">Create Course</a>
+            <!-- Create Course Card -->
+            <div class="col">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <i class="bi bi-journal-plus fs-1 text-success"></i>
+                        </div>
+                        <h5 class="card-title">Create Course</h5>
+                        <p class="card-text">Develop new courses for learners.</p>
+                        <a class="btn btn-success" asp-controller="Instructor" asp-action="CreateCourse">Create Course</a>
                     </div>
                 </div>
             </div>
-            <div class="col-md-12 mb-3">
-                <div class="card border-info mb-3">
-                    <div class="card-header">Create Assessment</div>
-                    <div class="card-body text-info">
-                        <a asp-controller="Instructor" asp-action="CreateAssessment">Create Assessment</a>
+            <!-- Create Assessment Card -->
+            <div class="col">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <i class="bi bi-clipboard-check fs-1 text-info"></i>
+                        </div>
+                        <h5 class="card-title">Create Assessment</h5>
+                        <p class="card-text">Evaluate student progress.</p>
+                        <a class="btn btn-info text-white" asp-controller="Instructor" asp-action="CreateAssessment">Create Assessment</a>
                     </div>
                 </div>
             </div>
-            <div class="col-md-12 mb-3">
-                <div class="card border-warning mb-3">
-                    <div class="card-header">Send Notification</div>
-                    <div class="card-body text-warning">
-                        <a asp-controller="Instructor" asp-action="SendNotification">Send Notification</a>
+            <!-- Send Notification Card -->
+            <div class="col">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <i class="bi bi-bell fs-1 text-warning"></i>
+                        </div>
+                        <h5 class="card-title">Send Notification</h5>
+                        <p class="card-text">Keep students informed and engaged.</p>
+                        <a class="btn btn-warning text-dark" asp-controller="Instructor" asp-action="SendNotification">Send Notification</a>
                     </div>
                 </div>
             </div>
-            <div class="col-md-12 mb-3">
-                <div class="card border-secondary mb-3">
-                    <div class="card-header">Manage Courses</div>
-                    <div class="card-body text-secondary">
-                        <a asp-controller="Instructor" asp-action="ManageCourses">Manage Courses</a>
+            <!-- Manage Courses Card -->
+            <div class="col">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <i class="bi bi-collection fs-1 text-secondary"></i>
+                        </div>
+                        <h5 class="card-title">Manage Courses</h5>
+                        <p class="card-text">Update and organize your courses.</p>
+                        <a class="btn btn-secondary" asp-controller="Instructor" asp-action="ManageCourses">Manage Courses</a>
                     </div>
                 </div>
             </div>
-            <div class="col-md-12 mb-3">
-                <div class="card border-dark mb-3">
-                    <div class="card-header">Create Quest</div>
-                    <div class="card-body text-dark">
-                        <a asp-controller="Quests" asp-action="Create">Create Quest</a>
+            <!-- Create Quest Card -->
+            <div class="col">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <i class="bi bi-award fs-1 text-dark"></i>
+                        </div>
+                        <h5 class="card-title">Create Quest</h5>
+                        <p class="card-text">Gamify learning with quests.</p>
+                        <a class="btn btn-dark" asp-controller="Quests" asp-action="Create">Create Quest</a>
                     </div>
                 </div>
             </div>
-            <div class="col-md-12 mb-3">
-                <div class="card border-light mb-3">
-                    <div class="card-header">View Profile</div>
-                    <div class="card-body text-light">
-                        <a asp-controller="Instructor" asp-action="Details" asp-route-id="@instructorId">View Profile</a>
+            <!-- View Profile Card -->
+            <div class="col">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <i class="bi bi-person-circle fs-1 text-muted"></i>
+                        </div>
+                        <h5 class="card-title">View Profile</h5>
+                        <p class="card-text">Manage your personal information.</p>
+                        <a class="btn btn-light text-dark" asp-controller="Instructor" asp-action="Details" asp-route-id="@instructorId">View Profile</a>
                     </div>
                 </div>
             </div>
@@ -106,4 +156,6 @@
     </div>
 </div>
 
-<link rel="stylesheet" href="~/css/instructor-home.css">
+<!-- Include Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+<link rel="stylesheet" href="~/css/Iprofile.css">
