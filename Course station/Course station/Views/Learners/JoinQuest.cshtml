@@ -1,0 +1,61 @@
+﻿@model Course_station.Controllers.LearnersController.JoinQuestViewModel
+
+@{
+    ViewData["Title"] = "Join Quest";
+}
+
+<h2>Join Quest</h2>
+
+<div class="card">
+    <div class="card-header">
+        <h3>@Model.Quest.Title</h3>
+    </div>
+    <div class="card-body">
+        <p><strong>Description:</strong> @Model.Quest.Description</p>
+        <p><strong>Difficulty Level:</strong> @Model.Quest.DifficultyLevel</p>
+        <p><strong>Collaborative:</strong> @(Model.Quest.Collaborative != null ? "Yes" : "No")</p>
+        <p><strong>Max Participants:</strong> @Model.Quest.Collaborative?.MaxNumParticipants</p>
+    </div>
+    <div class="card-footer">
+        <form id="joinQuestForm" asp-action="JoinQuest" method="post" onsubmit="return handleFormSubmit(event)">
+            <input type="hidden" name="learnerId" value="@Model.LearnerId" />
+            <input type="hidden" name="questId" value="@Model.Quest.QuestId" />
+            <button type="button" class="btn btn-primary" onclick="confirmJoinQuest()">Confirm Join</button>
+            <a asp-action="AvailableQuests" asp-route-learnerId="@Model.LearnerId" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>
+
+<div id="successMessage" class="alert alert-success mt-3" style="display: none;">
+    Successfully joined the quest!
+</div>
+
+<div id="alreadyJoinedMessage" class="alert alert-info mt-3" style="display: none;">
+    You have already joined this quest!
+</div>
+
+<a asp-action="Home" class="btn btn-secondary mt-3">Back to Home</a>
+
+<script>
+    function confirmJoinQuest() {
+        if (confirm("Are you sure you want to join this quest?")) {
+            document.getElementById("joinQuestForm").submit();
+        }
+    }
+
+    function handleFormSubmit(event) {
+        event.preventDefault();
+        // Simulate form submission and show appropriate message
+        setTimeout(() => {
+            // Simulate checking if the user has already joined the quest
+            const alreadyJoined = false; // Replace with actual condition
+
+            if (alreadyJoined) {
+                document.getElementById("alreadyJoinedMessage").style.display = "block";
+            } else {
+                document.getElementById("successMessage").style.display = "block";
+            }
+        }, 500);
+        return false;
+    }
+</script>

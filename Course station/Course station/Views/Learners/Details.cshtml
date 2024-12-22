@@ -217,4 +217,13 @@
     function submitForm() {
         document.getElementById('uploadForm').submit();
     }
+
+
+    window.onload = function() {
+        if (localStorage.getItem('accountCreated') === 'true') {
+            alert('You have created an account successfully.');
+            localStorage.removeItem('accountCreated');
+        }
+    };
+
 </script>

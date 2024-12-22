@@ -91,7 +91,7 @@ namespace Course_station.Controllers
                 {
                     _context.Add(module);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction("Home", "Instructor");
                 }
                 catch (Exception ex)
                 {

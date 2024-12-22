@@ -1,68 +1,174 @@
-﻿/* Iprofile.css */
+﻿/* instructor-home.css */
 
-/* Profile Container Styling */
-.profile-container {
-    background: linear-gradient(to right, #f8f9fa, #e9ecef);
-    border: none;
+.instructor-home-container h1,
+.instructor-home-container h3 {
+    font-weight: bold;
 }
 
-.profile-header {
-    margin-bottom: 30px;
+.text-shadow {
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7);
 }
 
-.profile-image img {
-    border: 5px solid #fff;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}
-
-.profile-info h2 {
-    margin-top: 20px;
-    font-size: 2rem;
-}
-
-.profile-info h4 {
-    font-size: 1.2rem;
-}
-
-.profile-info p {
-    font-size: 1rem;
-}
-
-.profile-info .text-muted {
-    margin-bottom: 10px;
-}
-
-.accordion-button:not(.collapsed) {
-    background-color: #007bff;
+.carousel-caption h5,
+.carousel-caption p {
     color: #fff;
 }
 
-.accordion-button::after {
-    filter: invert(1);
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-size: 100%, 100%;
+    background-image: none;
 }
 
-.danger-zone {
-    border: 2px solid #dc3545;
+.carousel-control-prev-icon {
+    background-image: url('data:image/svg+xml;charset=UTF8,%3csvg xmlns%3d%27http://www.w3.org/2000/svg%27 fill%3d%27%23fff%27 viewBox%3d%270 0 16 16%27%3e%3cpath d%3d%27M11.354 1.354a.5.5 0 0 1 0 .707L6.707 6.707a.5.5 0 0 1-.708 0L1.354 1.354a.5.5 0 1 1 .707-.707l4.646 4.647L10.646.646a.5.5 0 0 1 .708 0z%27/%3e%3c/svg%3e');
+}
+
+.carousel-control-next-icon {
+    background-image: url('data:image/svg+xml;charset=UTF8,%3csvg xmlns%3d%27http://www.w3.org/2000/svg%27 fill%3d%27%23fff%27 viewBox%3d%270 0 16 16%27%3e%3cpath d%3d%27M4.646 14.646a.5.5 0 0 1 0-.708L9.293 9l-4.647-4.646a.5.5 0 1 1 .708-.708L10.707 9l-5.647 5.646a.5.5 0 0 1-.708 0z%27/%3e%3c/svg%3e');
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    transition: transform 0.3s;
+}
+
+.card i {
+    display: block;
+}
+
+.btn {
+    width: 100%;
+}
+
+@media (min-width: 768px) {
+    .carousel-caption {
+        bottom: 20%;
+    }
+}
+
+
+.profile-container {
+    max-width: 800px;
+    margin: 0 auto;
     padding: 20px;
-    border-radius: 10px;
-    background-color: #f8d7da;
+    font-family: Arial, sans-serif;
+}
+
+.profile-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.profile-picture {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+}
+
+.profile-header h2 {
+    font-size: 28px;
+    margin-top: 10px;
+}
+
+.profile-header h4 {
+    color: #666;
+}
+
+.profile-header p {
+    color: #888;
+    margin: 5px 0;
+}
+
+.btn-change-picture {
+    margin-top: 15px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+}
+
+    .btn-change-picture:hover {
+        background-color: #0056b3;
+    }
+
+.profile-content section {
+    margin-bottom: 30px;
+}
+
+.courses-section h3,
+.feedback-section h3,
+.path-reviews-section h3 {
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+}
+
+.details {
+    margin-bottom: 15px;
+}
+
+.feedback-card,
+.path-review {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+}
+
+.actions {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+    .actions .btn {
+        margin: 0 10px;
+        padding: 10px 20px;
+        text-decoration: none;
+        color: #fff;
+        border-radius: 5px;
+    }
+
+.btn-edit {
+    background-color: #ffc107;
+}
+
+    .btn-edit:hover {
+        background-color: #e0a800;
+    }
+
+.btn-delete {
+    background-color: #dc3545;
+}
+
+    .btn-delete:hover {
+        background-color: #c82333;
+    }
+
+.btn-home {
+    background-color: #007bff;
+}
+
+    .btn-home:hover {
+        background-color: #0056b3;
+    }
+
+.danger-zone {
+    text-align: center;
+    border-top: 1px solid #dc3545;
+    padding-top: 20px;
 }
 
     .danger-zone h2 {
-        margin-bottom: 15px;
+        color: #dc3545;
     }
 
-    .danger-zone p {
-        margin-bottom: 15px;
-    }
+.inline-form {
+    display: inline-block;
+}
 
-    .danger-zone .btn {
-        width: 100%;
-    }
-
-/* Responsive Design */
 @media (max-width: 768px) {
-    .profile-image img {
-        max-width: 150px;
+    .profile-content {
+        padding: 0 10px;
     }
 }

@@ -81,9 +81,10 @@
         <div class="card border-info mb-3 card-fixed-size">
             <div class="card-header">Quest</div>
             <div class="card-body">
-                <a asp-controller="Quests" asp-action="Index" class="card-text" style="text-decoration: none;">Join Quest</a>
+                <a asp-controller="Learners" asp-action="AvailableQuests" asp-route-learnerId="@learnerId" class="card-text" style="text-decoration: none;">Join Quest</a>
             </div>
         </div>
+
 
         <div class="card border-light mb-3 card-fixed-size">
             <div class="card-header">Feedback</div>
