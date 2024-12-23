@@ -31,6 +31,13 @@ namespace Course_station.Controllers
             {
                 return RedirectToAction("Login", "Instructor");
             }
+
+            var instructor = _context.Instructors.FirstOrDefault(i => i.InstructorId == instructorId);
+            if (instructor != null)
+            {
+                ViewData["InstructorName"] = instructor.InstructorName;
+            }
+
             return View();
         }
 
