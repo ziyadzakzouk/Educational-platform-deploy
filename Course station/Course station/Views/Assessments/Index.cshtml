@@ -4,27 +4,58 @@
     ViewData["Title"] = "Assessments";
 }
 
-<h2>Assessments</h2>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>Title</th>
-            <th>Description</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.Title</td>
-                <td>@item.Description</td>
-                <td>
+<h2 class="text-center">Assessments</h2>
+<hr />
+<div class="card-container">
+    @foreach (var item in Model)
+    {
+        <div class="card">
+            <div class="card-header">
+                <h3>@item.Title</h3>
+            </div>
+            <div class="card-body">
+                <p>@item.Description</p>
+                <div class="card-actions">
                     <a asp-action="Details" asp-route-id="@item.AssessmentId" class="btn btn-info">Details</a>
                     <a asp-action="Take" asp-route-id="@item.AssessmentId" class="btn btn-primary">Take</a>
-                </td>
-            </tr>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<style>
+    .card-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .card {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        width: calc(33.333% - 20px); /* Adjust the width as needed */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-header {
+        padding: 15px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .card-body {
+        padding: 15px;
+    }
+
+    .card-actions {
+        margin-top: 15px;
+    }
+
+        .card-actions .btn {
+            margin-right: 10px;
         }
-    </tbody>
-</table>
+
+
+    }
+</style>
