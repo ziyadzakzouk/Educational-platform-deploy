@@ -337,12 +337,22 @@ namespace Course_station.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Check if the related LearningActivity exists
+                var activityExists = await _context.LearningActivities
+                                                   .AnyAsync(a => a.ActivityId == feedback.ActivityId);
+                if (!activityExists)
+                {
+                    ModelState.AddModelError("ActivityId", "Invalid Activity ID.");
+                    return View(feedback);
+                }
+
                 _context.EmotionalFeedbacks.Add(feedback);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Home));
             }
             return View(feedback);
         }
+
 
         // POST: Learners/Delete/5
         [HttpPost]
