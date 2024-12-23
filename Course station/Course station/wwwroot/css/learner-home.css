@@ -14,21 +14,25 @@ body {
 }
 
 .welcome-text {
-    font-size: 2.5em;
+    font-size: 4em; /* Increased font size */
     margin-bottom: 40px;
 }
 
 .leFadeIn {
-    animation-name: leFadeIn;
-    animation-duration: 2s;
+    animation: leFadeIn 2s ease-in-out;
     animation-fill-mode: forwards;
 }
 
 @keyframes leFadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    0% {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
-
 /* Rest of the CSS remains the same */
 
 /* Carousel Styles */
