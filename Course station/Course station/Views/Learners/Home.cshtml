@@ -13,11 +13,6 @@
 <div class="home-container">
     <h2 class="welcome-text">Welcome <span class="leFadeIn" id="learnerName">@learnerName !</span> </h2>
 
-    <!-- Rest of the content remains the same -->
-</div>
-
-<script src="~/js/learner-home.js"></script>
-
     <div class="carousel-container">
         <div id="learnerCarousel" class="carousel slide" data-bs-ride="carousel">
             <!-- Carousel indicators -->
@@ -114,3 +109,6 @@
             <a asp-controller="Learners" asp-action="Viewinfo" asp-route-learnerId="@HttpContextAccessor.HttpContext?.Session.GetInt32("LearnerId")" class="btn-card">View Notifications</a>
         </div>
     </div>
+</div>
+
+<script src="~/js/learner-home.js"></script>
