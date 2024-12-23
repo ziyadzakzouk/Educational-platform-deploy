@@ -2,6 +2,7 @@ using Course_station.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using NuGet.ProjectModel;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -31,21 +32,53 @@ namespace Course_station.Controllers
         {
             ViewData["Title"] = "Create Personal Profile";
 
-            // Get list of learners with both ID and full name
-            var learners = _context.Learners
-                .Select(l => new
-                {
-                    LearnerId = l.LearnerId,
-                    FullName = $"{l.FirstName} {l.LastName}"
-                })
-                .ToList();
+            // Assume the learner's ID is stored in the session or context
+            int? learnerId = GetLearnerIdFromContext(); // Implement this method to get the learner's ID
+            if (learnerId == null)
+            {
+                _logger.LogError("Learner ID not found in context.");
+                return RedirectToAction("Home", "Learners"); // Redirect to a suitable page
+            }
 
-            // Log the number of learners found
-            _logger.LogInformation($"Found {learners.Count} learners for dropdown");
+            var learnerName = _context.Learners
+                .Where(l => l.LearnerId == learnerId.Value)
+                .Select(l => $"{l.FirstName} {l.LastName}")
+                .FirstOrDefault();
 
-            ViewData["Learners"] = new SelectList(learners, "LearnerId", "FullName");
-            return View(new PersonalProfile());
+            if (learnerName == null)
+            {
+                _logger.LogError("Learner name not found in context.");
+                return RedirectToAction("Home", "Learners"); // Redirect to a suitable page
+            }
+
+            ViewBag.LearnerName = learnerName;
+
+            var model = new PersonalProfile
+            {
+                LearnerId = learnerId.Value
+            };
+
+            return View(model);
         }
+
+        private int? GetLearnerIdFromContext()
+        {
+            // Implement this method to retrieve the learner's ID from the context or session
+            // For example:
+            if(HttpContext.Session.GetInt32("LearnerId") != null)
+            {
+                return HttpContext.Session.GetInt32("LearnerId");
+            }
+            else
+            {
+                return null;
+            }
+            // return HttpContext.Session.GetInt32("LearnerId");
+            // or
+            // return int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            return 0; // Placeholder for demonstration
+        }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -90,7 +123,7 @@ namespace Course_station.Controllers
                         _context.Add(personalProfile);
                         await _context.SaveChangesAsync();
                         _logger.LogInformation($"Successfully created profile for LearnerId: {personalProfile.LearnerId}");
-                        return RedirectToAction(nameof(Index));
+                        return RedirectToAction("Home","Learners");
                     }
                 }
             }
