@@ -1,0 +1,51 @@
+﻿.page-title {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2em;
+    color: #333;
+}
+
+.achievement-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.achievement-card {
+    background: #fff;
+    border-radius: 15px;
+    width: 280px;
+    margin: 15px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+    .achievement-card:hover {
+        transform: scale(1.05);
+    }
+
+.badge-icon {
+    font-size: 4em;
+    color: gold;
+    margin-bottom: 15px;
+}
+
+.achievement-details h2 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: #222;
+}
+
+.achievement-details p {
+    font-size: 1em;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+.date-earned {
+    display: block;
+    font-size: 0.9em;
+    color: #999;
+}
