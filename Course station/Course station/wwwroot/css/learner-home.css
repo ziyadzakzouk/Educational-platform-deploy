@@ -1,4 +1,5 @@
-﻿/* General Styles */
+﻿
+/* General Styles */
 body {
     margin: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -14,9 +15,21 @@ body {
 
 .welcome-text {
     font-size: 2.5em;
-    color: #333;
     margin-bottom: 40px;
 }
+
+.leFadeIn {
+    animation-name: leFadeIn;
+    animation-duration: 2s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes leFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Rest of the CSS remains the same */
 
 /* Carousel Styles */
 .carousel-container {
