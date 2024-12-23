@@ -148,6 +148,32 @@ namespace Course_station.Controllers
             }
             return View(instructor);
         }
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(Instructor model)
+        {
+            if (ModelState.IsValid)
+            {
+                var instructor = await _context.Instructors
+                    .FirstOrDefaultAsync(l => l.InstructorId == model.InstructorId && l.Password == model.Password);
+
+                if (instructor != null)
+                {
+                    // Set the InstructorId in the session
+                    HttpContext.Session.SetInt32("InstructorId", instructor.InstructorId);
+
+                    // Login successful, redirect to the instructor's home page
+                    return RedirectToAction("Home", "Instructor");
+                }
+                else
+                {
+                    ViewBag.ErrorMessage = "Invalid ID or Password.";
+                }
+            }
+
+            return View(model);
+        }
 
         //// GET: Instructor/Delete/5
         //// GET: Instructor/Delete/5
@@ -355,40 +381,6 @@ namespace Course_station.Controllers
         public IActionResult Login()
         {
             return View();
-        }
-
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(Instructor model)
-        {
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    var instructor = await _context.Instructors
-                        .FirstOrDefaultAsync(l => l.InstructorId == model.InstructorId && l.Password == model.Password);
-
-                    if (instructor != null)
-                    {
-                        // Set the InstructorId in the session
-                        HttpContext.Session.SetInt32("InstructorId", instructor.InstructorId);
-
-                        // Login successful, redirect to the instructor's home page
-                        return RedirectToAction("Home", "Instructor");
-                    }
-                    else
-                    {
-                        ViewBag.ErrorMessage = "Invalid ID or Password.";
-                    }
-                }
-                catch (Exception ex)
-                {
-                    ViewBag.ErrorMessage = $"An error occurred: {ex.Message}";
-                }
-            }
-
-            return View(model);
         }
         public async Task<IActionResult> SendNotification()
         {
