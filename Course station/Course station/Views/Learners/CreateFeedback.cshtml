@@ -4,67 +4,125 @@
     ViewData["Title"] = "Create Emotional Feedback";
 }
 
-<h1>Create Emotional Feedback</h1>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewData["Title"]</title>
+    <style>
+        .form-group {
+            margin-bottom: 15px;
+        }
 
-<h4>Emotional Feedback</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="CreateFeedback">
-            <div class="form-group">
-                <label asp-for="LearnerId" class="control-label"></label>
-                <input asp-for="LearnerId" class="form-control" readonly />
-                <span asp-validation-for="LearnerId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ActivityId" class="control-label"></label>
-                <input asp-for="ActivityId" class="form-control" />
-                <span asp-validation-for="ActivityId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Timestamp" class="control-label"></label>
-                <input asp-for="Timestamp" class="form-control" />
-                <span asp-validation-for="Timestamp" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EmotionalState" class="control-label"></label>
-                <select asp-for="EmotionalState" class="form-control">
-                    <option value="">Select Emotional State</option>
-                    <option value="Admiration">Admiration</option>
-                    <option value="Adoration">Adoration</option>
-                    <option value="Aesthetic Appreciation">Aesthetic Appreciation</option>
-                    <option value="Amusement">Amusement</option>
-                    <option value="Anger">Anger</option>
-                    <option value="Anxiety">Anxiety</option>
-                    <option value="Awe">Awe</option>
-                    <option value="Awkwardness">Awkwardness</option>
-                    <option value="Boredom">Boredom</option>
-                    <option value="Calmness">Calmness</option>
-                    <option value="Confusion">Confusion</option>
-                    <option value="Craving">Craving</option>
-                    <option value="Disgust">Disgust</option>
-                    <option value="Empathetic Pain">Empathetic Pain</option>
-                    <option value="Entrancement">Entrancement</option>
-                    <option value="Excitement">Excitement</option>
-                    <option value="Fear">Fear</option>
-                    <option value="Horror">Horror</option>
-                    <option value="Interest">Interest</option>
-                    <option value="Joy">Joy</option>
-                    <option value="Nostalgia">Nostalgia</option>
-                    <option value="Relief">Relief</option>
-                    <option value="Romance">Romance</option>
-                    <option value="Sadness">Sadness</option>
-                    <option value="Satisfaction">Satisfaction</option>
-                    <option value="Surprise">Surprise</option>
-                </select>
-                <span asp-validation-for="EmotionalState" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 10px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+            .btn-primary:hover {
+                background-color: #45a049;
+            }
+
+        .text-danger {
+            color: red;
+        }
+
+        .control-label {
+            font-weight: bold;
+        }
+
+        .row {
+            display: flex;
+            justify-content: center;
+        }
+
+        .col-md-4 {
+            max-width: 400px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            background-color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="text-center">Create Emotional Feedback</h1>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="CreateFeedback">
+                <div class="form-group">
+                    <label asp-for="LearnerId" class="control-label"></label>
+                    <input asp-for="LearnerId" class="form-control" readonly />
+                    <span asp-validation-for="LearnerId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ActivityId" class="control-label"></label>
+                    <input asp-for="ActivityId" class="form-control" />
+                    <span asp-validation-for="ActivityId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Timestamp" class="control-label"></label>
+                    <input asp-for="Timestamp" class="form-control" />
+                    <span asp-validation-for="Timestamp" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="EmotionalState" class="control-label"></label>
+                    <select asp-for="EmotionalState" class="form-control">
+                        <option value="">Select Emotional State</option>
+                        <option value="Admiration">Admiration</option>
+                        <option value="Adoration">Adoration</option>
+                        <option value="Aesthetic Appreciation">Aesthetic Appreciation</option>
+                        <option value="Amusement">Amusement</option>
+                        <option value="Anger">Anger</option>
+                        <option value="Anxiety">Anxiety</option>
+                        <option value="Awe">Awe</option>
+                        <option value="Awkwardness">Awkwardness</option>
+                        <option value="Boredom">Boredom</option>
+                        <option value="Calmness">Calmness</option>
+                        <option value="Confusion">Confusion</option>
+                        <option value="Craving">Craving</option>
+                        <option value="Disgust">Disgust</option>
+                        <option value="Empathetic Pain">Empathetic Pain</option>
+                        <option value="Entrancement">Entrancement</option>
+                        <option value="Excitement">Excitement</option>
+                        <option value="Fear">Fear</option>
+                        <option value="Horror">Horror</option>
+                        <option value="Interest">Interest</option>
+                        <option value="Joy">Joy</option>
+                        <option value="Nostalgia">Nostalgia</option>
+                        <option value="Relief">Relief</option>
+                        <option value="Romance">Romance</option>
+                        <option value="Sadness">Sadness</option>
+                        <option value="Satisfaction">Satisfaction</option>
+                        <option value="Surprise">Surprise</option>
+                    </select>
+                    <span asp-validation-for="EmotionalState" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
     </div>
-</div>
-<div>
-    <a asp-action="Home">Back to Home</a>
-</div>
+    <div>
+        <a asp-action="Home" class="btn btn-primary">Back to Home</a>
+    </div>
+</body>
+</html>
