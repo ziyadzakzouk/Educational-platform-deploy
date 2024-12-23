@@ -4,9 +4,89 @@
     ViewData["Title"] = "Create Personal Profile";
 }
 
+<style>
+    /* Styling for the entire page */
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+    }
+
+    h1, h4 {
+        text-align: center;
+    }
+
+    .row {
+        display: flex;
+        justify-content: center;
+    }
+
+    .col-md-4 {
+        max-width: 500px;
+        width: 100%;
+    }
+
+    /* Styling for the form */
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .control-label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 8px 12px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+        .form-control:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+    .text-danger {
+        color: #dc3545;
+        font-size: 14px;
+    }
+
+    /* Styling for buttons */
+    .btn {
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 16px;
+        text-align: center;
+        text-decoration: none;
+        cursor: pointer;
+        border: none;
+        border-radius: 4px;
+        margin-right: 10px;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        color: #fff;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        color: #fff;
+    }
+
+    .btn:hover {
+        opacity: 0.9;
+    }
+
+
+</style>
+
 <h1>@ViewData["Title"]</h1>
 
-<h4>PersonalProfile</h4>
+<h4>Personal Profile</h4>
 <hr />
 
 <div class="row">
@@ -26,8 +106,7 @@
 
             <div class="form-group mb-3">
                 <label asp-for="PreferedContentType" class="control-label">Preferred Content Type</label>
-                <select asp-for="PreferedContentType"
-                        class="form-control">
+                <select asp-for="PreferedContentType" class="form-control">
                     <option value="">-- Select Content Type --</option>
                     <option value="Video">Video</option>
                     <option value="Text">Text</option>
@@ -39,8 +118,7 @@
 
             <div class="form-group mb-3">
                 <label asp-for="EmotionalState" class="control-label">Emotional State</label>
-                <select asp-for="EmotionalState"
-                        class="form-control">
+                <select asp-for="EmotionalState" class="form-control">
                     <option value="">-- Select Emotional State --</option>
                     <option value="Happy">Happy</option>
                     <option value="Neutral">Neutral</option>
@@ -52,8 +130,7 @@
 
             <div class="form-group mb-3">
                 <label asp-for="PersonalityType" class="control-label">Personality Type</label>
-                <select asp-for="PersonalityType"
-                        class="form-control">
+                <select asp-for="PersonalityType" class="form-control">
                     <option value="">-- Select Personality Type --</option>
                     <option value="Introvert">Introvert</option>
                     <option value="Extrovert">Extrovert</option>
@@ -69,4 +146,3 @@
         </form>
     </div>
 </div>
-
