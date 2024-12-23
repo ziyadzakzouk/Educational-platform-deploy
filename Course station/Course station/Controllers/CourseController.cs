@@ -78,7 +78,7 @@ namespace Course_station.Controllers
             {
                 _context.Add(course);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("ManageCourses", "Instructor");
             }
             return View(course);
         }
