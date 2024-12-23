@@ -292,12 +292,15 @@ namespace Course_station.Controllers
                 return RedirectToAction("Login", "Instructor");
             }
 
+            // Include Instructors to ensure the navigation property is loaded
             var courses = await _context.Courses
+                .Include(c => c.Instructors)
                 .Where(c => c.Instructors.Any(i => i.InstructorId == instructorId))
                 .ToListAsync();
 
             return View(courses);
         }
+
 
 
         // GET: Course /details/5
@@ -625,18 +628,52 @@ namespace Course_station.Controllers
             return View();
         }
 
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> CreateCourse([Bind("CourseId,Title,Description,DiffLevel,CreditPoint,LearningObjective")] Course course)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        _context.Courses.Add(course);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction("Home", "Instructor");
+        //    }
+        //    return View(course);
+        //}
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateCourse([Bind("CourseId,Title,Description,DiffLevel,CreditPoint,LearningObjective")] Course course)
         {
+            var instructorId = HttpContext.Session.GetInt32("InstructorId");
+            if (instructorId == null)
+            {
+                return RedirectToAction("Login", "Instructor");
+            }
+
             if (ModelState.IsValid)
             {
-                _context.Courses.Add(course);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                // Fetch the instructor from the database
+                var instructor = await _context.Instructors.FindAsync(instructorId);
+
+                if (instructor != null)
+                {
+                    // Associate the course with the instructor
+                    course.Instructors = new List<Instructor> { instructor };
+
+                    _context.Courses.Add(course);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("ManageCourses");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Instructor not found.");
+                }
             }
             return View(course);
         }
+
 
         public IActionResult CreateAssessment()
         {
