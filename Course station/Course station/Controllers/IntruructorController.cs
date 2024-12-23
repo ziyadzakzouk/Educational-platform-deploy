@@ -144,7 +144,7 @@ namespace Course_station.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Home));
             }
             return View(instructor);
         }
