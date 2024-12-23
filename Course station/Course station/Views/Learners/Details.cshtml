@@ -44,6 +44,10 @@
         <a asp-action="AchievementProgress" asp-route-learnerId="@Model.Learner.LearnerId" class="action-button warning">
             <i class="fas fa-trophy"></i> Achievements
         </a>
+        <a asp-controller="PersonalProfile" asp-action="Create" asp-route-learnerId="@Model.Learner.LearnerId" class="action-button primary">
+            <i class="fas fa-user-edit"></i> Create Personal Profile
+        </a>
+
     </div>
 
     <!-- Main Content Grid -->
