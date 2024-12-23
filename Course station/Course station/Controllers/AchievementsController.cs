@@ -1,27 +1,28 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Course_station.Models;
-using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Course_station.Controllers
 {
-    public class AchievementController : Controller
+    public class AchievementsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public AchievementController(ApplicationDbContext context)
+        public AchievementsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // List all achievements
+        // GET: Achievements
         public async Task<IActionResult> Index()
         {
             var achievements = await _context.Achievements.ToListAsync();
             return View(achievements);
         }
 
-        // Details of a single achievement
+        // GET: Achievements/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -30,7 +31,7 @@ namespace Course_station.Controllers
             }
 
             var achievement = await _context.Achievements
-                .FirstOrDefaultAsync(a => a.AchievementId == id);
+                .FirstOrDefaultAsync(m => m.AchievementId == id);
             if (achievement == null)
             {
                 return NotFound();
@@ -39,27 +40,27 @@ namespace Course_station.Controllers
             return View(achievement);
         }
 
-        // Create achievement - GET
+        // GET: Achievements/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // Create achievement - POST
+        // POST: Achievements/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Achievement achievement)
+        public async Task<IActionResult> Create([Bind("AchievementId,LearnerId,BadgeId,Description,DateEarned,Type")] Achievement achievement)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(achievement);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Home","Instructor");
             }
             return View(achievement);
         }
 
-        // Edit achievement - GET
+        // GET: Achievements/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -75,10 +76,10 @@ namespace Course_station.Controllers
             return View(achievement);
         }
 
-        // Edit achievement - POST
+        // POST: Achievements/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("AchievementId,Title,Description")] Achievement achievement)
+        public async Task<IActionResult> Edit(int id, [Bind("AchievementId,LearnerId,BadgeId,Description,DateEarned,Type")] Achievement achievement)
         {
             if (id != achievement.AchievementId)
             {
@@ -103,12 +104,12 @@ namespace Course_station.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Home", "Instructor");
             }
             return View(achievement);
         }
 
-        // Delete achievement - GET
+        // GET: Achievements/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -117,7 +118,7 @@ namespace Course_station.Controllers
             }
 
             var achievement = await _context.Achievements
-                .FirstOrDefaultAsync(a => a.AchievementId == id);
+                .FirstOrDefaultAsync(m => m.AchievementId == id);
             if (achievement == null)
             {
                 return NotFound();
@@ -126,7 +127,7 @@ namespace Course_station.Controllers
             return View(achievement);
         }
 
-        // Delete achievement - POST
+        // POST: Achievements/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

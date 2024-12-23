@@ -77,6 +77,27 @@ namespace Course_station.Controllers
             return View(instructor);
         }
 
+
+        public IActionResult CreateAchievement()
+        {
+            return View("~/Views/Achievements/Create.cshtml");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateAchievement([Bind("AchievementId,LearnerId,BadgeId,Description,DateEarned,Type")] Achievement achievement)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(achievement);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Home", "Instructor");
+            }
+            return View("~/Views/Achievements/Create.cshtml", achievement);
+        }
+
+
+
         public IActionResult Create()
         {
             ViewData["Title"] = "Create";
