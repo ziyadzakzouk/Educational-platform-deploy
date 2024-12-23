@@ -13,14 +13,35 @@ body {
 }
 
 .welcome-text {
-    font-size: 2.5em;
-    color: #333;
+    font-size: 4em; /* Increased font size */
     margin-bottom: 40px;
+}
+
+.leFadeIn {
+    animation: leFadeIn 2s ease-in-out;
+    animation-fill-mode: forwards;
+}
+
+@keyframes leFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* Carousel Styles */
 .carousel-container {
     margin-bottom: 50px;
+}
+
+.carousel-inner img {
+    width: 100%;
+    height: auto;
+    max-height: 400px; /* Adjust the max height */
 }
 
 /* Profile Button Styles */
@@ -37,10 +58,10 @@ body {
     transition: background-color 0.3s, box-shadow 0.3s;
 }
 
-    .profile-button .btn-profile:hover {
-        background-color: #0056b3;
-        box-shadow: 0 6px 12px rgba(0, 86, 179, 0.3);
-    }
+.profile-button .btn-profile:hover {
+    background-color: #0056b3;
+    box-shadow: 0 6px 12px rgba(0, 86, 179, 0.3);
+}
 
 .profile-button .arrow {
     margin-left: 10px;
@@ -64,10 +85,10 @@ body {
     transition: transform 0.3s, box-shadow 0.3s;
 }
 
-    .card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
-    }
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
 
 .card-icon {
     font-size: 4em;
@@ -99,9 +120,9 @@ body {
     transition: background-color 0.3s;
 }
 
-    .btn-card:hover {
-        background-color: #218838;
-    }
+.btn-card:hover {
+    background-color: #218838;
+}
 
 /* Responsive Styles */
 @media (max-width: 768px) {

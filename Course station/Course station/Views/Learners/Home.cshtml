@@ -3,12 +3,7 @@
 
 @{
     ViewData["Title"] = "Learner Home";
-    var learnerId = HttpContextAccessor.HttpContext?.Session.GetInt32("LearnerId");
-    if (learnerId == null)
-    {
-        HttpContextAccessor.HttpContext?.Response.Redirect("/Learners/Login");
-        return;
-    }
+    var learnerName = ViewData["LearnerName"] as string;
 }
 
 <link rel="stylesheet" href="~/css/learner-home.css" />
@@ -16,7 +11,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 <div class="home-container">
-    <h2 class="welcome-text">Welcome to the Learner Homepage</h2>
+    <h2 class="welcome-text">Welcome <span class="leFadeIn" id="learnerName">@learnerName !</span> </h2>
 
     <div class="carousel-container">
         <div id="learnerCarousel" class="carousel slide" data-bs-ride="carousel">
@@ -51,7 +46,7 @@
     </div>
 
     <div class="profile-button">
-        <a asp-controller="Learners" asp-action="Details" asp-route-id="@learnerId" class="btn-profile">
+        <a asp-controller="Learners" asp-action="Details" asp-route-id="@HttpContextAccessor.HttpContext?.Session.GetInt32("LearnerId")" class="btn-profile">
             View Profile
             <span class="arrow"><i class="fas fa-arrow-right"></i></span>
         </a>
@@ -62,7 +57,7 @@
             <div class="card-icon"><i class="fas fa-book-open"></i></div>
             <h3>Courses</h3>
             <p>Access your enrolled courses and continue learning.</p>
-            <a asp-controller="Learners" asp-action="EnrolledCourses" asp-route-learnerId="@learnerId" class="btn-card">View Enrolled Courses</a>
+            <a asp-controller="Learners" asp-action="EnrolledCourses" asp-route-learnerId="@HttpContextAccessor.HttpContext?.Session.GetInt32("LearnerId")" class="btn-card">View Enrolled Courses</a>
         </div>
 
         <div class="card">
@@ -76,42 +71,44 @@
             <div class="card-icon"><i class="fas fa-trophy"></i></div>
             <h3>Leaderboard</h3>
             <p>See where you stand among your peers.</p>
-            <a asp-controller="Leaderboard" asp-action="Index" asp-route-learnerId="@learnerId" class="btn-card">View Leaderboard</a>
+            <a asp-controller="Leaderboard" asp-action="Index" asp-route-learnerId="@HttpContextAccessor.HttpContext?.Session.GetInt32("LearnerId")" class="btn-card">View Leaderboard</a>
         </div>
 
         <div class="card">
             <div class="card-icon"><i class="fas fa-user-circle"></i></div>
             <h3>Profile</h3>
             <p>Update your profile information.</p>
-            <a asp-controller="Learners" asp-action="Edit" asp-route-id="@learnerId" class="btn-card">Update Profile</a>
+            <a asp-controller="Learners" asp-action="Edit" asp-route-id="@HttpContextAccessor.HttpContext?.Session.GetInt32("LearnerId")" class="btn-card">Update Profile</a>
         </div>
 
         <div class="card">
             <div class="card-icon"><i class="fas fa-graduation-cap"></i></div>
             <h3>Enroll in Course</h3>
             <p>Find and enroll in new courses.</p>
-            <a asp-action="Enroll" asp-route-learnerId="@learnerId" class="btn-card">Enroll in Course</a>
+            <a asp-action="Enroll" asp-route-learnerId="@HttpContextAccessor.HttpContext?.Session.GetInt32("LearnerId")" class="btn-card">Enroll in Course</a>
         </div>
 
         <div class="card">
             <div class="card-icon"><i class="fas fa-gamepad"></i></div>
             <h3>Quests</h3>
             <p>Participate in exciting quests.</p>
-            <a asp-controller="Learners" asp-action="AvailableQuests" asp-route-learnerId="@learnerId" class="btn-card">Join Quest</a>
+            <a asp-controller="Learners" asp-action="AvailableQuests" asp-route-learnerId="@HttpContextAccessor.HttpContext?.Session.GetInt32("LearnerId")" class="btn-card">Join Quest</a>
         </div>
 
         <div class="card">
             <div class="card-icon"><i class="fas fa-comment-alt"></i></div>
             <h3>Feedback</h3>
             <p>Give us your valuable feedback.</p>
-            <a asp-controller="Learners" asp-action="CreateFeedback" asp-route-learnerId="@learnerId" class="btn-card">Give Feedback</a>
+            <a asp-controller="Learners" asp-action="CreateFeedback" asp-route-learnerId="@HttpContextAccessor.HttpContext?.Session.GetInt32("LearnerId")" class="btn-card">Give Feedback</a>
         </div>
 
         <div class="card">
             <div class="card-icon"><i class="fas fa-bell"></i></div>
             <h3>Notifications</h3>
             <p>View your latest notifications.</p>
-            <a asp-controller="Learners" asp-action="Viewinfo" asp-route-learnerId="@learnerId" class="btn-card">View Notifications</a>
+            <a asp-controller="Learners" asp-action="Viewinfo" asp-route-learnerId="@HttpContextAccessor.HttpContext?.Session.GetInt32("LearnerId")" class="btn-card">View Notifications</a>
         </div>
     </div>
 </div>
+
+<script src="~/js/learner-home.js"></script>

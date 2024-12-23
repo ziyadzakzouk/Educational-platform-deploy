@@ -1,5 +1,11 @@
 /* site.css */
 
+/* Logo */
+.logo {
+    height: 100px;
+    margin-bottom: 20px;
+}
+
 /* Center text in the navbar */
 .navbar-nav {
     margin: 0 auto;
@@ -38,15 +44,15 @@ body {
     text-align: center;
 }
 
-    .jumbotron .display-4 {
-        font-size: 2.5rem;
-        font-weight: 300;
-    }
+.jumbotron .display-4 {
+    font-size: 2.5rem;
+    font-weight: 300;
+}
 
-    .jumbotron .lead {
-        font-size: 1.25rem;
-        font-weight: 300;
-    }
+.jumbotron .lead {
+    font-size: 1.25rem;
+    font-weight: 300;
+}
 
 .container {
     margin-top: 2rem;
@@ -83,10 +89,10 @@ body {
     text-decoration: none;
 }
 
-    .btn-link:hover {
-        color:cornflowerblue;
-        text-decoration: underline;
-    }
+.btn-link:hover {
+    color:cornflowerblue;
+    text-decoration: underline;
+}
 
 hr.my-4 {
     margin: 1.5rem 0;
@@ -133,9 +139,9 @@ hr.my-4 {
     transition-duration: .2s;
 }
 
-    .button:hover .arrow {
-        animation: slide-right .6s ease-out both;
-    }
+.button:hover .arrow {
+    animation: slide-right .6s ease-out both;
+}
 /* arrow animation */
 @keyframes slide-right {
     0% {
@@ -189,9 +195,9 @@ hr.my-4 {
 }
 
 
-    .button2:hover .arrow {
-        animation: slide-right .6s ease-out both;
-    }
+.button2:hover .arrow {
+    animation: slide-right .6s ease-out both;
+}
 /* arrow animation */
 @keyframes slide-right {
     0% {
@@ -216,4 +222,13 @@ hr.my-4 {
 .navbar-brand img {
     max-height: 60px;
 }
-   
+
+.logo {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 99%;
+    color: white;
+}

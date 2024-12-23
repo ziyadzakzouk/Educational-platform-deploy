@@ -35,6 +35,13 @@ namespace Course_station.Controllers
                 return RedirectToAction("Login", "Learners");
             }
 
+            var learner = await _context.Learners.FindAsync(learnerId);
+            if (learner == null)
+            {
+                return NotFound();
+            }
+
+            ViewData["LearnerName"] = learner.FirstName; // Access the FirstName property of the learner object
             return View();
         }
 

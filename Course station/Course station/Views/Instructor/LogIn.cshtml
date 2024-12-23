@@ -1,63 +1,42 @@
-﻿@model Course_station.Controllers.InstructorLoginViewModel
+﻿@model Course_station.Models.Instructor
 
 @{
     ViewData["Title"] = "Instructor Login";
 }
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewData["Title"]</title>
-    <style>
-        .center-form {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-          
-        }
-
-            .center-form form {
-                width: 100%;
-                max-width: 400px;
-                padding: 20px;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                border-radius: 8px;
-                background-color: #fff;
-            }
-
-        .text-center {
-            text-align: center;
-        }
-    </style>
-</head>
-<body>
-    <h2 class="text-center">Instructor Login</h2>
-
-    <div class="center-form">
-        <form asp-action="Login" method="post">
+<div class="login-container">
+    <div class="login-form">
+        <h1>Login</h1>
+        <hr />
+        <form asp-action="Login">
             <div class="form-group">
-                <label asp-for="InstructorId">Instructor ID</label>
+                <label asp-for="InstructorId" class="control-label"></label>
                 <input asp-for="InstructorId" class="form-control" />
                 <span asp-validation-for="InstructorId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Password">Password</label>
-                <input asp-for="Password" type="password" class="form-control" />
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" type="password" />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
-            <button type="submit" class="btn btn-primary">Login</button>
+            <div class="form-group">
+                <input type="submit" value="Login" class="btn btn-primary" />
+            </div>
         </form>
-    </div>
 
-    @if (ViewBag.ErrorMessage != null)
-    {
-        <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
-    }
+        @if (ViewBag.ErrorMessage != null)
+        {
+            <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+        }
 
-    <div>
         <a asp-action="Index" asp-controller="Home">Back to Home</a>
     </div>
-</body>
-</html>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+<link rel="stylesheet" href="~/css/login.css" />

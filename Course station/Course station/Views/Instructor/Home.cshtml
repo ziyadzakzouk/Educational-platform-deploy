@@ -2,6 +2,7 @@
 @inject IHttpContextAccessor HttpContextAccessor
 @{
     ViewData["Title"] = "Instructor Home";
+    var instructorName = ViewData["InstructorName"] as string;
     var instructorId = HttpContextAccessor.HttpContext?.Session.GetInt32("InstructorId");
     if (instructorId == null)
     {
@@ -10,12 +11,12 @@
     }
 }
 
-<div class="container instructor-home-container mt-5">
-    <div class="text-center mb-5">
-        <h1 class="display-4 fw-bold">Welcome to Course Station</h1>
-        <p class="lead text-muted">Impact and change the world with knowledge.</p>
-    </div>
+<div class="text-center mt-5">
+    <h1 class="display-4 fw-bold"><span class="instructorFadeIn">Welcome @instructorName</span></h1>
+    <p class="lead text-muted">Impact and change the world with knowledge.</p>
+</div>
 
+<div class="container instructor-home-container mt-5">
     <div id="motivationalCarousel" class="carousel slide mb-5 shadow-lg rounded" data-bs-ride="carousel">
         <!-- Indicators -->
         <div class="carousel-indicators">
@@ -27,24 +28,12 @@
         <div class="carousel-inner rounded">
             <div class="carousel-item active">
                 <img src="~/images/motivation1.jpg" class="d-block w-100" alt="Inspire">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5 class="text-shadow">Inspire Minds</h5>
-                    <p class="text-shadow">Your knowledge ignites change.</p>
-                </div>
             </div>
             <div class="carousel-item">
                 <img src="~/images/motivation2.jpg" class="d-block w-100" alt="Create">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5 class="text-shadow">Create Futures</h5>
-                    <p class="text-shadow">Shape the leaders of tomorrow.</p>
-                </div>
             </div>
             <div class="carousel-item">
                 <img src="~/images/motivation3.jpg" class="d-block w-100" alt="Impact">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5 class="text-shadow">Impact Lives</h5>
-                    <p class="text-shadow">Leave a lasting legacy.</p>
-                </div>
             </div>
         </div>
         <!-- Controls -->
@@ -169,6 +158,8 @@
     </div>
 </div>
 
+<script src="~/js/instructor-home.js"></script>
 <!-- Include Bootstrap Icons -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+<link rel="stylesheet" href="~/css/instructor-home.css">
 <link rel="stylesheet" href="~/css/Iprofile.css">
