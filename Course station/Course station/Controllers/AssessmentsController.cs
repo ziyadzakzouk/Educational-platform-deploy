@@ -71,16 +71,27 @@ namespace Course_station.Controllers
             {
                 return NotFound();
             }
-            var assessment = _context.Assessments.Find(id);
+
+            var assessment = _context.Assessments
+                .Include(a => a.TakenAssessments)
+                .FirstOrDefault(a => a.AssessmentId == id);
+
             if (assessment == null)
             {
                 return NotFound();
             }
-            return View(new TakenAssessment { AssessmentId = assessment.AssessmentId });
+
+            var takenAssessment = new TakenAssessment
+            {
+                AssessmentId = assessment.AssessmentId,
+                Assessment = assessment
+            };
+
+            return View(takenAssessment);
         }
 
-            // POST: Assessments/Take
-            [HttpPost]
+
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Take([Bind("AssessmentId,LearnerId,ScoredPoint")] TakenAssessment takenAssessment)
         {
@@ -134,6 +145,9 @@ namespace Course_station.Controllers
                 _context.TakenAssessments.Add(takenAssessment);
                 await _context.SaveChangesAsync();
 
+                // Update score analytics and learner profile
+                // Add your logic here to update analytics and learner profile
+
                 TempData["Success"] = "Your score has been successfully submitted.";
                 return RedirectToAction("ViewScore", new { id = takenAssessment.AssessmentId, learnerId = learnerId });
             }
@@ -143,6 +157,8 @@ namespace Course_station.Controllers
                 return View(takenAssessment);
             }
         }
+
+
 
 
 

@@ -54,8 +54,31 @@
                 document.getElementById("alreadyJoinedMessage").style.display = "block";
             } else {
                 document.getElementById("successMessage").style.display = "block";
+                updateQuestProgress();
             }
         }, 500);
         return false;
+    }
+
+    function updateQuestProgress() {
+        const learnerId = document.querySelector('input[name="learnerId"]').value;
+        const questId = document.querySelector('input[name="questId"]').value;
+
+        fetch('/Learners/UpdateQuestProgress', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ learnerId, questId })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log('Quest progress updated successfully.');
+            } else {
+                console.error('Failed to update quest progress.');
+            }
+        })
+        .catch(error => console.error('Error:', error));
     }
 </script>

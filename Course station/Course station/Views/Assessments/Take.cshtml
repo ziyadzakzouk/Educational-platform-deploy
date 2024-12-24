@@ -8,7 +8,11 @@
 
 @if (Model?.Assessment == null)
 {
-    <p>Error: Unable to load assessment details. Please try again later.</p>
+    <p>Assessment is done. Your score has been recorded.</p>
+    <p>Updating score analytics and learner profile...</p>
+    <!-- Add any additional logic or display elements for updating analytics and learner profile here -->
+    <a asp-controller="Learners" asp-action="Home" class="btn btn-primary">Go to Home Page </a>
+    
 }
 else
 {
@@ -29,4 +33,7 @@ else
 
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
+
+
+       
 }

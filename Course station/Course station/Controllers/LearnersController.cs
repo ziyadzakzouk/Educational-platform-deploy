@@ -118,6 +118,28 @@ namespace Course_station.Controllers
         }
 
 
+        [HttpPost]
+        public async Task<IActionResult> UpdateQuestProgress([FromBody] UpdateQuestProgressModel model)
+        {
+            var learnerCollaboration = new LearnerCollaboration
+            {
+                LearnerId = model.LearnerId,
+                QuestId = model.QuestId
+            };
+
+            _context.LearnerCollaborations.Add(learnerCollaboration);
+            await _context.SaveChangesAsync();
+
+            return Json(new { success = true });
+        }
+
+        public class UpdateQuestProgressModel
+        {
+            public int LearnerId { get; set; }
+            public int QuestId { get; set; }
+        }
+
+
         public class AvailableQuestsViewModel
         {
             public int LearnerId { get; set; }
@@ -145,6 +167,16 @@ namespace Course_station.Controllers
             public int LearnerId { get; set; }
             public Quest Quest { get; set; }
         }
+
+        //public async Task<IActionResult> QuestProgress(int learnerId)
+        //{
+        //    var quests = await _context.LearnerCollaborations   masder el 2aref ahoooooooooooooooooooo
+        //        .Where(lc => lc.LearnerId == learnerId)
+        //        .Select(lc => lc.Quest)
+        //        .ToListAsync();
+
+        //    return View(quests);
+        //}
 
         public async Task<IActionResult> JoinQuest(int learnerId, int questId)
         {
