@@ -1,24 +1,179 @@
 ﻿@model Course_station.Models.TakenAssessment
 
 @{
-    ViewData["Title"] = "View Score";
+    ViewData["Title"] = "Assessment Result";
 }
 
-<h2>View Score</h2>
+<div class="score-container">
+    <div class="score-header">
+        <h2>@Model.Assessment.Title - Results</h2>
+        <p class="assessment-type">Type: @Model.Assessment.Type</p>
+    </div>
 
-<div>
-    <h4>@Model.Assessment.Title</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">Description</dt>
-        <dd class="col-sm-10">@Model.Assessment.Description</dd>
-        <dt class="col-sm-2">Total Marks</dt>
-        <dd class="col-sm-10">@Model.Assessment.TotalMarks</dd>
-        <dt class="col-sm-2">Scored Points</dt>
-        <dd class="col-sm-10">@Model.ScoredPoint</dd>
-    </dl>
+    <div class="score-card">
+        <div class="score-main">
+            <div class="score-circle @(Model.ScoredPoint >= Model.Assessment.PassingMarks ? "pass" : "fail")">
+                <span class="score-number">@Model.ScoredPoint</span>
+                <span class="score-total">/ @Model.Assessment.TotalMarks</span>
+            </div>
+            <div class="score-status">
+                @if (Model.ScoredPoint >= Model.Assessment.PassingMarks)
+                {
+                    <span class="pass-badge">Passed</span>
+                }
+                else
+                {
+                    <span class="fail-badge">Not Passed</span>
+                }
+            </div>
+        </div>
+
+        <div class="score-details">
+            <div class="detail-item">
+                <span class="detail-label">Passing Marks:</span>
+                <span class="detail-value">@Model.Assessment.PassingMarks</span>
+            </div>
+            @if (ViewBag.Analytics != null)
+            {
+                <div class="detail-item">
+                    <span class="detail-label">Class Average:</span>
+                    <span class="detail-value">@ViewBag.Analytics.AverageScore.ToString("F1")</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Highest Score:</span>
+                    <span class="detail-value">@ViewBag.Analytics.HighestScore</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Total Attempts:</span>
+                    <span class="detail-value">@ViewBag.Analytics.TotalAttempts</span>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="action-buttons">
+        <a asp-controller="Learners" asp-action="Details" asp-route-id="@Model.LearnerId" class="btn btn-primary">
+            <i class="fas fa-user"></i> Back to Profile
+        </a>
+        <a asp-controller="Learners" asp-action="Home" class="btn btn-secondary">
+            <i class="fas fa-home"></i> Back to Home
+        </a>
+    </div>
 </div>
 
-<div>
-    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
-</div>
+@section Styles {
+    <style>
+        .score-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .score-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .score-card {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+
+        .score-main {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            color: white;
+        }
+
+            .score-circle.pass {
+                background: #28a745;
+            }
+
+            .score-circle.fail {
+                background: #dc3545;
+            }
+
+        .score-number {
+            font-size: 3em;
+            font-weight: bold;
+        }
+
+        .score-total {
+            font-size: 1.2em;
+        }
+
+        .score-status {
+            margin-top: 1rem;
+        }
+
+        .pass-badge, .fail-badge {
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .pass-badge {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .fail-badge {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .score-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .detail-item {
+            background: white;
+            padding: 1rem;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .detail-label {
+            color: #666;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .detail-value {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+    </style>
+}

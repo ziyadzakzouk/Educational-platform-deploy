@@ -1,5 +1,3 @@
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Course_station.Models;
@@ -15,95 +13,166 @@ namespace Course_station.Controllers
             _context = context;
         }
 
-        // GET: Assessments
-       
+
         public async Task<IActionResult> Index()
         {
-           
+            var assessments = await _context.Assessments
+                .Include(a => a.Module)
+                .Include(a => a.TakenAssessments)
+                .ToListAsync();
 
-            return View(await _context.Assessments.ToListAsync());
+            foreach (var assessment in assessments)
+            {
+                var analytics = assessment.TakenAssessments.Any()
+                    ? new
+                    {
+                        AverageScore = assessment.TakenAssessments.Average(ta => ta.ScoredPoint ?? 0),
+                        AttemptCount = assessment.TakenAssessments.Count(),
+                        PassCount = assessment.TakenAssessments.Count(ta => ta.ScoredPoint >= assessment.PassingMarks)
+                    }
+                    : null;
+
+                ViewData[$"Analytics_{assessment.AssessmentId}"] = analytics;
+            }
+
+            return View(assessments);
         }
 
-       
-        // GET: Assessment/Details/5
+
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-
-            var assessment = await _context.Assessments
-                .Include(a => a.Module)
-                .Include(a => a.TakenAssessments)
-                .FirstOrDefaultAsync(m => m.AssessmentId == id);
+            var assessment
+                = await _context.Assessments
+                    .Include(a => a.Module)
+                    .Include(a => a.TakenAssessments)
+                    .FirstOrDefaultAsync(a => a.AssessmentId == id);
             if (assessment == null)
             {
                 return NotFound();
             }
 
-            var takenAssessments = assessment.TakenAssessments;
-            ViewBag.AverageScore = takenAssessments.Any() ? takenAssessments.Average(ta => ta.ScoredPoint) : 0;
-            ViewBag.HighestScore = takenAssessments.Any() ? takenAssessments.Max(ta => ta.ScoredPoint) : 0;
-            ViewBag.LowestScore = takenAssessments.Any() ? takenAssessments.Min(ta => ta.ScoredPoint) : 0;
-
+            var analytics = assessment.TakenAssessments.Any()
+                ? new
+                {
+                    AverageScore = assessment.TakenAssessments.Average(ta => ta.ScoredPoint ?? 0),
+                    AttemptCount = assessment.TakenAssessments.Count(),
+                    PassCount = assessment.TakenAssessments.Count(ta => ta.ScoredPoint >= assessment.PassingMarks)
+                }
+                : null;
             return View(assessment);
         }
-
-        // GET: Assessments/Take/5
-        public async Task<IActionResult> Take(int? id)
+        public IActionResult Take(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-
-            var assessment = await _context.Assessments
-                .FirstOrDefaultAsync(m => m.AssessmentId == id);
-
+            var assessment = _context.Assessments.Find(id);
             if (assessment == null)
             {
                 return NotFound();
             }
-
-            // Assuming you have a way to get the logged-in learner's ID
-            var learnerId = HttpContext.Session.GetInt32("LearnerId") ?? 0;
-
-            var takenAssessment = new TakenAssessment
-            {
-                AssessmentId = assessment.AssessmentId,
-                LearnerId = learnerId
-            };
-
-            return View(takenAssessment);
+            return View(new TakenAssessment { AssessmentId = assessment.AssessmentId });
         }
 
-
-        // POST: Assessments/Take/5
-        [HttpPost]
+            // POST: Assessments/Take
+            [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Take(int id, [Bind("AssessmentId,LearnerId,ScoredPoint")] TakenAssessment takenAssessment)
+        public async Task<IActionResult> Take([Bind("AssessmentId,LearnerId,ScoredPoint")] TakenAssessment takenAssessment)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
+                TempData["Error"] = "Invalid data. Please check your input.";
+                return View(takenAssessment);
+            }
+
+            try
+            {
+                // Fetch the assessment details
+                var assessment = await _context.Assessments
+                    .Include(a => a.TakenAssessments)
+                    .FirstOrDefaultAsync(a => a.AssessmentId == takenAssessment.AssessmentId);
+
+                if (assessment == null)
+                {
+                    TempData["Error"] = "Assessment not found.";
+                    return RedirectToAction("Index");
+                }
+
+                // Validate the score
+                if (takenAssessment.ScoredPoint > assessment.TotalMarks)
+                {
+                    ModelState.AddModelError("ScoredPoint", "Score cannot exceed total marks.");
+                    return View(takenAssessment);
+                }
+
+                // Ensure LearnerId is valid
+                var learnerId = HttpContext.Session.GetInt32("LearnerId");
+                if (learnerId == null || learnerId == 0)
+                {
+                    TempData["Error"] = "You must be logged in to submit an assessment.";
+                    return RedirectToAction("Login", "Account");
+                }
+
+                takenAssessment.LearnerId = learnerId.Value;
+
+                // Check if the learner already has an entry for this assessment
+                var existingAttempt = await _context.TakenAssessments
+                    .FirstOrDefaultAsync(ta => ta.AssessmentId == takenAssessment.AssessmentId && ta.LearnerId == learnerId);
+
+                if (existingAttempt != null)
+                {
+                    TempData["Error"] = "You have already submitted a score for this assessment.";
+                    return RedirectToAction("Details", "Learners", new { id = learnerId });
+                }
+
+                // Add the new attempt and save to the database
                 _context.TakenAssessments.Add(takenAssessment);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+
+                TempData["Success"] = "Your score has been successfully submitted.";
+                return RedirectToAction("ViewScore", new { id = takenAssessment.AssessmentId, learnerId = learnerId });
             }
-            return View(takenAssessment);
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", "An error occurred while saving the assessment. Please try again.");
+                return View(takenAssessment);
+            }
         }
 
+
+
         // GET: Assessments/ViewScore
-        public async Task<IActionResult> ViewScore(int learnerId, int assessmentId)
+        public async Task<IActionResult> ViewScore(int id, int learnerId)
         {
             var takenAssessment = await _context.TakenAssessments
                 .Include(ta => ta.Assessment)
-                .FirstOrDefaultAsync(ta => ta.LearnerId == learnerId && ta.AssessmentId == assessmentId);
+                .Include(ta => ta.Learner)
+                .FirstOrDefaultAsync(ta => ta.AssessmentId == id && ta.LearnerId == learnerId);
 
             if (takenAssessment == null)
             {
                 return NotFound();
             }
+
+            // Calculate analytics
+            var analytics = await _context.TakenAssessments
+                .Where(ta => ta.AssessmentId == id)
+                .GroupBy(ta => ta.AssessmentId)
+                .Select(g => new
+                {
+                    AverageScore = g.Average(ta => ta.ScoredPoint ?? 0),
+                    HighestScore = g.Max(ta => ta.ScoredPoint ?? 0),
+                    LowestScore = g.Min(ta => ta.ScoredPoint ?? 0),
+                    TotalAttempts = g.Count()
+                })
+                .FirstOrDefaultAsync();
+
+            ViewBag.Analytics = analytics;
 
             return View(takenAssessment);
         }

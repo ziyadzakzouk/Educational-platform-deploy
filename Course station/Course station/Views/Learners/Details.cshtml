@@ -139,29 +139,37 @@
             </div>
         </div>
 
-        <!-- Assessments Card -->
+        <!-- Taken Assessments Card -->
         <div class="card">
             <div class="card-header">
                 <i class="fas fa-clipboard-check"></i>
-                <h2>Assessments</h2>
+                <h2>Taken Assessments</h2>
             </div>
             <div class="card-body">
-                <div class="assessment-list">
-                    @foreach (var assessment in Model.TakenAssessments)
-                    {
-                        <div class="assessment-item">
-                            <div class="assessment-info">
-                                <h3>@assessment.Assessment.Title</h3>
-                                <p>@assessment.Assessment.Description</p>
-                            </div>
-                            <a asp-controller="Assessments" asp-action="Take"
-                               asp-route-id="@assessment.AssessmentId"
-                               class="btn-assessment">
-                                Take Assessment
-                            </a>
-                        </div>
-                    }
-                </div>
+                @if (Model.TakenAssessments != null && Model.TakenAssessments.Any())
+                {
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Assessment Title</th>
+                                <th>Score</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var takenAssessment in Model.TakenAssessments)
+                            {
+                                <tr>
+                                    <td>@takenAssessment.Assessment.Title</td>
+                                    <td>@takenAssessment.ScoredPoint</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <p>No assessments taken yet.</p>
+                }
             </div>
         </div>
 

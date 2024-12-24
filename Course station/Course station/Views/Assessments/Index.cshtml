@@ -4,58 +4,118 @@
     ViewData["Title"] = "Assessments";
 }
 
-<h2 class="text-center">Assessments</h2>
-<hr />
-<div class="card-container">
-    @foreach (var item in Model)
-    {
-        <div class="card">
-            <div class="card-header">
-                <h3>@item.Title</h3>
-            </div>
-            <div class="card-body">
-                <p>@item.Description</p>
-                <div class="card-actions">
-                    <a asp-action="Details" asp-route-id="@item.AssessmentId" class="btn btn-info">Details</a>
-                    <a asp-action="Take" asp-route-id="@item.AssessmentId" class="btn btn-primary">Take</a>
-                </div>
-            </div>
-        </div>
-    }
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Assessments</h2>
+        
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead class="thead-light">
+                <tr>
+                    <th>Title</th>
+                    <th>Type</th>
+                    <th>Module</th>
+                    <th>Total Marks</th>
+                    <th>Passing Marks</th>
+                    <th>Statistics</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    var analytics = ViewData[$"Analytics_{item.AssessmentId}"] as dynamic;
+
+                    <tr>
+                        <td>@item.Title</td>
+                        <td>@item.Type</td>
+                        <td>@(item.Module?.Title ?? "N/A")</td>
+                        <td>@item.TotalMarks</td>
+                        <td>@item.PassingMarks</td>
+                        <td>
+                            @if (analytics != null)
+                            {
+                                <div class="assessment-stats">
+                                    <span title="Average Score" class="badge bg-info">
+                                        <i class="fas fa-chart-line"></i> @analytics.AverageScore.ToString("F1")
+                                    </span>
+                                    <span title="Total Attempts" class="badge bg-secondary">
+                                        <i class="fas fa-users"></i> @analytics.AttemptCount
+                                    </span>
+                                    <span title="Pass Rate" class="badge bg-success">
+                                        <i class="fas fa-check-circle"></i>
+                                        @(((double)analytics.PassCount / analytics.AttemptCount * 100).ToString("F0"))%
+                                    </span>
+                                </div>
+                            }
+                            else
+                            {
+                                <span class="text-muted">No attempts yet</span>
+                            }
+                        </td>
+                        <td>
+                            <div class="btn-group">
+                                <a asp-action="Details" asp-route-id="@item.AssessmentId"
+                                   class="btn btn-sm btn-info" title="View Details">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <a asp-action="Take" asp-route-id="@item.AssessmentId"
+                                   class="btn btn-sm btn-success" title="Take Assessment">
+                                    <i class="fas fa-pencil-alt"></i>
+                                </a>
+                                @if (User.IsInRole("Instructor"))
+                                {
+                                    <a asp-action="Edit" asp-route-id="@item.AssessmentId"
+                                       class="btn btn-sm btn-warning" title="Edit">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a asp-action="Delete" asp-route-id="@item.AssessmentId"
+                                       class="btn btn-sm btn-danger" title="Delete"
+                                       onclick="return confirm('Are you sure you want to delete this assessment?');">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
 
-<style>
-    .card-container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 20px;
-    }
-
-    .card {
-        background-color: #fff;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        width: calc(33.333% - 20px); /* Adjust the width as needed */
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-
-    .card-header {
-        padding: 15px;
-        border-bottom: 1px solid #ddd;
-    }
-
-    .card-body {
-        padding: 15px;
-    }
-
-    .card-actions {
-        margin-top: 15px;
-    }
-
-        .card-actions .btn {
-            margin-right: 10px;
+@section Styles {
+    <style>
+        .assessment-stats {
+            display: flex;
+            gap: 0.5rem;
         }
 
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.5rem;
+        }
 
-    }
-</style>
+        .btn-group {
+            display: flex;
+            gap: 0.25rem;
+        }
+
+            .btn-group .btn {
+                padding: 0.25rem 0.5rem;
+            }
+
+        .table td {
+            vertical-align: middle;
+        }
+
+        .thead-light th {
+            background-color: #f8f9fa;
+            border-color: #dee2e6;
+        }
+    </style>
+}
